@@ -1,0 +1,31 @@
+<taskModel about="urn:shayganfar.wpi.edu:models:ABC" 
+           xmlns="http://www.cs.wpi.edu/~rich/cetask/cea-2018-ext"
+           xmlns:disco="urn:disco.wpi.edu:Disco">
+
+  <task id="A">
+    <subtasks id="recipeA">
+      <step name="step1" task ="B"/>
+      <step name="step2" task="C"/>
+    </subtasks>
+  </task>
+
+  <task id="B">
+    <subtasks id="recipeB">
+      <step name="step1" task ="d"/>
+      <step name="step2" task="e"/>
+    </subtasks>
+  </task>
+
+  <task id="C">
+    <subtasks id="recipeC">
+      <step name="step1" task ="f"/>
+      <step name="step2" task="g"/>
+    </subtasks>
+  </task>
+
+  <task id="d"/>
+  <task id="e"/>
+  <task id="f"/>
+  <task id="g"/>
+  
+</taskModel>
