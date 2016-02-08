@@ -5,6 +5,11 @@ import edu.wpi.disco.Disco;
 
 public class Expectedness extends AppraisalProcesses{
 	
+	public Expectedness(String[] args) {
+		super(args);
+		// TODO Auto-generated constructor stub
+	}
+
 	public enum EXPECTEDNESS {MOST_EXPECTED, EXPECTED, LESS_EXPECTED, LESS_UNEXPECTED, UNEXPECTED, MOST_UNEXPECTED};
 	
 	public EXPECTEDNESS isEventExpected(Goal eventGoal) {

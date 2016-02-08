@@ -6,6 +6,10 @@ import edu.wpi.cetask.Plan;
 
 public class Desirability extends AppraisalProcesses{
 	
+	public Desirability(String[] args) {
+		super(args);
+		// TODO Auto-generated constructor stub
+	}
 	public enum DESIRABILITY {HIGH_DESIRABLE, DESIRABLE, NEUTRAL, HIGH_UNDESIRABLE, UNDESIRABLE};
 	
 	public DESIRABILITY isEventDesirable(Goal eventGoal) {

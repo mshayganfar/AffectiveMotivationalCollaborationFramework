@@ -10,6 +10,11 @@ import MentalState.Goal;
 
 public class Controllability extends AppraisalProcesses{
 
+	public Controllability(String[] args) {
+		super(args);
+		// TODO Auto-generated constructor stub
+	}
+
 	public boolean isEventControllable(Goal eventGoal) {
 		
 		double dblAgency       = getAgencyValue();
