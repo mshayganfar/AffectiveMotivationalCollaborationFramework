@@ -174,6 +174,11 @@ public class Collaboration {
 		return goal.getPlan().getPredecessors();
 	}
 	
+	public List<Plan> getContributingPlans(Goal goal) {
+		
+		return goal.getPlan().getChildren();
+	}
+	
 	public void updateCollaboraitonState() {
 		prevFocus = disco.getFocus();
 	}

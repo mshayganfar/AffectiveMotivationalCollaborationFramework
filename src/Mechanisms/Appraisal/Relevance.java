@@ -1,7 +1,11 @@
 package Mechanisms.Appraisal;
 
+import java.util.List;
+
+import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import MentalState.Belief;
 import MentalState.Goal;
+import edu.wpi.cetask.Plan;
 
 public class Relevance extends AppraisalProcesses {
 	
@@ -61,10 +65,32 @@ public class Relevance extends AppraisalProcesses {
 	
 	private int getGoalStatus(Goal goal) {
 		
-		return 1;
+		GOAL_STATUS goalStatus = collaboration.getGoalStatus(goal.getPlan());
+		if (goalStatus.equals(GOAL_STATUS.ACHIEVED) || 
+			goalStatus.equals(GOAL_STATUS.PENDING) || 
+			goalStatus.equals(GOAL_STATUS.INPROGRESS))
+			return 1;
+		else if (goalStatus.equals(GOAL_STATUS.FAILED) || 
+				goalStatus.equals(GOAL_STATUS.BLOCKED) || 
+				goalStatus.equals(GOAL_STATUS.INAPPLICABLE)) 
+			return -1;
+		else
+			return 0;
 	}
 	
 	private double getSaliencyMagnitude(Goal goal) {
+		
+		GOAL_STATUS goalStatus       = collaboration.getGoalStatus(goal.getPlan());
+		List<Plan> predecessors      = collaboration.getPredecessors(goal);
+		List<Plan> contributingGoals = collaboration.getContributingPlans(goal);
+		
+		for(Plan predecessor : predecessors) {
+			// Check the status here!
+		}
+		
+		for(Plan contributingGoal : contributingGoals) {
+			// Check the status here!
+		}
 		
 		return 1.0;
 	}
