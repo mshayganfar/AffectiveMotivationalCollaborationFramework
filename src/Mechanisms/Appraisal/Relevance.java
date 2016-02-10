@@ -2,6 +2,7 @@ package Mechanisms.Appraisal;
 
 import java.util.List;
 
+import Mechanisms.Collaboration.Collaboration.AGENT;
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import MentalState.Belief;
 import MentalState.Goal;
@@ -114,11 +115,29 @@ public class Relevance extends AppraisalProcesses {
 	
 	private int getMotiveUrgency(Goal goal) {
 		
-		return 0;
+		int urgencySuccessorValue  = 0;
+		int urgencyMitigationValue = 0;
+		
+		List<Plan> successors = goal.getPlan().getSuccessors();
+		
+		for (Plan successor : successors) {
+			if (collaboration.getResponsibleAgent(goal).equals(AGENT.OTHER))
+				urgencySuccessorValue++;
+		}
+		
+		urgencyMitigationValue = (isAcknowledgementMotive(goal)) ? 1 : 0;
+		
+		return (urgencySuccessorValue + urgencyMitigationValue);
 	}
 	
 	private int getMotiveImportance(Goal goal) {
 		
+		// I need non-failed alternative recipes for a failed task.
+		//if (goal.getPlan().getGoal().getDecompositions())
 		return 0;
+	}
+	
+	private boolean isAcknowledgementMotive(Goal goal) {
+		return false;
 	}
 }
