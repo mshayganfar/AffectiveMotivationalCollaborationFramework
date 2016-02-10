@@ -183,6 +183,14 @@ public class Collaboration {
 		prevFocus = disco.getFocus();
 	}
 	
+	public Boolean getPostConditionStatus(Plan plan) {
+		return plan.getType().getPostcondition().evalCondition(plan.getGoal());
+	}
+	
+	public Boolean getPreConditionStatus(Plan plan) {
+		return plan.isApplicable();
+	}
+	
 	public void test() {
 		
 //		Fact childFact;

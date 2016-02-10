@@ -80,18 +80,45 @@ public class Relevance extends AppraisalProcesses {
 	
 	private double getSaliencyMagnitude(Goal goal) {
 		
-		GOAL_STATUS goalStatus       = collaboration.getGoalStatus(goal.getPlan());
+		int preconditionKnownValue  = (collaboration.getPreConditionStatus(goal.getPlan()) != null) ? 1 : 0;
+		int postconditionKnownValue = (collaboration.getPostConditionStatus(goal.getPlan()) != null) ? 1 : 0;
+		int predecessorsGoalsKnownValue             = 0;
+		int contributingGoalspredecessorsKnownValue = 0;
+		
 		List<Plan> predecessors      = collaboration.getPredecessors(goal);
 		List<Plan> contributingGoals = collaboration.getContributingPlans(goal);
+
+		int preconditionAllValue  = 1;
+		int postconditionAllValue = 1;
+		int predecessorsGoalsAllValue             = predecessors.size();
+		int contributingGoalspredecessorsAllValue = contributingGoals.size();
 		
 		for(Plan predecessor : predecessors) {
-			// Check the status here!
+			if (collaboration.getPreConditionStatus(predecessor) != null)
+				predecessorsGoalsKnownValue++;
 		}
 		
 		for(Plan contributingGoal : contributingGoals) {
-			// Check the status here!
+			if (collaboration.getPostConditionStatus(contributingGoal) != null)
+				contributingGoalspredecessorsKnownValue++;
 		}
 		
-		return 1.0;
+		int n = preconditionKnownValue + postconditionKnownValue + predecessorsGoalsKnownValue + contributingGoalspredecessorsKnownValue;
+		int d = preconditionAllValue + postconditionAllValue + predecessorsGoalsAllValue + contributingGoalspredecessorsAllValue;
+		
+		int urgency    = getMotiveUrgency(goal);
+		int importance = getMotiveImportance(goal);
+		
+		return (((float)n/d) + urgency + importance);
+	}
+	
+	private int getMotiveUrgency(Goal goal) {
+		
+		return 0;
+	}
+	
+	private int getMotiveImportance(Goal goal) {
+		
+		return 0;
 	}
 }
