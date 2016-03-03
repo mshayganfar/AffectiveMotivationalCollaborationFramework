@@ -308,7 +308,7 @@
     
     function appraise () {
        Packages.Mechanisms.Appraisal.AppraisalProcesses.testAppraisal();
-       //println("From inside of appraise function!");
+       println("From inside of appraise function!");
        return "test appraisal";
     }
   </script>
