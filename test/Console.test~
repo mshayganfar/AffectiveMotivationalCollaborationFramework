@@ -1,3 +1,7 @@
+    # Mar 4, 2016 12:20:47 PM - TaskEngine 1.9 / Disco 1.14
+    Welcome to Disco! (Type 'help' for command list)
+edu.wpi.disco.Disco@6be968ce
+  > status
   > task PreparePicnic
     User says "Let's achieve PreparePicnic."
     Agent says "Please execute Spread on bread and peanut butter."

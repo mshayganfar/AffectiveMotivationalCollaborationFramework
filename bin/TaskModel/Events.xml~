@@ -1,9 +1,7 @@
-<taskModel about="urn:disco.wpi.edu:examples:Sandwich" xmlns="http://ce.org/cea-2018">
+<taskModel about="urn:disco.wpi.edu:examples:Appraisal" xmlns="http://ce.org/cea-2018">
   <!-- 
        This file includes all the required events in the source file to test the appraisal mechanisms.
   -->
-
-  
 
   <script init="true">
 
