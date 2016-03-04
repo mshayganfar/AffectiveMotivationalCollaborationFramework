@@ -1,14 +1,6 @@
+next false
 task PreparePicnic
 task PrepareSandwich
-execute Spread
-execute Spread
-execute Press
-execute BoilWater
-execute BoilEgg
-execute SliceEgg
-execute Add
-execute Add
-execute Press
 execute CutSandwich
 execute BagSandwich
-
+execute Add

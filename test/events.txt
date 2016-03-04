@@ -1,5 +1,8 @@
+next false
 task PreparePicnic
 task PrepareSandwich
+execute CutSandwich
+execute BagSandwich
 execute Spread
 execute Spread
 execute Press

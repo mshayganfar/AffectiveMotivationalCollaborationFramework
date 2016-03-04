@@ -21,9 +21,9 @@
       <step name="pbj" task="PrepareSandwich"/>
       <step name="egg" task="PrepareSandwich"/>
 
-      <binding slot="$pbj.who" value="false"/>
+      <binding slot="$pbj.who" value="true"/>
       <binding slot="$pbj.kind" value="Kind.ENUM.PBJ"/>
-      <binding slot="$egg.who" value="true"/>
+      <binding slot="$egg.who" value="false"/>
       <binding slot="$egg.kind" value="Kind.ENUM.EGG"/>
       <binding slot="$this.pbj" value="$pbj.bag"/>
       <binding slot="$this.egg" value="$egg.bag"/>
@@ -66,9 +66,9 @@
       <step name="press" task="Press" requires="top bottom"/>
       <applicable> $this.kind == Kind.ENUM.PBJ </applicable>
 
-      <binding slot="$top.external" value="true"/>
-      <binding slot="$bottom.external" value="true"/>
-      <binding slot="$press.external" value="true"/>
+      <binding slot="$top.external" value="false"/>
+      <binding slot="$bottom.external" value="false"/>
+      <binding slot="$press.external" value="false"/>
 
       <!-- default values for bread slices -->
       <binding slot="$top.bread"
@@ -92,13 +92,13 @@
       <step name="press" task="Press"/>
       <applicable> $this.kind == Kind.ENUM.EGG </applicable>
 
-      <binding slot="$water.external" value="true"/>
-      <binding slot="$boil.external" value="true"/>
-      <binding slot="$slice.external" value="true"/>
-      <binding slot="$egg.external" value="true"/>
-      <binding slot="$salt.external" value="true"/>
-      <binding slot="$pickle.external" value="false"/>
-      <binding slot="$press.external" value="true"/>
+      <binding slot="$water.external" value="false"/>
+      <binding slot="$boil.external" value="false"/>
+      <binding slot="$slice.external" value="false"/>
+      <binding slot="$egg.external" value="false"/>
+      <binding slot="$salt.external" value="false"/>
+      <binding slot="$pickle.external" value="true"/>
+      <binding slot="$press.external" value="false"/>
 
       <binding slot="$boil.egg" value="EGG"/>
       <binding slot="$slice.egg" value="$boil.output"/>
