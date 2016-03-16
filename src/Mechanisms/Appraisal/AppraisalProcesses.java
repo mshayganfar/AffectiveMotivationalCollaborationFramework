@@ -10,7 +10,7 @@ public class AppraisalProcesses{
 	
 	public AppraisalProcesses(String[] args) {
 //		this.perception = new Perception();
-//		this.collaboration = new Collaboration(args);
+		this.collaboration = new Collaboration(args);
 		System.out.println("Constructore: appraisal works!");
 	}
 	

@@ -5,6 +5,7 @@ import java.util.List;
 
 import MentalState.Goal;
 import edu.wpi.cetask.Plan;
+import edu.wpi.cetask.TaskModel;
 import edu.wpi.cetask.Plan.Status;
 import edu.wpi.cetask.TaskClass.Input;
 import edu.wpi.disco.Agent;
@@ -20,6 +21,7 @@ public class Collaboration {
 	public enum AGENT{SELF, OTHER, BOTH, NONE};
 	
 	private Disco disco;
+	private TaskModel taskModel;
 	private Plan prevFocus;
 	
 	public Collaboration(String[] args) {
@@ -27,6 +29,10 @@ public class Collaboration {
 				  args.length > 0 && args[0].length() > 0 ? args[0] : null);
 		interaciton.start(true);
 		disco = interaciton.getDisco();
+		
+		taskModel = disco.load("/TaskModel/Sandwich.xml");
+		disco.load("/TaskModel/Events.xml");
+		
 		prevFocus = disco.getFocus();
 	}
 	
@@ -93,6 +99,10 @@ public class Collaboration {
 		Goal goal = new Goal(task); // Change the agent type by reading the value from Disco.
 		
 		return goal;
+	}
+	
+	public TaskModel getTaskModel() {
+		return this.taskModel;
 	}
 	
 	public Goal getTopLevelGoal() {

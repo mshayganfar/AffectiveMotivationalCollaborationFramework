@@ -57,6 +57,8 @@ public class AppraisalGoalManagement {
 		taskModel = disco.load("/TaskModel/Sandwich.xml");
 		disco.load("/TaskModel/Events.xml");
 		
+		AppraisalProcesses appraisals = new AppraisalProcesses(args);
+		
 		interaction.getConsole().source("test/events.txt");
 		
 //		interaction.getConsole().test("test/Console.test");

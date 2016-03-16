@@ -30,8 +30,8 @@ public class Relevance extends AppraisalProcesses {
 	private double getEventUtility(Goal eventGoal) { 
 		
 		int goalStatus           = getGoalStatus(eventGoal);
-		double beliefPersistence    = getBeliefPersistence(eventGoal);
-		int beliefSaliency       = getBeliefSaliency(eventGoal); //Distance between live nodes 
+		double beliefPersistence = getBeliefPersistence(eventGoal);
+		double beliefSaliency    = getBeliefSaliency(eventGoal); //Distance between live nodes 
 		double saliencyMagnitude = getSaliencyMagnitude(eventGoal);
 		
 		if (saliencyMagnitude > 0)
@@ -53,7 +53,7 @@ public class Relevance extends AppraisalProcesses {
 		
 		int repeatedBeliefsCount = 1;
 		int repeatedBeliefsSum = 0;
-		double repeatedBeliefsAverage = 0;
+		double repeatedBeliefsAverage = 1;
 		
 		for (Belief belief : eventGoal.getBeliefs()) {
 			if (belief.getTurn() == eventGoal.getTurn()) {
@@ -76,9 +76,27 @@ public class Relevance extends AppraisalProcesses {
 		return goal.getBeliefs().get(goal.getBeliefs().size()-1);
 	}
 	
-	private int getBeliefSaliency(Goal goal) {
+	private double getBeliefSaliency(Goal goal) {
+		
+		if (goal.getPlan().equals(collaboration.getDisco().getFocus()))
+			return 2.0;
+		
+		int firstGoalDistance  = getDistanceFromTop(goal.getPlan());
+		int secondGoalDistance = getDistanceFromTop(collaboration.getDisco().getFocus());
 		
 		return 0;
+	}
+	
+	private int getDistanceFromTop(Plan goalPlan) {
+		
+		int count = 0;
+		
+		while (!goalPlan.getType().getNamespace().toString().equals(collaboration.getTaskModel().toString())) { 
+			goalPlan = goalPlan.getParent();
+			count++;
+		}
+		
+		return count;
 	}
 	
 	private int getGoalStatus(Goal goal) {
