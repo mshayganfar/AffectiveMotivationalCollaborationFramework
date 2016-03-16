@@ -2,6 +2,7 @@ import Mechanisms.Appraisal.AppraisalProcesses;
 import Mechanisms.Appraisal.Relevance;
 import MentalState.Belief;
 import MentalState.Goal;
+import MetaInformation.Turns;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskClass;
 import edu.wpi.cetask.TaskModel;
@@ -14,25 +15,36 @@ public class AppraisalGoalManagement {
 	
 	private static Disco disco;
 	private static TaskModel taskModel;
+	private static Goal goal = null;
 	
-	public static TaskClass getGoal(Plan plan) {
+	private static Goal updateGoal(Plan plan) {
+
+		if (plan != null) {
+			while (!plan.getType().getNamespace().toString().equals(taskModel.toString()))
+				plan = plan.getParent();
+			
+			goal = new Goal(plan);
+//			goal = plan.getGoal().getType(); // Was TaskClass
+		}
+		else
+			System.out.println("Needs to be changed for the top level goal before execution!");
 		
-		while (!plan.getType().getNamespace().toString().equals(taskModel.toString()))
-			plan = plan.getParent();
-		
-		return plan.getGoal().getType();
+		return goal;
 	}
 	
 	public static void doAppraisal() {
 		
-		if (disco.getFocus() != null) {
-			System.out.println(getGoal(disco.getFocus()));
+		if (goal != null) {
+			System.out.println(goal.getLabel());
 		} else {
 			System.out.println("No goal in the stack!");
 		}
+		updateGoal(disco.getFocus());
 	}
 	
 	public static void main(String[] args) {
+		
+		Turns turns = new Turns();
 		
 		Interaction interaction = new Interaction(new Agent("agent"), new User("user"),
 				  args.length > 0 && args[0].length() > 0 ? args[0] : null);
@@ -42,12 +54,11 @@ public class AppraisalGoalManagement {
 
 		disco = interaction.getDisco();
 
-		System.out.println(disco);
-
 		taskModel = disco.load("/TaskModel/Sandwich.xml");
 		disco.load("/TaskModel/Events.xml");
 		
-//		interaction.getConsole().source("test/events.txt");
+		interaction.getConsole().source("test/events.txt");
+		
 //		interaction.getConsole().test("test/Console.test");
 //		interaction.getConsole().step("test/Console.test");
 		

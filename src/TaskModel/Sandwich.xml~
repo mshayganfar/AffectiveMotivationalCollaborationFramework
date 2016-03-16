@@ -23,7 +23,7 @@
 
       <binding slot="$pbj.who" value="false"/>
       <binding slot="$pbj.kind" value="Kind.ENUM.PBJ"/>
-      <binding slot="$egg.who" value="true"/>
+      <binding slot="$egg.who" value="false"/>
       <binding slot="$egg.kind" value="Kind.ENUM.EGG"/>
       <binding slot="$this.pbj" value="$pbj.bag"/>
       <binding slot="$this.egg" value="$egg.bag"/>

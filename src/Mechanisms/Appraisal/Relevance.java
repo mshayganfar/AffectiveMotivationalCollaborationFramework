@@ -30,7 +30,7 @@ public class Relevance extends AppraisalProcesses {
 	private double getEventUtility(Goal eventGoal) { 
 		
 		int goalStatus           = getGoalStatus(eventGoal);
-		int beliefPersistence    = getBeliefPersistence(getLastRelatedBelief(eventGoal));
+		double beliefPersistence    = getBeliefPersistence(eventGoal);
 		int beliefSaliency       = getBeliefSaliency(eventGoal); //Distance between live nodes 
 		double saliencyMagnitude = getSaliencyMagnitude(eventGoal);
 		
@@ -49,9 +49,26 @@ public class Relevance extends AppraisalProcesses {
 		return (emotionValence > 0) ? (1-emotionValence) : Math.abs(emotionValence); 
 	}
 	
-	private int getBeliefPersistence(Belief goalBelief) {
+	private double getBeliefPersistence(Goal eventGoal) {
 		
-		return goalBelief.getOccurrence();
+		int repeatedBeliefsCount = 1;
+		int repeatedBeliefsSum = 0;
+		double repeatedBeliefsAverage = 0;
+		
+		for (Belief belief : eventGoal.getBeliefs()) {
+			if (belief.getTurn() == eventGoal.getTurn()) {
+				if (belief.getOccurrenceCount() != 1) {
+					repeatedBeliefsCount++;
+					repeatedBeliefsSum += belief.getOccurrenceCount();
+				}
+			}
+		}
+		
+		repeatedBeliefsCount = (repeatedBeliefsCount > 1) ? (repeatedBeliefsCount-1) : repeatedBeliefsCount;
+		
+		repeatedBeliefsAverage = (double)repeatedBeliefsSum/repeatedBeliefsCount;
+		
+		return repeatedBeliefsAverage;
 	}
 	
 	private Belief getLastRelatedBelief(Goal goal) {

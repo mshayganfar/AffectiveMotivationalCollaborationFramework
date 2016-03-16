@@ -6,8 +6,11 @@
   <script init="true">
 
 		function appraise () {
-       document.write("appraisal test!");
-    }    
+       //Packages.Mechanisms.Appraisal.AppraisalProcesses.testAppraisal();
+       //println("From inside of appraise function!");
+       Packages.AppraisalGoalManagement.doAppraisal();
+       return "test appraisal";
+    }
   </script>
   
 </taskModel>
