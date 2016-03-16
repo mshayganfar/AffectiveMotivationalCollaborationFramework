@@ -84,6 +84,10 @@ public class Relevance extends AppraisalProcesses {
 		int firstGoalDistance  = getDistanceFromTop(goal.getPlan());
 		int secondGoalDistance = getDistanceFromTop(collaboration.getDisco().getFocus());
 		
+		Plan lcaPlan = getLowestCommonAncestor(goal.getPlan(), collaboration.getDisco().getFocus());
+		
+		int lcaGoalDistance  = getDistanceFromTop(lcaPlan);
+		
 		return 0;
 	}
 	
@@ -97,6 +101,13 @@ public class Relevance extends AppraisalProcesses {
 		}
 		
 		return count;
+	}
+	
+	private Plan getLowestCommonAncestor(Plan firstGoalPlan, Plan secondGoalPlan) {
+		
+		Plan lcaGoalPlan = null;
+		
+		return lcaGoalPlan;
 	}
 	
 	private int getGoalStatus(Goal goal) {
