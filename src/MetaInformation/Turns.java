@@ -16,7 +16,7 @@ public class Turns {
 		return ("turn:" + count);
 	}
 	
-	public int getCurrentTurn() {
+	public int getTurnNumber() {
 		return count;
 	}
 	

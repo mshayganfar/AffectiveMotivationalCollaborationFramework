@@ -3,6 +3,7 @@ package Mechanisms.Appraisal;
 import java.util.ArrayList;
 import java.util.List;
 
+import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.Collaboration.AGENT;
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import MentalState.Belief;
@@ -15,8 +16,8 @@ public class Relevance extends AppraisalProcesses {
 	
 	public enum RELEVANCE {RELEVANT, IRRELEVANT};
 	
-	public Relevance(String[] args) {
-		super(args);
+	public Relevance(Collaboration collaboration) {
+		super(collaboration);
 	}
 	
 	public RELEVANCE isEventRelevant(Goal eventGoal) {
@@ -30,18 +31,18 @@ public class Relevance extends AppraisalProcesses {
 			return RELEVANCE.IRRELEVANT;
 	}
 	
-	private double getEventUtility(Goal eventGoal) { 
+	public double getEventUtility(Goal eventGoal) { 
 		
 		int goalStatus           = getGoalStatus(eventGoal);
 		double beliefPersistence = getBeliefPersistence(eventGoal);
 		double beliefSaliency    = getBeliefSaliency(eventGoal); //Distance between live nodes 
-		double saliencyMagnitude = getSaliencyMagnitude(eventGoal);
-		
-		if (saliencyMagnitude > 0)
-			return goalStatus*beliefPersistence*Math.pow(beliefSaliency, saliencyMagnitude);
-		else if(saliencyMagnitude == 0)
-			return 0.0;
-		else 
+//		double saliencyMagnitude = getSaliencyMagnitude(eventGoal);
+//		
+//		if (saliencyMagnitude > 0)
+//			return goalStatus*beliefPersistence*Math.pow(beliefSaliency, saliencyMagnitude);
+//		else if(saliencyMagnitude == 0)
+//			return 0.0;
+//		else 
 			return -2.0;
 	}
 	
@@ -59,12 +60,12 @@ public class Relevance extends AppraisalProcesses {
 		double repeatedBeliefsAverage = 1;
 		
 		for (Belief belief : eventGoal.getBeliefs()) {
-			if (belief.getTurn() == eventGoal.getTurn()) {
+//			if (belief.getTurn() == eventGoal.getTurn()) {
 				if (belief.getOccurrenceCount() != 1) {
 					repeatedBeliefsCount++;
 					repeatedBeliefsSum += belief.getOccurrenceCount();
 				}
-			}
+//			}
 		}
 		
 		repeatedBeliefsCount = (repeatedBeliefsCount > 1) ? (repeatedBeliefsCount-1) : repeatedBeliefsCount;

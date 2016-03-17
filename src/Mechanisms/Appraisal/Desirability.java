@@ -1,13 +1,14 @@
 package Mechanisms.Appraisal;
 
+import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.Collaboration.*;
 import MentalState.*;
 import edu.wpi.cetask.Plan;
 
 public class Desirability extends AppraisalProcesses{
 	
-	public Desirability(String[] args) {
-		super(args);
+	public Desirability(Collaboration collaboration) {
+		super(collaboration);
 		// TODO Auto-generated constructor stub
 	}
 	public enum DESIRABILITY {HIGH_DESIRABLE, DESIRABLE, NEUTRAL, HIGH_UNDESIRABLE, UNDESIRABLE};

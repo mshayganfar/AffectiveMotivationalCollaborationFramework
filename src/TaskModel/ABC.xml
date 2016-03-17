@@ -6,26 +6,50 @@
     <subtasks id="recipeA">
       <step name="step1" task ="B"/>
       <step name="step2" task="C"/>
+      <step name="step3" task="D"/>
     </subtasks>
   </task>
 
   <task id="B">
     <subtasks id="recipeB">
-      <step name="step1" task ="d"/>
-      <step name="step2" task="e"/>
+      <step name="step1" task ="e"/>
+      <step name="step2" task="f"/>
     </subtasks>
   </task>
 
   <task id="C">
     <subtasks id="recipeC">
-      <step name="step1" task ="f"/>
-      <step name="step2" task="g"/>
+      <step name="step1" task ="g"/>
+      <step name="step2" task="h"/>
     </subtasks>
   </task>
 
-  <task id="d"/>
+  <task id="D">
+    <subtasks id="recipeD">
+      <step name="step1" task ="i"/>
+      <step name="step2" task="j"/>
+    </subtasks>
+  </task>
+
+  <task id="f">
+    <subtasks id="recipeF">
+      <step name="step1" task ="k"/>
+    </subtasks>
+  </task>
+
+  <task id="j">
+    <subtasks id="recipeJ">
+      <step name="step1" task ="l"/>
+      <step name="step2" task ="m"/>
+    </subtasks>
+  </task>
+
   <task id="e"/>
-  <task id="f"/>
+  <task id="k"/>
   <task id="g"/>
+  <task id="h"/>
+  <task id="i"/>
+  <task id="l"/>
+  <task id="m"/>
   
 </taskModel>

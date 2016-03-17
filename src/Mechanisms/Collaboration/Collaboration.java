@@ -3,7 +3,9 @@ package Mechanisms.Collaboration;
 import java.util.ArrayList;
 import java.util.List;
 
+import Mechanisms.Mechanisms;
 import MentalState.Goal;
+import MetaInformation.Turns;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskModel;
 import edu.wpi.cetask.Plan.Status;
@@ -13,7 +15,7 @@ import edu.wpi.disco.Disco;
 import edu.wpi.disco.Interaction;
 import edu.wpi.disco.User;
 
-public class Collaboration {
+public class Collaboration extends Mechanisms{
 
 	public enum GOAL_STATUS{ACHIEVED, FAILED, PENDING, BLOCKED, INPROGRESS, INAPPLICABLE};
 	public enum FOCUS_TYPE{PRIMITIVE, NONPRIMITIVE};
@@ -25,15 +27,29 @@ public class Collaboration {
 	private Plan prevFocus;
 	
 	public Collaboration(String[] args) {
-		Interaction interaciton = new Interaction(new Agent("agent"), new User("user"),
-				  args.length > 0 && args[0].length() > 0 ? args[0] : null);
-		interaciton.start(true);
-		disco = interaciton.getDisco();
 		
-		taskModel = disco.load("/TaskModel/Sandwich.xml");
+		currentTurn = new Turns();
+
+		Interaction interaction = new Interaction(new Agent("agent"), new User("user"),
+				  args.length > 0 && args[0].length() > 0 ? args[0] : null);
+		interaction.getExternal().setEval(true);
+		interaction.start(true);
+		disco = interaction.getDisco();
+		
+		taskModel = disco.load("/TaskModel/ABC.xml");
 		disco.load("/TaskModel/Events.xml");
 		
 		prevFocus = disco.getFocus();
+		
+		this.collaboration = this;
+	}
+	
+	public Turns getCurrentTurn() {
+		return this.currentTurn;
+	}
+	
+	public void updateTurn(Turns turn) {
+		this.currentTurn = turn;
 	}
 	
 	public Collaboration(String strAgent, String strUser) {
@@ -93,10 +109,10 @@ public class Collaboration {
 	}
 	
 	public Goal getFocusedGoal() {
-		Plan task       = disco.getFocus();
-		String taskID   = task.getType()+"@"+Integer.toHexString(System.identityHashCode(task));
+		Plan plan       = disco.getFocus();
+		String taskID   = plan.getType()+"@"+Integer.toHexString(System.identityHashCode(plan));
 		
-		Goal goal = new Goal(task); // Change the agent type by reading the value from Disco.
+		Goal goal = new Goal(plan); // Change the agent type by reading the value from Disco.
 		
 		return goal;
 	}

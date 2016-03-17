@@ -1,12 +1,13 @@
 package Mechanisms.Appraisal;
 
+import Mechanisms.Collaboration.Collaboration;
 import MentalState.Goal;
 import edu.wpi.disco.Disco;
 
 public class Expectedness extends AppraisalProcesses{
 	
-	public Expectedness(String[] args) {
-		super(args);
+	public Expectedness(Collaboration collaboration) {
+		super(collaboration);
 		// TODO Auto-generated constructor stub
 	}
 

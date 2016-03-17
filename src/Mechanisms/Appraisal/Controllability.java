@@ -4,14 +4,14 @@ import java.util.List;
 
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskClass.Input;
-
+import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.Collaboration.AGENT;
 import MentalState.Goal;
 
 public class Controllability extends AppraisalProcesses{
 
-	public Controllability(String[] args) {
-		super(args);
+	public Controllability(Collaboration collaboration) {
+		super(collaboration);
 		// TODO Auto-generated constructor stub
 	}
 

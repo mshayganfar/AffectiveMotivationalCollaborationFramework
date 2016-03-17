@@ -40,7 +40,7 @@
   <task id="j">
     <subtasks id="recipeJ">
       <step name="step1" task ="l"/>
-      <step name="step2" task ="m"/>
+      <step name="step1" task ="m"/>
     </subtasks>
   </task>
 

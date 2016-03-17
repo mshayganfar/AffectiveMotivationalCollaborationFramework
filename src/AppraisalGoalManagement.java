@@ -1,7 +1,9 @@
 import Mechanisms.Appraisal.AppraisalProcesses;
 import Mechanisms.Appraisal.Relevance;
+import Mechanisms.Collaboration.Collaboration;
 import MentalState.Belief;
 import MentalState.Goal;
+import MentalState.MentalState;
 import MetaInformation.Turns;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskClass;
@@ -44,22 +46,38 @@ public class AppraisalGoalManagement {
 	
 	public static void main(String[] args) {
 		
-		Turns turns = new Turns();
+//		Turns turn = new Turns();
 		
-		Interaction interaction = new Interaction(new Agent("agent"), new User("user"),
-				  args.length > 0 && args[0].length() > 0 ? args[0] : null);
-
-		interaction.getExternal().setEval(true);
-		interaction.start(true);
-
-		disco = interaction.getDisco();
-
-		taskModel = disco.load("/TaskModel/Sandwich.xml");
-		disco.load("/TaskModel/Events.xml");
+//		Interaction interaction = new Interaction(new Agent("agent"), new User("user"),
+//				  args.length > 0 && args[0].length() > 0 ? args[0] : null);
+//
+//		interaction.getExternal().setEval(true);
+//		interaction.start(true);
+//
+//		disco = interaction.getDisco();
+//
+//		taskModel = disco.load("/TaskModel/Sandwich.xml");
+//		disco.load("/TaskModel/Events.xml");
 		
-		AppraisalProcesses appraisals = new AppraisalProcesses(args);
+		Collaboration collaboration = new Collaboration(args);
 		
-		interaction.getConsole().source("test/events.txt");
+		Relevance relevance = new Relevance(collaboration);
+		
+		MentalState mentalStates = new MentalState(collaboration);
+		
+		Goal eventGoal = new Goal(relevance.getCollaboration().getDisco().getFocus());
+		System.out.println(eventGoal.getLabel());
+		Belief belief1 = new Belief(eventGoal);
+		Belief belief2 = new Belief(eventGoal);
+		Belief belief3 = new Belief(eventGoal);
+		
+		relevance.getEventUtility(eventGoal);
+		
+//		interaction.getConsole().source("test/events.txt");
+		
+		
+		
+		
 		
 //		interaction.getConsole().test("test/Console.test");
 //		interaction.getConsole().step("test/Console.test");
