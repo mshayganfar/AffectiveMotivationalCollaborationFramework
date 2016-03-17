@@ -1,11 +1,14 @@
 package Mechanisms.Appraisal;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import Mechanisms.Collaboration.Collaboration.AGENT;
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import MentalState.Belief;
 import MentalState.Goal;
+import MetaInformation.GoalTree;
+import MetaInformation.Node;
 import edu.wpi.cetask.Plan;
 
 public class Relevance extends AppraisalProcesses {
@@ -88,7 +91,9 @@ public class Relevance extends AppraisalProcesses {
 		
 		int lcaGoalDistance  = getDistanceFromTop(lcaPlan);
 		
-		return 0;
+		double distance = firstGoalDistance + secondGoalDistance - 2*lcaGoalDistance;
+		
+		return (double)2.0/distance;
 	}
 	
 	private int getDistanceFromTop(Plan goalPlan) {
@@ -107,7 +112,67 @@ public class Relevance extends AppraisalProcesses {
 		
 		Plan lcaGoalPlan = null;
 		
+		GoalTree goalTree = new GoalTree(collaboration.getDisco());
+		
+		ArrayList<Node> treeNodes = goalTree.createTree();
+		
+		ArrayList<Node> leveledUpNodes = levelUpNodes(treeNodes, firstGoalPlan, secondGoalPlan);
+		
+		if (leveledUpNodes != null) {
+			lcaGoalPlan = goUpToCommonAncestor(treeNodes, leveledUpNodes);
+		}
+		
 		return lcaGoalPlan;
+	}
+	
+	private Plan goUpToCommonAncestor(ArrayList<Node> treeNodes, ArrayList<Node> leveledUpNodes) {
+		
+		Plan firstPlanAncestor, secondPlanAncestor;
+		
+		firstPlanAncestor  = leveledUpNodes.get(0).getNodeGoalPlan();
+		secondPlanAncestor = leveledUpNodes.get(1).getNodeGoalPlan();
+		
+		while (!firstPlanAncestor.equals(secondPlanAncestor)) {
+			firstPlanAncestor  = getParentNode(treeNodes, leveledUpNodes.get(0));
+			secondPlanAncestor = getParentNode(treeNodes, leveledUpNodes.get(1));
+			if ((firstPlanAncestor == null) || (secondPlanAncestor == null)) {
+				return null;
+			}
+		}
+		
+		return firstPlanAncestor;
+	}
+	
+	private Plan getParentNode(ArrayList<Node> treeNodes, Node targetNode) {
+		
+		for(int i = treeNodes.size()-1 ; i >= 0 ; i--) {
+			if (treeNodes.get(i).equals(targetNode)) {
+				for(int j = i-1 ; j >= 0 ; j--) {
+					if (treeNodes.get(j).getNodeDepthValue() == targetNode.getNodeDepthValue()-1) {
+						return treeNodes.get(j).getNodeGoalPlan();
+					}
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	private ArrayList<Node> levelUpNodes(ArrayList<Node> treeNodes, Plan firstGoalPlan, Plan secondGoalPlan) {
+		
+		ArrayList<Node> twoLeveledNodes = new ArrayList<Node>();
+		
+		for (Node node : treeNodes) {
+			if(node.getNodeGoalPlan().equals(firstGoalPlan))
+				twoLeveledNodes.add(node);
+			if(node.getNodeGoalPlan().equals(secondGoalPlan))
+				twoLeveledNodes.add(node);
+		}
+		
+		if (twoLeveledNodes.size() == 2)
+			return twoLeveledNodes;
+		else
+			return null;
 	}
 	
 	private int getGoalStatus(Goal goal) {
