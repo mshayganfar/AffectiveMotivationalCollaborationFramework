@@ -17,6 +17,10 @@ public class Belief {
 		return this.goal;
 	}
 	
+	public String getLabel() {
+		return this.label;
+	}
+	
 	public int getOccurrenceCount() {
 		
 		int beliefCount = 0;

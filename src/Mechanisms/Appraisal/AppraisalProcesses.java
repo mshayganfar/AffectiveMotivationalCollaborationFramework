@@ -7,11 +7,11 @@ import Mechanisms.Perception.Perception;
 public class AppraisalProcesses extends Mechanisms {
 
 	protected Perception perception;
-	protected Collaboration collaboration;
+//	protected Collaboration collaboration;
 	
-	public AppraisalProcesses(Collaboration collaboration) {
+	public AppraisalProcesses() {
 //		this.perception = new Perception();
-		this.collaboration = collaboration;
+//		this.collaboration = collaboration;
 		System.out.println("Constructor: appraisal works!");
 	}
 	

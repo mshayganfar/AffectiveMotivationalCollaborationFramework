@@ -27,7 +27,7 @@ public class MentalState {
 	}
 	
 	public MentalState(Collaboration collaboraiton) {
-		this.currentTurn = collaboraiton.getCurrentTurn();
+//		this.currentTurn = collaboraiton.getCurrentTurn();
 	}
 	
 	public void addGoal(Goal goal) {

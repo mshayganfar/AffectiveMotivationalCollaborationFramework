@@ -10,14 +10,17 @@ import MentalState.Belief;
 import MentalState.Goal;
 import MetaInformation.GoalTree;
 import MetaInformation.Node;
+import MetaInformation.Turns;
 import edu.wpi.cetask.Plan;
 
 public class Relevance extends AppraisalProcesses {
 	
 	public enum RELEVANCE {RELEVANT, IRRELEVANT};
 	
+	private Collaboration collaboration;
+	
 	public Relevance(Collaboration collaboration) {
-		super(collaboration);
+		this.collaboration = collaboration;
 	}
 	
 	public RELEVANCE isEventRelevant(Goal eventGoal) {
@@ -59,9 +62,12 @@ public class Relevance extends AppraisalProcesses {
 		int repeatedBeliefsSum = 0;
 		double repeatedBeliefsAverage = 1;
 		
+		List<String> uniqueBeliefs = new ArrayList<String>();
+		
 		for (Belief belief : eventGoal.getBeliefs()) {
 //			if (belief.getTurn() == eventGoal.getTurn()) {
-				if (belief.getOccurrenceCount() != 1) {
+				if ((belief.getOccurrenceCount() > 1) && (!uniqueBeliefs.contains(belief.getLabel()))) {
+					uniqueBeliefs.add(belief.getLabel());
 					repeatedBeliefsCount++;
 					repeatedBeliefsSum += belief.getOccurrenceCount();
 				}
@@ -72,7 +78,7 @@ public class Relevance extends AppraisalProcesses {
 		
 		repeatedBeliefsAverage = (double)repeatedBeliefsSum/repeatedBeliefsCount;
 		
-		return repeatedBeliefsAverage;
+		return (repeatedBeliefsAverage == 0) ? 1 : repeatedBeliefsAverage;
 	}
 	
 	private Belief getLastRelatedBelief(Goal goal) {

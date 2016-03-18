@@ -10,8 +10,7 @@ import MentalState.Goal;
 
 public class Controllability extends AppraisalProcesses{
 
-	public Controllability(Collaboration collaboration) {
-		super(collaboration);
+	public Controllability() {
 		// TODO Auto-generated constructor stub
 	}
 

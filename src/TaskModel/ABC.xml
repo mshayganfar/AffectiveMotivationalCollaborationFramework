@@ -37,10 +37,17 @@
     </subtasks>
   </task>
 
-  <task id="j">
-    <subtasks id="recipeJ">
+  <task id="i">
+    <subtasks id="recipeI">
       <step name="step1" task ="l"/>
       <step name="step2" task ="m"/>
+    </subtasks>
+  </task>
+
+  <task id="j">
+    <subtasks id="recipeJ">
+      <step name="step1" task ="n"/>
+      <step name="step2" task ="o"/>
     </subtasks>
   </task>
 
@@ -48,8 +55,9 @@
   <task id="k"/>
   <task id="g"/>
   <task id="h"/>
-  <task id="i"/>
   <task id="l"/>
   <task id="m"/>
+  <task id="n"/>
+  <task id="o"/>
   
 </taskModel>

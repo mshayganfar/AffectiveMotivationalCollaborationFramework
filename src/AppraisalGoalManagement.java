@@ -46,7 +46,7 @@ public class AppraisalGoalManagement {
 	
 	public static void main(String[] args) {
 		
-//		Turns turn = new Turns();
+//		Turns turn = Turns.getInstance();
 		
 //		Interaction interaction = new Interaction(new Agent("agent"), new User("user"),
 //				  args.length > 0 && args[0].length() > 0 ? args[0] : null);
@@ -63,10 +63,11 @@ public class AppraisalGoalManagement {
 		
 		Relevance relevance = new Relevance(collaboration);
 		
-		MentalState mentalStates = new MentalState(collaboration);
+		collaboration.interaction.getConsole().source("test/events2.txt");
 		
-		Goal eventGoal = new Goal(relevance.getCollaboration().getDisco().getFocus());
+		Goal eventGoal = new Goal(collaboration.getDisco().getFocus());
 		System.out.println(eventGoal.getLabel());
+		System.out.println(eventGoal.getPlan().getLive().get(0).getGoal());
 		Belief belief1 = new Belief(eventGoal);
 		Belief belief2 = new Belief(eventGoal);
 		Belief belief3 = new Belief(eventGoal);

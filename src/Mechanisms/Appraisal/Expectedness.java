@@ -6,8 +6,7 @@ import edu.wpi.disco.Disco;
 
 public class Expectedness extends AppraisalProcesses{
 	
-	public Expectedness(Collaboration collaboration) {
-		super(collaboration);
+	public Expectedness() {
 		// TODO Auto-generated constructor stub
 	}
 
