@@ -107,7 +107,10 @@ public class Relevance extends AppraisalProcesses {
 		
 		int count = 0;
 		
-		while (!goalPlan.getType().getNamespace().toString().equals(collaboration.getTaskModel().toString())) { 
+		System.out.println(goalPlan.toString());
+		System.out.println(collaboration.getDisco().getTop(goalPlan).toString());
+		
+		while (!goalPlan.equals(collaboration.getDisco().getTop(goalPlan))) { 
 			goalPlan = goalPlan.getParent();
 			count++;
 		}

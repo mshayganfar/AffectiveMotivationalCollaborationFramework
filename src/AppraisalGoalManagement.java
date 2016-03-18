@@ -65,9 +65,10 @@ public class AppraisalGoalManagement {
 		
 		collaboration.interaction.getConsole().source("test/events2.txt");
 		
-		Goal eventGoal = new Goal(collaboration.getDisco().getFocus());
+//		Goal eventGoal = new Goal(collaboration.getDisco().getFocus());
+		Goal eventGoal = new Goal(collaboration.getDisco().getFocus().getLive().get(0));
 		System.out.println(eventGoal.getLabel());
-		System.out.println(eventGoal.getPlan().getLive().get(0).getGoal());
+//		System.out.println(eventGoal.getPlan().getLive().get(0).getGoal());
 		Belief belief1 = new Belief(eventGoal);
 		Belief belief2 = new Belief(eventGoal);
 		Belief belief3 = new Belief(eventGoal);
