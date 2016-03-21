@@ -33,7 +33,6 @@ public class GoalTree {
 		}
 		
 		preorderTree.add(node);
-		System.out.println(node.getNodeGoalPlan().getType().toString());
 		
 		for (int i = 0 ; i < node.getNodeGoalPlan().getChildren().size() ; i++) {
 			

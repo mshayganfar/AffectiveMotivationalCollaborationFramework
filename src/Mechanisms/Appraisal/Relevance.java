@@ -39,13 +39,13 @@ public class Relevance extends AppraisalProcesses {
 		int goalStatus           = getGoalStatus(eventGoal);
 		double beliefPersistence = getBeliefPersistence(eventGoal);
 		double beliefSaliency    = getBeliefSaliency(eventGoal); //Distance between live nodes 
-//		double saliencyMagnitude = getSaliencyMagnitude(eventGoal);
-//		
-//		if (saliencyMagnitude > 0)
-//			return goalStatus*beliefPersistence*Math.pow(beliefSaliency, saliencyMagnitude);
-//		else if(saliencyMagnitude == 0)
-//			return 0.0;
-//		else 
+		double saliencyMagnitude = getSaliencyMagnitude(eventGoal);
+		
+		if (saliencyMagnitude > 0)
+			return goalStatus*beliefPersistence*Math.pow(beliefSaliency, saliencyMagnitude);
+		else if(saliencyMagnitude == 0)
+			return 0.0;
+		else 
 			return -2.0;
 	}
 	
@@ -106,9 +106,6 @@ public class Relevance extends AppraisalProcesses {
 	private int getDistanceFromTop(Plan goalPlan) {
 		
 		int count = 0;
-		
-//		System.out.println(goalPlan.toString());
-//		System.out.println(collaboration.getDisco().getTop(goalPlan).toString());
 		
 		while (!goalPlan.equals(collaboration.getDisco().getTop(goalPlan))) { 
 			goalPlan = goalPlan.getParent();
@@ -239,22 +236,24 @@ public class Relevance extends AppraisalProcesses {
 		int n = preconditionKnownValue + postconditionKnownValue + predecessorsGoalsKnownValue + contributingGoalspredecessorsKnownValue;
 		int d = preconditionAllValue + postconditionAllValue + predecessorsGoalsAllValue + contributingGoalspredecessorsAllValue;
 		
-		int urgency    = getMotiveUrgency(goal);
-		int importance = getMotiveImportance(goal);
+		double urgency    = getMotiveUrgency(goal);
+		double importance = getMotiveImportance(goal);
 		
-		return (((float)n/d) + urgency + importance);
+		return (((double)n/d) + urgency + importance);
 	}
 	
-	private int getMotiveUrgency(Goal goal) {
+	private double getMotiveUrgency(Goal goal) {
 		
-		int urgencySuccessorValue  = 0;
-		int urgencyMitigationValue = 0;
+		double urgencySuccessorValue  = 0;
+		double urgencyMitigationValue = 0;
 		
 		List<Plan> successors = goal.getPlan().getSuccessors();
 		
 		for (Plan successor : successors) {
 			if (collaboration.getResponsibleAgent(goal).equals(AGENT.OTHER))
 				urgencySuccessorValue++;
+			else if (collaboration.getResponsibleAgent(goal).equals(AGENT.BOTH))
+				urgencySuccessorValue += 0.5;
 		}
 		
 		urgencyMitigationValue = (isAcknowledgementMotive(goal)) ? 1 : 0;
@@ -262,11 +261,19 @@ public class Relevance extends AppraisalProcesses {
 		return (urgencySuccessorValue + urgencyMitigationValue);
 	}
 	
-	private int getMotiveImportance(Goal goal) {
+	private double getMotiveImportance(Goal goal) {
 		
 		// I need non-failed alternative recipes for a failed task.
-		//if (goal.getPlan().getGoal().getDecompositions())
-		return 0;
+		// I might need to check whether the previous shared goal is failed/blocked, etc.!
+		Plan plan = goal.getPlan();
+		
+		if (plan.isPrimitive())
+			plan = goal.getPlan().getParent();
+		
+		if (plan.getDecompositions().size() > 0)
+			return 1.0;
+		else
+			return 0.0;
 	}
 	
 	private boolean isAcknowledgementMotive(Goal goal) {

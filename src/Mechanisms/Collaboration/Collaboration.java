@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Mechanisms.Mechanisms;
+import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import MentalState.Goal;
 import MetaInformation.Turns;
 import edu.wpi.cetask.Plan;
@@ -25,6 +26,8 @@ public class Collaboration extends Mechanisms{
 	private Disco disco;
 	private TaskModel taskModel;
 	private Plan prevFocus;
+	
+	private boolean collaborationStatus = true;
 	
 	public Interaction interaction;
 	
@@ -205,12 +208,36 @@ public class Collaboration extends Mechanisms{
 		return goal.getPlan().getChildren();
 	}
 	
-	public void updateCollaboraitonState() {
+	public void updatePreviousFocus() {
 		prevFocus = disco.getFocus();
 	}
 	
+	public Plan getPreviousFocus() {
+		return this.prevFocus;
+	}
+	
+	private boolean getGoalOverallStatus(Plan goal) {
+		
+		GOAL_STATUS goalStatus = collaboration.getGoalStatus(goal);
+		
+		if (goalStatus.equals(GOAL_STATUS.ACHIEVED) || 
+			goalStatus.equals(GOAL_STATUS.PENDING) || 
+			goalStatus.equals(GOAL_STATUS.INPROGRESS))
+			return true;
+		else // FAILED, BLOCKED, INAPPLICABLE 
+			return false;
+	}
+	
+	public void updateCollaboraitonStatus() {
+		collaborationStatus = getGoalOverallStatus(prevFocus);
+	}
+	
 	public Boolean getPostConditionStatus(Plan plan) {
-		return plan.getType().getPostcondition().evalCondition(plan.getGoal());
+		
+		if (plan.getType().getPostcondition() != null)
+			return plan.getType().getPostcondition().evalCondition(plan.getGoal());
+		else
+			return null;
 	}
 	
 	public Boolean getPreConditionStatus(Plan plan) {

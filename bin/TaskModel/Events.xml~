@@ -9,7 +9,11 @@
        //Packages.Mechanisms.Appraisal.AppraisalProcesses.testAppraisal();
        //println("From inside of appraise function!");
        Packages.AppraisalGoalManagement.doAppraisal();
-       return "test appraisal";
+       //return "test appraisal";
+    }
+
+		function updatePreviousCollaborationGoal () {
+       Packages.AppraisalGoalManagement.updateCollaborationStatus();
     }
   </script>
   

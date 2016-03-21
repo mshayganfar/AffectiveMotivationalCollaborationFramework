@@ -18,6 +18,7 @@ public class AppraisalGoalManagement {
 	private static Disco disco;
 	private static TaskModel taskModel;
 	private static Goal goal = null;
+	private static Collaboration collaboration;
 	
 	private static Goal updateGoal(Plan plan) {
 
@@ -33,6 +34,13 @@ public class AppraisalGoalManagement {
 		
 		return goal;
 	}
+
+//	public static void updateCollaborationStatus() {
+//		
+//		collaboration.updateCollaboraitonStatus();
+//		collaboration.updatePreviousFocus();
+//		System.out.println("Previous Focus: " + collaboration.getPreviousFocus().getType());
+//	}
 	
 	public static void doAppraisal() {
 		
@@ -48,37 +56,23 @@ public class AppraisalGoalManagement {
 		
 //		Turns turn = Turns.getInstance();
 		
-//		Interaction interaction = new Interaction(new Agent("agent"), new User("user"),
-//				  args.length > 0 && args[0].length() > 0 ? args[0] : null);
-//
-//		interaction.getExternal().setEval(true);
-//		interaction.start(true);
-//
-//		disco = interaction.getDisco();
-//
-//		taskModel = disco.load("/TaskModel/Sandwich.xml");
-//		disco.load("/TaskModel/Events.xml");
-		
-		Collaboration collaboration = new Collaboration(args);
+		collaboration = new Collaboration(args);
 		
 		Relevance relevance = new Relevance(collaboration);
 		
-		collaboration.interaction.getConsole().source("test/events2.txt");
+//		collaboration.interaction.getConsole().source("test/events2.txt");
 		
 //		Goal eventGoal = new Goal(collaboration.getDisco().getFocus());
+		
 		Goal eventGoal = new Goal(collaboration.getDisco().getFocus().getLive().get(0));
-//		System.out.println(eventGoal.getLabel());
-//		System.out.println(eventGoal.getPlan().getLive().get(0).getGoal());
+
 		Belief belief1 = new Belief(eventGoal);
 		Belief belief2 = new Belief(eventGoal);
 		Belief belief3 = new Belief(eventGoal);
 		
-		relevance.getEventUtility(eventGoal);
+		System.out.println(relevance.getEventUtility(eventGoal));
 		
-//		interaction.getConsole().source("test/events.txt");
-		
-		
-		
+
 		
 		
 //		interaction.getConsole().test("test/Console.test");

@@ -11,6 +11,10 @@
        Packages.AppraisalGoalManagement.doAppraisal();
        //return "test appraisal";
     }
+
+		function updatePreviousCollaborationStatus () {
+       Packages.AppraisalGoalManagement.updateCollaborationStatus();
+    }
   </script>
   
 </taskModel>

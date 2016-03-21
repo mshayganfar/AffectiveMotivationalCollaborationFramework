@@ -1,5 +1,7 @@
 task PreparePicnic
 eval appraise()
+task PrepareSandwich
+eval appraise()
 execute Spread
 eval appraise()
 execute Spread
