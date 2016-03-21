@@ -94,9 +94,9 @@ public class Relevance extends AppraisalProcesses {
 		int firstGoalDistance  = getDistanceFromTop(goal.getPlan());
 		int secondGoalDistance = getDistanceFromTop(collaboration.getDisco().getFocus());
 		
-		Plan lcaPlan = getLowestCommonAncestor(goal.getPlan(), collaboration.getDisco().getFocus());
+		Node lcaNode = getLowestCommonAncestor(goal.getPlan(), collaboration.getDisco().getFocus());
 		
-		int lcaGoalDistance  = getDistanceFromTop(lcaPlan);
+		int lcaGoalDistance  = getDistanceFromTop(lcaNode.getNodeGoalPlan());
 		
 		double distance = firstGoalDistance + secondGoalDistance - 2*lcaGoalDistance;
 		
@@ -107,8 +107,8 @@ public class Relevance extends AppraisalProcesses {
 		
 		int count = 0;
 		
-		System.out.println(goalPlan.toString());
-		System.out.println(collaboration.getDisco().getTop(goalPlan).toString());
+//		System.out.println(goalPlan.toString());
+//		System.out.println(collaboration.getDisco().getTop(goalPlan).toString());
 		
 		while (!goalPlan.equals(collaboration.getDisco().getTop(goalPlan))) { 
 			goalPlan = goalPlan.getParent();
@@ -118,9 +118,9 @@ public class Relevance extends AppraisalProcesses {
 		return count;
 	}
 	
-	private Plan getLowestCommonAncestor(Plan firstGoalPlan, Plan secondGoalPlan) {
+	private Node getLowestCommonAncestor(Plan firstGoalPlan, Plan secondGoalPlan) {
 		
-		Plan lcaGoalPlan = null;
+		Node lcaGoalNode = null;
 		
 		GoalTree goalTree = new GoalTree(collaboration.getDisco());
 		
@@ -129,37 +129,37 @@ public class Relevance extends AppraisalProcesses {
 		ArrayList<Node> leveledUpNodes = levelUpNodes(treeNodes, firstGoalPlan, secondGoalPlan);
 		
 		if (leveledUpNodes != null) {
-			lcaGoalPlan = goUpToCommonAncestor(treeNodes, leveledUpNodes);
+			lcaGoalNode = goUpToCommonAncestor(treeNodes, leveledUpNodes);
 		}
 		
-		return lcaGoalPlan;
+		return lcaGoalNode;
 	}
 	
-	private Plan goUpToCommonAncestor(ArrayList<Node> treeNodes, ArrayList<Node> leveledUpNodes) {
+	private Node goUpToCommonAncestor(ArrayList<Node> treeNodes, ArrayList<Node> leveledUpNodes) {
 		
-		Plan firstPlanAncestor, secondPlanAncestor;
+		Node firstNodeAncestor, secondNodeAncestor;
 		
-		firstPlanAncestor  = leveledUpNodes.get(0).getNodeGoalPlan();
-		secondPlanAncestor = leveledUpNodes.get(1).getNodeGoalPlan();
+		firstNodeAncestor  = leveledUpNodes.get(0);
+		secondNodeAncestor = leveledUpNodes.get(1);
 		
-		while (!firstPlanAncestor.equals(secondPlanAncestor)) {
-			firstPlanAncestor  = getParentNode(treeNodes, leveledUpNodes.get(0));
-			secondPlanAncestor = getParentNode(treeNodes, leveledUpNodes.get(1));
-			if ((firstPlanAncestor == null) || (secondPlanAncestor == null)) {
+		while (!firstNodeAncestor.getNodeTaskClass().equals(secondNodeAncestor.getNodeTaskClass())) {
+			firstNodeAncestor  = getParentNode(treeNodes, leveledUpNodes.get(0));
+			secondNodeAncestor = getParentNode(treeNodes, leveledUpNodes.get(1));
+			if ((firstNodeAncestor == null) || (secondNodeAncestor == null)) {
 				return null;
 			}
 		}
 		
-		return firstPlanAncestor;
+		return firstNodeAncestor;
 	}
 	
-	private Plan getParentNode(ArrayList<Node> treeNodes, Node targetNode) {
+	private Node getParentNode(ArrayList<Node> treeNodes, Node targetNode) {
 		
 		for(int i = treeNodes.size()-1 ; i >= 0 ; i--) {
 			if (treeNodes.get(i).equals(targetNode)) {
 				for(int j = i-1 ; j >= 0 ; j--) {
 					if (treeNodes.get(j).getNodeDepthValue() == targetNode.getNodeDepthValue()-1) {
-						return treeNodes.get(j).getNodeGoalPlan();
+						return treeNodes.get(j);
 					}
 				}
 			}
@@ -170,14 +170,25 @@ public class Relevance extends AppraisalProcesses {
 	
 	private ArrayList<Node> levelUpNodes(ArrayList<Node> treeNodes, Plan firstGoalPlan, Plan secondGoalPlan) {
 		
+		Node firstNode = null, secondNode = null;
+		
 		ArrayList<Node> twoLeveledNodes = new ArrayList<Node>();
 		
 		for (Node node : treeNodes) {
-			if(node.getNodeGoalPlan().equals(firstGoalPlan))
-				twoLeveledNodes.add(node);
-			if(node.getNodeGoalPlan().equals(secondGoalPlan))
-				twoLeveledNodes.add(node);
+			if(node.getNodeGoalPlan().getType().equals(firstGoalPlan.getType()))
+				firstNode = node;
+			if(node.getNodeGoalPlan().getType().equals(secondGoalPlan.getType()))
+				secondNode = node;
 		}
+		
+		while (firstNode.getNodeDepthValue() > secondNode.getNodeDepthValue())
+			firstNode = getParentNode(treeNodes, firstNode);
+		
+		while (firstNode.getNodeDepthValue() < secondNode.getNodeDepthValue())
+			secondNode = getParentNode(treeNodes, secondNode);
+		
+		twoLeveledNodes.add(firstNode);
+		twoLeveledNodes.add(secondNode);
 		
 		if (twoLeveledNodes.size() == 2)
 			return twoLeveledNodes;

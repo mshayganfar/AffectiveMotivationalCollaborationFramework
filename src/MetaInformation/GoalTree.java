@@ -7,14 +7,14 @@ import edu.wpi.disco.Disco;
 
 public class GoalTree {
 
-	private int depthCounter = 1;
-	
+	private int nodeCounter = 1;
 	private Node topLevelNode;
-
-	ArrayList<Node> preorderTree = new ArrayList<Node>();
+	private Disco disco;
+	private ArrayList<Node> preorderTree = new ArrayList<Node>();
 	
 	public GoalTree(Disco disco) {
 		
+		this.disco = disco;
 		topLevelNode = new Node(disco.getTop(disco.getFocus()), 0);
 	}
 	
@@ -28,16 +28,29 @@ public class GoalTree {
 	private void preorderTraverse(Node node) {
 		
 		if (node == null) {
-			depthCounter--;
+			nodeCounter--;
 			return;
 		}
 		
 		preorderTree.add(node);
+		System.out.println(node.getNodeGoalPlan().getType().toString());
 		
 		for (int i = 0 ; i < node.getNodeGoalPlan().getChildren().size() ; i++) {
 			
-			preorderTraverse(createNode(node.getNodeGoalPlan().getChildren().get(i), depthCounter++));
+			preorderTraverse(createNode(node.getNodeGoalPlan().getChildren().get(i), getDistanceFromTop(node.getNodeGoalPlan())));
 		}
+	}
+	
+	private int getDistanceFromTop(Plan goalPlan) {
+		
+		int count = 1;
+		
+		while (!goalPlan.equals(disco.getTop(goalPlan))) { 
+			goalPlan = goalPlan.getParent();
+			count++;
+		}
+		
+		return count;
 	}
 	
 	private Node createNode(Plan goalPlan, int planDepthValue) {
@@ -46,5 +59,9 @@ public class GoalTree {
 			return new Node(goalPlan, planDepthValue);
 		else
 			return null;
+	}
+	
+	public int getNodeNumbers() {
+		return this.nodeCounter;
 	}
 }
