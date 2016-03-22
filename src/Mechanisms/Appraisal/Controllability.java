@@ -6,14 +6,15 @@ import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskClass.Input;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.Collaboration.AGENT;
+import Mechanisms.Collaboration.Collaboration.FOCUS_TYPE;
 import MentalState.Goal;
 import MentalState.MentalState;
 import MentalState.Motive.MOTIVE_TYPE;
 
 public class Controllability extends AppraisalProcesses{
 
-	public Controllability() {
-		// TODO Auto-generated constructor stub
+	public Controllability(Collaboration collaboration) {
+		this.collaboration = collaboration;
 	}
 
 	public boolean isEventControllable(Goal eventGoal) {
@@ -34,9 +35,9 @@ public class Controllability extends AppraisalProcesses{
 	}
 	
 	// Agency: The capacity, condition, or state of acting or of exerting power.
-	private Double getAgencyValue(Goal eventGoal) {
+	public double getAgencyValue(Goal eventGoal) {
 		
-		if (eventGoal.getPlan().isPrimitive()) {
+		if (collaboration.getGoalType(eventGoal).equals(FOCUS_TYPE.PRIMITIVE)) {
 			if (eventGoal.getActiveMotive().getMotiveType().equals(MOTIVE_TYPE.INTERNAL))
 				return 1.0;
 			else
@@ -58,19 +59,26 @@ public class Controllability extends AppraisalProcesses{
 	}
 	
 	// Autonomy: The quality or state of being self-governing. Self-directing freedom or self-governing state.
-	private Double getAutonomyValue(Goal eventGoal) {
-		// Add predecessors beside the contributers.
-		double dblSelfCounter = 0;
+	public double getAutonomyValue(Goal eventGoal) {
+
+		double countSelfResponsible = 0;
 		
-//		Goal eventGoal = event.getEventRelatedGoal(mentalState); //Should be changed to recogniseGoal()
-		
-		List<Goal> taskContributersList = collaboration.getContributingGoals(eventGoal.getPlan());
-		
-		for (int i = 0; i < taskContributersList.size() ; i++)
-			if(collaboration.getResponsibleAgent(taskContributersList.get(i)).equals(AGENT.SELF))
-				dblSelfCounter++;
-		
-		return ((double)dblSelfCounter/taskContributersList.size());
+		if (collaboration.getGoalType(eventGoal).equals(FOCUS_TYPE.PRIMITIVE)) {
+			if (collaboration.getResponsibleAgent(eventGoal).equals(AGENT.SELF))
+				return 1.0;
+			else
+				return 0.0;
+		}
+		else {
+			for (Plan plan : eventGoal.getPlan().getChildren()) {
+				if (collaboration.getResponsibleAgent(plan).equals(AGENT.SELF))
+					countSelfResponsible++;
+				else if (collaboration.getResponsibleAgent(plan).equals(AGENT.BOTH))
+					countSelfResponsible += 0.5;
+			}
+			
+			return ((double)countSelfResponsible/((eventGoal.getPlan().getChildren().size() == 0) ? 1 : eventGoal.getPlan().getChildren().size()));
+		}
 	}
 	
 	private Double checkSucceededPredecessorsRatio(Goal eventGoal) {

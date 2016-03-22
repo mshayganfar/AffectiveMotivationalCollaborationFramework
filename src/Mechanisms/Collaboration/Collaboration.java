@@ -5,6 +5,7 @@ import java.util.List;
 
 import Mechanisms.Mechanisms;
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
+import Mechanisms.Mechanisms.AGENT;
 import MentalState.Goal;
 import MetaInformation.Turns;
 import edu.wpi.cetask.Plan;
@@ -179,12 +180,62 @@ public class Collaboration extends Mechanisms{
 	
 	public AGENT getResponsibleAgent(Goal goal) {
 		
-		if(!goal.getPlan().getGoal().isPrimitive())
-			return AGENT.BOTH;
-		else if (goal.getPlan().getGoal().getExternal())
-			return AGENT.SELF;
+		if (goal.getPlan().getGoal().getExternal() != null) {
+			if(!goal.getPlan().getGoal().isPrimitive()) {
+				
+				int countResponsibles = 0;
+				
+				for (Plan childPlan : goal.getPlan().getChildren()) {
+					if (childPlan.getGoal().getExternal())
+						countResponsibles++;
+					else if (childPlan.getGoal().getExternal() == false)
+						countResponsibles--;
+				}
+				
+				if (countResponsibles == goal.getPlan().getChildren().size())
+					return AGENT.OTHER;
+				else if (Math.abs(countResponsibles) == goal.getPlan().getChildren().size())
+					return AGENT.SELF;
+				else
+					return AGENT.BOTH;
+			}
+			else if (goal.getPlan().getGoal().getExternal())
+				return AGENT.OTHER;
+			else
+				return AGENT.SELF;
+		}
 		else
-			return AGENT.OTHER;
+			return AGENT.BOTH;
+	}
+
+	public AGENT getResponsibleAgent(Plan plan) {
+		
+		if (plan.getGoal().getExternal() != null) {
+			if(!plan.getGoal().isPrimitive()) {
+				
+				int countResponsibles = 0;
+				
+				for (Plan childPlan : plan.getChildren()) {
+					if (childPlan.getGoal().getExternal())
+						countResponsibles++;
+					else if (childPlan.getGoal().getExternal() == false)
+						countResponsibles--;
+				}
+				
+				if (countResponsibles == plan.getChildren().size())
+					return AGENT.OTHER;
+				else if (Math.abs(countResponsibles) == plan.getChildren().size())
+					return AGENT.SELF;
+				else
+					return AGENT.BOTH;
+			}
+			else if (plan.getGoal().getExternal())
+				return AGENT.OTHER;
+			else
+				return AGENT.SELF;
+		}
+		else
+			return AGENT.BOTH;
 	}
 	
 	public List<Input> getInputs(Goal goal) {

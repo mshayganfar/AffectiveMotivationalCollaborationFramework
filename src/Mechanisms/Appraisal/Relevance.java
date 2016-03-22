@@ -18,7 +18,7 @@ public class Relevance extends AppraisalProcesses {
 	
 	public enum RELEVANCE {RELEVANT, IRRELEVANT};
 	
-	private Collaboration collaboration;
+//	private Collaboration collaboration;
 	
 	public Relevance(Collaboration collaboration) {
 		this.collaboration = collaboration;
@@ -35,7 +35,7 @@ public class Relevance extends AppraisalProcesses {
 			return RELEVANCE.IRRELEVANT;
 	}
 	
-	public double getEventUtility(Goal eventGoal) { 
+	private double getEventUtility(Goal eventGoal) { 
 		
 		int goalStatus           = getGoalStatus(eventGoal);
 		double beliefPersistence = getBeliefPersistence(eventGoal);
@@ -46,8 +46,8 @@ public class Relevance extends AppraisalProcesses {
 			return goalStatus*beliefPersistence*Math.pow(beliefSaliency, saliencyMagnitude);
 		else if(saliencyMagnitude == 0)
 			return 0.0;
-		else 
-			return -2.0;
+
+		return -2.0; // Should never happen!
 	}
 	
 	private double getEmotionalThreshold() { 

@@ -46,6 +46,8 @@ public class Goal {
 	}
 	
 	public void addMotives(Motive motive) {
+		if (Motives.size() == 0)
+			this.setActiveMotive(motive);
 		Motives.add(motive);
 	}
 	

@@ -1,10 +1,12 @@
 import Mechanisms.Appraisal.AppraisalProcesses;
+import Mechanisms.Appraisal.Controllability;
 import Mechanisms.Appraisal.Relevance;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Perception.Perception;
 import MentalState.Belief;
 import MentalState.Goal;
 import MentalState.MentalState;
+import MentalState.Motive;
 import MetaInformation.Turns;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskClass;
@@ -60,6 +62,7 @@ public class AppraisalGoalManagement {
 		collaboration = new Collaboration(args);
 		
 		Relevance relevance = new Relevance(collaboration);
+		Controllability controllability = new Controllability(collaboration);
 		
 //		collaboration.interaction.getConsole().source("test/events2.txt");
 		
@@ -71,9 +74,13 @@ public class AppraisalGoalManagement {
 		Belief belief2 = new Belief(eventGoal);
 		Belief belief3 = new Belief(eventGoal);
 		
-		System.out.println(relevance.getEventUtility(eventGoal));
+		Motive motive = new Motive(eventGoal);
+		
+//		System.out.println(relevance.getEventUtility(eventGoal));
 		System.out.println(relevance.isEventRelevant(eventGoal));
 		
+		System.out.println(controllability.getAgencyValue(eventGoal));
+		System.out.println(controllability.getAutonomyValue(eventGoal));
 
 		
 		
