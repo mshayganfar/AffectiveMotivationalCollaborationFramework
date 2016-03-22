@@ -2,18 +2,24 @@ package Mechanisms.Perception;
 
 public class Perception{
 	
-	public enum EMOTION {ANGRY, WORRIED, HAPPY, NEUTRAL};
+	public static enum EMOTION {ANGRY, WORRIED, HAPPY, NEUTRAL};
 	
-	private double emotionValence;
+	private static Perception perception = new Perception();
 	
-	public Perception() {
+	private static double emotionValence;
+	
+	private Perception() {
 		emotionValence = 0.0;
 	}
 	
-	public double perceiveEmotion(EMOTION emotion, double intensity) {
+	public static Perception getInstance() {
+		return perception;
+	}
+	
+	public static double perceiveEmotion(EMOTION emotion, double intensity) {
 
 		return (emotion.equals(EMOTION.HAPPY)) ? intensity : (emotion.equals(EMOTION.NEUTRAL)) ? 0 : (-1)*intensity;
 	}
 	
-	public double getEmotionValence() { return this.emotionValence; }
+	public static double getEmotionValence() { return emotionValence; }
 }

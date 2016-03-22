@@ -1,6 +1,7 @@
 import Mechanisms.Appraisal.AppraisalProcesses;
 import Mechanisms.Appraisal.Relevance;
 import Mechanisms.Collaboration.Collaboration;
+import Mechanisms.Perception.Perception;
 import MentalState.Belief;
 import MentalState.Goal;
 import MentalState.MentalState;
@@ -71,6 +72,7 @@ public class AppraisalGoalManagement {
 		Belief belief3 = new Belief(eventGoal);
 		
 		System.out.println(relevance.getEventUtility(eventGoal));
+		System.out.println(relevance.isEventRelevant(eventGoal));
 		
 
 		

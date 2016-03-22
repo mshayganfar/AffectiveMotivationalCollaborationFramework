@@ -7,7 +7,7 @@ public class Belief {
 	private String label;
 	private Goal goal;
 	
-	public Belief(Goal goal) {
+	public Belief (Goal goal) {
 		this.goal  = goal;
 		this.label = goal.getPlan().getGoal().getType().toString();
 		this.goal.addBeliefs(this);

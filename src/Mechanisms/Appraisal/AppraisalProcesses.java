@@ -6,7 +6,6 @@ import Mechanisms.Perception.Perception;
 
 public class AppraisalProcesses extends Mechanisms {
 
-	protected Perception perception;
 //	protected Collaboration collaboration;
 	
 	public AppraisalProcesses() {

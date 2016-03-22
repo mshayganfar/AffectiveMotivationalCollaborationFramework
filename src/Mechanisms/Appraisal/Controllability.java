@@ -7,6 +7,8 @@ import edu.wpi.cetask.TaskClass.Input;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.Collaboration.AGENT;
 import MentalState.Goal;
+import MentalState.MentalState;
+import MentalState.Motive.MOTIVE_TYPE;
 
 public class Controllability extends AppraisalProcesses{
 
@@ -16,7 +18,7 @@ public class Controllability extends AppraisalProcesses{
 
 	public boolean isEventControllable(Goal eventGoal) {
 		
-		double dblAgency       = getAgencyValue();
+		double dblAgency       = getAgencyValue(eventGoal);
 		double dblAutonomy     = getAutonomyValue(eventGoal);
 		double dblPredecessors = checkSucceededPredecessorsRatio(eventGoal);
 		double dblInputs       = checkAvailableInputRatio(eventGoal);
@@ -32,9 +34,27 @@ public class Controllability extends AppraisalProcesses{
 	}
 	
 	// Agency: The capacity, condition, or state of acting or of exerting power.
-	private Double getAgencyValue() {
+	private Double getAgencyValue(Goal eventGoal) {
 		
-		return 0.0;
+		if (eventGoal.getPlan().isPrimitive()) {
+			if (eventGoal.getActiveMotive().getMotiveType().equals(MOTIVE_TYPE.INTERNAL))
+				return 1.0;
+			else
+				return 0.0;
+		}
+		else {
+			double motiveTypeSum = 0.0;
+			int countMotives = 0;
+			for (Plan plan : eventGoal.getPlan().getChildren()) {
+				for (Goal goal : MentalState.getInstance().getGoals())
+					if (goal.getPlan().getType().equals(plan.getType())) {
+						if (goal.getActiveMotive().getMotiveType().equals(MOTIVE_TYPE.INTERNAL))
+							motiveTypeSum++;
+						countMotives++;
+					}
+			}
+			return (double)motiveTypeSum/((countMotives == 0) ? 1 : countMotives);
+		}
 	}
 	
 	// Autonomy: The quality or state of being self-governing. Self-directing freedom or self-governing state.

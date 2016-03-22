@@ -1,6 +1,7 @@
 package Mechanisms;
 
 import Mechanisms.Collaboration.Collaboration;
+import Mechanisms.Perception.Perception;
 import MentalState.MentalState;
 import MetaInformation.Turns;
 
