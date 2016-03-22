@@ -82,6 +82,7 @@ public class AppraisalGoalManagement {
 		System.out.println(controllability.getAgencyValue(eventGoal));
 		System.out.println(controllability.getAutonomyValue(eventGoal));
 		System.out.println(controllability.checkSucceededPredecessorsRatio(eventGoal));
+		System.out.println(controllability.checkAvailableInputRatio(eventGoal));
 
 		
 		

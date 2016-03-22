@@ -1,11 +1,8 @@
 package Mechanisms.Appraisal;
 
-import java.util.List;
-
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskClass.Input;
 import Mechanisms.Collaboration.Collaboration;
-import Mechanisms.Collaboration.Collaboration.AGENT;
 import Mechanisms.Collaboration.Collaboration.FOCUS_TYPE;
 import MentalState.Goal;
 import MentalState.MentalState;
@@ -86,7 +83,6 @@ public class Controllability extends AppraisalProcesses{
 		double dblSucceededPredecessorCounter = 0.0;
 		
 		for (Plan plan : collaboration.getPredecessors(eventGoal)) {
-			System.out.println(plan.getType() + " and " + eventGoal.getPlan().getType());
 			if(collaboration.isPlanAchieved(plan)) // Check this with Chuck!
 				dblSucceededPredecessorCounter++;
 		}
@@ -94,24 +90,16 @@ public class Controllability extends AppraisalProcesses{
 		return (double)dblSucceededPredecessorCounter/((collaboration.getPredecessors(eventGoal).size() == 0) ? 1 : collaboration.getPredecessors(eventGoal).size());
 	}
 	
-	private Double checkAvailableInputRatio(Goal eventGoal) {
+	public Double checkAvailableInputRatio(Goal eventGoal) {
 		
 		double dblAvailableInputCounter = 0.0;
 		
-//		Goal eventGoal = event.getEventRelatedGoal(mentalState);
-		
-		List<Input> goalInputsList = collaboration.getInputs(eventGoal);
-		
-		if(goalInputsList.size() > 0) {
-			for (int i = 0; i < goalInputsList.size() ; i++) {
-				if (!goalInputsList.get(i).equals(null))
-					if(collaboration.isInputAvailable(eventGoal, goalInputsList.get(i)))
-						dblAvailableInputCounter++;
-			}
-			return ((double)dblAvailableInputCounter/goalInputsList.size());
+		for (Input input : collaboration.getInputs(eventGoal)) {
+			if (!input.equals(null))
+				if(collaboration.isInputAvailable(eventGoal, input))
+					dblAvailableInputCounter++;
 		}
-		else
-			return 1.0;
+		return ((double)dblAvailableInputCounter/((collaboration.getInputs(eventGoal).size() == 0) ? 1 : collaboration.getInputs(eventGoal).size()));
 		
 	}
 	
