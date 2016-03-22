@@ -81,24 +81,17 @@ public class Controllability extends AppraisalProcesses{
 		}
 	}
 	
-	private Double checkSucceededPredecessorsRatio(Goal eventGoal) {
+	public Double checkSucceededPredecessorsRatio(Goal eventGoal) {
 		
 		double dblSucceededPredecessorCounter = 0.0;
 		
-//		Goal eventGoal = event.getEventRelatedGoal(mentalState);
-		
-		List<Plan> predecessorGoalList = collaboration.getPredecessors(eventGoal);
-		
-		if(predecessorGoalList.size() > 0) {
-			for (int i = 0; i < predecessorGoalList.size() ; i++) {
-				if(collaboration.isPlanAchieved(predecessorGoalList.get(i)))
-					dblSucceededPredecessorCounter++;
-			}
-			
-			return (double)dblSucceededPredecessorCounter/predecessorGoalList.size();
+		for (Plan plan : collaboration.getPredecessors(eventGoal)) {
+			System.out.println(plan.getType() + " and " + eventGoal.getPlan().getType());
+			if(collaboration.isPlanAchieved(plan)) // Check this with Chuck!
+				dblSucceededPredecessorCounter++;
 		}
-		else
-			return dblSucceededPredecessorCounter;
+		
+		return (double)dblSucceededPredecessorCounter/((collaboration.getPredecessors(eventGoal).size() == 0) ? 1 : collaboration.getPredecessors(eventGoal).size());
 	}
 	
 	private Double checkAvailableInputRatio(Goal eventGoal) {
