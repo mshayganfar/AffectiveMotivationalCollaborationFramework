@@ -4,6 +4,7 @@ import Mechanisms.Appraisal.Desirability;
 import Mechanisms.Appraisal.Expectedness;
 import Mechanisms.Appraisal.Relevance;
 import Mechanisms.Collaboration.Collaboration;
+import Mechanisms.Collaboration.GoalManagement;
 import Mechanisms.Perception.Perception;
 import MentalState.Belief;
 import MentalState.Goal;
@@ -68,6 +69,8 @@ public class AppraisalGoalManagement {
 		Desirability desirability = new Desirability(collaboration);
 		Expectedness expectedness = new Expectedness(collaboration);
 		
+		GoalManagement goalManagement = new GoalManagement();
+		
 //		collaboration.interaction.getConsole().source("test/events2.txt");
 		
 //		Goal eventGoal = new Goal(collaboration.getDisco().getFocus());
@@ -80,7 +83,6 @@ public class AppraisalGoalManagement {
 		
 		Motive motive = new Motive(eventGoal);
 		
-//		System.out.println(relevance.getEventUtility(eventGoal));
 		System.out.println(relevance.isEventRelevant(eventGoal));
 		
 		System.out.println(controllability.isEventControllable(eventGoal));
