@@ -69,7 +69,7 @@ public class AppraisalGoalManagement {
 		Desirability desirability = new Desirability(collaboration);
 		Expectedness expectedness = new Expectedness(collaboration);
 		
-		GoalManagement goalManagement = new GoalManagement();
+		GoalManagement goalManagement = new GoalManagement(collaboration);
 		
 //		collaboration.interaction.getConsole().source("test/events2.txt");
 		

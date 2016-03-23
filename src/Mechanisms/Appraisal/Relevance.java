@@ -197,6 +197,7 @@ public class Relevance extends AppraisalProcesses {
 	private int getGoalStatus(Goal goal) {
 		
 		GOAL_STATUS goalStatus = collaboration.getGoalStatus(goal.getPlan());
+		
 		if (goalStatus.equals(GOAL_STATUS.ACHIEVED) || 
 			goalStatus.equals(GOAL_STATUS.PENDING) || 
 			goalStatus.equals(GOAL_STATUS.INPROGRESS))

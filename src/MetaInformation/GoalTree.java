@@ -2,6 +2,7 @@ package MetaInformation;
 
 import java.util.ArrayList;
 
+import MentalState.Goal;
 import edu.wpi.cetask.Plan;
 import edu.wpi.disco.Disco;
 
@@ -10,12 +11,13 @@ public class GoalTree {
 	private int nodeCounter = 1;
 	private Node topLevelNode;
 	private Disco disco;
+	
 	private ArrayList<Node> preorderTree = new ArrayList<Node>();
 	
 	public GoalTree(Disco disco) {
 		
 		this.disco = disco;
-		topLevelNode = new Node(disco.getTop(disco.getFocus()), 0);
+		topLevelNode = new Node(new Goal(disco.getTop(disco.getFocus())), 0);
 	}
 	
 	public ArrayList<Node> createTree() {
@@ -55,7 +57,7 @@ public class GoalTree {
 	private Node createNode(Plan goalPlan, int planDepthValue) {
 		
 		if (goalPlan != null)
-			return new Node(goalPlan, planDepthValue);
+			return new Node(new Goal(goalPlan), planDepthValue);
 		else
 			return null;
 	}

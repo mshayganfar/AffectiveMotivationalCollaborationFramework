@@ -15,13 +15,15 @@ public class Goal {
 	private Plan parentPlan;
 	private String label;
 	private int currentTurn;
+	private double effort;
 	private Motive activeMotive;
 	
 	public Goal (Plan plan) {
-		this.plan         = plan;
-		this.parentPlan   = plan.getParent();
-		this.label        = plan.getGoal().getType().toString();
-		this.currentTurn  = Turns.getInstance().getTurnNumber();
+		this.plan        = plan;
+		this.parentPlan  = plan.getParent();
+		this.label       = plan.getGoal().getType().toString();
+		this.currentTurn = Turns.getInstance().getTurnNumber();
+		this.effort      = 1.0;
 		MentalState.getInstance().addGoal(this);
 	}
 	
@@ -61,5 +63,13 @@ public class Goal {
 	
 	public Motive getActiveMotive() {
 		return this.activeMotive;
+	}
+	
+	public double getGoalEffort() {
+		return this.effort;
+	}
+	
+	public void setGoalEffort(double effort) {
+		this.effort = effort;
 	}
 }
