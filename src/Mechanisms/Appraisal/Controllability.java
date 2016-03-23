@@ -10,11 +10,13 @@ import MentalState.Motive.MOTIVE_TYPE;
 
 public class Controllability extends AppraisalProcesses{
 
+	public enum CONTROLLABILITY {CONTROLLABLE, UNCONTROLLABLE};
+	
 	public Controllability(Collaboration collaboration) {
 		this.collaboration = collaboration;
 	}
 
-	public boolean isEventControllable(Goal eventGoal) {
+	public CONTROLLABILITY isEventControllable(Goal eventGoal) {
 		
 		double dblAgency       = getAgencyValue(eventGoal);
 		double dblAutonomy     = getAutonomyValue(eventGoal);
@@ -26,9 +28,9 @@ public class Controllability extends AppraisalProcesses{
 						/(getAgencyWeight() + getAutonomyWeight() + getPredecessorRatioWeight() + getInputRatioWeight());
 		
 		if(utilityValue >= getHumanEmotionalThreshold())
-			return true;
+			return CONTROLLABILITY.CONTROLLABLE;
 		else
-			return false;
+			return CONTROLLABILITY.UNCONTROLLABLE;
 	}
 	
 	// Agency: The capacity, condition, or state of acting or of exerting power.

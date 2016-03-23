@@ -1,5 +1,7 @@
 import Mechanisms.Appraisal.AppraisalProcesses;
 import Mechanisms.Appraisal.Controllability;
+import Mechanisms.Appraisal.Desirability;
+import Mechanisms.Appraisal.Expectedness;
 import Mechanisms.Appraisal.Relevance;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Perception.Perception;
@@ -63,6 +65,8 @@ public class AppraisalGoalManagement {
 		
 		Relevance relevance = new Relevance(collaboration);
 		Controllability controllability = new Controllability(collaboration);
+		Desirability desirability = new Desirability(collaboration);
+		Expectedness expectedness = new Expectedness(collaboration);
 		
 //		collaboration.interaction.getConsole().source("test/events2.txt");
 		
@@ -79,11 +83,11 @@ public class AppraisalGoalManagement {
 //		System.out.println(relevance.getEventUtility(eventGoal));
 		System.out.println(relevance.isEventRelevant(eventGoal));
 		
-		System.out.println(controllability.getAgencyValue(eventGoal));
-		System.out.println(controllability.getAutonomyValue(eventGoal));
-		System.out.println(controllability.checkSucceededPredecessorsRatio(eventGoal));
-		System.out.println(controllability.checkAvailableInputRatio(eventGoal));
-
+		System.out.println(controllability.isEventControllable(eventGoal));
+		
+		System.out.println(desirability.isEventDesirable(eventGoal));
+		
+		System.out.println(expectedness.isEventExpected(eventGoal));
 		
 		
 //		interaction.getConsole().test("test/Console.test");

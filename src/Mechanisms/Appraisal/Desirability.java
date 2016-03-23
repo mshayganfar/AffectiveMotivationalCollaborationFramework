@@ -7,8 +7,8 @@ import edu.wpi.cetask.Plan;
 
 public class Desirability extends AppraisalProcesses{
 	
-	public Desirability() {
-		// TODO Auto-generated constructor stub
+	public Desirability(Collaboration collaboration) {
+		this.collaboration = collaboration;
 	}
 	public enum DESIRABILITY {HIGH_DESIRABLE, DESIRABLE, NEUTRAL, HIGH_UNDESIRABLE, UNDESIRABLE};
 	
