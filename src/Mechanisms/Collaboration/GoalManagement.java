@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Mechanisms.Appraisal.Desirability;
+import Mechanisms.Appraisal.Relevance;
 import MentalState.Goal;
 import MetaInformation.GoalTree;
 import MetaInformation.Node;
@@ -13,9 +15,13 @@ import edu.wpi.cetask.Plan;
 public class GoalManagement {
 	
 	private Collaboration collaboration;
+	private Relevance relevance;
+	private Desirability desirability;
 	
-	public GoalManagement(Collaboration collaboration) {
+	public GoalManagement(Collaboration collaboration, Relevance relevance, Desirability desirability) {
 		this.collaboration = collaboration;
+		this.relevance = relevance;
+		this.desirability = desirability;
 	}
 
 	public double computeCostValue(Goal eventGoal) {
@@ -30,7 +36,7 @@ public class GoalManagement {
 		
 		double base = ((goalPoximity * weights.get("proximity")) + (goalDifficulty * weights.get("difficulty")) + (((double)1/(goalSpecificity + 1)) * weights.get("specificity")));
 		
-		double exponent = getGammaValue(eventGoal);
+		double exponent = getGammaValue(eventGoal, 3, 2);
 		
 		costValue = Math.pow(base, exponent);
 		
@@ -57,12 +63,76 @@ public class GoalManagement {
 
 	private double getGoalSpecificity(Goal eventGoal) {
 	
-		return 0.0;
+		Integer goalDepth = getGoalDepth(eventGoal);
+		
+		if (goalDepth == null) System.out.println("Goal Management: Goal was not find in the tree!");
+		
+		int goalDegree = eventGoal.getPlan().getChildren().size();
+		
+		return ((double)goalDepth/(goalDegree+1));
 	}
 	
-	private double getGammaValue(Goal eventGoal) {
+	private Integer getGoalDepth(Goal eventGoal) {
 		
-		return 0.0;
+		GoalTree goalTree = new GoalTree(collaboration.getDisco());
+		
+		ArrayList<Node> treeNodes = goalTree.createTree();
+		
+		for (Node node : treeNodes) {
+			if (node.getNodeGoalPlan().getType().equals(eventGoal.getPlan().getType()))
+				return node.getNodeDepthValue();
+		}
+		
+		return null;
+	}
+	
+	private double getGammaValue(Goal eventGoal, double C, double alpha) {
+		
+		double relevance    = getRelevanceValue(eventGoal);
+		double desirability = getDesirabilityValue(eventGoal);
+		
+		double reverseRelevance    = getReverseRelevanceValue(eventGoal);
+		double reverseDesirability = getReverseDesirabilityValue(eventGoal);
+		
+		return -C*(((relevance + 1) * desirability) + (alpha * (reverseRelevance + 1) * reverseDesirability));
+	}
+	
+	private double getRelevanceValue(Goal eventGoal) {
+		
+		switch(relevance.isEventRelevant(eventGoal)) {
+			case RELEVANT:
+				return 1.0;
+			case IRRELEVANT:
+				return 0.0;
+			default:
+				return 0.0;
+		}
+	}
+	
+	private double getDesirabilityValue(Goal eventGoal) {
+		
+		switch(desirability.isEventDesirable(eventGoal)) {
+			case HIGH_DESIRABLE:
+				return 1.0;
+			case DESIRABLE:
+				return 0.5;
+			case NEUTRAL:
+				return 0.0;
+			case UNDESIRABLE:
+				return -0.5;
+			case HIGH_UNDESIRABLE:
+				return -1.0;
+			default:
+				return 0.0;
+		}
+	}
+	
+	private double getReverseRelevanceValue(Goal eventGoal) {
+		return 1.0; // This should get its value using reverse appraisal in ToM.
+	}
+	
+	private double getReverseDesirabilityValue(Goal eventGoal) {
+		return 0.0; // This should get its value using reverse appraisal in ToM.
 	}
 	
 	private Map<String, Double> getGoalAttributesWeights(Goal eventGoal) {

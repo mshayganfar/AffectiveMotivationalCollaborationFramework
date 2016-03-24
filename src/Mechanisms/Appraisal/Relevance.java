@@ -18,8 +18,6 @@ public class Relevance extends AppraisalProcesses {
 	
 	public enum RELEVANCE {RELEVANT, IRRELEVANT};
 	
-//	private Collaboration collaboration;
-	
 	public Relevance(Collaboration collaboration) {
 		this.collaboration = collaboration;
 	}

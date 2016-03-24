@@ -1,5 +1,7 @@
 package Mechanisms;
 
+import Mechanisms.Appraisal.Desirability;
+import Mechanisms.Appraisal.Relevance;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Perception.Perception;
 import MentalState.MentalState;
@@ -8,11 +10,10 @@ import MetaInformation.Turns;
 public class Mechanisms {
 
 	public enum AGENT{SELF, OTHER, BOTH, NONE};
-	
+
 	public MentalState mentalState;
 	
 	protected Turns currentTurn;
-	
 	protected Collaboration collaboration;
 	
 //	public Mechanisms() {}
