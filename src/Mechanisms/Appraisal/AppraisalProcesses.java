@@ -11,7 +11,7 @@ public class AppraisalProcesses extends Mechanisms {
 	public AppraisalProcesses() {
 //		this.perception = new Perception();
 //		this.collaboration = collaboration;
-		System.out.println("Constructor: appraisal works!");
+//		System.out.println("Constructor: appraisal works!");
 	}
 	
 	// The return value can be computed according to the emotional status of the human.

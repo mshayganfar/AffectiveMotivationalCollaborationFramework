@@ -61,7 +61,7 @@ public class GoalManagement {
 		return goalDifficulty;
 	}
 
-	private double getGoalSpecificity(Goal eventGoal) {
+	public double getGoalSpecificity(Goal eventGoal) {
 	
 		Integer goalDepth = getGoalDepth(eventGoal);
 		
@@ -255,7 +255,20 @@ public class GoalManagement {
 	
 	private int getGoalHeight(Goal eventGoal) {
 		
-		return getDistanceFromTop(eventGoal.getPlan());
+		int maxDepth = -1, goalDepth = 0;
+		
+		GoalTree goalTree = new GoalTree(collaboration.getDisco());
+		
+		ArrayList<Node> treeNodes = goalTree.createTree();
+		
+		for (Node node : treeNodes) {
+			if (node.getNodeDepthValue() > maxDepth)
+				maxDepth = node.getNodeDepthValue();
+			if (node.getNodeGoalPlan().getType().equals(eventGoal.getPlan().getType()))
+				goalDepth = node.getNodeDepthValue();
+		}
+		
+		return (maxDepth - goalDepth);
 	}
 	
 	private double getPredecessorEffort(Goal eventGoal) {

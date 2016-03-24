@@ -83,13 +83,14 @@ public class AppraisalGoalManagement {
 		
 		Motive motive = new Motive(eventGoal);
 		
-		System.out.println(relevance.isEventRelevant(eventGoal));
+//		System.out.println(relevance.isEventRelevant(eventGoal));
+//		System.out.println(controllability.isEventControllable(eventGoal));
+//		System.out.println(desirability.isEventDesirable(eventGoal));
+//		System.out.println(expectedness.isEventExpected(eventGoal));
 		
-		System.out.println(controllability.isEventControllable(eventGoal));
+		System.out.println(goalManagement.computeCostValue(eventGoal) + " and " + eventGoal.getLabel() + " and " + collaboration.getDisco().getFocus().getType());
 		
-		System.out.println(desirability.isEventDesirable(eventGoal));
 		
-		System.out.println(expectedness.isEventExpected(eventGoal));
 		
 		
 //		interaction.getConsole().test("test/Console.test");
