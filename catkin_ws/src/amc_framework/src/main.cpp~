@@ -22,6 +22,7 @@ ros::Publisher gripperPositionPublisher;
 std::vector<double> q;
 std::vector<double> qArmHome;
 std::vector<double> qArmRight;
+std::vector<double> qArmLeft;
 std::vector <brics_actuator::JointValue> gripperJointPositions;
 
 
@@ -167,6 +168,25 @@ void MoveArmRight() {
   std::cout << "Finished moving the arm." << std::endl;
 }
 
+void MoveArmLeft() {
+  qArmLeft[0] = 1.00;
+  qArmLeft[1] = 0.11;
+  qArmLeft[2] = -0.63;
+  qArmLeft[3] = 0.154;
+  qArmLeft[4] = 1.991;
+  // Notify user
+  std::cout << "Starting to move the arm. " << std::endl;
+  std::vector< std::vector<double> > here2right;
+  std::vector<double> here;
+  here.assign(q.begin(),q.begin()+5);
+  std::vector<double> home = qArmLeft;
+  here2right.push_back(here);
+  here2right.push_back(home);
+  MoveArmAndWait(here2right,5.0);
+  // Notify the user
+  std::cout << "Finished moving the arm." << std::endl;
+}
+
 bool GoHome(std_srvs::Empty::Request  &req,
             std_srvs::Empty::Response &res)
 {
@@ -178,6 +198,13 @@ bool GoRight(std_srvs::Empty::Request  &req,
              std_srvs::Empty::Response &res)
 {
   MoveArmRight();
+  return true;
+}
+
+bool GoLeft(std_srvs::Empty::Request  &req,
+             std_srvs::Empty::Response &res)
+{
+  MoveArmLeft();
   return true;
 }
 
@@ -222,6 +249,7 @@ int main(int argc, char** argv) {
   q.resize(5);
   qArmHome.resize(5);
   qArmRight.resize(5);
+  qArmLeft.resize(5);
   gripperJointPositions.resize(2);
 
   gripperJointPositions[0].joint_uri = "gripper_finger_joint_l";
@@ -238,9 +266,10 @@ int main(int argc, char** argv) {
 
   gripperPositionPublisher = n.advertise<brics_actuator::JointPositions > ("arm_1/gripper_controller/position_command", 1);
 
-  ros::ServiceServer serviceGoHome = n.advertiseService("go_home", GoHome);
+  ros::ServiceServer serviceGoHome  = n.advertiseService("go_home", GoHome);
   ros::ServiceServer serviceGoRight = n.advertiseService("go_right", GoRight);
-  ros::ServiceServer serviceOpenGripper = n.advertiseService("open_gripper", OpenGripper);
+  ros::ServiceServer serviceGoLeft  = n.advertiseService("go_left", GoLeft);
+  ros::ServiceServer serviceOpenGripper  = n.advertiseService("open_gripper", OpenGripper);
   ros::ServiceServer serviceCloseGripper = n.advertiseService("close_gripper", CloseGripper);
 
   ros::MultiThreadedSpinner spinner(4); // Use 4 threads

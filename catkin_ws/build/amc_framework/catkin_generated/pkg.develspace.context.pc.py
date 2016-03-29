@@ -5,4 +5,4 @@ PROJECT_CATKIN_DEPENDS = "actionlib_msgs;geometry_msgs;nav_msgs;roscpp;roslib;st
 PKG_CONFIG_LIBRARIES_WITH_PREFIX = "-lamc_framework".split(';') if "-lamc_framework" != "" else []
 PROJECT_NAME = "amc_framework"
 PROJECT_SPACE_DIR = "/home/mahni/catkin_ws/devel"
-PROJECT_VERSION = "0.0.0"
+PROJECT_VERSION = "0.0.1"
