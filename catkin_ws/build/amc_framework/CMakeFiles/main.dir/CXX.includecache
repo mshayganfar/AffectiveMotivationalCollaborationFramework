@@ -6,11 +6,9 @@
 
 #IncludeRegexTransform: 
 
-/home/mahni/catkin_ws/src/amc_framework/src/main.cpp
+/home/mahni/catkin_ws/src/amc_framework/src/kuka-move.hpp
 ros/ros.h
 /home/mahni/catkin_ws/src/amc_framework/src/ros/ros.h
-boost/thread/thread.hpp
--
 control_msgs/FollowJointTrajectoryActionGoal.h
 /home/mahni/catkin_ws/src/amc_framework/src/control_msgs/FollowJointTrajectoryActionGoal.h
 control_msgs/FollowJointTrajectoryActionResult.h
@@ -22,16 +20,14 @@ trajectory_msgs/JointTrajectory.h
 trajectory_msgs/JointTrajectoryPoint.h
 /home/mahni/catkin_ws/src/amc_framework/src/trajectory_msgs/JointTrajectoryPoint.h
 actionlib/goal_id_generator.h
--
+/home/mahni/catkin_ws/src/amc_framework/src/actionlib/goal_id_generator.h
 brics_actuator/JointPositions.h
 /home/mahni/catkin_ws/src/amc_framework/src/brics_actuator/JointPositions.h
-iostream
--
 sensor_msgs/JointState.h
 /home/mahni/catkin_ws/src/amc_framework/src/sensor_msgs/JointState.h
 std_srvs/Empty.h
 /home/mahni/catkin_ws/src/amc_framework/src/std_srvs/Empty.h
-vector
+boost/thread/thread.hpp
 -
 boost/units/systems/si/length.hpp
 -
@@ -43,6 +39,14 @@ boost/units/systems/angle/degrees.hpp
 -
 boost/units/conversion.hpp
 -
+vector
+-
+iostream
+-
+
+/home/mahni/catkin_ws/src/amc_framework/src/main.cpp
+kuka-move.hpp
+/home/mahni/catkin_ws/src/amc_framework/src/kuka-move.hpp
 
 /opt/ros/hydro/include/XmlRpcDecl.h
 ros/macros.h
