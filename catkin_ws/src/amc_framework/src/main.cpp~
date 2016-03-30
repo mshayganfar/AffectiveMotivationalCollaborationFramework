@@ -63,11 +63,11 @@ void MoveArmAndWait(const std::vector< std::vector<double> >& traj, double dt) {
   trajectory_msgs::JointTrajectory jt;
   // Note: Find a way to fill these in automatically instead of hard-coding.
   jt.header.frame_id = "base_link";
-  jt.joint_names.push_back("arm_joint_1");
-  jt.joint_names.push_back("arm_joint_2");
-  jt.joint_names.push_back("arm_joint_3");
-  jt.joint_names.push_back("arm_joint_4");
-  jt.joint_names.push_back("arm_joint_5");
+  jt.joint_names.push_back("arm_joint_1"); // Limits: [0.0, 5.89921]
+  jt.joint_names.push_back("arm_joint_2"); // Limits: [0.0, 2.55]
+  jt.joint_names.push_back("arm_joint_3"); // Limits: [0.0, 5.18363]
+  jt.joint_names.push_back("arm_joint_4"); // Limits: [0.0, 3.57793]
+  jt.joint_names.push_back("arm_joint_5"); // Limits: [0.0, 5.84685]
     
   for (unsigned i=0; i < traj.size(); i++) {
       
@@ -131,8 +131,8 @@ void MoveArmAndWait(const std::vector< std::vector<double> >& traj, double dt) {
 }
 
 void MoveArmHome() {
-  qArmHome[0] = 0.103;
-  qArmHome[1] = 0.078;
+  qArmHome[0] = 0.0;//0.103;
+  qArmHome[1] = 0.0;//0.078;
   qArmHome[2] = -0.053;
   qArmHome[3] = 0.052;
   qArmHome[4] = 0.178;
@@ -150,10 +150,10 @@ void MoveArmHome() {
 }
 
 void MoveArmRight() {
-  qArmRight[0] = 0.0;
-  qArmRight[1] = 0.11;
-  qArmRight[2] = -0.63;
-  qArmRight[3] = 0.154;
+  qArmRight[0] = 1.5;//0.0;
+  qArmRight[1] = 0.05;//0.11;
+  qArmRight[2] = -0.18363;//-0.63;
+  qArmRight[3] = 0.5;//0.154;
   qArmRight[4] = 1.991;
   // Notify user
   std::cout << "Starting to move the arm. " << std::endl;
@@ -169,20 +169,20 @@ void MoveArmRight() {
 }
 
 void MoveArmLeft() {
-  qArmLeft[0] = 1.00;
+  qArmLeft[0] = 0.0;
   qArmLeft[1] = 0.11;
   qArmLeft[2] = -0.63;
   qArmLeft[3] = 0.154;
   qArmLeft[4] = 1.991;
   // Notify user
   std::cout << "Starting to move the arm. " << std::endl;
-  std::vector< std::vector<double> > here2right;
+  std::vector< std::vector<double> > here2left;
   std::vector<double> here;
   here.assign(q.begin(),q.begin()+5);
   std::vector<double> home = qArmLeft;
-  here2right.push_back(here);
-  here2right.push_back(home);
-  MoveArmAndWait(here2right,5.0);
+  here2left.push_back(here);
+  here2left.push_back(home);
+  MoveArmAndWait(here2left,5.0);
   // Notify the user
   std::cout << "Finished moving the arm." << std::endl;
 }
