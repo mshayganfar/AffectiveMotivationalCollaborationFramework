@@ -50,34 +50,74 @@ class MoveKuka {
 
 	void MoveArmLeft();
 
-	/*bool GoHome(std_srvs::Empty::Request  &req,
+	void WaitForGripper(double target);
+
+	void PublishGripperJointCommand(double& qGripper);
+
+  // Services
+	bool GoHome(std_srvs::Empty::Request  &req,
             std_srvs::Empty::Response &res);
 
 	bool GoRight(std_srvs::Empty::Request  &req,
             std_srvs::Empty::Response &res);
 
 	bool GoLeft(std_srvs::Empty::Request  &req,
-            std_srvs::Empty::Response &res);*/
+            std_srvs::Empty::Response &res);
 
-	void WaitForGripper(double target);
-
-	void PublishGripperJointCommand(double& qGripper);
-
-	/*bool OpenGripper(std_srvs::Empty::Request &req,
+	bool OpenGripper(std_srvs::Empty::Request &req,
              std_srvs::Empty::Response &res);
 
 	bool CloseGripper(std_srvs::Empty::Request &req,
-             std_srvs::Empty::Response &res);*/
+             std_srvs::Empty::Response &res);
 };
 
-void WaitForArmResult() {
+bool MoveKuka::GoHome(std_srvs::Empty::Request  &req,
+            std_srvs::Empty::Response &res)
+{
+  MoveArmHome();
+  return true;
+}
+
+bool MoveKuka::GoRight(std_srvs::Empty::Request  &req,
+             std_srvs::Empty::Response &res)
+{
+  MoveArmRight();
+  return true;
+}
+
+bool MoveKuka::GoLeft(std_srvs::Empty::Request  &req,
+             std_srvs::Empty::Response &res)
+{
+  MoveArmLeft();
+  return true;
+}
+
+bool MoveKuka::OpenGripper(std_srvs::Empty::Request  &req,
+             std_srvs::Empty::Response &res)
+{
+  double val = 0.0115;
+  std::cout << "Opening gripper..." << std::endl;
+  PublishGripperJointCommand(val);
+  WaitForGripper(val);
+  return true;
+}
+
+bool MoveKuka::CloseGripper(std_srvs::Empty::Request  &req,
+             std_srvs::Empty::Response &res) {
+  double val = 0.0;
+  PublishGripperJointCommand(val);
+  WaitForGripper(val);
+  return true;
+}
+
+void MoveKuka::WaitForArmResult() {
   std::cout << "Arm is moving..." << std::endl;
   while(armMoving) {
-	boost::this_thread::sleep(boost::posix_time::milliseconds(1));
+		boost::this_thread::sleep(boost::posix_time::milliseconds(1));
   }
 }
 
-void MoveArmAndWait(const std::vector< std::vector<double> >& traj, double dt) {
+void MoveKuka::MoveArmAndWait(const std::vector< std::vector<double> >& traj, double dt) {
     
   // traj's inner vector should have the length of arm-dof
   // traj's outer vector should have the length of goal points in the trajectory
@@ -113,16 +153,16 @@ void MoveArmAndWait(const std::vector< std::vector<double> >& traj, double dt) {
       // If this is the first or the last trajectory point
       // then all joint velocities are zero.
       if( i == 0 || i == traj.size()-1)
-		v = 0.0;
+				v = 0.0;
       else {
 	  
-		// difference between two configurations (i.e. angles) of this particular joint
-		// traj[i+1][j] is where this joint wants to go next
-		// traj[i][j] is where this joint is currently
-		dq = traj[i+1][j] - traj[i][j];
+				// difference between two configurations (i.e. angles) of this particular joint
+				// traj[i+1][j] is where this joint wants to go next
+				// traj[i][j] is where this joint is currently
+				dq = traj[i+1][j] - traj[i][j];
 	  
-		// dt is the time we want the robot to take between configurations
-		v =  dq/dt;
+				// dt is the time we want the robot to take between configurations
+				v =  dq/dt;
       }
 	
       tp.velocities.push_back(v);
@@ -156,7 +196,7 @@ void MoveArmAndWait(const std::vector< std::vector<double> >& traj, double dt) {
   WaitForArmResult();
 }
 
-void MoveArmHome() {
+void MoveKuka::MoveArmHome() {
   qArmHome[0] = 0.0;//0.103;
   qArmHome[1] = 0.0;//0.078;
   qArmHome[2] = -0.053;
@@ -175,7 +215,7 @@ void MoveArmHome() {
   std::cout << "Finished moving the arm." << std::endl;
 }
 
-void MoveArmRight() {
+void MoveKuka::MoveArmRight() {
   qArmRight[0] = 1.5;//0.0;
   qArmRight[1] = 0.05;//0.11;
   qArmRight[2] = -0.18363;//-0.63;
@@ -194,7 +234,7 @@ void MoveArmRight() {
   std::cout << "Finished moving the arm." << std::endl;
 }
 
-void MoveArmLeft() {
+void MoveKuka::MoveArmLeft() {
   qArmLeft[0] = 0.0;
   qArmLeft[1] = 0.11;
   qArmLeft[2] = -0.63;
@@ -213,7 +253,7 @@ void MoveArmLeft() {
   std::cout << "Finished moving the arm." << std::endl;
 }
 
-void PublishGripperJointCommand(double& qGripper) {
+void MoveKuka::PublishGripperJointCommand(double& qGripper) {
   brics_actuator::JointPositions command;
     
   gripperJointPositions[0].value = qGripper;
@@ -221,4 +261,13 @@ void PublishGripperJointCommand(double& qGripper) {
     
   command.positions = gripperJointPositions;
   gripperPositionPublisher.publish(command);
+}
+
+void MoveKuka::WaitForGripper(double target) {
+  std::cout << "Waiting for gripper..." << std::endl;
+  while( q[5] >= target+0.000001 || q[5] <= target-0.000001) {
+    std::cout << "target: " << q[5] << endl;
+    boost::this_thread::sleep(boost::posix_time::milliseconds(1));
+  }
+  std::cout << "Gripper done." << std::endl;
 }
