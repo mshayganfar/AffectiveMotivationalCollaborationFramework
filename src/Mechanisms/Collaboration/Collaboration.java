@@ -34,7 +34,10 @@ public class Collaboration extends Mechanisms{
 	
 	public Collaboration(String[] args) {
 		
-		interaction = new Interaction(new Agent("agent"), new User("user"),
+		Agent agent = new Agent("agent");
+		agent.setMax(1);
+		
+		interaction = new Interaction(agent, new User("user"),
 				  args.length > 0 && args[0].length() > 0 ? args[0] : null);
 		interaction.getExternal().setEval(true);
 		interaction.start(true);

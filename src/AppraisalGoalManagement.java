@@ -91,8 +91,6 @@ public class AppraisalGoalManagement {
 		System.out.println(goalManagement.computeCostValue(eventGoal) + " and " + eventGoal.getLabel() + " and " + collaboration.getDisco().getFocus().getType());
 		
 		
-		
-		
 //		interaction.getConsole().test("test/Console.test");
 //		interaction.getConsole().step("test/Console.test");
 		
