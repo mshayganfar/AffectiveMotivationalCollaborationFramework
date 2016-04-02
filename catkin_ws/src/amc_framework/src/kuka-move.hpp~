@@ -20,6 +20,8 @@
 #include <vector>
 #include <iostream>
 
+#include <amc_framework/configurationService.h>
+
 bool armMoving;
 
 std::vector<double> q;
@@ -44,7 +46,7 @@ class MoveKuka {
 
 	void MoveArmAndWait(const std::vector< std::vector<double> >& traj, double dt);
 
-	void MoveArmHome();
+	void MoveArmHome(const amc_framework::configurationService::Request &req);
 
 	void MoveArmRight();
 
@@ -55,8 +57,8 @@ class MoveKuka {
 	void PublishGripperJointCommand(double& qGripper);
 
   // Services
-	bool GoHome(std_srvs::Empty::Request  &req,
-            std_srvs::Empty::Response &res);
+	bool GoHome(amc_framework::configurationService::Request  &req,
+            amc_framework::configurationService::Response &res);
 
 	bool GoRight(std_srvs::Empty::Request  &req,
             std_srvs::Empty::Response &res);
@@ -71,10 +73,10 @@ class MoveKuka {
              std_srvs::Empty::Response &res);
 };
 
-bool MoveKuka::GoHome(std_srvs::Empty::Request  &req,
-            std_srvs::Empty::Response &res)
+bool MoveKuka::GoHome(amc_framework::configurationService::Request &req,
+            amc_framework::configurationService::Response &res)
 {
-  MoveArmHome();
+  MoveArmHome(req);
   return true;
 }
 
@@ -196,12 +198,19 @@ void MoveKuka::MoveArmAndWait(const std::vector< std::vector<double> >& traj, do
   WaitForArmResult();
 }
 
-void MoveKuka::MoveArmHome() {
-  qArmHome[0] = 0.0;//0.103;
+void MoveKuka::MoveArmHome(const amc_framework::configurationService::Request &req) {
+  /*qArmHome[0] = 0.0;//0.103;
   qArmHome[1] = 0.0;//0.078;
   qArmHome[2] = -0.053;
   qArmHome[3] = 0.052;
-  qArmHome[4] = 0.178;
+  qArmHome[4] = 0.178;*/
+
+	qArmHome[0] = req;
+  qArmHome[1] = ;
+  qArmHome[2] = ;
+  qArmHome[3] = ;
+  qArmHome[4] = ;
+
   // Notify user
   std::cout << "Starting to move the arm. " << std::endl;
   std::vector< std::vector<double> > here2home;
@@ -266,7 +275,7 @@ void MoveKuka::PublishGripperJointCommand(double& qGripper) {
 void MoveKuka::WaitForGripper(double target) {
   std::cout << "Waiting for gripper..." << std::endl;
   while( q[5] >= target+0.000001 || q[5] <= target-0.000001) {
-    std::cout << "target: " << q[5] << endl;
+    std::cout << "target: " << q[5] << std::endl;
     boost::this_thread::sleep(boost::posix_time::milliseconds(1));
   }
   std::cout << "Gripper done." << std::endl;

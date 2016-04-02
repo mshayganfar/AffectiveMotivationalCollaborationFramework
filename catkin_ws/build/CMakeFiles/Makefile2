@@ -87,7 +87,7 @@ clean: CMakeFiles/clean_test_results.dir/clean
 CMakeFiles/doxygen.dir/all:
 	$(MAKE) -f CMakeFiles/doxygen.dir/build.make CMakeFiles/doxygen.dir/depend
 	$(MAKE) -f CMakeFiles/doxygen.dir/build.make CMakeFiles/doxygen.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/mahni/catkin_ws/build/CMakeFiles  1
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/mahni/catkin_ws/build/CMakeFiles  5
 	@echo "Built target doxygen"
 .PHONY : CMakeFiles/doxygen.dir/all
 
@@ -196,7 +196,7 @@ gtest/preinstall:
 gtest/CMakeFiles/gtest.dir/all:
 	$(MAKE) -f gtest/CMakeFiles/gtest.dir/build.make gtest/CMakeFiles/gtest.dir/depend
 	$(MAKE) -f gtest/CMakeFiles/gtest.dir/build.make gtest/CMakeFiles/gtest.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/mahni/catkin_ws/build/CMakeFiles  2
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/mahni/catkin_ws/build/CMakeFiles  6
 	@echo "Built target gtest"
 .PHONY : gtest/CMakeFiles/gtest.dir/all
 
@@ -227,7 +227,7 @@ clean: gtest/CMakeFiles/gtest.dir/clean
 gtest/CMakeFiles/gtest_main.dir/all: gtest/CMakeFiles/gtest.dir/all
 	$(MAKE) -f gtest/CMakeFiles/gtest_main.dir/build.make gtest/CMakeFiles/gtest_main.dir/depend
 	$(MAKE) -f gtest/CMakeFiles/gtest_main.dir/build.make gtest/CMakeFiles/gtest_main.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/mahni/catkin_ws/build/CMakeFiles  3
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/mahni/catkin_ws/build/CMakeFiles  7
 	@echo "Built target gtest_main"
 .PHONY : gtest/CMakeFiles/gtest_main.dir/all
 
@@ -509,7 +509,7 @@ amc_framework/CMakeFiles/amc_framework_gencpp.dir/all: amc_framework/CMakeFiles/
 
 # Build rule for subdir invocation for target.
 amc_framework/CMakeFiles/amc_framework_gencpp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/mahni/catkin_ws/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/mahni/catkin_ws/build/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 amc_framework/CMakeFiles/amc_framework_gencpp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/mahni/catkin_ws/build/CMakeFiles 0
 .PHONY : amc_framework/CMakeFiles/amc_framework_gencpp.dir/rule
@@ -531,9 +531,9 @@ clean: amc_framework/CMakeFiles/amc_framework_gencpp.dir/clean
 # Target rules for target amc_framework/CMakeFiles/amc_framework_generate_messages.dir
 
 # All Build rule for target.
-amc_framework/CMakeFiles/amc_framework_generate_messages.dir/all: amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/all
-amc_framework/CMakeFiles/amc_framework_generate_messages.dir/all: amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/all
 amc_framework/CMakeFiles/amc_framework_generate_messages.dir/all: amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/all
+amc_framework/CMakeFiles/amc_framework_generate_messages.dir/all: amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/all
+amc_framework/CMakeFiles/amc_framework_generate_messages.dir/all: amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/all
 	$(MAKE) -f amc_framework/CMakeFiles/amc_framework_generate_messages.dir/build.make amc_framework/CMakeFiles/amc_framework_generate_messages.dir/depend
 	$(MAKE) -f amc_framework/CMakeFiles/amc_framework_generate_messages.dir/build.make amc_framework/CMakeFiles/amc_framework_generate_messages.dir/build
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/mahni/catkin_ws/build/CMakeFiles 
@@ -546,7 +546,7 @@ all: amc_framework/CMakeFiles/amc_framework_generate_messages.dir/all
 
 # Build rule for subdir invocation for target.
 amc_framework/CMakeFiles/amc_framework_generate_messages.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/mahni/catkin_ws/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/mahni/catkin_ws/build/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 amc_framework/CMakeFiles/amc_framework_generate_messages.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/mahni/catkin_ws/build/CMakeFiles 0
 .PHONY : amc_framework/CMakeFiles/amc_framework_generate_messages.dir/rule
@@ -568,24 +568,24 @@ clean: amc_framework/CMakeFiles/amc_framework_generate_messages.dir/clean
 # Target rules for target amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir
 
 # All Build rule for target.
-amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/all: amc_framework/CMakeFiles/control_msgs_generate_messages_cpp.dir/all
-amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/all: amc_framework/CMakeFiles/std_srvs_generate_messages_cpp.dir/all
-amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/all: amc_framework/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/all
-amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/all: amc_framework/CMakeFiles/brics_actuator_generate_messages_cpp.dir/all
-amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/all: amc_framework/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/all
-amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/all: amc_framework/CMakeFiles/std_msgs_generate_messages_cpp.dir/all
 amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/all: amc_framework/CMakeFiles/nav_msgs_generate_messages_cpp.dir/all
-amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/all: amc_framework/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/all
+amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/all: amc_framework/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/all
 amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/all: amc_framework/CMakeFiles/trajectory_msgs_generate_messages_cpp.dir/all
+amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/all: amc_framework/CMakeFiles/brics_actuator_generate_messages_cpp.dir/all
+amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/all: amc_framework/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/all
+amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/all: amc_framework/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/all
+amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/all: amc_framework/CMakeFiles/control_msgs_generate_messages_cpp.dir/all
+amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/all: amc_framework/CMakeFiles/std_msgs_generate_messages_cpp.dir/all
+amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/all: amc_framework/CMakeFiles/std_srvs_generate_messages_cpp.dir/all
 	$(MAKE) -f amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/build.make amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/depend
 	$(MAKE) -f amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/build.make amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/mahni/catkin_ws/build/CMakeFiles 
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/mahni/catkin_ws/build/CMakeFiles  1
 	@echo "Built target amc_framework_generate_messages_cpp"
 .PHONY : amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/all
 
 # Build rule for subdir invocation for target.
 amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/mahni/catkin_ws/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/mahni/catkin_ws/build/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/mahni/catkin_ws/build/CMakeFiles 0
 .PHONY : amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/rule
@@ -607,24 +607,24 @@ clean: amc_framework/CMakeFiles/amc_framework_generate_messages_cpp.dir/clean
 # Target rules for target amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir
 
 # All Build rule for target.
-amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/all: amc_framework/CMakeFiles/trajectory_msgs_generate_messages_lisp.dir/all
-amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/all: amc_framework/CMakeFiles/brics_actuator_generate_messages_lisp.dir/all
-amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/all: amc_framework/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/all
 amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/all: amc_framework/CMakeFiles/nav_msgs_generate_messages_lisp.dir/all
-amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/all: amc_framework/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/all
-amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/all: amc_framework/CMakeFiles/std_msgs_generate_messages_lisp.dir/all
-amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/all: amc_framework/CMakeFiles/std_srvs_generate_messages_lisp.dir/all
 amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/all: amc_framework/CMakeFiles/control_msgs_generate_messages_lisp.dir/all
+amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/all: amc_framework/CMakeFiles/trajectory_msgs_generate_messages_lisp.dir/all
+amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/all: amc_framework/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/all
+amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/all: amc_framework/CMakeFiles/std_msgs_generate_messages_lisp.dir/all
+amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/all: amc_framework/CMakeFiles/brics_actuator_generate_messages_lisp.dir/all
+amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/all: amc_framework/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/all
 amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/all: amc_framework/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/all
+amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/all: amc_framework/CMakeFiles/std_srvs_generate_messages_lisp.dir/all
 	$(MAKE) -f amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/build.make amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/depend
 	$(MAKE) -f amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/build.make amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/mahni/catkin_ws/build/CMakeFiles 
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/mahni/catkin_ws/build/CMakeFiles  2
 	@echo "Built target amc_framework_generate_messages_lisp"
 .PHONY : amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/all
 
 # Build rule for subdir invocation for target.
 amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/mahni/catkin_ws/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/mahni/catkin_ws/build/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/mahni/catkin_ws/build/CMakeFiles 0
 .PHONY : amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/rule
@@ -646,24 +646,24 @@ clean: amc_framework/CMakeFiles/amc_framework_generate_messages_lisp.dir/clean
 # Target rules for target amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir
 
 # All Build rule for target.
-amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/all: amc_framework/CMakeFiles/trajectory_msgs_generate_messages_py.dir/all
 amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/all: amc_framework/CMakeFiles/brics_actuator_generate_messages_py.dir/all
-amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/all: amc_framework/CMakeFiles/actionlib_msgs_generate_messages_py.dir/all
-amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/all: amc_framework/CMakeFiles/geometry_msgs_generate_messages_py.dir/all
-amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/all: amc_framework/CMakeFiles/std_msgs_generate_messages_py.dir/all
 amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/all: amc_framework/CMakeFiles/nav_msgs_generate_messages_py.dir/all
+amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/all: amc_framework/CMakeFiles/trajectory_msgs_generate_messages_py.dir/all
 amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/all: amc_framework/CMakeFiles/control_msgs_generate_messages_py.dir/all
+amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/all: amc_framework/CMakeFiles/geometry_msgs_generate_messages_py.dir/all
+amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/all: amc_framework/CMakeFiles/actionlib_msgs_generate_messages_py.dir/all
+amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/all: amc_framework/CMakeFiles/std_msgs_generate_messages_py.dir/all
 amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/all: amc_framework/CMakeFiles/sensor_msgs_generate_messages_py.dir/all
 amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/all: amc_framework/CMakeFiles/std_srvs_generate_messages_py.dir/all
 	$(MAKE) -f amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/build.make amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/depend
 	$(MAKE) -f amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/build.make amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/mahni/catkin_ws/build/CMakeFiles 
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/mahni/catkin_ws/build/CMakeFiles  3 4
 	@echo "Built target amc_framework_generate_messages_py"
 .PHONY : amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/all
 
 # Build rule for subdir invocation for target.
 amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/mahni/catkin_ws/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/mahni/catkin_ws/build/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/mahni/catkin_ws/build/CMakeFiles 0
 .PHONY : amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/rule
@@ -694,7 +694,7 @@ amc_framework/CMakeFiles/amc_framework_genlisp.dir/all: amc_framework/CMakeFiles
 
 # Build rule for subdir invocation for target.
 amc_framework/CMakeFiles/amc_framework_genlisp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/mahni/catkin_ws/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/mahni/catkin_ws/build/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 amc_framework/CMakeFiles/amc_framework_genlisp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/mahni/catkin_ws/build/CMakeFiles 0
 .PHONY : amc_framework/CMakeFiles/amc_framework_genlisp.dir/rule
@@ -725,7 +725,7 @@ amc_framework/CMakeFiles/amc_framework_genpy.dir/all: amc_framework/CMakeFiles/a
 
 # Build rule for subdir invocation for target.
 amc_framework/CMakeFiles/amc_framework_genpy.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/mahni/catkin_ws/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/mahni/catkin_ws/build/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 amc_framework/CMakeFiles/amc_framework_genpy.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/mahni/catkin_ws/build/CMakeFiles 0
 .PHONY : amc_framework/CMakeFiles/amc_framework_genpy.dir/rule
@@ -1029,7 +1029,7 @@ clean: amc_framework/CMakeFiles/geometry_msgs_generate_messages_py.dir/clean
 amc_framework/CMakeFiles/main.dir/all:
 	$(MAKE) -f amc_framework/CMakeFiles/main.dir/build.make amc_framework/CMakeFiles/main.dir/depend
 	$(MAKE) -f amc_framework/CMakeFiles/main.dir/build.make amc_framework/CMakeFiles/main.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/mahni/catkin_ws/build/CMakeFiles  4
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/mahni/catkin_ws/build/CMakeFiles  8
 	@echo "Built target main"
 .PHONY : amc_framework/CMakeFiles/main.dir/all
 

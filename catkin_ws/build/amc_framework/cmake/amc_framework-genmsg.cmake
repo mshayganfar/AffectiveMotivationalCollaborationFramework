@@ -1,8 +1,6 @@
 # generated from genmsg/cmake/pkg-genmsg.cmake.em
 
-message(WARNING "Invoking generate_messages() without having added any message or service file before.
-You should either add add_message_files() and/or add_service_files() calls or remove the invocation of generate_messages().")
-message(STATUS "amc_framework: 0 messages, 0 services")
+message(STATUS "amc_framework: 0 messages, 1 services")
 
 set(MSG_I_FLAGS "-Iactionlib_msgs:/opt/ros/hydro/share/actionlib_msgs/cmake/../msg;-Igeometry_msgs:/opt/ros/hydro/share/geometry_msgs/cmake/../msg;-Inav_msgs:/opt/ros/hydro/share/nav_msgs/cmake/../msg;-Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg;-Icontrol_msgs:/opt/ros/hydro/share/control_msgs/cmake/../msg;-Itrajectory_msgs:/opt/ros/hydro/share/trajectory_msgs/cmake/../msg;-Ibrics_actuator:/opt/ros/hydro/share/brics_actuator/cmake/../msg;-Isensor_msgs:/opt/ros/hydro/share/sensor_msgs/cmake/../msg")
 
@@ -21,6 +19,12 @@ add_custom_target(amc_framework_generate_messages ALL)
 ### Generating Messages
 
 ### Generating Services
+_generate_srv_cpp(amc_framework
+  "/home/mahni/catkin_ws/src/amc_framework/srv/configurationService.srv"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/amc_framework
+)
 
 ### Generating Module File
 _generate_module_cpp(amc_framework
@@ -44,6 +48,12 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS amc_framework_generate_messages_cpp
 ### Generating Messages
 
 ### Generating Services
+_generate_srv_lisp(amc_framework
+  "/home/mahni/catkin_ws/src/amc_framework/srv/configurationService.srv"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/amc_framework
+)
 
 ### Generating Module File
 _generate_module_lisp(amc_framework
@@ -67,6 +77,12 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS amc_framework_generate_messages_lis
 ### Generating Messages
 
 ### Generating Services
+_generate_srv_py(amc_framework
+  "/home/mahni/catkin_ws/src/amc_framework/srv/configurationService.srv"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/amc_framework
+)
 
 ### Generating Module File
 _generate_module_py(amc_framework

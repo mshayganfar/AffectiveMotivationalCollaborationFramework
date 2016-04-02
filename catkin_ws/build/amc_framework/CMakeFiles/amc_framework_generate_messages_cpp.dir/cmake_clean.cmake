@@ -1,5 +1,6 @@
 FILE(REMOVE_RECURSE
   "CMakeFiles/amc_framework_generate_messages_cpp"
+  "/home/mahni/catkin_ws/devel/include/amc_framework/configurationService.h"
 )
 
 # Per-language clean rules from dependency scanning.

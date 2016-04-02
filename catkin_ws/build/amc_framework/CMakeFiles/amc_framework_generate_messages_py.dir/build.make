@@ -42,9 +42,24 @@ CMAKE_BINARY_DIR = /home/mahni/catkin_ws/build
 # Include the progress variables for this target.
 include amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/progress.make
 
-amc_framework/CMakeFiles/amc_framework_generate_messages_py:
+amc_framework/CMakeFiles/amc_framework_generate_messages_py: /home/mahni/catkin_ws/devel/lib/python2.7/dist-packages/amc_framework/srv/_configurationService.py
+amc_framework/CMakeFiles/amc_framework_generate_messages_py: /home/mahni/catkin_ws/devel/lib/python2.7/dist-packages/amc_framework/srv/__init__.py
+
+/home/mahni/catkin_ws/devel/lib/python2.7/dist-packages/amc_framework/srv/_configurationService.py: /opt/ros/hydro/share/genpy/cmake/../../../lib/genpy/gensrv_py.py
+/home/mahni/catkin_ws/devel/lib/python2.7/dist-packages/amc_framework/srv/_configurationService.py: /home/mahni/catkin_ws/src/amc_framework/srv/configurationService.srv
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/mahni/catkin_ws/build/CMakeFiles $(CMAKE_PROGRESS_1)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating Python code from SRV amc_framework/configurationService"
+	cd /home/mahni/catkin_ws/build/amc_framework && ../catkin_generated/env_cached.sh /usr/bin/python /opt/ros/hydro/share/genpy/cmake/../../../lib/genpy/gensrv_py.py /home/mahni/catkin_ws/src/amc_framework/srv/configurationService.srv -Iactionlib_msgs:/opt/ros/hydro/share/actionlib_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/hydro/share/geometry_msgs/cmake/../msg -Inav_msgs:/opt/ros/hydro/share/nav_msgs/cmake/../msg -Istd_msgs:/opt/ros/hydro/share/std_msgs/cmake/../msg -Icontrol_msgs:/opt/ros/hydro/share/control_msgs/cmake/../msg -Itrajectory_msgs:/opt/ros/hydro/share/trajectory_msgs/cmake/../msg -Ibrics_actuator:/opt/ros/hydro/share/brics_actuator/cmake/../msg -Isensor_msgs:/opt/ros/hydro/share/sensor_msgs/cmake/../msg -p amc_framework -o /home/mahni/catkin_ws/devel/lib/python2.7/dist-packages/amc_framework/srv
+
+/home/mahni/catkin_ws/devel/lib/python2.7/dist-packages/amc_framework/srv/__init__.py: /opt/ros/hydro/share/genpy/cmake/../../../lib/genpy/genmsg_py.py
+/home/mahni/catkin_ws/devel/lib/python2.7/dist-packages/amc_framework/srv/__init__.py: /home/mahni/catkin_ws/devel/lib/python2.7/dist-packages/amc_framework/srv/_configurationService.py
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/mahni/catkin_ws/build/CMakeFiles $(CMAKE_PROGRESS_2)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating Python srv __init__.py for amc_framework"
+	cd /home/mahni/catkin_ws/build/amc_framework && ../catkin_generated/env_cached.sh /usr/bin/python /opt/ros/hydro/share/genpy/cmake/../../../lib/genpy/genmsg_py.py -o /home/mahni/catkin_ws/devel/lib/python2.7/dist-packages/amc_framework/srv --initpy
 
 amc_framework_generate_messages_py: amc_framework/CMakeFiles/amc_framework_generate_messages_py
+amc_framework_generate_messages_py: /home/mahni/catkin_ws/devel/lib/python2.7/dist-packages/amc_framework/srv/_configurationService.py
+amc_framework_generate_messages_py: /home/mahni/catkin_ws/devel/lib/python2.7/dist-packages/amc_framework/srv/__init__.py
 amc_framework_generate_messages_py: amc_framework/CMakeFiles/amc_framework_generate_messages_py.dir/build.make
 .PHONY : amc_framework_generate_messages_py
 

@@ -6,6 +6,46 @@
 
 #IncludeRegexTransform: 
 
+/home/mahni/catkin_ws/devel/include/amc_framework/configurationService.h
+ros/service_traits.h
+-
+amc_framework/configurationServiceRequest.h
+-
+amc_framework/configurationServiceResponse.h
+-
+
+/home/mahni/catkin_ws/devel/include/amc_framework/configurationServiceRequest.h
+string
+-
+vector
+-
+map
+-
+ros/types.h
+-
+ros/serialization.h
+-
+ros/builtin_message_traits.h
+-
+ros/message_operations.h
+-
+
+/home/mahni/catkin_ws/devel/include/amc_framework/configurationServiceResponse.h
+string
+-
+vector
+-
+map
+-
+ros/types.h
+-
+ros/serialization.h
+-
+ros/builtin_message_traits.h
+-
+ros/message_operations.h
+-
+
 /home/mahni/catkin_ws/src/amc_framework/src/kuka-move.hpp
 ros/ros.h
 /home/mahni/catkin_ws/src/amc_framework/src/ros/ros.h
@@ -42,6 +82,8 @@ boost/units/conversion.hpp
 vector
 -
 iostream
+-
+amc_framework/configurationService.h
 -
 
 /home/mahni/catkin_ws/src/amc_framework/src/main.cpp

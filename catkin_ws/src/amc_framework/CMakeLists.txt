@@ -17,6 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   brics_actuator
   sensor_msgs
   std_srvs
+  message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -60,11 +61,12 @@ find_package(Boost REQUIRED COMPONENTS system thread)
 # )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+#  Service1.srv
+#  Service2.srv
+add_service_files(
+  FILES
+	configurationService.srv
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(

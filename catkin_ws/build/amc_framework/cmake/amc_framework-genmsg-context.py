@@ -1,7 +1,7 @@
 # generated from genmsg/cmake/pkg-genmsg.context.in
 
 messages_str = ""
-services_str = ""
+services_str = "/home/mahni/catkin_ws/src/amc_framework/srv/configurationService.srv"
 pkg_name = "amc_framework"
 dependencies_str = "actionlib_msgs;geometry_msgs;nav_msgs;std_msgs;control_msgs;trajectory_msgs;brics_actuator;sensor_msgs;std_srvs"
 langs = "gencpp;genlisp;genpy"

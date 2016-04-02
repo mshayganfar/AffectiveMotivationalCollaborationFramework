@@ -91,9 +91,9 @@ endif()
 # flag project as catkin-based to distinguish if a find_package()-ed project is a catkin project
 set(amc_framework_FOUND_CATKIN_PROJECT TRUE)
 
-if(NOT "/home/mahni/catkin_ws/src/amc_framework/include" STREQUAL "")
+if(NOT "/home/mahni/catkin_ws/devel/include;/home/mahni/catkin_ws/src/amc_framework/include" STREQUAL "")
   set(amc_framework_INCLUDE_DIRS "")
-  set(_include_dirs "/home/mahni/catkin_ws/src/amc_framework/include")
+  set(_include_dirs "/home/mahni/catkin_ws/devel/include;/home/mahni/catkin_ws/src/amc_framework/include")
   foreach(idir ${_include_dirs})
     if(IS_ABSOLUTE ${idir} AND IS_DIRECTORY ${idir})
       set(include ${idir})

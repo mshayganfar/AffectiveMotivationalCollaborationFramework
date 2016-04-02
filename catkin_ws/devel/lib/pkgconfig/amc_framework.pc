@@ -3,6 +3,6 @@ prefix=/home/mahni/catkin_ws/devel
 Name: amc_framework
 Description: Description of amc_framework
 Version: 0.0.1
-Cflags: -I/home/mahni/catkin_ws/src/amc_framework/include
+Cflags: -I/home/mahni/catkin_ws/devel/include -I/home/mahni/catkin_ws/src/amc_framework/include
 Libs: -L/home/mahni/catkin_ws/devel/lib -lamc_framework
 Requires: actionlib_msgs geometry_msgs nav_msgs roscpp roslib std_msgs control_msgs trajectory_msgs brics_actuator sensor_msgs std_srvs

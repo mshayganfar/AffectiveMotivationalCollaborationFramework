@@ -115,6 +115,8 @@ SET(CMAKE_MAKEFILE_DEPENDS
   "/opt/ros/hydro/share/geometry_msgs/cmake/geometry_msgs-msg-paths.cmake"
   "/opt/ros/hydro/share/geometry_msgs/cmake/geometry_msgsConfig-version.cmake"
   "/opt/ros/hydro/share/geometry_msgs/cmake/geometry_msgsConfig.cmake"
+  "/opt/ros/hydro/share/message_generation/cmake/message_generationConfig-version.cmake"
+  "/opt/ros/hydro/share/message_generation/cmake/message_generationConfig.cmake"
   "/opt/ros/hydro/share/message_runtime/cmake/message_runtimeConfig-version.cmake"
   "/opt/ros/hydro/share/message_runtime/cmake/message_runtimeConfig.cmake"
   "/opt/ros/hydro/share/nav_msgs/cmake/nav_msgs-msg-extras.cmake"
