@@ -13,7 +13,7 @@
   <task id="B">
     <subtasks id="recipeB">
       <step name="step1" task ="e"/>
-      <step name="step2" task="f"/>
+      <step name="step2" task="F"/>
     </subtasks>
   </task>
 
@@ -26,38 +26,38 @@
 
   <task id="D">
     <subtasks id="recipeD">
-      <step name="step1" task ="i"/>
-      <step name="step2" task="j"/>
+      <step name="step1" task ="I"/>
+      <step name="step2" task="J"/>
     </subtasks>
   </task>
 
-  <task id="f">
+  <task id="F">
     <subtasks id="recipeF">
       <step name="step1" task ="k"/>
     </subtasks>
   </task>
 
-  <task id="i">
+  <task id="I">
     <subtasks id="recipeI">
       <step name="step1" task ="l"/>
       <step name="step2" task ="m"/>
     </subtasks>
   </task>
 
-  <task id="j">
+  <task id="J">
     <subtasks id="recipeJ">
       <step name="step1" task ="n"/>
       <step name="step2" task ="o"/>
     </subtasks>
   </task>
 
-  <task id="e"/>
-  <task id="k"/>
-  <task id="g"/>
-  <task id="h"/>
-  <task id="l"/>
-  <task id="m"/>
-  <task id="n"/>
-  <task id="o"/>
+  <task id="e"> </task>
+  <task id="k"> </task>
+  <task id="g"> </task>
+  <task id="h"> </task>
+  <task id="l"> </task>
+  <task id="m"> </task>
+  <task id="n"> </task>
+  <task id="o"> </task>
   
 </taskModel>

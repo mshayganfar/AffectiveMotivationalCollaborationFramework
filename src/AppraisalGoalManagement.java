@@ -88,8 +88,10 @@ public class AppraisalGoalManagement {
 //		System.out.println(desirability.isEventDesirable(eventGoal));
 //		System.out.println(expectedness.isEventExpected(eventGoal));
 		
-		System.out.println(goalManagement.computeCostValue(eventGoal) + " and " + eventGoal.getLabel() + " and " + collaboration.getDisco().getFocus().getType());
+//		System.out.println(goalManagement.computeCostValue(eventGoal) + " and " + eventGoal.getLabel() + " and " + collaboration.getDisco().getFocus().getType());
 		
+		System.out.println(collaboration.getDisco().getTop(collaboration.getDisco().getFocus()).getType());
+		System.out.println(collaboration.getResponsibleAgent(new Goal(collaboration.getDisco().getTop(collaboration.getDisco().getFocus()))));
 		
 //		interaction.getConsole().test("test/Console.test");
 //		interaction.getConsole().step("test/Console.test");

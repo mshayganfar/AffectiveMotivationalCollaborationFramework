@@ -2,6 +2,7 @@ package Mechanisms.Collaboration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import Mechanisms.Mechanisms;
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
@@ -22,13 +23,15 @@ public class Collaboration extends Mechanisms{
 	public enum GOAL_STATUS{ACHIEVED, FAILED, PENDING, BLOCKED, INPROGRESS, INAPPLICABLE};
 	public enum FOCUS_TYPE{PRIMITIVE, NONPRIMITIVE};
 	public enum RECIPE_APPLICABILITY{APPLICABLE, INAPPLICABLE, UNKNOWN};
-	public enum AGENT{SELF, OTHER, BOTH, NONE};
+	public enum AGENT{SELF, OTHER, BOTH, UNKNOWN};
 	
 	private Disco disco;
 	private TaskModel taskModel;
 	private Plan prevFocus;
 	
 	private boolean collaborationStatus = true;
+	
+	private ArrayList<AGENT> childrenResponsibinity;
 	
 	public Interaction interaction;
 	
@@ -47,6 +50,8 @@ public class Collaboration extends Mechanisms{
 		disco.load("/TaskModel/Events.xml");
 		
 		prevFocus = disco.getFocus();
+		
+		childrenResponsibinity = new ArrayList<AGENT>();
 		
 		this.collaboration = this;
 	}
@@ -181,9 +186,32 @@ public class Collaboration extends Mechanisms{
 		return contributerGoalList;
 	}
 	
+	// NOTE: We assume all goals have postconditions.
 	public AGENT getResponsibleAgent(Goal goal) {
 		
-		if (goal.getPlan().getGoal().getExternal() != null) {
+		if(goal.getPlan().getGoal().isPrimitive()) {
+			if (goal.getPlan().getGoal().getExternal() == null)
+				return AGENT.UNKNOWN;
+			else if (goal.getPlan().getGoal().getExternal() == false)
+				return AGENT.SELF;
+			else
+				return AGENT.OTHER;
+		}
+		else {
+			for (Plan childPlan : goal.getPlan().getChildren()) {
+				if (childPlan.getGoal().isPrimitive()) {
+					childrenResponsibinity.add(getResponsibleAgent(new Goal(childPlan)));
+				}
+				else {
+					getResponsibleAgent(new Goal(childPlan));
+				}
+			}
+			
+			return getOverallResponsibleAgent();
+		}
+
+		
+		/*if (goal.getPlan().getGoal().getExternal() != null) {
 			if(!goal.getPlan().getGoal().isPrimitive()) {
 				
 				int countResponsibles = 0;
@@ -208,9 +236,38 @@ public class Collaboration extends Mechanisms{
 				return AGENT.SELF;
 		}
 		else
-			return AGENT.BOTH;
+			return AGENT.BOTH;*/
 	}
 
+	private AGENT getOverallResponsibleAgent() {
+		
+		int agentCount    = 0;
+		int otherCount    = 0;
+		int unknownCount  = 0;
+		
+		for (AGENT agent : childrenResponsibinity) {
+			if (agent.equals(AGENT.SELF))
+				agentCount++;
+			else if (agent.equals(AGENT.OTHER))
+				otherCount++;
+			else if (agent.equals(AGENT.UNKNOWN))
+				unknownCount++;
+		}
+		
+		childrenResponsibinity.clear();
+		
+		if (((agentCount == 0) || (otherCount == 0)) && (unknownCount != 0))
+			return AGENT.UNKNOWN;
+		else if ((agentCount != 0) && (otherCount != 0))
+			return AGENT.BOTH;
+		else if ((agentCount != 0) && (otherCount == 0) && (unknownCount == 0))
+			return AGENT.SELF;
+		else if ((agentCount == 0) && (otherCount != 0) && (unknownCount == 0))
+			return AGENT.OTHER;
+		else
+			return null;
+	}
+	
 	public AGENT getResponsibleAgent(Plan plan) {
 		
 		if (plan.getGoal().getExternal() != null) {
