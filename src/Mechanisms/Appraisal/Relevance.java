@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Mechanisms.Collaboration.Collaboration;
-import Mechanisms.Collaboration.Collaboration.AGENT;
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import Mechanisms.Perception.Perception;
 import MentalState.Belief;
 import MentalState.Goal;
 import MetaInformation.GoalTree;
 import MetaInformation.Node;
-import MetaInformation.Turns;
 import edu.wpi.cetask.Plan;
 
 public class Relevance extends AppraisalProcesses {

@@ -23,7 +23,6 @@ public class Collaboration extends Mechanisms{
 	public enum GOAL_STATUS{ACHIEVED, FAILED, PENDING, BLOCKED, INPROGRESS, INAPPLICABLE};
 	public enum FOCUS_TYPE{PRIMITIVE, NONPRIMITIVE};
 	public enum RECIPE_APPLICABILITY{APPLICABLE, INAPPLICABLE, UNKNOWN};
-	public enum AGENT{SELF, OTHER, BOTH, UNKNOWN};
 	
 	private Disco disco;
 	private TaskModel taskModel;
@@ -31,9 +30,9 @@ public class Collaboration extends Mechanisms{
 	
 	private boolean collaborationStatus = true;
 	
-	public ArrayList<AGENT> childrenResponsibinity;
+	private ArrayList<AGENT> childrenResponsibinity;
 	
-	public Interaction interaction;
+	private Interaction interaction;
 	
 	public Collaboration(String[] args) {
 		
@@ -226,8 +225,6 @@ public class Collaboration extends Mechanisms{
 				unknownCount++;
 		}
 		
-		//childrenResponsibinity.clear();
-		
 		if (((agentCount == 0) || (otherCount == 0)) && (unknownCount != 0))
 			return AGENT.UNKNOWN;
 		else if ((agentCount != 0) && (otherCount != 0))
@@ -325,6 +322,14 @@ public class Collaboration extends Mechanisms{
 	
 	public Boolean getPreConditionStatus(Plan plan) {
 		return plan.isApplicable();
+	}
+	
+	public ArrayList<AGENT> getChildrenResponsibility() {
+		return childrenResponsibinity;
+	}
+	
+	public void clearChildrenResponsibility() {
+		childrenResponsibinity.clear();
 	}
 	
 	public void test() {

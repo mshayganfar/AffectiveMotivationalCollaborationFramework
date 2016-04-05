@@ -97,7 +97,7 @@ public class AppraisalGoalManagement {
 		System.out.println(collaboration.getDisco().getFocus().getType());
 		System.out.println(collaboration.getResponsibleAgent(new Goal(collaboration.getDisco().getTop(collaboration.getDisco().getFocus()))));
 		
-		System.out.println(collaboration.childrenResponsibinity);
+		System.out.println(collaboration.getChildrenResponsibility());
 		
 //		interaction.getConsole().test("test/Console.test");
 //		interaction.getConsole().step("test/Console.test");

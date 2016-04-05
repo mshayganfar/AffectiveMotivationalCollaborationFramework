@@ -73,7 +73,7 @@
     </subtasks>
   </task>
 
-	<task id="e"> </task>
+	<!-- <task id="e"> </task>
   <task id="k"> </task>
   <task id="g"> </task>
   <task id="h"> </task>
@@ -81,15 +81,16 @@
   <task id="m"> </task>
   <task id="n"> </task>
   <task id="o"> </task>
-  <task id="p"> </task>
+  <task id="p"> </task> -->
 
-  <!-- <task id="e"> <postcondition> $this.isOccurred() </postcondition> </task>
-  <task id="k"> <postcondition> $this.isOccurred() </postcondition> </task>
-  <task id="g"> <postcondition> $this.isOccurred() </postcondition> </task>
-  <task id="h"> <postcondition> $this.isOccurred() </postcondition> </task>
-  <task id="l"> <postcondition> $this.isOccurred() </postcondition> </task>
-  <task id="m"> <postcondition> $this.isOccurred() </postcondition> </task>
-  <task id="n"> <postcondition> $this.isOccurred() </postcondition> </task>
-  <task id="o"> <postcondition> $this.isOccurred() </postcondition> </task> -->
+  <task id="e"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
+  <task id="k"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
+  <task id="g"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
+  <task id="h"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
+  <task id="l"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
+  <task id="m"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
+  <task id="n"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
+  <task id="o"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
+  <task id="p"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
   
 </taskModel>

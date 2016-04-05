@@ -65,18 +65,29 @@ public class Controllability extends AppraisalProcesses{
 		if (collaboration.getGoalType(eventGoal).equals(FOCUS_TYPE.PRIMITIVE)) {
 			if (collaboration.getResponsibleAgent(eventGoal).equals(AGENT.SELF))
 				return 1.0;
-			else
+			else if (collaboration.getResponsibleAgent(eventGoal).equals(AGENT.OTHER))
+				return -0.5;
+			else  if (collaboration.getResponsibleAgent(eventGoal).equals(AGENT.UNKNOWN))
+				return -1.0;
+			else // Should never happen
 				return 0.0;
 		}
 		else {
-			for (Plan plan : eventGoal.getPlan().getChildren()) {
-				if (collaboration.getResponsibleAgent(plan).equals(AGENT.SELF))
+			collaboration.clearChildrenResponsibility();
+			collaboration.getResponsibleAgent(eventGoal);
+			
+			for (AGENT agent : collaboration.getChildrenResponsibility()) {
+				if (agent.equals(AGENT.SELF))
 					countSelfResponsible++;
-				else if (collaboration.getResponsibleAgent(plan).equals(AGENT.BOTH))
+				else if (agent.equals(AGENT.BOTH))
 					countSelfResponsible += 0.5;
+				else if (agent.equals(AGENT.OTHER))
+					countSelfResponsible -= 0.5;
+				else if (agent.equals(AGENT.UNKNOWN))
+					countSelfResponsible -= 1.0;
 			}
 			
-			return ((double)countSelfResponsible/((eventGoal.getPlan().getChildren().size() == 0) ? 1 : eventGoal.getPlan().getChildren().size()));
+			return ((double)countSelfResponsible/((collaboration.getChildrenResponsibility().size() == 0) ? 1 : collaboration.getChildrenResponsibility().size()));
 		}
 	}
 	
@@ -85,7 +96,7 @@ public class Controllability extends AppraisalProcesses{
 		double dblSucceededPredecessorCounter = 0.0;
 		
 		for (Plan plan : collaboration.getPredecessors(eventGoal)) {
-			if(collaboration.isPlanAchieved(plan)) // Check this with Chuck!
+			if(collaboration.isPlanAchieved(plan))
 				dblSucceededPredecessorCounter++;
 		}
 		
