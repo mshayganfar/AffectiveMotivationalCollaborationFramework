@@ -12,7 +12,7 @@
        //return "test appraisal";
     }
 
-		function updatePreviousCollaborationGoal () {
+		function updatePreviousCollaborationStatus () {
        Packages.AppraisalGoalManagement.updateCollaborationStatus();
     }
   </script>

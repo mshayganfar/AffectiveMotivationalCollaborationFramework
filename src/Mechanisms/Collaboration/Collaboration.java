@@ -354,4 +354,8 @@ public class Collaboration extends Mechanisms{
 		
 //		mentalState.assertGoal(1, "G1-1", null, AGENT.SELF, child, parent);
 	}
+	
+	public Interaction getInteraction() {
+		return this.interaction;
+	}
 }

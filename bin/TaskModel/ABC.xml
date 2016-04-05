@@ -73,16 +73,6 @@
     </subtasks>
   </task>
 
-	<!-- <task id="e"> </task>
-  <task id="k"> </task>
-  <task id="g"> </task>
-  <task id="h"> </task>
-  <task id="l"> </task>
-  <task id="m"> </task>
-  <task id="n"> </task>
-  <task id="o"> </task>
-  <task id="p"> </task> -->
-
   <task id="e"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
   <task id="k"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
   <task id="g"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>

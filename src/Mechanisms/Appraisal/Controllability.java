@@ -34,7 +34,7 @@ public class Controllability extends AppraisalProcesses{
 	}
 	
 	// Agency: The capacity, condition, or state of acting or of exerting power.
-	public double getAgencyValue(Goal eventGoal) {
+	private double getAgencyValue(Goal eventGoal) {
 		
 		if (collaboration.getGoalType(eventGoal).equals(FOCUS_TYPE.PRIMITIVE)) {
 			if (eventGoal.getActiveMotive().getMotiveType().equals(MOTIVE_TYPE.INTERNAL))
@@ -58,7 +58,7 @@ public class Controllability extends AppraisalProcesses{
 	}
 	
 	// Autonomy: The quality or state of being self-governing. Self-directing freedom or self-governing state.
-	public double getAutonomyValue(Goal eventGoal) {
+	private double getAutonomyValue(Goal eventGoal) {
 
 		double countSelfResponsible = 0;
 		
@@ -91,7 +91,7 @@ public class Controllability extends AppraisalProcesses{
 		}
 	}
 	
-	public Double checkSucceededPredecessorsRatio(Goal eventGoal) {
+	private Double checkSucceededPredecessorsRatio(Goal eventGoal) {
 		
 		double dblSucceededPredecessorCounter = 0.0;
 		
@@ -103,7 +103,7 @@ public class Controllability extends AppraisalProcesses{
 		return (double)dblSucceededPredecessorCounter/((collaboration.getPredecessors(eventGoal).size() == 0) ? 1 : collaboration.getPredecessors(eventGoal).size());
 	}
 	
-	public Double checkAvailableInputRatio(Goal eventGoal) {
+	private Double checkAvailableInputRatio(Goal eventGoal) {
 		
 		double dblAvailableInputCounter = 0.0;
 		
