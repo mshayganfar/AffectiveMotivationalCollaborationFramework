@@ -31,7 +31,7 @@ public class Collaboration extends Mechanisms{
 	
 	private boolean collaborationStatus = true;
 	
-	private ArrayList<AGENT> childrenResponsibinity;
+	public ArrayList<AGENT> childrenResponsibinity;
 	
 	public Interaction interaction;
 	
@@ -209,34 +209,6 @@ public class Collaboration extends Mechanisms{
 			
 			return getOverallResponsibleAgent();
 		}
-
-		
-		/*if (goal.getPlan().getGoal().getExternal() != null) {
-			if(!goal.getPlan().getGoal().isPrimitive()) {
-				
-				int countResponsibles = 0;
-				
-				for (Plan childPlan : goal.getPlan().getChildren()) {
-					if (childPlan.getGoal().getExternal())
-						countResponsibles++;
-					else if (childPlan.getGoal().getExternal() == false)
-						countResponsibles--;
-				}
-				
-				if (countResponsibles == goal.getPlan().getChildren().size())
-					return AGENT.OTHER;
-				else if (Math.abs(countResponsibles) == goal.getPlan().getChildren().size())
-					return AGENT.SELF;
-				else
-					return AGENT.BOTH;
-			}
-			else if (goal.getPlan().getGoal().getExternal())
-				return AGENT.OTHER;
-			else
-				return AGENT.SELF;
-		}
-		else
-			return AGENT.BOTH;*/
 	}
 
 	private AGENT getOverallResponsibleAgent() {
@@ -254,7 +226,7 @@ public class Collaboration extends Mechanisms{
 				unknownCount++;
 		}
 		
-		childrenResponsibinity.clear();
+		//childrenResponsibinity.clear();
 		
 		if (((agentCount == 0) || (otherCount == 0)) && (unknownCount != 0))
 			return AGENT.UNKNOWN;

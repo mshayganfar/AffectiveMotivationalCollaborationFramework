@@ -3,6 +3,7 @@
            xmlns:disco="urn:disco.wpi.edu:Disco">
 
   <task id="A">
+		<postcondition> $this.isComplete() </postcondition>
     <subtasks id="recipeA">
       <step name="step1" task ="B"/>
       <step name="step2" task="C"/>
@@ -11,20 +12,28 @@
   </task>
 
   <task id="B">
+		<postcondition> $this.isComplete() </postcondition>
     <subtasks id="recipeB">
       <step name="step1" task ="e"/>
       <step name="step2" task="F"/>
+
+      <!-- <binding slot="$step1.external" value="false"/> -->
     </subtasks>
   </task>
 
   <task id="C">
+		<postcondition> $this.isComplete() </postcondition>
     <subtasks id="recipeC">
       <step name="step1" task ="g"/>
       <step name="step2" task="h"/>
+
+      <!-- <binding slot="$step1.external" value="false"/>
+      <binding slot="$step2.external" value="false"/> -->
     </subtasks>
   </task>
 
   <task id="D">
+		<postcondition> $this.isComplete() </postcondition>
     <subtasks id="recipeD">
       <step name="step1" task ="I"/>
       <step name="step2" task="J"/>
@@ -32,26 +41,39 @@
   </task>
 
   <task id="F">
+		<postcondition> $this.isComplete() </postcondition>
     <subtasks id="recipeF">
       <step name="step1" task ="k"/>
+
+      <!-- <binding slot="$step1.external" value="false"/> -->
     </subtasks>
   </task>
 
   <task id="I">
+		<postcondition> $this.isComplete() </postcondition>
     <subtasks id="recipeI">
       <step name="step1" task ="l"/>
       <step name="step2" task ="m"/>
+
+      <!-- <binding slot="$step1.external" value="false"/>
+      <binding slot="$step2.external" value="false"/> -->
     </subtasks>
   </task>
 
   <task id="J">
+		<postcondition> $this.isComplete() </postcondition>
     <subtasks id="recipeJ">
       <step name="step1" task ="n"/>
       <step name="step2" task ="o"/>
+      <step name="step3" task ="p"/>
+
+      <!--<binding slot="$step1.external" value="false"/>
+      <binding slot="$step2.external" value="true"/>
+      <binding slot="$step3.external" value="false"/> -->
     </subtasks>
   </task>
 
-  <task id="e"> </task>
+	<task id="e"> </task>
   <task id="k"> </task>
   <task id="g"> </task>
   <task id="h"> </task>
@@ -59,5 +81,15 @@
   <task id="m"> </task>
   <task id="n"> </task>
   <task id="o"> </task>
+  <task id="p"> </task>
+
+  <!-- <task id="e"> <postcondition> $this.isOccurred() </postcondition> </task>
+  <task id="k"> <postcondition> $this.isOccurred() </postcondition> </task>
+  <task id="g"> <postcondition> $this.isOccurred() </postcondition> </task>
+  <task id="h"> <postcondition> $this.isOccurred() </postcondition> </task>
+  <task id="l"> <postcondition> $this.isOccurred() </postcondition> </task>
+  <task id="m"> <postcondition> $this.isOccurred() </postcondition> </task>
+  <task id="n"> <postcondition> $this.isOccurred() </postcondition> </task>
+  <task id="o"> <postcondition> $this.isOccurred() </postcondition> </task> -->
   
 </taskModel>

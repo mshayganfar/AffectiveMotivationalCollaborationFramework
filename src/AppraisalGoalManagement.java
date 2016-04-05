@@ -75,7 +75,10 @@ public class AppraisalGoalManagement {
 		
 //		Goal eventGoal = new Goal(collaboration.getDisco().getFocus());
 		
-		Goal eventGoal = new Goal(collaboration.getDisco().getFocus().getLive().get(0));
+		System.out.println(collaboration.getDisco().getFocus());
+		
+		// Goal eventGoal = new Goal(collaboration.getDisco().getFocus().getLive().get(0));
+		Goal eventGoal = new Goal(collaboration.getDisco().getFocus());
 
 		Belief belief1 = new Belief(eventGoal);
 		Belief belief2 = new Belief(eventGoal);
@@ -91,7 +94,10 @@ public class AppraisalGoalManagement {
 //		System.out.println(goalManagement.computeCostValue(eventGoal) + " and " + eventGoal.getLabel() + " and " + collaboration.getDisco().getFocus().getType());
 		
 		System.out.println(collaboration.getDisco().getTop(collaboration.getDisco().getFocus()).getType());
+		System.out.println(collaboration.getDisco().getFocus().getType());
 		System.out.println(collaboration.getResponsibleAgent(new Goal(collaboration.getDisco().getTop(collaboration.getDisco().getFocus()))));
+		
+		System.out.println(collaboration.childrenResponsibinity);
 		
 //		interaction.getConsole().test("test/Console.test");
 //		interaction.getConsole().step("test/Console.test");
