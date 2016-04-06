@@ -5,6 +5,7 @@ import java.util.List;
 
 import Mechanisms.Mechanisms;
 import MentalState.Goal;
+import MentalState.MentalState;
 import MetaInformation.Turns;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskModel;
@@ -24,6 +25,7 @@ public class Collaboration extends Mechanisms{
 	private Disco disco;
 	private TaskModel taskModel;
 	private Plan prevFocus;
+	private Goal topLevelGoal = null;
 	
 	private boolean collaborationStatus = true;
 	
@@ -131,12 +133,18 @@ public class Collaboration extends Mechanisms{
 	
 	public Goal getTopLevelGoal() {
 		
-		Plan plan = disco.getTop(disco.getFocus());
-		String taskID = plan.getType()+"@"+Integer.toHexString(System.identityHashCode(plan));
+		if (MentalState.getInstance().getGoals().isEmpty())
+			System.out.println("ERROR: No top level goal is available.");
+		else {
+			for (Goal goal : MentalState.getInstance().getGoals()) {
+				if (goal.getPlan().getType().equals(disco.getTop(disco.getFocus()).getType()))
+					return goal;
+			}
+		}
+
+		// String taskID = plan.getType()+"@"+Integer.toHexString(System.identityHashCode(plan));
 		
-		Goal goal = new Goal(plan); // Change the agent type by reading the value from Disco.
-		// Also change the place where needs to hold the goal. To be globally accessible.
-		return goal;
+		return null;
 	}
 	
 	public GOAL_STATUS getGoalStatus(Plan plan) {
@@ -269,9 +277,9 @@ public class Collaboration extends Mechanisms{
 		return goal.getPlan().getGoal().getType().getInputs();
 	}
 	
-	public Goal recognizeGoal(/*Events event*/) {
-		return null; // This needs to be implemented.............................................
-	}
+//	public Goal recognizeGoal(/*Events event*/) {
+//		return null; // This needs to be implemented.............................................
+//	}
 	
 	public RECIPE_APPLICABILITY getRecipeApplicability(Goal goal) { return RECIPE_APPLICABILITY.APPLICABLE; }
 	
