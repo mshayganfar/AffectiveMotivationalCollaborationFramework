@@ -2,7 +2,6 @@ package MentalState;
 
 import java.util.ArrayList;
 
-import MentalState.Motive.MOTIVE_TYPE;
 import MetaInformation.Turns;
 import edu.wpi.cetask.Plan;
 
@@ -16,7 +15,7 @@ public class Goal {
 	private String label;
 	private int currentTurn;
 	private double effort;
-	private Motive activeMotive;
+	private Motive activeMotive = null;
 	
 	public Goal (Plan plan) {
 		this.plan        = plan;
@@ -61,8 +60,12 @@ public class Goal {
 		this.activeMotive = motive;
 	}
 	
+	// This method might need to be changed after I implement the Motivation mechanism.
 	public Motive getActiveMotive() {
-		return this.activeMotive;
+		if (this.activeMotive == null)
+			return MentalState.getInstance().getPrentGoal(this).getActiveMotive();
+		else
+			return this.activeMotive;
 	}
 	
 	public double getGoalEffort() {

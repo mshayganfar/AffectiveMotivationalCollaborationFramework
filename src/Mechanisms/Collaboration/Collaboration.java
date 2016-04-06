@@ -2,11 +2,8 @@ package Mechanisms.Collaboration;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import Mechanisms.Mechanisms;
-import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
-import Mechanisms.Mechanisms.AGENT;
 import MentalState.Goal;
 import MetaInformation.Turns;
 import edu.wpi.cetask.Plan;

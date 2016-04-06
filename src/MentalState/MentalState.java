@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import Mechanisms.Collaboration.Collaboration;
 import MetaInformation.Turns;
 
 public class MentalState {
@@ -45,6 +44,14 @@ public class MentalState {
 	
 	public static void addBelief(Goal goal, Belief belief) {
 		beliefs.add(belief);
+	}
+	
+	public static Goal getPrentGoal(Goal childGoal) {
+		for (Goal goal : goals) {
+			if (childGoal.getParentPlan().getType().equals(goal.getPlan().getType()))
+				return goal;
+		}
+		return null;
 	}
 	
 //	public static void updateTurn(Turns turn) {
