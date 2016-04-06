@@ -1,23 +1,14 @@
-import Mechanisms.Appraisal.AppraisalProcesses;
 import Mechanisms.Appraisal.Controllability;
 import Mechanisms.Appraisal.Desirability;
 import Mechanisms.Appraisal.Expectedness;
 import Mechanisms.Appraisal.Relevance;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.GoalManagement;
-import Mechanisms.Perception.Perception;
 import MentalState.Belief;
 import MentalState.Goal;
-import MentalState.MentalState;
 import MentalState.Motive;
-import MetaInformation.Turns;
 import edu.wpi.cetask.Plan;
-import edu.wpi.cetask.TaskClass;
 import edu.wpi.cetask.TaskModel;
-import edu.wpi.disco.Agent;
-import edu.wpi.disco.Disco;
-import edu.wpi.disco.Interaction;
-import edu.wpi.disco.User;
 
 public class AppraisalGoalManagement {
 	
@@ -50,9 +41,9 @@ public class AppraisalGoalManagement {
 	
 	public static boolean doAppraisal() {
 		
-		System.out.println(collaboration.getDisco().getFocus().getGoal());
+		System.out.println(collaboration.getActualFocus(collaboration.getDisco().getFocus()));
 		
-		if(collaboration.getDisco().getFocus() == null)
+		if(collaboration.getDisco().getLastOccurrence() == null)
 			return false;
 		else
 			return true;

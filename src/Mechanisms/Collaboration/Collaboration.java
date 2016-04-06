@@ -358,4 +358,16 @@ public class Collaboration extends Mechanisms{
 	public Interaction getInteraction() {
 		return this.interaction;
 	}
+	
+	public Plan getActualFocus(Plan discoFocus) {
+		
+		Plan actualPlan = this.disco.getFocus();
+		
+		for (Plan childPlan : actualPlan.getChildren()) {
+			if (childPlan.getGoal().getType().equals(this.disco.getLastOccurrence().getType()))
+				return childPlan;
+		}
+		
+		return actualPlan;
+	}
 }
