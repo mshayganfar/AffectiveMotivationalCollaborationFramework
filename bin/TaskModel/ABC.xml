@@ -34,7 +34,7 @@
 
   <task id="D">
 		<postcondition> $plan.isComplete() </postcondition>
-    <subtasks id="recipeD" ordered="false">
+    <subtasks id="recipeD">
       <step name="step1" task ="I"/>
       <step name="step2" task="J"/>
     </subtasks>

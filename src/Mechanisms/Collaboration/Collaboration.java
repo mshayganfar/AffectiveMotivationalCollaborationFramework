@@ -18,9 +18,8 @@ import edu.wpi.disco.User;
 
 public class Collaboration extends Mechanisms{
 
-	public enum GOAL_STATUS{ACHIEVED, FAILED, PENDING, BLOCKED, INPROGRESS, INAPPLICABLE, DONE};
+	public enum GOAL_STATUS{ACHIEVED, FAILED, PENDING, BLOCKED, INPROGRESS, INAPPLICABLE, DONE, UNKNOWN};
 	public enum FOCUS_TYPE{PRIMITIVE, NONPRIMITIVE};
-	public enum RECIPE_APPLICABILITY{APPLICABLE, INAPPLICABLE, UNKNOWN};
 	
 	private Disco disco;
 	private TaskModel taskModel;
@@ -69,10 +68,10 @@ public class Collaboration extends Mechanisms{
 	
 	public Boolean isPlanAchieved(Plan plan) {
 		
-		if (plan.isSucceeded())
-//		if (plan.getGoal().getSuccess() == null)
-//			return null;
-//		else if (plan.getGoal().getSuccess())
+//		if (plan.isSucceeded())
+		if (plan.getGoal().getSuccess() == null)
+			return null;
+		else if (plan.getGoal().getSuccess())
 			return true;
 		else
 			return false;
@@ -150,6 +149,8 @@ public class Collaboration extends Mechanisms{
 		
 		Status status = plan.getStatus();
 		
+		if (isPlanAchieved(plan) == null)
+			return GOAL_STATUS.UNKNOWN;
 		if (isPlanAchieved(plan))
 			return GOAL_STATUS.ACHIEVED;
 		else if (status.equals(Status.FAILED))
@@ -284,7 +285,7 @@ public class Collaboration extends Mechanisms{
 //		return null; // This needs to be implemented.............................................
 //	}
 	
-	public RECIPE_APPLICABILITY getRecipeApplicability(Goal goal) { return RECIPE_APPLICABILITY.APPLICABLE; }
+//	public RECIPE_APPLICABILITY getRecipeApplicability(Goal goal) { return RECIPE_APPLICABILITY.APPLICABLE; }
 	
 	public List<Plan> getPredecessors(Goal goal) {
 		

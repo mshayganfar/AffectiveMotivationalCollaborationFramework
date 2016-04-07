@@ -96,10 +96,10 @@ public class Controllability extends AppraisalProcesses{
 		double dblSucceededPredecessorCounter = 0.0;
 		
 		for (Plan plan : collaboration.getPredecessors(eventGoal)) {
-			if(collaboration.isPlanAchieved(plan))
-				dblSucceededPredecessorCounter++;
+			if (collaboration.isPlanAchieved(plan) != null)
+				if (collaboration.isPlanAchieved(plan))
+					dblSucceededPredecessorCounter++;
 		}
-		
 		return (double)dblSucceededPredecessorCounter/((collaboration.getPredecessors(eventGoal).size() == 0) ? 1 : collaboration.getPredecessors(eventGoal).size());
 	}
 	
