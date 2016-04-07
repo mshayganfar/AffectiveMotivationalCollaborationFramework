@@ -18,7 +18,7 @@ import edu.wpi.disco.User;
 
 public class Collaboration extends Mechanisms{
 
-	public enum GOAL_STATUS{ACHIEVED, FAILED, PENDING, BLOCKED, INPROGRESS, INAPPLICABLE};
+	public enum GOAL_STATUS{ACHIEVED, FAILED, PENDING, BLOCKED, INPROGRESS, INAPPLICABLE, DONE};
 	public enum FOCUS_TYPE{PRIMITIVE, NONPRIMITIVE};
 	public enum RECIPE_APPLICABILITY{APPLICABLE, INAPPLICABLE, UNKNOWN};
 	
@@ -67,10 +67,12 @@ public class Collaboration extends Mechanisms{
 		System.out.println("Collaboration started! Disco = " + disco);
 	}
 	
-	public boolean isPlanAchieved(Plan plan) {
+	public Boolean isPlanAchieved(Plan plan) {
 		
-		//if (getGoalStatus(plan).equals(GOAL_STATUS.ACHIEVED))
 		if (plan.isSucceeded())
+//		if (plan.getGoal().getSuccess() == null)
+//			return null;
+//		else if (plan.getGoal().getSuccess())
 			return true;
 		else
 			return false;
@@ -146,20 +148,24 @@ public class Collaboration extends Mechanisms{
 	
 	public GOAL_STATUS getGoalStatus(Plan plan) {
 		
-		Status postCondStatus = plan.getStatus();
+		Status status = plan.getStatus();
 		
 		if (isPlanAchieved(plan))
 			return GOAL_STATUS.ACHIEVED;
-		else if (postCondStatus.equals(Status.FAILED))
+		else if (status.equals(Status.FAILED))
 			return GOAL_STATUS.FAILED;
-		else if (postCondStatus.equals(Status.IN_PROGRESS))
+		else if (status.equals(Status.IN_PROGRESS))
 			return GOAL_STATUS.INPROGRESS;
-		else if (postCondStatus.equals(Status.BLOCKED))
+		else if (status.equals(Status.BLOCKED))
 			return GOAL_STATUS.BLOCKED;
-		else if (postCondStatus.equals(Status.PENDING))
+		else if (status.equals(Status.PENDING))
 			return GOAL_STATUS.PENDING;
-		else
+		else if (status.equals(Status.INAPPLICABLE))
 			return GOAL_STATUS.INAPPLICABLE;
+		else if (status.equals(Status.DONE))
+			return GOAL_STATUS.DONE;
+		else
+			throw new IllegalStateException(status.toString());
 	}
 	
 	public boolean doesContribute(Goal contributingGoal, Goal contributedGoal) {

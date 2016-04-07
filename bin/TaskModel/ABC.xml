@@ -4,7 +4,7 @@
 
   <task id="A">
 		<postcondition> $plan.isComplete() </postcondition>
-    <subtasks id="recipeA">
+    <subtasks id="recipeA" ordered="false">
       <step name="step1" task ="B"/>
       <step name="step2" task="C"/>
       <step name="step3" task="D"/>
@@ -13,7 +13,7 @@
 
   <task id="B">
 		<postcondition> $plan.isComplete() </postcondition>
-    <subtasks id="recipeB">
+    <subtasks id="recipeB" ordered="false">
       <step name="step1" task ="e"/>
       <step name="step2" task="F"/>
 
@@ -23,7 +23,7 @@
 
   <task id="C">
 		<postcondition> $plan.isComplete() </postcondition>
-    <subtasks id="recipeC">
+    <subtasks id="recipeC" ordered="false">
       <step name="step1" task ="g"/>
       <step name="step2" task="h"/>
 
@@ -34,7 +34,7 @@
 
   <task id="D">
 		<postcondition> $plan.isComplete() </postcondition>
-    <subtasks id="recipeD">
+    <subtasks id="recipeD" ordered="false">
       <step name="step1" task ="I"/>
       <step name="step2" task="J"/>
     </subtasks>
@@ -42,7 +42,7 @@
 
   <task id="F">
 		<postcondition> $plan.isComplete() </postcondition>
-    <subtasks id="recipeF">
+    <subtasks id="recipeF" ordered="false">
       <step name="step1" task ="k"/>
 
       <binding slot="$step1.external" value="false"/>
@@ -51,7 +51,7 @@
 
   <task id="I">
 		<postcondition> $plan.isComplete() </postcondition>
-    <subtasks id="recipeI">
+    <subtasks id="recipeI" ordered="false">
       <step name="step1" task ="l"/>
       <step name="step2" task ="m"/>
 
@@ -62,7 +62,7 @@
 
   <task id="J">
 		<postcondition> $plan.isComplete() </postcondition>
-    <subtasks id="recipeJ">
+    <subtasks id="recipeJ" ordered="false">
       <step name="step1" task ="n"/>
       <step name="step2" task ="o"/>
       <step name="step3" task ="p"/>
@@ -75,7 +75,7 @@
 
   <task id="e"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
   <task id="k"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
-  <task id="g"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
+  <task id="g"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition>	</task>
   <task id="h"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
   <task id="l"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
   <task id="m"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>

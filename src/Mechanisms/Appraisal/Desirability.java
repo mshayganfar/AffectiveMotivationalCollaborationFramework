@@ -26,8 +26,8 @@ public class Desirability extends AppraisalProcesses{
 			return DESIRABILITY.HIGH_DESIRABLE;
 		else if (collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.FAILED)) 
 			return DESIRABILITY.HIGH_UNDESIRABLE;
-		else if ((collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.BLOCKED)) ||
-				(collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.INAPPLICABLE))) 
+		else if ((collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.BLOCKED))) /*||
+				(collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.INAPPLICABLE)))*/ 
 			return DESIRABILITY.UNDESIRABLE;
 		else if ((collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.PENDING)) ||
 				(collaboration.getGoalStatus(topLevelGoalPlan).equals(GOAL_STATUS.INPROGRESS))) {
@@ -36,8 +36,8 @@ public class Desirability extends AppraisalProcesses{
 					return DESIRABILITY.DESIRABLE; //postcondition
 				else if (collaboration.getGoalStatus(eventGoalPlan).equals(GOAL_STATUS.FAILED)) 
 					return DESIRABILITY.HIGH_UNDESIRABLE; //postcondition
-				else if ((collaboration.getGoalStatus(eventGoalPlan).equals(GOAL_STATUS.BLOCKED)) ||
-						(collaboration.getGoalStatus(eventGoalPlan).equals(GOAL_STATUS.INAPPLICABLE))) 
+				else if ((collaboration.getGoalStatus(eventGoalPlan).equals(GOAL_STATUS.BLOCKED))) /*||
+						(collaboration.getGoalStatus(eventGoalPlan).equals(GOAL_STATUS.INAPPLICABLE)))*/ 
 					return DESIRABILITY.UNDESIRABLE; //predecessors & preconditions
 				else if ((collaboration.getGoalStatus(eventGoalPlan).equals(GOAL_STATUS.PENDING)) ||
 						(collaboration.getGoalStatus(eventGoalPlan).equals(GOAL_STATUS.INPROGRESS))) { 
