@@ -23,7 +23,6 @@ public class Goal {
 		this.label       = plan.getGoal().getType().toString();
 		this.currentTurn = Turns.getInstance().getTurnNumber();
 		this.effort      = 1.0;
-		MentalState.getInstance().addGoal(this);
 	}
 	
 	public Plan getPlan() {
@@ -40,6 +39,10 @@ public class Goal {
 	
 	public void addBeliefs(Belief belief) {
 		Beliefs.add(belief);
+	}
+	
+	public void addGoalToMentalState() {
+		MentalState.getInstance().addGoal(this);
 	}
 	
 	public ArrayList<Belief> getBeliefs() {
@@ -63,7 +66,7 @@ public class Goal {
 	// This method might need to be changed after I implement the Motivation mechanism.
 	public Motive getActiveMotive() {
 		if (this.activeMotive == null)
-			return MentalState.getInstance().getPrentGoal(this).getActiveMotive();
+			return MentalState.getInstance().getParentGoal(this).getActiveMotive();
 		else
 			return this.activeMotive;
 	}

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import MetaInformation.Turns;
+import edu.wpi.cetask.Plan;
 
 public class MentalState {
 	
@@ -46,11 +47,21 @@ public class MentalState {
 		beliefs.add(belief);
 	}
 	
-	public static Goal getPrentGoal(Goal childGoal) {
+	public static Goal getParentGoal(Goal childGoal) {
 		for (Goal goal : goals) {
 			if (childGoal.getParentPlan().getType().equals(goal.getPlan().getType()))
 				return goal;
 		}
+		return null;
+	}
+	
+	public static Goal getSpecificGoal(Plan specificPlan) {
+		
+		for (Goal goal : goals) {
+			if (goal.getPlan().getType().equals(specificPlan.getType()))
+				return goal;
+		}
+		
 		return null;
 	}
 	

@@ -45,6 +45,7 @@ public class AppraisalGoalManagement {
 	public static boolean doAppraisal() {
 		
 		Goal recognizedGoal = new Goal(collaboration.getActualFocus(collaboration.getDisco().getFocus()));
+		recognizedGoal.addGoalToMentalState();
 		
 		Belief belief1 = new Belief(recognizedGoal);
 		Belief belief2 = new Belief(recognizedGoal);

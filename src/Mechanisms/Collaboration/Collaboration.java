@@ -122,7 +122,7 @@ public class Collaboration extends Mechanisms{
 		Plan plan       = disco.getFocus();
 		String taskID   = plan.getType()+"@"+Integer.toHexString(System.identityHashCode(plan));
 		
-		Goal goal = new Goal(plan); // Change the agent type by reading the value from Disco.
+		Goal goal = new Goal(plan); //MentalState.getInstance().getSpecificGoal(plan); // Change the agent type by reading the value from Disco.
 		
 		return goal;
 	}
@@ -136,10 +136,7 @@ public class Collaboration extends Mechanisms{
 		if (MentalState.getInstance().getGoals().isEmpty())
 			System.out.println("ERROR: No top level goal is available.");
 		else {
-			for (Goal goal : MentalState.getInstance().getGoals()) {
-				if (goal.getPlan().getType().equals(disco.getTop(disco.getFocus()).getType()))
-					return goal;
-			}
+			return MentalState.getInstance().getGoals().get(0); // First Goal is always the top level goal.
 		}
 
 		// String taskID = plan.getType()+"@"+Integer.toHexString(System.identityHashCode(plan));
@@ -354,8 +351,8 @@ public class Collaboration extends Mechanisms{
 		System.out.println(this.getDisco().getFocus().getGoal());
 		System.out.println(this.getDisco().getFocus().getParent().getGoal());
 		
-		Goal child   = new Goal(this.getDisco().getFocus());
-		Goal parent  = new Goal(this.getDisco().getFocus());
+//		Goal child   = new Goal(this.getDisco().getFocus());
+//		Goal parent  = new Goal(this.getDisco().getFocus());
 		
 //		mentalState.assertGoal(1, "G1-1", null, AGENT.SELF, child, parent);
 	}

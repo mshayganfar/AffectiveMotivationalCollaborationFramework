@@ -3,6 +3,7 @@ package MetaInformation;
 import java.util.ArrayList;
 
 import MentalState.Goal;
+import MentalState.MentalState;
 import edu.wpi.cetask.Plan;
 import edu.wpi.disco.Disco;
 
