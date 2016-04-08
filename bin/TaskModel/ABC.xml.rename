@@ -22,9 +22,8 @@
   </task>
 
   <task id="C">
-		<precondition> false </precondition>
 		<postcondition> $plan.isComplete() </postcondition>
-    <subtasks id="recipeC" ordered="false">
+    <subtasks id="recipeC" ordered="true">
       <step name="step1" task ="g"/>
       <step name="step2" task="h"/>
 

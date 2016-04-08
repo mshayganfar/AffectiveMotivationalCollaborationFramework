@@ -1,8 +1,12 @@
 package Mechanisms.Appraisal;
 
+import java.util.ArrayList;
+
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.Collaboration.*;
 import MentalState.*;
+import MetaInformation.GoalTree;
+import MetaInformation.Node;
 import edu.wpi.cetask.Plan;
 
 public class Desirability extends AppraisalProcesses{

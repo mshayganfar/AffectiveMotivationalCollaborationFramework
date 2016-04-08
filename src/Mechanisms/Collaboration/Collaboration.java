@@ -1,11 +1,15 @@
 package Mechanisms.Collaboration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Mechanisms.Mechanisms;
 import MentalState.Goal;
 import MentalState.MentalState;
+import MetaInformation.GoalTree;
+import MetaInformation.Node;
 import MetaInformation.Turns;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskModel;
@@ -29,6 +33,8 @@ public class Collaboration extends Mechanisms{
 	private boolean collaborationStatus = true;
 	
 	private ArrayList<AGENT> childrenResponsibinity;
+	
+	private Map<String, Boolean> preconditionsLOT = new HashMap<String, Boolean>();
 	
 	private Interaction interaction;
 	
@@ -378,5 +384,26 @@ public class Collaboration extends Mechanisms{
 		}
 		
 		return actualPlan;
+	}
+	
+	private boolean isGoalApplicable(Goal eventGoal) {
+	
+		if (preconditionsLOT.get(eventGoal.getPlan().toString()) == null)
+			return false;
+		else if (preconditionsLOT.get(eventGoal.getPlan().toString()))
+			return true;
+		else
+			return false;
+	}	
+	
+	private void updatePreconditionApplicability() {
+		
+		GoalTree goalTree = new GoalTree(collaboration.getDisco());
+		
+		ArrayList<Node> treeNodes = goalTree.createTree();
+		
+		for (Node node : treeNodes) {
+			preconditionsLOT.put(node.getNodeGoalPlan().toString(), node.getNodeGoalPlan().isApplicable());
+		}
 	}
 }

@@ -11,6 +11,7 @@ execute k
 eval appraise()
 task C
 eval appraise()
+eval $disco.isLastShift()
 execute g
 eval appraise()
 execute h
