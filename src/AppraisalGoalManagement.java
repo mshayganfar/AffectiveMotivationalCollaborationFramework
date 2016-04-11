@@ -2,11 +2,14 @@ import Mechanisms.Appraisal.Controllability;
 import Mechanisms.Appraisal.Desirability;
 import Mechanisms.Appraisal.Expectedness;
 import Mechanisms.Appraisal.Relevance;
+import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.GoalManagement;
+import Mechanisms.Motivation.SatisfactionDrive;
 import MentalState.Belief;
 import MentalState.Goal;
 import MentalState.Motive;
+import MetaInformation.Turns;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskModel;
 
@@ -44,6 +47,8 @@ public class AppraisalGoalManagement {
 	
 	public static boolean doAppraisal() {
 		
+		Turns turn = Turns.getInstance();
+		
 		Goal recognizedGoal = new Goal(collaboration.getActualFocus(collaboration.getDisco().getFocus()));
 		recognizedGoal.addGoalToMentalState();
 		
@@ -55,8 +60,18 @@ public class AppraisalGoalManagement {
 		
 		System.out.println(relevance.isEventRelevant(recognizedGoal));
 		System.out.println(controllability.isEventControllable(recognizedGoal));
-		System.out.println(desirability.isEventDesirable(recognizedGoal));
+		DESIRABILITY desirabilityValue = desirability.isEventDesirable(recognizedGoal);
+		System.out.println(desirabilityValue);
 		System.out.println(expectedness.isEventExpected(recognizedGoal));
+		
+		turn.updateTurnDesirability(desirabilityValue);
+		
+		SatisfactionDrive test = new SatisfactionDrive();
+		double delta = test.getSatisfactionDriveDelta();
+		System.out.println(delta);
+		test.updatePrevSatisfactionDriveValue(delta);
+		
+		turn.updateTurn();
 		
 		if(collaboration.getDisco().getLastOccurrence() == null)
 			return false;
@@ -65,8 +80,6 @@ public class AppraisalGoalManagement {
 	}
 	
 	public static void main(String[] args) {
-		
-//		Turns turn = Turns.getInstance();
 		
 		collaboration = new Collaboration(args);
 		

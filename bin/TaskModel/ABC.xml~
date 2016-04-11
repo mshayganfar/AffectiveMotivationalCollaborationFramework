@@ -22,13 +22,14 @@
   </task>
 
   <task id="C">
+		<precondition> false </precondition>
 		<postcondition> $plan.isComplete() </postcondition>
     <subtasks id="recipeC" ordered="false">
       <step name="step1" task ="g"/>
       <step name="step2" task="h"/>
 
       <binding slot="$step1.external" value="false"/>
-      <binding slot="$step2.external" value="true"/>
+      <binding slot="$step2.external" value="false"/>
     </subtasks>
   </task>
 
@@ -68,7 +69,7 @@
       <step name="step3" task ="p"/>
 
       <binding slot="$step1.external" value="false"/>
-      <binding slot="$step2.external" value="true"/>
+      <binding slot="$step2.external" value="false"/>
       <binding slot="$step3.external" value="false"/>
     </subtasks>
   </task>

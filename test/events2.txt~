@@ -1,3 +1,4 @@
+verbose
 next false
 task A
 eval appraise()
@@ -11,14 +12,13 @@ execute k
 eval appraise()
 task C
 eval appraise()
-eval $disco.isLastShift()
-eval $disco.isLastShift()
 execute g
 eval appraise()
 execute h
 eval appraise()
 task D
 eval appraise()
+eval $disco.isLastShift()
 task I
 eval appraise()
 execute l
@@ -27,6 +27,7 @@ execute m
 eval appraise()
 task J
 eval appraise()
+eval $disco.isLastShift()
 execute n
 eval appraise()
 execute o

@@ -1,5 +1,7 @@
 package Mechanisms.Appraisal;
 
+import java.util.ArrayList;
+
 import Mechanisms.Mechanisms;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Perception.Perception;
