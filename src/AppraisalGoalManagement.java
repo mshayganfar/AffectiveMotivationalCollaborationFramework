@@ -5,7 +5,9 @@ import Mechanisms.Appraisal.Relevance;
 import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.GoalManagement;
+import Mechanisms.Motivation.Motivation;
 import Mechanisms.Motivation.SatisfactionDrive;
+import Mechanisms.ToM.ToM;
 import MentalState.Belief;
 import MentalState.Goal;
 import MentalState.Motive;
@@ -22,6 +24,8 @@ public class AppraisalGoalManagement {
 	private static Controllability controllability;
 	private static Desirability desirability;
 	private static Expectedness expectedness;
+	private static ToM tom;
+	private static Motivation motivaiton;
 	
 	private static Goal updateGoal(Plan plan) {
 
@@ -67,9 +71,8 @@ public class AppraisalGoalManagement {
 		turn.updateTurnDesirability(desirabilityValue);
 		
 		SatisfactionDrive test = new SatisfactionDrive();
-		double delta = test.getSatisfactionDriveDelta();
-		System.out.println(delta);
-		test.updatePrevSatisfactionDriveValue(delta);
+		System.out.println(test.getSatisfactionDriveDelta());
+		test.updatePrevSatisfactionDriveValue(test.getSatisfactionDriveValue());
 		
 		turn.updateTurn();
 		
@@ -81,12 +84,15 @@ public class AppraisalGoalManagement {
 	
 	public static void main(String[] args) {
 		
+		tom = new ToM();
 		collaboration = new Collaboration(args);
 		
 		relevance = new Relevance(collaboration);
 		controllability = new Controllability(collaboration);
 		desirability = new Desirability(collaboration);
 		expectedness = new Expectedness(collaboration);
+		
+		motivaiton = new Motivation(tom, controllability, expectedness);
 		
 		GoalManagement goalManagement = new GoalManagement(collaboration, relevance, desirability);
 		

@@ -2,6 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="lib/disco.jar"/>
+	<classpathentry kind="lib" path="lib/disco.jar" sourcepath="lib/disco-src.zip">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/mohammad/workspace/AppraisalGoalManagement/lib/disco-api.zip!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

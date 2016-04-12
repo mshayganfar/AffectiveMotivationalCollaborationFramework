@@ -71,10 +71,15 @@ public class SatisfactionDrive {
 	
 	public double getSatisfactionDriveDelta() {
 		
-		return getSatisfactionDriveValue() - getPrevSatisfactionDriveValue();
+		double satValue = getSatisfactionDriveValue();
+		double satPrevValue = getPrevSatisfactionDriveValue();
+		
+		double satValueSum = ((satValue + satPrevValue) == 0) ? 1 : (satValue + satPrevValue);
+		
+		return  ((double)satValue/satValueSum) - ((double)satPrevValue/satValueSum);
 	}
 	
-	public double getPrevSatisfactionDriveValue() {
+	private double getPrevSatisfactionDriveValue() {
 		return prevSatisfactionValue;
 	}
 	

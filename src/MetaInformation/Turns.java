@@ -2,11 +2,15 @@ package MetaInformation;
 
 import java.util.ArrayList;
 
+import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
 import Mechanisms.Appraisal.Desirability.DESIRABILITY;
+import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
 
 public class Turns {
 	
-	private static ArrayList<DESIRABILITY> desirabilities = new ArrayList<DESIRABILITY>(); 
+	private static ArrayList<DESIRABILITY> desirabilities       = new ArrayList<DESIRABILITY>();
+	private static ArrayList<CONTROLLABILITY> controllabilities = new ArrayList<CONTROLLABILITY>();
+	private static ArrayList<EXPECTEDNESS> expectednesses       = new ArrayList<EXPECTEDNESS>();
 	
 	private static Turns turn = new Turns();
 	
@@ -40,6 +44,14 @@ public class Turns {
 		return this.desirabilities;
 	}
 	
+	public ArrayList<CONTROLLABILITY> getControllabilities() {
+		return this.controllabilities;
+	}
+	
+	public ArrayList<EXPECTEDNESS> getExpectednesses() {
+		return this.expectednesses;
+	}
+	
 	public double getDesirabilityValue(DESIRABILITY desirabilitySymbolicValue) {
 		
 		switch (desirabilitySymbolicValue) {
@@ -58,15 +70,35 @@ public class Turns {
 		}
 	}
 	
-//	public int value(String strTurn) {
-//		return Integer.valueOf(strTurn.substring(5));
-//	}
+	public double getControllabilityValue(CONTROLLABILITY controllabilitySymbolicValue) {
+		
+		switch (controllabilitySymbolicValue) {
+			case CONTROLLABLE:
+				return 1.0;
+			case UNCONTROLLABLE:
+				return 0.0;
+			default:
+				return -0.1;	
+		}
+	}
 	
-//	public String getLastTurn() {
-//		return ("\"turn:" + count + "\"");
-//	}
-	
-//	public String getPreviousTurn() {
-//		return (count == 1) ? ("\"turn:" + count + "\"") : ("\"turn:" + (count-1) + "\"");
-//	}
+	public double getExpectednessValue(EXPECTEDNESS expectednessSymbolicValue) {
+		
+		switch (expectednessSymbolicValue) {
+			case MOST_EXPECTED:
+				return 1.0;
+			case EXPECTED:
+				return 0.8;
+			case LESS_EXPECTED:
+				return 0.6;
+			case LESS_UNEXPECTED:
+				return 0.4;
+			case UNEXPECTED:
+				return 0.2;
+			case MOST_UNEXPECTED:
+				return 0.0;
+			default:
+				return -0.1;	
+		}
+	}
 }

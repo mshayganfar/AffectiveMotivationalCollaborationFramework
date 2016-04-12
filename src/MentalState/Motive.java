@@ -15,6 +15,13 @@ public class Motive {
 		this.goal.addMotives(this);
 	}
 	
+	public Motive (Goal goal, MOTIVE_TYPE motiveType) {
+		this.goal  = goal;
+		this.label = goal.getPlan().getGoal().getType().toString();
+		this.motiveType = motiveType;
+		this.goal.addMotives(this);
+	}
+	
 	public Goal getGoal() {
 		return this.goal;
 	}
