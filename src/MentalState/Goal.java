@@ -38,8 +38,12 @@ public class Goal {
 	}
 	
 	public void addBeliefs(Belief belief) {
-		Beliefs.add(belief);
+		this.Beliefs.add(belief);
 	}
+	
+//	public void addMotives(Motive motive) {
+//		this.Motives.add(motive);
+//	}
 	
 	public void addGoalToMentalState() {
 		MentalState.getInstance().addGoal(this);

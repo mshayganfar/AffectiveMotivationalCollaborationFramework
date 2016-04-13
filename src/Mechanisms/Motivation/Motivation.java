@@ -6,17 +6,15 @@ import Mechanisms.Appraisal.Expectedness;
 import Mechanisms.ToM.ToM;
 import MentalState.Goal;
 import MentalState.Motive;
+import MentalState.Motive.MOTIVE_TYPE;
 import MetaInformation.Turns;
+import edu.wpi.disco.lang.Propose;
 
 public class Motivation extends Mechanisms {
 	
 	private ToM tom;
 	private Controllability controllability;
 	private Expectedness expectedness;
-	
-	private Motive externalMotive;
-	private Motive achievementMotive;
-	private Motive satisfactionMotive;
 	
 	private SatisfactionDrive satisfactionDrive;
 	
@@ -27,7 +25,7 @@ public class Motivation extends Mechanisms {
 		 this.expectedness    = expectedness;
 	}
 	
-	public double getSatisfactionMotiveValue() {
+	private double createSatisfactionMotive() {
 		
 		double firstGradient  = 4.0;
 		double secondGradient = 10.0;
@@ -43,7 +41,7 @@ public class Motivation extends Mechanisms {
 		return satMotiveValue;
 	}
 	
-	public double getAchievementMotiveValue(Goal goal) {
+	private double createAchievementMotive(Goal goal) {
 		
 		double firstSigmoidValue  = 0.0;
 		double secondSigmoidValue = 0.0;
@@ -61,14 +59,38 @@ public class Motivation extends Mechanisms {
 		if (valence >= 0) {
 			firstSigmoidValue  = (double)1 / (1 + Math.exp(firstGradient * (valence - successProbability)));
 			secondSigmoidValue = (double)1 / (1 + Math.exp(secondGradient * (valence - successProbability)));
+			
+			goal.addMotives(new Motive(goal, MOTIVE_TYPE.ACHIEVEMENT_APPROACH));
 		}
 		else {
 			firstSigmoidValue  = (double)1 / (1 + Math.exp(-firstGradient * (valence - successProbability)));
 			secondSigmoidValue = (double)1 / (1 + Math.exp(-secondGradient * (valence - successProbability)));
+			
+			goal.addMotives(new Motive(goal, MOTIVE_TYPE.ACHIEVEMENT_AVOID)); // Check whether this is negative?!
 		}
 		
-		double achMotiveValue = firstSigmoidValue - secondSigmoidValue;
+		return firstSigmoidValue - secondSigmoidValue;
+	}
+	
+	private double getExternalMotiveValue(Goal goal, Motive motive) {
 		
-		return achMotiveValue;
+		return 0.5;
+	}
+	
+	private double createExternalMotive(Goal goal) {
+		
+		if (collaboration.getDisco().getLastOccurrence() instanceof Propose.Should) {
+			Motive motive = new Motive(goal, MOTIVE_TYPE.EXTERNAL);
+			goal.addMotives(motive);
+			return getExternalMotiveValue(goal, motive);
+		}
+		return -2.0;
+	}
+
+	public void createMotives(Goal goal) {
+		
+		double externalMotiveValue     = createExternalMotive(goal);
+		double satisfactionMotiveValue = createSatisfactionMotive();
+		double achievementMotiveValue  = createAchievementMotive(goal);
 	}
 }

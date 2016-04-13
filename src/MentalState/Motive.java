@@ -2,23 +2,26 @@ package MentalState;
 
 public class Motive {
 
-	public enum MOTIVE_TYPE{INTERNAL, EXTERNAL};
+	public enum MOTIVE_TYPE{ACHIEVEMENT_APPROACH, ACHIEVEMENT_AVOID, INTERNAL_DEFAULT, EXTERNAL};
 	
 	private String label;
 	private Goal goal;
 	private MOTIVE_TYPE motiveType;
+	private boolean activeMotive;
 	
 	public Motive (Goal goal) {
 		this.goal  = goal;
 		this.label = goal.getPlan().getGoal().getType().toString();
-		this.motiveType = MOTIVE_TYPE.INTERNAL;
+		this.motiveType   = MOTIVE_TYPE.INTERNAL_DEFAULT;
+		this.activeMotive = false;
 		this.goal.addMotives(this);
 	}
 	
 	public Motive (Goal goal, MOTIVE_TYPE motiveType) {
 		this.goal  = goal;
 		this.label = goal.getPlan().getGoal().getType().toString();
-		this.motiveType = motiveType;
+		this.motiveType   = motiveType;
+		this.activeMotive = false;
 		this.goal.addMotives(this);
 	}
 	
@@ -33,4 +36,16 @@ public class Motive {
 	public MOTIVE_TYPE getMotiveType() {
 		return this.motiveType;
 	}
+	
+	public void activateMotive() {
+		for (Motive motive : this.getGoal().getMotives()) {
+			motive.deactivateMotive();
+		}
+		this.activeMotive = true;
+	}
+	
+	public void deactivateMotive() {
+		this.activeMotive = false;
+	}
+			
 }

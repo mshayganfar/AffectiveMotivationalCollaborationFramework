@@ -37,7 +37,7 @@ public class Controllability extends AppraisalProcesses{
 	private double getAgencyValue(Goal eventGoal) {
 		
 		if (collaboration.getGoalType(eventGoal).equals(FOCUS_TYPE.PRIMITIVE)) {
-			if (eventGoal.getActiveMotive().getMotiveType().equals(MOTIVE_TYPE.INTERNAL))
+			if (!eventGoal.getActiveMotive().getMotiveType().equals(MOTIVE_TYPE.EXTERNAL))
 				return 1.0;
 			else
 				return 0.0;
@@ -48,7 +48,7 @@ public class Controllability extends AppraisalProcesses{
 			for (Plan plan : eventGoal.getPlan().getChildren()) {
 				for (Goal goal : MentalState.getInstance().getGoals())
 					if (goal.getPlan().getType().equals(plan.getType())) {
-						if (goal.getActiveMotive().getMotiveType().equals(MOTIVE_TYPE.INTERNAL))
+						if (!goal.getActiveMotive().getMotiveType().equals(MOTIVE_TYPE.EXTERNAL))
 							motiveTypeSum++;
 						countMotives++;
 					}
