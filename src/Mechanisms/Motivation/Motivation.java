@@ -27,15 +27,44 @@ public class Motivation extends Mechanisms {
 	
 	private double createSatisfactionMotive() {
 		
-		double firstGradient  = 4.0;
-		double secondGradient = 10.0;
+		double firstSigmoidValue  = 0.0;
+		double secondSigmoidValue = 0.0;
+		
+		double firstGradient  = 0.0;
+		double secondGradient = 0.0;
 		
 		double valence  = tom.getValenceValue();
 		double satDelta = satisfactionDrive.getSatisfactionDriveDelta();
 		
-		double firstSigmoidValue  = (double)1 / (1 + Math.exp(firstGradient * (valence - satDelta)));
-		double secondSigmoidValue = (double)1 / (1 + Math.exp(secondGradient * (valence - satDelta)));
-		
+		if (satDelta >= 0) {
+			if (valence >= 0) {
+				firstGradient  = 2.0;
+				secondGradient = 8.0;
+				firstSigmoidValue  = (double)1 / (1 + Math.exp(firstGradient * ((1 - satDelta) - valence)));
+				secondSigmoidValue = (double)1 / (1 + Math.exp(secondGradient * (1.5 - valence)));
+			}
+			else {
+				firstGradient  = 1.5;
+				secondGradient = 1.5;
+				firstSigmoidValue  = (double)1 / (1 + Math.exp(-firstGradient * (satDelta - (2 * Math.abs(valence)))));
+				secondSigmoidValue = (double)1 / (1 + Math.exp(-secondGradient * (1.5 - (Math.abs(valence)))));
+			}
+		}
+		else {
+			if (valence >= 0) {
+				firstGradient  = 2.0;
+				secondGradient = 2.0;
+				firstSigmoidValue  = (double)1 / (1 + Math.exp(firstGradient * ((1 - Math.abs(satDelta)) - valence)));
+				secondSigmoidValue = (double)1 / (1 + Math.exp(secondGradient * (1.5 - valence)));
+			}
+			else {
+				firstGradient  = 2.0;
+				secondGradient = 8.0;
+				firstSigmoidValue  = (double)1 / (1 + Math.exp(-firstGradient * ((1 - Math.abs(satDelta)) - (2 * Math.abs(valence)))));
+				secondSigmoidValue = (double)1 / (1 + Math.exp(-secondGradient * (1.5 - (Math.abs(valence)))));
+			}
+		}
+
 		double satMotiveValue = firstSigmoidValue - secondSigmoidValue;
 		
 		return satMotiveValue;
