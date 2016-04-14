@@ -74,21 +74,21 @@ public class Collaboration extends Mechanisms{
 	
 	public Boolean isPlanAchieved(Plan plan) {
 		
-		if (!plan.isDone()) {
-			return null;
-		}
-		else {
-			if (plan.isSucceeded())
-				return true;
-			else
-				return false;
-//			if (plan.getGoal().getSuccess() == null)
-//				return null;
-//			else if (plan.getGoal().getSuccess())
+//		if (!plan.isDone()) {
+//			return null;
+//		}
+//		else {
+//			if (plan.isSucceeded())
 //				return true;
 //			else
 //				return false;
-		}
+
+		if (plan.getGoal().getSuccess() == null)
+			return null;
+		else if (plan.getGoal().getSuccess())
+			return true;
+		else
+			return false;
 	}
 	
 	public boolean isGoalAchieved(Goal goal) {

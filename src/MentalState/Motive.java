@@ -14,7 +14,7 @@ public class Motive {
 		this.goal  = goal;
 		this.label = goal.getPlan().getGoal().getType().toString();
 		this.motiveType   = MOTIVE_TYPE.INTERNAL_DEFAULT;
-		this.activeMotive = false;
+		this.activeMotive = true;
 		this.motiveIntensity = 0.5;
 		this.goal.addMotives(this);
 	}
@@ -50,5 +50,12 @@ public class Motive {
 	public void deactivateMotive() {
 		this.activeMotive = false;
 	}
-			
+	
+	public double getMotiveIntensity() {
+		return this.motiveIntensity;
+	}
+	
+	public boolean isActiveMotive() {
+		return this.activeMotive; 
+	}
 }

@@ -68,6 +68,8 @@ public class AppraisalGoalManagement {
 		System.out.println(desirabilityValue);
 		System.out.println(expectedness.isEventExpected(recognizedGoal));
 		
+		System.out.println(recognizedGoal.getPlan().getType().getProperty("difficulty"));
+		
 		turn.updateTurnDesirability(desirabilityValue);
 		
 		SatisfactionDrive test = new SatisfactionDrive();

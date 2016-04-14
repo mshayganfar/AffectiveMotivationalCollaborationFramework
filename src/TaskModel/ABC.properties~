@@ -1,0 +1,5 @@
+# Task difficulty levels: NORMAL, DIFFICULT, MOST_DIFFICULT
+
+A@difficulty = MOST_DIFFICULT
+B@difficulty = DIFFICULT
+e@difficulty = NORMAL

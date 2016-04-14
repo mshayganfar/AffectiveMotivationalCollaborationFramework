@@ -25,7 +25,7 @@ public class Motivation extends Mechanisms {
 		 this.expectedness    = expectedness;
 	}
 	
-	private double createSatisfactionMotive(Goal goal) {
+	private Motive createSatisfactionMotive(Goal goal) {
 		
 		double firstSigmoidValue  = 0.0;
 		double secondSigmoidValue = 0.0;
@@ -36,22 +36,20 @@ public class Motivation extends Mechanisms {
 		double valence  = tom.getValenceValue();
 		double satDelta = satisfactionDrive.getSatisfactionDriveDelta();
 		
+		Motive satisfactionMotive;
+		
 		if (satDelta >= 0) {
 			if (valence >= 0) {
 				firstGradient  = 2.0;
 				secondGradient = 8.0;
 				firstSigmoidValue  = (double)1 / (1 + Math.exp(firstGradient * ((1 - satDelta) - valence)));
 				secondSigmoidValue = (double)1 / (1 + Math.exp(secondGradient * (1.5 - valence)));
-				
-				goal.addMotives(new Motive(goal, MOTIVE_TYPE.SATISFACTION, firstSigmoidValue - secondSigmoidValue));
 			}
 			else {
 				firstGradient  = 1.5;
 				secondGradient = 1.5;
 				firstSigmoidValue  = (double)1 / (1 + Math.exp(-firstGradient * (satDelta - (2 * Math.abs(valence)))));
 				secondSigmoidValue = (double)1 / (1 + Math.exp(-secondGradient * (1.5 - (Math.abs(valence)))));
-				
-				goal.addMotives(new Motive(goal, MOTIVE_TYPE.SATISFACTION, firstSigmoidValue - secondSigmoidValue));
 			}
 		}
 		else {
@@ -60,31 +58,30 @@ public class Motivation extends Mechanisms {
 				secondGradient = 1.5;
 				firstSigmoidValue  = (double)1 / (1 + Math.exp(firstGradient * (Math.abs(satDelta) - (3 * valence))));
 				secondSigmoidValue = (double)1 / (1 + Math.exp(secondGradient * (1.5 - valence)));
-				
-				goal.addMotives(new Motive(goal, MOTIVE_TYPE.SATISFACTION, firstSigmoidValue - secondSigmoidValue));
 			}
 			else {
 				firstGradient  = 2.0;
 				secondGradient = 8.0;
 				firstSigmoidValue  = (double)1 / (1 + Math.exp(-firstGradient * ((1 - Math.abs(satDelta)) - (2 * Math.abs(valence)))));
 				secondSigmoidValue = (double)1 / (1 + Math.exp(-secondGradient * (1.5 - (Math.abs(valence)))));
-				
-				goal.addMotives(new Motive(goal, MOTIVE_TYPE.SATISFACTION, firstSigmoidValue - secondSigmoidValue));
 			}
 		}
-
-		double satMotiveValue = firstSigmoidValue - secondSigmoidValue;
 		
-		return satMotiveValue;
+		satisfactionMotive = new Motive(goal, MOTIVE_TYPE.SATISFACTION, firstSigmoidValue - secondSigmoidValue);
+		goal.addMotives(satisfactionMotive);
+		
+		return satisfactionMotive;
 	}
 	
-	private double createAchievementMotive(Goal goal) {
+	private Motive createAchievementMotive(Goal goal) {
 		
 		double firstSigmoidValue  = 0.0;
 		double secondSigmoidValue = 0.0;
 		
 		double firstGradient  = 4.0;
 		double secondGradient = 10.0;
+		
+		Motive achievementMotive;
 		
 		double valence  = tom.getValenceValue();
 		
@@ -96,8 +93,6 @@ public class Motivation extends Mechanisms {
 		if (valence >= 0) {
 			firstSigmoidValue  = (double)1 / (1 + Math.exp(firstGradient * (valence - successProbability)));
 			secondSigmoidValue = (double)1 / (1 + Math.exp(secondGradient * (valence - successProbability)));
-			
-			goal.addMotives(new Motive(goal, MOTIVE_TYPE.ACHIEVEMENT, firstSigmoidValue - secondSigmoidValue));
 		}
 		else {
 			firstSigmoidValue  = (double)1 / (1 + Math.exp(-firstGradient * (valence - successProbability)));
@@ -106,7 +101,10 @@ public class Motivation extends Mechanisms {
 			goal.addMotives(new Motive(goal, MOTIVE_TYPE.ACHIEVEMENT, firstSigmoidValue - secondSigmoidValue));
 		}
 		
-		return firstSigmoidValue - secondSigmoidValue;
+		achievementMotive = new Motive(goal, MOTIVE_TYPE.ACHIEVEMENT, firstSigmoidValue - secondSigmoidValue);
+		goal.addMotives(achievementMotive);
+		
+		return achievementMotive;
 	}
 	
 	private double getExternalMotiveValue(Goal goal, Motive motive) {
@@ -114,20 +112,74 @@ public class Motivation extends Mechanisms {
 		return 0.5;
 	}
 	
-	private double createExternalMotive(Goal goal) {
+	private Motive createExternalMotive(Goal goal) {
 		
 		if (collaboration.getDisco().getLastOccurrence() instanceof Propose.Should) {
-			Motive motive = new Motive(goal, MOTIVE_TYPE.EXTERNAL, 0.5); // How should I comopute external motive's intensity?!
-			goal.addMotives(motive);
-			return getExternalMotiveValue(goal, motive);
+			Motive externalMotive = new Motive(goal, MOTIVE_TYPE.EXTERNAL, 0.5); // How should I comopute external motive's intensity?!
+			goal.addMotives(externalMotive);
+			return externalMotive;
 		}
-		return -2.0;
+		
+		return null;
 	}
 
-	public void createMotives(Goal goal) {
+	private MOTIVE_TYPE getHighestIntensityMotive (double externalMotiveIntensity, double satisfactionMotiveIntensity, double achievementMotiveIntensity) {
 		
-		double externalMotiveValue     = createExternalMotive(goal);
-		double satisfactionMotiveValue = createSatisfactionMotive(goal);
-		double achievementMotiveValue  = createAchievementMotive(goal);
+		if (((externalMotiveIntensity >= satisfactionMotiveIntensity) && (satisfactionMotiveIntensity >= achievementMotiveIntensity)) ||
+			((externalMotiveIntensity >= achievementMotiveIntensity) && (achievementMotiveIntensity <= satisfactionMotiveIntensity)))
+			return MOTIVE_TYPE.EXTERNAL;
+		else if (((satisfactionMotiveIntensity >= externalMotiveIntensity) && (externalMotiveIntensity >= achievementMotiveIntensity)) ||
+				((satisfactionMotiveIntensity >= achievementMotiveIntensity) && (achievementMotiveIntensity <= externalMotiveIntensity)))
+			return MOTIVE_TYPE.SATISFACTION;
+		else
+			return MOTIVE_TYPE.ACHIEVEMENT;
+	}
+	
+	private double getDefaultInternalMotiveIntensity(Goal goal) {
+		
+		for (Motive motive : goal.getMotives()) {
+			if (motive.getMotiveType().equals(MOTIVE_TYPE.INTERNAL_DEFAULT))
+				return motive.getMotiveIntensity();
+		}
+		
+		return 0.0;
+	}
+	
+	private MOTIVE_TYPE arbitrateMotives(Goal goal, Motive externalMotive, Motive satisfactionMotive, Motive achievementMotive) {
+		
+		switch(getHighestIntensityMotive ((externalMotive == null) ? 0.0 : externalMotive.getMotiveIntensity(), 
+				   satisfactionMotive.getMotiveIntensity(), 
+				   achievementMotive.getMotiveIntensity())) {
+		case EXTERNAL:
+			if (externalMotive.getMotiveIntensity() > getDefaultInternalMotiveIntensity(goal))
+				return MOTIVE_TYPE.EXTERNAL;
+			else
+				return MOTIVE_TYPE.INTERNAL_DEFAULT;
+		case SATISFACTION:
+			if (satisfactionMotive.getMotiveIntensity() > getDefaultInternalMotiveIntensity(goal))
+				return MOTIVE_TYPE.SATISFACTION;
+			else
+				return MOTIVE_TYPE.INTERNAL_DEFAULT;
+		case ACHIEVEMENT:
+			if (achievementMotive.getMotiveIntensity() > getDefaultInternalMotiveIntensity(goal))
+				return MOTIVE_TYPE.ACHIEVEMENT;
+			else
+				return MOTIVE_TYPE.INTERNAL_DEFAULT;
+		default:
+			throw new IllegalStateException("WRONG MOTIVE in arbitrateMotives method!");
+		}
+	}
+	
+	public MOTIVE_TYPE createMotives(Goal goal) {
+		
+		Motive externalMotive     = createExternalMotive(goal);
+		Motive satisfactionMotive = createSatisfactionMotive(goal);
+		Motive achievementMotive  = createAchievementMotive(goal);
+		
+		MOTIVE_TYPE winnerMotive = arbitrateMotives(goal, externalMotive, satisfactionMotive, achievementMotive);
+		
+		System.out.println(winnerMotive);
+		
+		return winnerMotive;
 	}
 }

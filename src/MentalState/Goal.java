@@ -15,7 +15,7 @@ public class Goal {
 	private String label;
 	private int currentTurn;
 	private double effort;
-	private Motive activeMotive = null;
+//	private Motive activeMotive = null;
 	
 	public Goal (Plan plan) {
 		this.plan        = plan;
@@ -41,9 +41,9 @@ public class Goal {
 		this.Beliefs.add(belief);
 	}
 	
-//	public void addMotives(Motive motive) {
-//		this.Motives.add(motive);
-//	}
+	public void addMotives(Motive motive) {
+		this.Motives.add(motive);
+	}
 	
 	public void addGoalToMentalState() {
 		MentalState.getInstance().addGoal(this);
@@ -53,26 +53,35 @@ public class Goal {
 		return this.Beliefs;
 	}
 	
-	public void addMotives(Motive motive) {
-		if (Motives.size() == 0)
-			this.setActiveMotive(motive);
-		Motives.add(motive);
-	}
+//	public void addMotives(Motive motive) {
+//		if (Motives.size() == 0)
+//			this.setActiveMotive(motive);
+//		Motives.add(motive);
+//	}
 	
 	public ArrayList<Motive> getMotives() {
 		return this.Motives;
 	}
 	
-	public void setActiveMotive(Motive motive) {
-		this.activeMotive = motive;
-	}
+//	public void setActiveMotive(Motive motive) {
+//		this.activeMotive = motive;
+//	}
 	
 	// This method might need to be changed after I implement the Motivation mechanism.
+//	public Motive getActiveMotive() {
+//		if (this.activeMotive == null)
+//			return MentalState.getInstance().getParentGoal(this).getActiveMotive();
+//		else
+//			return this.activeMotive;
+//	}
+	
 	public Motive getActiveMotive() {
-		if (this.activeMotive == null)
-			return MentalState.getInstance().getParentGoal(this).getActiveMotive();
-		else
-			return this.activeMotive;
+		
+		for(Motive motive : this.Motives) {
+			if (motive.isActiveMotive())
+				return motive;
+		}
+		return null;
 	}
 	
 	public double getGoalEffort() {
