@@ -74,17 +74,21 @@ public class Collaboration extends Mechanisms{
 	
 	public Boolean isPlanAchieved(Plan plan) {
 		
-//		if (!plan.isDone()) {
-//			
-//		}
-		
-//		if (plan.isSucceeded())
-		if (plan.getGoal().getSuccess() == null)
+		if (!plan.isDone()) {
 			return null;
-		else if (plan.getGoal().getSuccess())
-			return true;
-		else
-			return false;
+		}
+		else {
+			if (plan.isSucceeded())
+				return true;
+			else
+				return false;
+//			if (plan.getGoal().getSuccess() == null)
+//				return null;
+//			else if (plan.getGoal().getSuccess())
+//				return true;
+//			else
+//				return false;
+		}
 	}
 	
 	public boolean isGoalAchieved(Goal goal) {
@@ -159,13 +163,7 @@ public class Collaboration extends Mechanisms{
 		
 		Status status = plan.getStatus();
 		
-		if (isPlanAchieved(plan) == null)
-			return GOAL_STATUS.UNKNOWN;
-		if (isPlanAchieved(plan))
-			return GOAL_STATUS.ACHIEVED;
-		else if (status.equals(Status.FAILED))
-			return GOAL_STATUS.FAILED;
-		else if (status.equals(Status.IN_PROGRESS))
+		if (status.equals(Status.IN_PROGRESS))
 			return GOAL_STATUS.INPROGRESS;
 		else if (status.equals(Status.BLOCKED))
 			return GOAL_STATUS.BLOCKED;
@@ -173,8 +171,18 @@ public class Collaboration extends Mechanisms{
 			return GOAL_STATUS.PENDING;
 		else if (status.equals(Status.INAPPLICABLE))
 			return GOAL_STATUS.INAPPLICABLE;
-		else if (status.equals(Status.DONE))
-			return GOAL_STATUS.DONE;
+		else if (status.equals(Status.DONE)) {
+//			return GOAL_STATUS.DONE;
+			Boolean planAchievement = isPlanAchieved(plan);
+			if (planAchievement == null)
+				return GOAL_STATUS.UNKNOWN;
+			else if (planAchievement)
+				return GOAL_STATUS.ACHIEVED;
+			else if (!planAchievement)
+				return GOAL_STATUS.FAILED;
+			else
+				throw new IllegalStateException(status.toString());
+		}
 		else
 			throw new IllegalStateException(status.toString());
 	}

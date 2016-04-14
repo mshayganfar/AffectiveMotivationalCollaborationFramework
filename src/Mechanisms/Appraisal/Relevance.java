@@ -33,7 +33,7 @@ public class Relevance extends AppraisalProcesses {
 	
 	private double getEventUtility(Goal eventGoal) { 
 		
-		int goalStatus           = getGoalStatus(eventGoal);
+		int goalStatus           = getGoalStatusImpact(eventGoal);
 		double beliefPersistence = getBeliefPersistence(eventGoal);
 		double beliefSaliency    = getBeliefSaliency(eventGoal); //Distance between live nodes 
 		double saliencyMagnitude = getSaliencyMagnitude(eventGoal);
@@ -190,7 +190,7 @@ public class Relevance extends AppraisalProcesses {
 			return null;
 	}
 	
-	private int getGoalStatus(Goal goal) {
+	private int getGoalStatusImpact(Goal goal) {
 		
 		GOAL_STATUS goalStatus = collaboration.getGoalStatus(goal.getPlan());
 		

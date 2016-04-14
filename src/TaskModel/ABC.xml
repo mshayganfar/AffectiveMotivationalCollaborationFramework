@@ -3,6 +3,7 @@
            xmlns:disco="urn:disco.wpi.edu:Disco">
 
   <task id="A">
+		<postcondition> true </postcondition>
     <subtasks id="recipeA" ordered="false">
       <step name="step1" task ="B"/>
       <step name="step2" task="C"/>
@@ -11,6 +12,7 @@
   </task>
 
   <task id="B">
+		<postcondition> true </postcondition>
     <subtasks id="recipeB" ordered="false">
       <step name="step1" task ="e"/>
       <step name="step2" task="F"/>
@@ -20,6 +22,7 @@
   </task>
 
   <task id="C">
+		<postcondition> true </postcondition>
     <subtasks id="recipeC" ordered="false">
       <step name="step1" task ="g"/>
       <step name="step2" task="h"/>
@@ -30,6 +33,7 @@
   </task>
 
   <task id="D">
+		<postcondition> true </postcondition>
     <subtasks id="recipeD" ordered="false">
       <step name="step1" task ="I"/>
       <step name="step2" task="J"/>
@@ -37,6 +41,7 @@
   </task>
 
   <task id="F">
+		<postcondition> true </postcondition>
     <subtasks id="recipeF" ordered="false">
       <step name="step1" task ="k"/>
 
@@ -45,6 +50,7 @@
   </task>
 
   <task id="I">
+		<postcondition> true </postcondition>
     <subtasks id="recipeI" ordered="false">
       <step name="step1" task ="l"/>
       <step name="step2" task ="m"/>
@@ -55,6 +61,7 @@
   </task>
 
   <task id="J">
+		<postcondition> true </postcondition>
     <subtasks id="recipeJ" ordered="false">
       <step name="step1" task ="n"/>
       <step name="step2" task ="o"/>
@@ -66,14 +73,14 @@
     </subtasks>
   </task>
 
-  <task id="e"> </task>
-  <task id="k"> </task>
-  <task id="g"> </task>
-  <task id="h"> </task>
-  <task id="l"> </task>
-  <task id="m"> </task>
-  <task id="n"> </task>
-  <task id="o"> </task>
-  <task id="p"> </task>
+  <task id="e"> <postcondition> true </postcondition> </task>
+  <task id="k"> <postcondition> true </postcondition> </task>
+  <task id="g"> <postcondition> true </postcondition> </task>
+  <task id="h"> <postcondition> true </postcondition> </task>
+  <task id="l"> <postcondition> true </postcondition> </task>
+  <task id="m"> <postcondition> true </postcondition> </task>
+  <task id="n"> <postcondition> true </postcondition> </task>
+  <task id="o"> <postcondition> true </postcondition> </task>
+  <task id="p"> <postcondition> true </postcondition> </task>
   
 </taskModel>

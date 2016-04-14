@@ -25,7 +25,7 @@ public class Motivation extends Mechanisms {
 		 this.expectedness    = expectedness;
 	}
 	
-	private double createSatisfactionMotive() {
+	private double createSatisfactionMotive(Goal goal) {
 		
 		double firstSigmoidValue  = 0.0;
 		double secondSigmoidValue = 0.0;
@@ -42,26 +42,34 @@ public class Motivation extends Mechanisms {
 				secondGradient = 8.0;
 				firstSigmoidValue  = (double)1 / (1 + Math.exp(firstGradient * ((1 - satDelta) - valence)));
 				secondSigmoidValue = (double)1 / (1 + Math.exp(secondGradient * (1.5 - valence)));
+				
+				goal.addMotives(new Motive(goal, MOTIVE_TYPE.SATISFACTION, firstSigmoidValue - secondSigmoidValue));
 			}
 			else {
 				firstGradient  = 1.5;
 				secondGradient = 1.5;
 				firstSigmoidValue  = (double)1 / (1 + Math.exp(-firstGradient * (satDelta - (2 * Math.abs(valence)))));
 				secondSigmoidValue = (double)1 / (1 + Math.exp(-secondGradient * (1.5 - (Math.abs(valence)))));
+				
+				goal.addMotives(new Motive(goal, MOTIVE_TYPE.SATISFACTION, firstSigmoidValue - secondSigmoidValue));
 			}
 		}
 		else {
 			if (valence >= 0) {
-				firstGradient  = 2.0;
-				secondGradient = 2.0;
-				firstSigmoidValue  = (double)1 / (1 + Math.exp(firstGradient * ((1 - Math.abs(satDelta)) - valence)));
+				firstGradient  = 1.5;
+				secondGradient = 1.5;
+				firstSigmoidValue  = (double)1 / (1 + Math.exp(firstGradient * (Math.abs(satDelta) - (3 * valence))));
 				secondSigmoidValue = (double)1 / (1 + Math.exp(secondGradient * (1.5 - valence)));
+				
+				goal.addMotives(new Motive(goal, MOTIVE_TYPE.SATISFACTION, firstSigmoidValue - secondSigmoidValue));
 			}
 			else {
 				firstGradient  = 2.0;
 				secondGradient = 8.0;
 				firstSigmoidValue  = (double)1 / (1 + Math.exp(-firstGradient * ((1 - Math.abs(satDelta)) - (2 * Math.abs(valence)))));
 				secondSigmoidValue = (double)1 / (1 + Math.exp(-secondGradient * (1.5 - (Math.abs(valence)))));
+				
+				goal.addMotives(new Motive(goal, MOTIVE_TYPE.SATISFACTION, firstSigmoidValue - secondSigmoidValue));
 			}
 		}
 
@@ -89,13 +97,13 @@ public class Motivation extends Mechanisms {
 			firstSigmoidValue  = (double)1 / (1 + Math.exp(firstGradient * (valence - successProbability)));
 			secondSigmoidValue = (double)1 / (1 + Math.exp(secondGradient * (valence - successProbability)));
 			
-			goal.addMotives(new Motive(goal, MOTIVE_TYPE.ACHIEVEMENT_APPROACH));
+			goal.addMotives(new Motive(goal, MOTIVE_TYPE.ACHIEVEMENT, firstSigmoidValue - secondSigmoidValue));
 		}
 		else {
 			firstSigmoidValue  = (double)1 / (1 + Math.exp(-firstGradient * (valence - successProbability)));
 			secondSigmoidValue = (double)1 / (1 + Math.exp(-secondGradient * (valence - successProbability)));
 			
-			goal.addMotives(new Motive(goal, MOTIVE_TYPE.ACHIEVEMENT_AVOID)); // Check whether this is negative?!
+			goal.addMotives(new Motive(goal, MOTIVE_TYPE.ACHIEVEMENT, firstSigmoidValue - secondSigmoidValue));
 		}
 		
 		return firstSigmoidValue - secondSigmoidValue;
@@ -109,7 +117,7 @@ public class Motivation extends Mechanisms {
 	private double createExternalMotive(Goal goal) {
 		
 		if (collaboration.getDisco().getLastOccurrence() instanceof Propose.Should) {
-			Motive motive = new Motive(goal, MOTIVE_TYPE.EXTERNAL);
+			Motive motive = new Motive(goal, MOTIVE_TYPE.EXTERNAL, 0.5); // How should I comopute external motive's intensity?!
 			goal.addMotives(motive);
 			return getExternalMotiveValue(goal, motive);
 		}
@@ -119,7 +127,7 @@ public class Motivation extends Mechanisms {
 	public void createMotives(Goal goal) {
 		
 		double externalMotiveValue     = createExternalMotive(goal);
-		double satisfactionMotiveValue = createSatisfactionMotive();
+		double satisfactionMotiveValue = createSatisfactionMotive(goal);
 		double achievementMotiveValue  = createAchievementMotive(goal);
 	}
 }

@@ -3,7 +3,7 @@
            xmlns:disco="urn:disco.wpi.edu:Disco">
 
   <task id="A">
-		<postcondition> $plan.isComplete() </postcondition>
+		<postcondition> true </postcondition>
     <subtasks id="recipeA" ordered="false">
       <step name="step1" task ="B"/>
       <step name="step2" task="C"/>
@@ -12,7 +12,7 @@
   </task>
 
   <task id="B">
-		<postcondition> $plan.isComplete() </postcondition>
+		<postcondition> true </postcondition>
     <subtasks id="recipeB" ordered="false">
       <step name="step1" task ="e"/>
       <step name="step2" task="F"/>
@@ -22,7 +22,7 @@
   </task>
 
   <task id="C">
-		<postcondition> $plan.isComplete() </postcondition>
+		<postcondition> true </postcondition>
     <subtasks id="recipeC" ordered="false">
       <step name="step1" task ="g"/>
       <step name="step2" task="h"/>
@@ -33,7 +33,7 @@
   </task>
 
   <task id="D">
-		<postcondition> $plan.isComplete() </postcondition>
+		<postcondition> true </postcondition>
     <subtasks id="recipeD" ordered="false">
       <step name="step1" task ="I"/>
       <step name="step2" task="J"/>
@@ -41,7 +41,7 @@
   </task>
 
   <task id="F">
-		<postcondition> $plan.isComplete() </postcondition>
+		<postcondition> true </postcondition>
     <subtasks id="recipeF" ordered="false">
       <step name="step1" task ="k"/>
 
@@ -50,7 +50,7 @@
   </task>
 
   <task id="I">
-		<postcondition> $plan.isComplete() </postcondition>
+		<postcondition> true </postcondition>
     <subtasks id="recipeI" ordered="false">
       <step name="step1" task ="l"/>
       <step name="step2" task ="m"/>
@@ -61,7 +61,7 @@
   </task>
 
   <task id="J">
-		<postcondition> $plan.isComplete() </postcondition>
+		<postcondition> true </postcondition>
     <subtasks id="recipeJ" ordered="false">
       <step name="step1" task ="n"/>
       <step name="step2" task ="o"/>
@@ -73,14 +73,14 @@
     </subtasks>
   </task>
 
-  <task id="e"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
-  <task id="k"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
-  <task id="g"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition>	</task>
-  <task id="h"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
-  <task id="l"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
-  <task id="m"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
-  <task id="n"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
-  <task id="o"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
-  <task id="p"> <postcondition> $instance != undefined &amp;&amp; $instance.isOccurred() </postcondition> </task>
+  <task id="e"> <postcondition> true </postcondition> </task>
+  <task id="k"> <postcondition> true </postcondition> </task>
+  <task id="g"> <postcondition> true </postcondition> </task>
+  <task id="h"> <postcondition> true </postcondition> </task>
+  <task id="l"> <postcondition> true </postcondition> </task>
+  <task id="m"> <postcondition> true </postcondition> </task>
+  <task id="n"> <postcondition> true </postcondition> </task>
+  <task id="o"> <postcondition> true </postcondition> </task>
+  <task id="p"> <postcondition> true </postcondition> </task>
   
 </taskModel>
