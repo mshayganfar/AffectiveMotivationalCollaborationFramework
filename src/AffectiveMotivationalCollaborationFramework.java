@@ -102,6 +102,9 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		GoalManagement goalManagement = new GoalManagement(collaboration, relevance, desirability);
 		
+		collaboration.getInteraction().start(true);
+		
+//		collaboration.getInteraction().getConsole().test("test/ABC1.test");
 		collaboration.getInteraction().getConsole().source("test/events2.txt");
 		
 //		updateGoal(collaboration.getDisco().getFocus());

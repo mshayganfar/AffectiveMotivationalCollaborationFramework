@@ -4,33 +4,33 @@ task A
 eval appraise()
 task B
 eval appraise()
-execute e
+execute e / false
 eval appraise()
 task F
 eval appraise()
-execute k
+execute k / false
 eval appraise()
 task C
 eval appraise()
-execute g
+execute g / false
 eval appraise()
-execute h
+execute h / false
 eval appraise()
 task D
 eval appraise()
 eval $disco.isLastShift()
 task I
 eval appraise()
-execute l
+execute l / false
 eval appraise()
-execute m
+execute m / false
 eval appraise()
 task J
 eval appraise()
 eval $disco.isLastShift()
-execute n
+execute n / false
 eval appraise()
-execute o
+execute o / false
 eval appraise()
-execute p
+execute p / false
 eval appraise()

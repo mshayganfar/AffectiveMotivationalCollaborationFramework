@@ -46,11 +46,11 @@ public class Collaboration extends Mechanisms{
 		interaction = new Interaction(agent, new User("user"),
 				  args.length > 0 && args[0].length() > 0 ? args[0] : null);
 		interaction.getExternal().setEval(true);
-		interaction.start(true);
+//		interaction.start(true);
 		disco = interaction.getDisco();
 		
-		taskModel = disco.load("/TaskModel/ABC.xml");
-		disco.load("/TaskModel/Events.xml");
+		taskModel = disco.load("models/ABC.xml");
+		disco.load("models/Events.xml");
 		
 		prevFocus = disco.getFocus();
 		
