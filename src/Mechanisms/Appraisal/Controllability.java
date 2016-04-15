@@ -5,6 +5,7 @@ import edu.wpi.cetask.TaskClass.Input;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.Collaboration.FOCUS_TYPE;
 import MentalState.Goal;
+import MentalState.Goal.DIFFICULTY;
 import MentalState.MentalState;
 import MentalState.Motive.MOTIVE_TYPE;
 
@@ -18,16 +19,18 @@ public class Controllability extends AppraisalProcesses{
 
 	public CONTROLLABILITY isEventControllable(Goal eventGoal) {
 		
-		double dblAgency       = getAgencyValue(eventGoal);
-		double dblAutonomy     = getAutonomyValue(eventGoal);
-		double dblPredecessors = checkSucceededPredecessorsRatio(eventGoal);
-		double dblInputs       = checkAvailableInputRatio(eventGoal);
+		double dblAgency       			= getAgencyValue(eventGoal);
+		double dblAutonomy     			= getAutonomyValue(eventGoal);
+		double dblPredecessors 			= checkSucceededPredecessorsRatio(eventGoal);
+		double dblInputs       			= checkAvailableInputRatio(eventGoal);
+		double dblOverallGoalDifficulty = getOverallDifficultyValue(eventGoal);
 		
-		double utilityValue = (double)((dblAgency * getAgencyWeight()) + (dblAutonomy * getAutonomyWeight()) + 
-						(dblPredecessors * getPredecessorRatioWeight()) + (dblInputs * getInputRatioWeight()))
-						/(getAgencyWeight() + getAutonomyWeight() + getPredecessorRatioWeight() + getInputRatioWeight());
+		double controllabilityValue = (double)((dblAgency * getAgencyWeight()) + (dblAutonomy * getAutonomyWeight()) + 
+						(dblPredecessors * getPredecessorRatioWeight()) + (dblInputs * getInputRatioWeight()) +
+						(dblOverallGoalDifficulty * getGoalDifficultyWeight()))
+						/(getAgencyWeight() + getAutonomyWeight() + getPredecessorRatioWeight() + getInputRatioWeight() + getGoalDifficultyWeight());
 		
-		if(utilityValue >= getHumanEmotionalThreshold())
+		if(controllabilityValue >= getHumanEmotionalThreshold())
 			return CONTROLLABILITY.CONTROLLABLE;
 		else
 			return CONTROLLABILITY.UNCONTROLLABLE;
@@ -91,7 +94,7 @@ public class Controllability extends AppraisalProcesses{
 		}
 	}
 	
-	private Double checkSucceededPredecessorsRatio(Goal eventGoal) {
+	private double checkSucceededPredecessorsRatio(Goal eventGoal) {
 		
 		double dblSucceededPredecessorCounter = 0.0;
 		
@@ -103,7 +106,7 @@ public class Controllability extends AppraisalProcesses{
 		return (double)dblSucceededPredecessorCounter/((collaboration.getPredecessors(eventGoal).size() == 0) ? 1 : collaboration.getPredecessors(eventGoal).size());
 	}
 	
-	private Double checkAvailableInputRatio(Goal eventGoal) {
+	private double checkAvailableInputRatio(Goal eventGoal) {
 		
 		double dblAvailableInputCounter = 0.0;
 		
@@ -116,9 +119,62 @@ public class Controllability extends AppraisalProcesses{
 		
 	}
 	
+	private double getOverallDifficultyValue(Goal eventGoal) {
+		
+		double dblOverallDifficultyValue = 0.0;
+		
+		if (collaboration.getGoalType(eventGoal).equals(FOCUS_TYPE.PRIMITIVE)) {
+			switch (DIFFICULTY.valueOf(eventGoal.getPlan().getType().getProperty("@difficulty"))) {
+				case NORMAL:
+					return 0.0;
+				case DIFFICULT:
+					return 0.5;
+				case MOST_DIFFICULT:
+					return 1.0;
+				default:
+					throw new IllegalStateException("Difficulty value: " + DIFFICULTY.valueOf(eventGoal.getPlan().getType().getProperty("@difficulty")));
+			}
+		}
+		else {
+			double goalDifficultySum = 0.0;
+			
+			switch (DIFFICULTY.valueOf(eventGoal.getPlan().getType().getProperty("@difficulty"))) {
+				case NORMAL:
+					goalDifficultySum = 0.0;
+					break;
+				case DIFFICULT:
+					goalDifficultySum = 0.5;
+					break;
+				case MOST_DIFFICULT:
+					goalDifficultySum = 1.0;
+					break;
+				default:
+					throw new IllegalStateException("Difficulty value: " + DIFFICULTY.valueOf(eventGoal.getPlan().getType().getProperty("@difficulty")));
+			}
+			
+			for (Plan plan : eventGoal.getPlan().getChildren()) {
+				switch (DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty"))) {
+					case NORMAL:
+						goalDifficultySum += 0.0;
+						break;
+					case DIFFICULT:
+						goalDifficultySum += 0.5;
+						break;
+					case MOST_DIFFICULT:
+						goalDifficultySum += 1.0;
+						break;
+					default:
+						throw new IllegalStateException("Difficulty value: " + DIFFICULTY.valueOf(eventGoal.getPlan().getType().getProperty("@difficulty")));
+				}
+			}
+		}
+		return dblOverallDifficultyValue;
+	}
+	
 	// Min = 0.0 and Max = 1.0
 	private double getAgencyWeight()           { return 1.0; }
 	private double getAutonomyWeight()         { return 1.0; }
 	private double getPredecessorRatioWeight() { return 1.0; }
 	private double getInputRatioWeight()       { return 1.0; }
+	private double getGoalDifficultyWeight()   { return 1.0; }
 }

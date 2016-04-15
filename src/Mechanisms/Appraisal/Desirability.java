@@ -39,7 +39,7 @@ public class Desirability extends AppraisalProcesses{
 			return DESIRABILITY.UNDESIRABLE;
 		else if ((topLevelGoalStatus.equals(GOAL_STATUS.PENDING)) || (topLevelGoalStatus.equals(GOAL_STATUS.INPROGRESS))) {
 
-			GOAL_STATUS eventGoalStatus= collaboration.getGoalStatus(topLevelGoalPlan);
+			GOAL_STATUS eventGoalStatus= collaboration.getGoalStatus(eventGoalPlan);
 			
 			System.out.println(">>> Event Goal Status: " + collaboration.getGoalStatus(eventGoalPlan));
 			

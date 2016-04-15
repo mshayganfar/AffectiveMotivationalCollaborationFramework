@@ -173,15 +173,19 @@ public class Collaboration extends Mechanisms{
 			return GOAL_STATUS.INAPPLICABLE;
 		else if (status.equals(Status.DONE)) {
 //			return GOAL_STATUS.DONE;
-			Boolean planAchievement = isPlanAchieved(plan);
-			if (planAchievement == null)
-				return GOAL_STATUS.UNKNOWN;
-			else if (planAchievement)
+//			Boolean planAchievement = isPlanAchieved(plan);
+//			if (planAchievement == null)
+//				return GOAL_STATUS.UNKNOWN;
+//			else if (planAchievement)
+//				return GOAL_STATUS.ACHIEVED;
+//			else if (!planAchievement)
+//				return GOAL_STATUS.FAILED;
+			if (!plan.isFailed())
 				return GOAL_STATUS.ACHIEVED;
-			else if (!planAchievement)
+			else 
 				return GOAL_STATUS.FAILED;
-			else
-				throw new IllegalStateException(status.toString());
+//			else
+//				throw new IllegalStateException(status.toString());
 		}
 		else
 			throw new IllegalStateException(status.toString());

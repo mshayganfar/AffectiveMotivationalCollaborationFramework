@@ -69,7 +69,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		System.out.println(desirabilityValue);
 		System.out.println(expectedness.isEventExpected(recognizedGoal));
 		
-		System.out.println(DIFFICULTY.valueOf(recognizedGoal.getPlan().getType().getProperty("@difficulty")));
+//		System.out.println(DIFFICULTY.valueOf(recognizedGoal.getPlan().getType().getProperty("@difficulty")));
 		
 		turn.updateTurnDesirability(desirabilityValue);
 		
