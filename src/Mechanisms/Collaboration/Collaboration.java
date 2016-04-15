@@ -402,24 +402,33 @@ public class Collaboration extends Mechanisms{
 		return actualPlan;
 	}
 	
-	private boolean isGoalApplicable(Goal eventGoal) {
+//	private boolean isGoalApplicable(Goal eventGoal) {
+//	
+//		if (preconditionsLOT.get(eventGoal.getPlan().toString()) == null)
+//			return false;
+//		else if (preconditionsLOT.get(eventGoal.getPlan().toString()))
+//			return true;
+//		else
+//			return false;
+//	}	
 	
-		if (preconditionsLOT.get(eventGoal.getPlan().toString()) == null)
-			return false;
-		else if (preconditionsLOT.get(eventGoal.getPlan().toString()))
-			return true;
-		else
-			return false;
-	}	
-	
-	private void updatePreconditionApplicability() {
+	public void updatePreconditionApplicability() {
 		
 		GoalTree goalTree = new GoalTree(collaboration.getDisco());
 		
 		ArrayList<Node> treeNodes = goalTree.createTree();
 		
 		for (Node node : treeNodes) {
-			preconditionsLOT.put(node.getNodeGoalPlan().toString(), node.getNodeGoalPlan().isApplicable());
+			preconditionsLOT.put(node.getNodeGoalPlan().getGoal().getType().toString(), node.getNodeGoalPlan().isApplicable());
 		}
+	}
+	
+	public Map<String, Boolean> getPreconditionApplicabilities() {
+		return preconditionsLOT;
+	}
+	
+	public Boolean getPreconditionApplicability(Goal goal) {
+		
+		return preconditionsLOT.get(goal.getPlan().getGoal().getType().toString());
 	}
 }

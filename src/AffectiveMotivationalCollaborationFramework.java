@@ -63,6 +63,9 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		Motive motive = new Motive(recognizedGoal);
 		
+		collaboration.updatePreconditionApplicability();
+		System.out.println(collaboration.getPreconditionApplicabilities());
+		
 		System.out.println(relevance.isEventRelevant(recognizedGoal));
 		System.out.println(controllability.isEventControllable(recognizedGoal));
 		DESIRABILITY desirabilityValue = desirability.isEventDesirable(recognizedGoal);
