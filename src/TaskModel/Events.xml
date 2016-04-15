@@ -6,11 +6,11 @@
   <script init="true">
 
 		function appraise () {
-       return Packages.AppraisalGoalManagement.doAppraisal();
+       return Packages.AffectiveMotivationalCollaborationFramework.doAppraisal();
     }
 
 		function updatePreviousCollaborationStatus () {
-       Packages.AppraisalGoalManagement.updateCollaborationStatus();
+       Packages.AffectiveMotivationalCollaborationFramework.updateCollaborationStatus();
     }
   </script>
   

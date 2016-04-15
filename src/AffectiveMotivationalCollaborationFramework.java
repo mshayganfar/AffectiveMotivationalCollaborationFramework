@@ -16,7 +16,7 @@ import MetaInformation.Turns;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskModel;
 
-public class AppraisalGoalManagement {
+public class AffectiveMotivationalCollaborationFramework {
 	
 	private static TaskModel taskModel;
 	private static Goal goal = null;
