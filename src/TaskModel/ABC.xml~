@@ -3,7 +3,7 @@
            xmlns:disco="urn:disco.wpi.edu:Disco">
 
   <task id="A">
-		<postcondition> true </postcondition>
+		<postcondition> print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>hello") </postcondition>
     <subtasks id="recipeA" ordered="false">
       <step name="step1" task ="B"/>
       <step name="step2" task="C"/>

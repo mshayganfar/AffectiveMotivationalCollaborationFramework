@@ -10,6 +10,7 @@ import Mechanisms.Motivation.SatisfactionDrive;
 import Mechanisms.ToM.ToM;
 import MentalState.Belief;
 import MentalState.Goal;
+import MentalState.Goal.DIFFICULTY;
 import MentalState.Motive;
 import MetaInformation.Turns;
 import edu.wpi.cetask.Plan;
@@ -68,7 +69,7 @@ public class AppraisalGoalManagement {
 		System.out.println(desirabilityValue);
 		System.out.println(expectedness.isEventExpected(recognizedGoal));
 		
-		System.out.println(recognizedGoal.getPlan().getType().getProperty("difficulty"));
+		System.out.println(DIFFICULTY.valueOf(recognizedGoal.getPlan().getType().getProperty("@difficulty")));
 		
 		turn.updateTurnDesirability(desirabilityValue);
 		

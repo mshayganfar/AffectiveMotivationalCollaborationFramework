@@ -7,6 +7,8 @@ import edu.wpi.cetask.Plan;
 
 public class Goal {
 	
+	public enum DIFFICULTY {NORMAL, DIFFICULT, MOST_DIFFICULT};
+	
 	private ArrayList<Belief> Beliefs = new ArrayList<Belief>();
 	private ArrayList<Motive> Motives = new ArrayList<Motive>();
 	
