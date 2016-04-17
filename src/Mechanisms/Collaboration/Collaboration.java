@@ -49,8 +49,8 @@ public class Collaboration extends Mechanisms{
 //		interaction.start(true);
 		disco = interaction.getDisco();
 		
-		taskModel = disco.load("models/ABC.xml");
 		disco.load("models/Events.xml");
+		taskModel = disco.load("models/ABC.xml");
 		
 		prevFocus = disco.getFocus();
 		
