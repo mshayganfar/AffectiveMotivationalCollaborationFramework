@@ -113,7 +113,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 //		interaction.getConsole().test("test/Console.test");
 //		interaction.getConsole().step("test/Console.test");
-		
+
 //		//interaciton.done(false, Propose.Should.newInstance(disco, false, task), null);
 //		interaciton.occurred(false, task, null);
 //		//interaciton.getSystem().respond(interaciton, true, false, false);

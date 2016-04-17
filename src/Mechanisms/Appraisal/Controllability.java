@@ -2,8 +2,10 @@ package Mechanisms.Appraisal;
 
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskClass.Input;
+
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.Collaboration.FOCUS_TYPE;
+import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import MentalState.Goal;
 import MentalState.Goal.DIFFICULTY;
 import MentalState.MentalState;
@@ -99,8 +101,8 @@ public class Controllability extends AppraisalProcesses{
 		double dblSucceededPredecessorCounter = 0.0;
 		
 		for (Plan plan : collaboration.getPredecessors(eventGoal)) {
-			if (collaboration.isPlanAchieved(plan) != null)
-				if (collaboration.isPlanAchieved(plan))
+			if (!collaboration.getGoalStatus(plan).equals(GOAL_STATUS.UNKNOWN))
+				if (collaboration.getGoalStatus(plan).equals(GOAL_STATUS.ACHIEVED))
 					dblSucceededPredecessorCounter++;
 		}
 		return (double)dblSucceededPredecessorCounter/((collaboration.getPredecessors(eventGoal).size() == 0) ? 1 : collaboration.getPredecessors(eventGoal).size());

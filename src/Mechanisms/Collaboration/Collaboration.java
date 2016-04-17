@@ -72,24 +72,24 @@ public class Collaboration extends Mechanisms{
 		System.out.println("Collaboration started! Disco = " + disco);
 	}
 	
-	public Boolean isPlanAchieved(Plan plan) {
-		
-//		if (!plan.isDone()) {
+//	public Boolean isPlanAchieved(Plan plan) {
+//		
+////		if (!plan.isDone()) {
+////			return null;
+////		}
+////		else {
+////			if (plan.isSucceeded())
+////				return true;
+////			else
+////				return false;
+//
+//		if (plan.getGoal().getSuccess() == null)
 //			return null;
-//		}
-//		else {
-//			if (plan.isSucceeded())
-//				return true;
-//			else
-//				return false;
-
-		if (plan.getGoal().getSuccess() == null)
-			return null;
-		else if (plan.getGoal().getSuccess())
-			return true;
-		else
-			return false;
-	}
+//		else if (plan.getGoal().getSuccess())
+//			return true;
+//		else
+//			return false;
+//	}
 	
 	public boolean isGoalAchieved(Goal goal) {
 		
@@ -174,18 +174,22 @@ public class Collaboration extends Mechanisms{
 		else if (status.equals(Status.DONE)) {
 //			return GOAL_STATUS.DONE;
 //			Boolean planAchievement = isPlanAchieved(plan);
-//			if (planAchievement == null)
-//				return GOAL_STATUS.UNKNOWN;
-//			else if (planAchievement)
-//				return GOAL_STATUS.ACHIEVED;
-//			else if (!planAchievement)
-//				return GOAL_STATUS.FAILED;
-			if (!plan.isFailed())
+			
+			Boolean planAchievement = plan.getGoal().getSuccess();
+			
+			if (planAchievement == null)
+				return GOAL_STATUS.UNKNOWN;
+			else if (planAchievement)
 				return GOAL_STATUS.ACHIEVED;
-			else 
+			else if (plan.isFailed())
 				return GOAL_STATUS.FAILED;
-//			else
-//				throw new IllegalStateException(status.toString());
+			else
+			throw new IllegalStateException("Status: " + status.toString() + " , getSuccess()'s result: " + planAchievement);
+			
+//			if (!plan.isFailed())
+//				return GOAL_STATUS.ACHIEVED;
+//			else 
+//				return GOAL_STATUS.FAILED;
 		}
 		else
 			throw new IllegalStateException(status.toString());
