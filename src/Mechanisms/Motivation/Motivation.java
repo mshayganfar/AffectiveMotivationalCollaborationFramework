@@ -42,28 +42,28 @@ public class Motivation extends Mechanisms {
 			if (valence >= 0) {
 				firstGradient  = 2.0;
 				secondGradient = 8.0;
-				firstSigmoidValue  = (double)1 / (1 + Math.exp(firstGradient * ((1 - satDelta) - valence)));
-				secondSigmoidValue = (double)1 / (1 + Math.exp(secondGradient * (1.5 - valence)));
+				firstSigmoidValue  = (double)1.0 / (1 + Math.exp(firstGradient * ((1 - satDelta) - valence)));
+				secondSigmoidValue = (double)1.0 / (1 + Math.exp(secondGradient * (1.5 - valence)));
 			}
 			else {
 				firstGradient  = 1.5;
 				secondGradient = 1.5;
-				firstSigmoidValue  = (double)1 / (1 + Math.exp(-firstGradient * (satDelta - (2 * Math.abs(valence)))));
-				secondSigmoidValue = (double)1 / (1 + Math.exp(-secondGradient * (1.5 - (Math.abs(valence)))));
+				firstSigmoidValue  = (double)1.0 / (1 + Math.exp(-firstGradient * (satDelta - (2 * Math.abs(valence)))));
+				secondSigmoidValue = (double)1.0 / (1 + Math.exp(-secondGradient * (1.5 - (Math.abs(valence)))));
 			}
 		}
 		else {
 			if (valence >= 0) {
 				firstGradient  = 1.5;
 				secondGradient = 1.5;
-				firstSigmoidValue  = (double)1 / (1 + Math.exp(firstGradient * (Math.abs(satDelta) - (3 * valence))));
-				secondSigmoidValue = (double)1 / (1 + Math.exp(secondGradient * (1.5 - valence)));
+				firstSigmoidValue  = (double)1.0 / (1 + Math.exp(firstGradient * (Math.abs(satDelta) - (3 * valence))));
+				secondSigmoidValue = (double)1.0 / (1 + Math.exp(secondGradient * (1.5 - valence)));
 			}
 			else {
 				firstGradient  = 2.0;
 				secondGradient = 8.0;
-				firstSigmoidValue  = (double)1 / (1 + Math.exp(-firstGradient * ((1 - Math.abs(satDelta)) - (2 * Math.abs(valence)))));
-				secondSigmoidValue = (double)1 / (1 + Math.exp(-secondGradient * (1.5 - (Math.abs(valence)))));
+				firstSigmoidValue  = (double)1.0 / (1 + Math.exp(-firstGradient * ((1 - Math.abs(satDelta)) - (2 * Math.abs(valence)))));
+				secondSigmoidValue = (double)1.0 / (1 + Math.exp(-secondGradient * (1.5 - (Math.abs(valence)))));
 			}
 		}
 		
@@ -91,14 +91,12 @@ public class Motivation extends Mechanisms {
 		double successProbability = controllabilityValue * expectednessValue;
 		
 		if (valence >= 0) {
-			firstSigmoidValue  = (double)1 / (1 + Math.exp(firstGradient * (valence - successProbability)));
-			secondSigmoidValue = (double)1 / (1 + Math.exp(secondGradient * (valence - successProbability)));
+			firstSigmoidValue  = (double)1.0 / (1 + Math.exp(firstGradient * (valence - successProbability)));
+			secondSigmoidValue = (double)1.0 / (1 + Math.exp(secondGradient * (valence - successProbability)));
 		}
 		else {
-			firstSigmoidValue  = (double)1 / (1 + Math.exp(-firstGradient * (valence - successProbability)));
-			secondSigmoidValue = (double)1 / (1 + Math.exp(-secondGradient * (valence - successProbability)));
-			
-			goal.addMotives(new Motive(goal, MOTIVE_TYPE.ACHIEVEMENT, firstSigmoidValue - secondSigmoidValue));
+			firstSigmoidValue  = (double)1.0 / (1 + Math.exp(-firstGradient * (valence - successProbability)));
+			secondSigmoidValue = (double)1.0 / (1 + Math.exp(-secondGradient * (valence - successProbability)));
 		}
 		
 		achievementMotive = new Motive(goal, MOTIVE_TYPE.ACHIEVEMENT, firstSigmoidValue - secondSigmoidValue);
@@ -107,16 +105,25 @@ public class Motivation extends Mechanisms {
 		return achievementMotive;
 	}
 	
-	private double getExternalMotiveValue(Goal goal, Motive motive) {
-		
-		return 0.5;
-	}
-	
 	private Motive createExternalMotive(Goal goal) {
 		
-		if (collaboration.getDisco().getLastOccurrence() instanceof Propose.Should) {
-			Motive externalMotive = new Motive(goal, MOTIVE_TYPE.EXTERNAL, 0.5); // How should I comopute external motive's intensity?!
+		if (goal.getPlan().getGoal() instanceof Propose.Should) {
+			
+			double sigmoidValue  = 0.0;
+			
+			double valence  = tom.getValenceValue();
+			
+			// I might need to read these values later using ToM mechanism.
+			double controllabilityValue = Turns.getInstance().getControllabilityValue(controllability.isEventControllable(goal));
+			double expectednessValue    = Turns.getInstance().getExpectednessValue(expectedness.isEventExpected(goal));
+			
+			double successProbability = controllabilityValue * expectednessValue;
+			
+			sigmoidValue  = (double)2.0 / (1 + Math.exp(valence - (6 * successProbability)));
+			
+			Motive externalMotive = new Motive(goal, MOTIVE_TYPE.EXTERNAL, sigmoidValue);
 			goal.addMotives(externalMotive);
+			
 			return externalMotive;
 		}
 		
