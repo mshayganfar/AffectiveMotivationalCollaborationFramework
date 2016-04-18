@@ -212,6 +212,34 @@ public class Motivation extends Mechanisms {
 		getGoalAntecedents(plan.getParent(), goalAntecedents);
 	}
 	
+	public double getMotiveUrgency(Motive motive) {
+		
+		double motiveUrgency = 0.0;
+		
+		for (Plan plan : motive.getGoal().getPlan().getSuccessors()) {
+			if(plan.getGoal().getExternal())
+				motiveUrgency++;
+		}
+		
+		// Later, I should check whether the goal is a tactical one, then influence urgency of the related motive.
+		
+		return motiveUrgency;
+	}
+	
+	public double getMotiveImportance(Motive motive) {
+		
+		// This is based on the fact that if there is no alternative recipe, the motive is more important.
+		if(motive.getGoal().getPlan().isPrimitive())
+			return 1.0;
+		else
+			if (motive.getGoal().getPlan().getDecompositions().size() == 1)
+				return 1.0;
+			else
+				return 0.0;
+		
+		// Later, I should check whether the current alternative recipe can remove the current impasse.
+	}
+	
 	public double getMotiveInsistence(Motive motive) {
 		
 		double motiveInsistence = 0.0;

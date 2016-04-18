@@ -27,7 +27,7 @@ public class AffectiveMotivationalCollaborationFramework {
 	private static Desirability desirability;
 	private static Expectedness expectedness;
 	private static ToM tom;
-	private static Motivation motivaiton;
+	private static Motivation motivation;
 	
 	private static Goal updateGoal(Plan plan) {
 
@@ -64,6 +64,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		Belief belief3 = new Belief(recognizedGoal);
 		
 		Motive motive = new Motive(recognizedGoal);
+//		System.out.println("Recipe Count: " + motivation.getMotiveImportance(motive));
 		
 		collaboration.updatePreconditionApplicability();
 		System.out.println(collaboration.getPreconditionApplicabilities());
@@ -100,7 +101,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		desirability = new Desirability(collaboration);
 		expectedness = new Expectedness(collaboration);
 		
-		motivaiton = new Motivation(tom, controllability, expectedness);
+		motivation = new Motivation(tom, controllability, expectedness);
 		
 		GoalManagement goalManagement = new GoalManagement(collaboration, relevance, desirability);
 		
