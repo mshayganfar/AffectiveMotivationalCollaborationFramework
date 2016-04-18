@@ -20,7 +20,7 @@ public class MentalState {
 	
 	private MentalState() { }
 	
-	public static void updateMentalState(Goal goal, Belief belief) {
+	public static void updateMentalStateBeliefs(Goal goal, Belief belief) {
 		beliefs.add(belief);
 		goalBeliefs.put(goal, beliefs);
 	}

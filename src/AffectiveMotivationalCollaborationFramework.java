@@ -11,6 +11,7 @@ import Mechanisms.ToM.ToM;
 import MentalState.Belief;
 import MentalState.Goal;
 import MentalState.Goal.DIFFICULTY;
+import MentalState.MentalState;
 import MentalState.Motive;
 import MetaInformation.Turns;
 import edu.wpi.cetask.Plan;
@@ -55,6 +56,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		Turns turn = Turns.getInstance();
 		
 		Goal recognizedGoal = new Goal(collaboration.getActualFocus(collaboration.getDisco().getFocus()));
+		recognizedGoal.setGoalStatus(collaboration.getGoalStatus(recognizedGoal.getPlan()));
 		recognizedGoal.addGoalToMentalState();
 		
 		Belief belief1 = new Belief(recognizedGoal);

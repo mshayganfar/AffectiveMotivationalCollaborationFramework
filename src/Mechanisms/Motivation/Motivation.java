@@ -1,13 +1,21 @@
 package Mechanisms.Motivation;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import Mechanisms.Mechanisms;
 import Mechanisms.Appraisal.Controllability;
 import Mechanisms.Appraisal.Expectedness;
+import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import Mechanisms.ToM.ToM;
 import MentalState.Goal;
+import MentalState.MentalState;
 import MentalState.Motive;
 import MentalState.Motive.MOTIVE_TYPE;
 import MetaInformation.Turns;
+import edu.wpi.cetask.Plan;
 import edu.wpi.disco.lang.Propose;
 
 public class Motivation extends Mechanisms {
@@ -188,5 +196,39 @@ public class Motivation extends Mechanisms {
 		System.out.println(winnerMotive);
 		
 		return winnerMotive;
+	}
+	
+	private void getGoalAntecedents(Plan plan, List<GOAL_STATUS> goalAntecedents) {
+		
+		if (plan.getParent() == null)
+			return;
+		
+		goalAntecedents.add(collaboration.getGoalStatus(plan.getParent()));
+		
+		for (Plan predecessor : plan.getPredecessors()) {
+			goalAntecedents.add(collaboration.getGoalStatus(predecessor));
+		}
+		
+		getGoalAntecedents(plan.getParent(), goalAntecedents);
+	}
+	
+	public double getMotiveInsistence(Motive motive) {
+		
+		double motiveInsistence = 0.0;
+		
+		List<GOAL_STATUS> goalAntecedentsStatus = new ArrayList<GOAL_STATUS>();
+		
+		getGoalAntecedents(motive.getGoal().getPlan(), goalAntecedentsStatus);
+		
+		for(GOAL_STATUS goalStatus : goalAntecedentsStatus) {
+			if (goalAntecedentsStatus.equals(GOAL_STATUS.INPROGRESS) || 
+					goalAntecedentsStatus.equals(GOAL_STATUS.ACHIEVED) ||
+					goalAntecedentsStatus.equals(GOAL_STATUS.PENDING))
+				motiveInsistence++;
+			else
+				motiveInsistence--;
+		}
+		
+		return motiveInsistence;
 	}
 }

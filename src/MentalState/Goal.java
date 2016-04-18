@@ -2,6 +2,7 @@ package MentalState;
 
 import java.util.ArrayList;
 
+import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import MetaInformation.Turns;
 import edu.wpi.cetask.Plan;
 
@@ -17,6 +18,7 @@ public class Goal {
 	private String label;
 	private int currentTurn;
 	private double effort;
+	private GOAL_STATUS goalStatus;
 //	private Motive activeMotive = null;
 	
 	public Goal (Plan plan) {
@@ -24,7 +26,21 @@ public class Goal {
 		this.parentPlan  = plan.getParent();
 		this.label       = plan.getGoal().getType().toString();
 		this.currentTurn = Turns.getInstance().getTurnNumber();
+		this.goalStatus  = GOAL_STATUS.UNKNOWN;
 		this.effort      = 1.0;
+	}
+	
+	public Goal (Plan plan, GOAL_STATUS goalStatus) {
+		this.plan        = plan;
+		this.parentPlan  = plan.getParent();
+		this.label       = plan.getGoal().getType().toString();
+		this.currentTurn = Turns.getInstance().getTurnNumber();
+		this.goalStatus  = goalStatus;
+		this.effort      = 1.0;
+	}
+	
+	public void setGoalStatus (GOAL_STATUS goalStatus) {
+		this.goalStatus = goalStatus;
 	}
 	
 	public Plan getPlan() {
