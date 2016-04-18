@@ -75,7 +75,7 @@ public class Relevance extends AppraisalProcesses {
 		
 		repeatedBeliefsAverage = (double)repeatedBeliefsSum/repeatedBeliefsCount;
 		
-		return (repeatedBeliefsAverage == 0) ? 1 : repeatedBeliefsAverage;
+		return (repeatedBeliefsAverage == 0) ? 1.0 : repeatedBeliefsAverage;
 	}
 	
 	private Belief getLastRelatedBelief(Goal goal) {
@@ -227,7 +227,7 @@ public class Relevance extends AppraisalProcesses {
 		}
 		
 		for(Plan contributingGoal : contributingGoals) {
-			if (collaboration.getPostConditionStatus(contributingGoal) != null)
+			if (collaboration.getPreConditionStatus(contributingGoal) != null)
 				contributingGoalspredecessorsKnownValue++;
 		}
 		
@@ -268,7 +268,7 @@ public class Relevance extends AppraisalProcesses {
 		if (plan.isPrimitive())
 			plan = goal.getPlan().getParent();
 		
-		if (plan.getDecompositions().size() > 0)
+		if (plan.getDecompositions().size() > 0) // This is wrong!!!
 			return 1.0;
 		else
 			return 0.0;

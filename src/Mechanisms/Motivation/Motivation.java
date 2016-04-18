@@ -1,9 +1,7 @@
 package Mechanisms.Motivation;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import Mechanisms.Mechanisms;
 import Mechanisms.Appraisal.Controllability;
@@ -11,7 +9,6 @@ import Mechanisms.Appraisal.Expectedness;
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import Mechanisms.ToM.ToM;
 import MentalState.Goal;
-import MentalState.MentalState;
 import MentalState.Motive;
 import MentalState.Motive.MOTIVE_TYPE;
 import MetaInformation.Turns;

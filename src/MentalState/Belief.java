@@ -2,6 +2,8 @@ package MentalState;
 
 import java.util.ArrayList;
 
+import MetaInformation.Node;
+
 public class Belief {
 	
 	private String label;

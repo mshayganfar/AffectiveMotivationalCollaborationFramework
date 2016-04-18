@@ -184,7 +184,7 @@ public class Collaboration extends Mechanisms{
 			else if (plan.isFailed())
 				return GOAL_STATUS.FAILED;
 			else
-			throw new IllegalStateException("Status: " + status.toString() + " , getSuccess()'s result: " + planAchievement);
+				throw new IllegalStateException("Status: " + status.toString() + " , getSuccess()'s result: " + planAchievement);
 			
 //			if (!plan.isFailed())
 //				return GOAL_STATUS.ACHIEVED;
@@ -347,12 +347,14 @@ public class Collaboration extends Mechanisms{
 		collaborationStatus = getGoalOverallStatus(prevFocus);
 	}
 	
-	public Boolean getPostConditionStatus(Plan plan) {
+	public GOAL_STATUS getPostConditionStatus(Plan plan) {
 		
-		if (plan.getType().getPostcondition() != null)
-			return plan.getType().getPostcondition().evalCondition(plan.getGoal());
-		else
-			return null;
+		return getGoalStatus(plan);
+		
+//		if (plan.getType().getPostcondition() != null)
+//			return plan.getType().getPostcondition().evalCondition(plan.getGoal());
+//		else
+//			return null;
 	}
 	
 	public Boolean getPreConditionStatus(Plan plan) {
