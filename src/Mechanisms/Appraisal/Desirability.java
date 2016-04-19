@@ -7,10 +7,15 @@ import edu.wpi.cetask.Plan;
 
 public class Desirability extends AppraisalProcesses{
 	
-	public Desirability(Collaboration collaboration) {
+	public enum DESIRABILITY {HIGH_DESIRABLE, DESIRABLE, NEUTRAL, HIGH_UNDESIRABLE, UNDESIRABLE};
+	
+//	public Desirability(Collaboration collaboration) {
+//		this.collaboration = collaboration;
+//	}
+	
+	public void prepareDesirability(Collaboration collaboration) {
 		this.collaboration = collaboration;
 	}
-	public enum DESIRABILITY {HIGH_DESIRABLE, DESIRABLE, NEUTRAL, HIGH_UNDESIRABLE, UNDESIRABLE};
 	
 	public DESIRABILITY isEventDesirable(Goal eventGoal) {
 		

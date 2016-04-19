@@ -15,10 +15,14 @@ public class Controllability extends AppraisalProcesses{
 
 	public enum CONTROLLABILITY {CONTROLLABLE, UNCONTROLLABLE};
 	
-	public Controllability(Collaboration collaboration) {
+//	public Controllability(Collaboration collaboration) {
+//		this.collaboration = collaboration;
+//	}
+
+	public void prepareControllability(Collaboration collaboration) {
 		this.collaboration = collaboration;
 	}
-
+	
 	public CONTROLLABILITY isEventControllable(Goal eventGoal) {
 		
 		double dblAgency       			= getAgencyValue(eventGoal);
@@ -68,18 +72,18 @@ public class Controllability extends AppraisalProcesses{
 		double countSelfResponsible = 0;
 		
 		if (collaboration.getGoalType(eventGoal).equals(FOCUS_TYPE.PRIMITIVE)) {
-			if (collaboration.getResponsibleAgent(eventGoal).equals(AGENT.SELF))
+			if (collaboration.getResponsibleAgent(eventGoal.getPlan()).equals(AGENT.SELF))
 				return 1.0;
-			else if (collaboration.getResponsibleAgent(eventGoal).equals(AGENT.OTHER))
+			else if (collaboration.getResponsibleAgent(eventGoal.getPlan()).equals(AGENT.OTHER))
 				return -0.5;
-			else  if (collaboration.getResponsibleAgent(eventGoal).equals(AGENT.UNKNOWN))
+			else  if (collaboration.getResponsibleAgent(eventGoal.getPlan()).equals(AGENT.UNKNOWN))
 				return -1.0;
 			else // Should never happen
 				return 0.0;
 		}
 		else {
 			collaboration.clearChildrenResponsibility();
-			collaboration.getResponsibleAgent(eventGoal);
+			collaboration.getResponsibleAgent(eventGoal.getPlan());
 			
 			for (AGENT agent : collaboration.getChildrenResponsibility()) {
 				if (agent.equals(AGENT.SELF))

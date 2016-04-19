@@ -7,6 +7,7 @@ import Mechanisms.Mechanisms;
 import Mechanisms.Appraisal.Controllability;
 import Mechanisms.Appraisal.Expectedness;
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
+import Mechanisms.Mechanisms.AGENT;
 import Mechanisms.ToM.ToM;
 import MentalState.Goal;
 import MentalState.Motive;
@@ -23,8 +24,11 @@ public class Motivation extends Mechanisms {
 	
 	private SatisfactionDrive satisfactionDrive;
 	
-	public Motivation(ToM tom, Controllability controllability, Expectedness expectedness) {
+	public Motivation() {
 		 satisfactionDrive = new SatisfactionDrive();
+	}
+	
+	public void prepareMotivation(ToM tom, Controllability controllability, Expectedness expectedness) {
 		 this.tom  			  = tom;
 		 this.controllability = controllability;
 		 this.expectedness    = expectedness;
@@ -209,32 +213,55 @@ public class Motivation extends Mechanisms {
 		getGoalAntecedents(plan.getParent(), goalAntecedents);
 	}
 	
-	public double getMotiveUrgency(Motive motive) {
-		
-		double motiveUrgency = 0.0;
-		
-		for (Plan plan : motive.getGoal().getPlan().getSuccessors()) {
-			if(plan.getGoal().getExternal())
-				motiveUrgency++;
-		}
-		
-		// Later, I should check whether the goal is a tactical one, then influence urgency of the related motive.
-		
-		return motiveUrgency;
-	}
-	
 	public double getMotiveImportance(Motive motive) {
 		
 		// This is based on the fact that if there is no alternative recipe, the motive is more important.
 		if(motive.getGoal().getPlan().isPrimitive())
 			return 1.0;
 		else
-			if (motive.getGoal().getPlan().getDecompositions().size() == 1)
+			if (motive.getGoal().getPlan().getDecompositions().size() <= 1)
 				return 1.0;
 			else
 				return 0.0;
 		
 		// Later, I should check whether the current alternative recipe can remove the current impasse.
+	}
+	
+//	public double getMotiveImportance(Goal goal) {
+//		
+//		// I need non-failed alternative recipes for a failed task.
+//		// I might need to check whether the previous shared goal is failed/blocked, etc.!
+//		Plan plan = goal.getPlan();
+//		
+//		if (plan.isPrimitive())
+//			plan = goal.getPlan().getParent();
+//		
+//		if (plan.getDecompositions().size() > 0) // This is wrong!!!
+//			return 1.0;
+//		else
+//			return 0.0;
+//	}
+	
+	public double getMotiveUrgency(Motive motive) {
+		
+		double urgencySuccessorValue  = 0.0;
+		double urgencyMitigationValue = 0.0;
+		
+		for (Plan plan : motive.getGoal().getPlan().getSuccessors()) {
+			if (collaboration.getResponsibleAgent(motive.getGoal().getPlan()).equals(AGENT.OTHER))
+				urgencySuccessorValue++;
+			else if (collaboration.getResponsibleAgent(motive.getGoal().getPlan()).equals(AGENT.BOTH))
+				urgencySuccessorValue += 0.5;
+		}
+		
+		// Later, I should check whether the goal is a tactical one, then influence urgency of the related motive.
+		urgencyMitigationValue = (isAcknowledgementMotive(motive.getGoal())) ? 1 : 0;
+		
+		return (urgencySuccessorValue + urgencyMitigationValue);
+	}
+	
+	private boolean isAcknowledgementMotive(Goal goal) {
+		return false;
 	}
 	
 	public double getMotiveInsistence(Motive motive) {

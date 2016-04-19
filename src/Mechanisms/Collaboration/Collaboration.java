@@ -221,23 +221,23 @@ public class Collaboration extends Mechanisms{
 	}
 	
 	// NOTE: We assume all goals have postconditions.
-	public AGENT getResponsibleAgent(Goal goal) {
+	public AGENT getResponsibleAgent(Plan plan) {
 		
-		if(goal.getPlan().getGoal().isPrimitive()) {
-			if (goal.getPlan().getGoal().getExternal() == null)
+		if(plan.getGoal().isPrimitive()) {
+			if (plan.getGoal().getExternal() == null)
 				return AGENT.UNKNOWN;
-			else if (goal.getPlan().getGoal().getExternal() == false)
+			else if (plan.getGoal().getExternal() == false)
 				return AGENT.SELF;
 			else
 				return AGENT.OTHER;
 		}
 		else {
-			for (Plan childPlan : goal.getPlan().getChildren()) {
+			for (Plan childPlan : plan.getChildren()) {
 				if (childPlan.getGoal().isPrimitive()) {
-					childrenResponsibinity.add(getResponsibleAgent(new Goal(childPlan)));
+					childrenResponsibinity.add(getResponsibleAgent(childPlan));
 				}
 				else {
-					getResponsibleAgent(new Goal(childPlan));
+					getResponsibleAgent(childPlan);
 				}
 			}
 			
@@ -260,47 +260,57 @@ public class Collaboration extends Mechanisms{
 				unknownCount++;
 		}
 		
-		if (((agentCount == 0) || (otherCount == 0)) && (unknownCount != 0))
+		if (((agentCount == 0) || (otherCount == 0)) && (unknownCount != 0)) {
+			clearChildrenResponsibility();
 			return AGENT.UNKNOWN;
-		else if ((agentCount != 0) && (otherCount != 0))
+		}
+		else if ((agentCount != 0) && (otherCount != 0)) {
+			clearChildrenResponsibility();
 			return AGENT.BOTH;
-		else if ((agentCount != 0) && (otherCount == 0) && (unknownCount == 0))
+		}
+		else if ((agentCount != 0) && (otherCount == 0) && (unknownCount == 0)) {
+			clearChildrenResponsibility();
 			return AGENT.SELF;
-		else if ((agentCount == 0) && (otherCount != 0) && (unknownCount == 0))
+		}
+		else if ((agentCount == 0) && (otherCount != 0) && (unknownCount == 0)) {
+			clearChildrenResponsibility();
 			return AGENT.OTHER;
-		else
+		}
+		else {
+			clearChildrenResponsibility();
 			return null;
+		}
 	}
 	
-	public AGENT getResponsibleAgent(Plan plan) {
-		
-		if (plan.getGoal().getExternal() != null) {
-			if(!plan.getGoal().isPrimitive()) {
-				
-				int countResponsibles = 0;
-				
-				for (Plan childPlan : plan.getChildren()) {
-					if (childPlan.getGoal().getExternal())
-						countResponsibles++;
-					else if (childPlan.getGoal().getExternal() == false)
-						countResponsibles--;
-				}
-				
-				if (countResponsibles == plan.getChildren().size())
-					return AGENT.OTHER;
-				else if (Math.abs(countResponsibles) == plan.getChildren().size())
-					return AGENT.SELF;
-				else
-					return AGENT.BOTH;
-			}
-			else if (plan.getGoal().getExternal())
-				return AGENT.OTHER;
-			else
-				return AGENT.SELF;
-		}
-		else
-			return AGENT.BOTH;
-	}
+//	public AGENT getResponsibleAgent(Plan plan) {
+//		
+//		if (plan.getGoal().getExternal() != null) {
+//			if(!plan.getGoal().isPrimitive()) {
+//				
+//				int countResponsibles = 0;
+//				
+//				for (Plan childPlan : plan.getChildren()) {
+//					if (childPlan.getGoal().getExternal())
+//						countResponsibles++;
+//					else if (childPlan.getGoal().getExternal() == false)
+//						countResponsibles--;
+//				}
+//				
+//				if (countResponsibles == plan.getChildren().size())
+//					return AGENT.OTHER;
+//				else if (Math.abs(countResponsibles) == plan.getChildren().size())
+//					return AGENT.SELF;
+//				else
+//					return AGENT.BOTH;
+//			}
+//			else if (plan.getGoal().getExternal())
+//				return AGENT.OTHER;
+//			else
+//				return AGENT.SELF;
+//		}
+//		else
+//			return AGENT.BOTH;
+//	}
 	
 	public List<Input> getInputs(Goal goal) {
 		

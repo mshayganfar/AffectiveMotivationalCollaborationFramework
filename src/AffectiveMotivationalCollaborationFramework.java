@@ -93,15 +93,22 @@ public class AffectiveMotivationalCollaborationFramework {
 	
 	public static void main(String[] args) {
 		
-		tom = new ToM();
+		tom           = new ToM();
 		collaboration = new Collaboration(args);
+		motivation    = new Motivation();
 		
-		relevance = new Relevance(collaboration);
-		controllability = new Controllability(collaboration);
-		desirability = new Desirability(collaboration);
-		expectedness = new Expectedness(collaboration);
+		relevance       = new Relevance();
+		controllability = new Controllability();
+		desirability    = new Desirability();
+		expectedness    = new Expectedness();
 		
-		motivation = new Motivation(tom, controllability, expectedness);
+		relevance.prepareRelevance(collaboration, motivation);
+		controllability.prepareControllability(collaboration);
+		desirability.prepareDesirability(collaboration);
+		expectedness.prepareExpectedness(collaboration);
+		
+		motivation.prepareMotivation(tom, controllability, expectedness);
+		
 		
 		GoalManagement goalManagement = new GoalManagement(collaboration, relevance, desirability);
 		

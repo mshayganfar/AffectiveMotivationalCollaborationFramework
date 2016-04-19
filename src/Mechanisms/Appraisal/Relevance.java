@@ -5,6 +5,7 @@ import java.util.List;
 
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
+import Mechanisms.Motivation.Motivation;
 import Mechanisms.Perception.Perception;
 import MentalState.Belief;
 import MentalState.Goal;
@@ -16,8 +17,14 @@ public class Relevance extends AppraisalProcesses {
 	
 	public enum RELEVANCE {RELEVANT, IRRELEVANT};
 	
-	public Relevance(Collaboration collaboration) {
+//	public Relevance(Collaboration collaboration) {
+//		this.collaboration = collaboration;
+//		this.motivation    = motivation;
+//	}
+
+	public void prepareRelevance(Collaboration collaboration, Motivation motivation) {
 		this.collaboration = collaboration;
+		this.motivation    = motivation;
 	}
 	
 	public RELEVANCE isEventRelevant(Goal eventGoal) {
@@ -234,47 +241,10 @@ public class Relevance extends AppraisalProcesses {
 		int n = preconditionKnownValue + postconditionKnownValue + predecessorsGoalsKnownValue + contributingGoalspredecessorsKnownValue;
 		int d = preconditionAllValue + postconditionAllValue + predecessorsGoalsAllValue + contributingGoalspredecessorsAllValue;
 		
-		double urgency    = getMotiveUrgency(goal);
-		double importance = getMotiveImportance(goal);
+		// I should see how to deal with different underlying motives of a given goal.
+		double urgency    = motivation.getMotiveUrgency(goal);
+		double importance = motivation.getMotiveImportance(goal);
 		
 		return (((double)n/d) + urgency + importance);
-	}
-	
-	private double getMotiveUrgency(Goal goal) {
-		
-		double urgencySuccessorValue  = 0;
-		double urgencyMitigationValue = 0;
-		
-		List<Plan> successors = goal.getPlan().getSuccessors();
-		
-		for (Plan successor : successors) {
-			if (collaboration.getResponsibleAgent(goal).equals(AGENT.OTHER))
-				urgencySuccessorValue++;
-			else if (collaboration.getResponsibleAgent(goal).equals(AGENT.BOTH))
-				urgencySuccessorValue += 0.5;
-		}
-		
-		urgencyMitigationValue = (isAcknowledgementMotive(goal)) ? 1 : 0;
-		
-		return (urgencySuccessorValue + urgencyMitigationValue);
-	}
-	
-	private double getMotiveImportance(Goal goal) {
-		
-		// I need non-failed alternative recipes for a failed task.
-		// I might need to check whether the previous shared goal is failed/blocked, etc.!
-		Plan plan = goal.getPlan();
-		
-		if (plan.isPrimitive())
-			plan = goal.getPlan().getParent();
-		
-		if (plan.getDecompositions().size() > 0) // This is wrong!!!
-			return 1.0;
-		else
-			return 0.0;
-	}
-	
-	private boolean isAcknowledgementMotive(Goal goal) {
-		return false;
 	}
 }

@@ -1,6 +1,7 @@
 package Mechanisms;
 
 import Mechanisms.Collaboration.Collaboration;
+import Mechanisms.Motivation.Motivation;
 import MentalState.MentalState;
 import MetaInformation.Turns;
 
@@ -12,6 +13,7 @@ public class Mechanisms {
 	
 	protected Turns currentTurn;
 	protected Collaboration collaboration;
+	protected Motivation motivation;
 	
 //	public Mechanisms() {}
 	

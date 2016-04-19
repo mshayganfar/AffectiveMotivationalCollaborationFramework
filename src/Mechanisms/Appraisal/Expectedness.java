@@ -8,10 +8,14 @@ public class Expectedness extends AppraisalProcesses{
 	
 	public enum EXPECTEDNESS {MOST_EXPECTED, EXPECTED, LESS_EXPECTED, LESS_UNEXPECTED, UNEXPECTED, MOST_UNEXPECTED};
 	
-	public Expectedness(Collaboration collaboration) {
+//	public Expectedness(Collaboration collaboration) {
+//		this.collaboration = collaboration;
+//	}
+
+	public void prepareExpectedness(Collaboration collaboration) {
 		this.collaboration = collaboration;
 	}
-
+	
 	public EXPECTEDNESS isEventExpected(Goal eventGoal) {
 
 		Disco disco = collaboration.getDisco();
