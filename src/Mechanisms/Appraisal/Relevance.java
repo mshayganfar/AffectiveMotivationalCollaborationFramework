@@ -241,9 +241,8 @@ public class Relevance extends AppraisalProcesses {
 		int n = preconditionKnownValue + postconditionKnownValue + predecessorsGoalsKnownValue + contributingGoalspredecessorsKnownValue;
 		int d = preconditionAllValue + postconditionAllValue + predecessorsGoalsAllValue + contributingGoalspredecessorsAllValue;
 		
-		// I should see how to deal with different underlying motives of a given goal.
-		double urgency    = motivation.getMotiveUrgency(goal);
-		double importance = motivation.getMotiveImportance(goal);
+		double urgency    = motivation.getMotiveUrgency(goal.getActiveMotive());
+		double importance = motivation.getMotiveImportance(goal.getActiveMotive());
 		
 		return (((double)n/d) + urgency + importance);
 	}

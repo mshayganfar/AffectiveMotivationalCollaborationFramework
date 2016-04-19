@@ -13,6 +13,7 @@ import MentalState.Goal;
 import MentalState.Goal.DIFFICULTY;
 import MentalState.MentalState;
 import MentalState.Motive;
+import MetaInformation.MentalProcesses;
 import MetaInformation.Turns;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskModel;
@@ -21,13 +22,8 @@ public class AffectiveMotivationalCollaborationFramework {
 	
 	private static TaskModel taskModel;
 	private static Goal goal = null;
-	private static Collaboration collaboration;
-	private static Relevance relevance;
-	private static Controllability controllability;
-	private static Desirability desirability;
-	private static Expectedness expectedness;
-	private static ToM tom;
-	private static Motivation motivation;
+	
+	private static MentalProcesses mentalProcesses;
 	
 	private static Goal updateGoal(Plan plan) {
 
@@ -55,6 +51,8 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		Turns turn = Turns.getInstance();
 		
+		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
+		
 		Goal recognizedGoal = new Goal(collaboration.getActualFocus(collaboration.getDisco().getFocus()));
 		recognizedGoal.setGoalStatus(collaboration.getGoalStatus(recognizedGoal.getPlan()));
 		recognizedGoal.addGoalToMentalState();
@@ -69,11 +67,11 @@ public class AffectiveMotivationalCollaborationFramework {
 		collaboration.updatePreconditionApplicability();
 		System.out.println(collaboration.getPreconditionApplicabilities());
 		
-		System.out.println(relevance.isEventRelevant(recognizedGoal));
-		System.out.println(controllability.isEventControllable(recognizedGoal));
-		DESIRABILITY desirabilityValue = desirability.isEventDesirable(recognizedGoal);
+		System.out.println(mentalProcesses.getRelevanceProcess().isEventRelevant(recognizedGoal));
+		System.out.println(mentalProcesses.getControllabilityProcess().isEventControllable(recognizedGoal));
+		DESIRABILITY desirabilityValue = mentalProcesses.getDesirabilityProcess().isEventDesirable(recognizedGoal);
 		System.out.println(desirabilityValue);
-		System.out.println(expectedness.isEventExpected(recognizedGoal));
+		System.out.println(mentalProcesses.getExpectednessProcess().isEventExpected(recognizedGoal));
 		
 //		System.out.println(DIFFICULTY.valueOf(recognizedGoal.getPlan().getType().getProperty("@difficulty")));
 		
@@ -93,29 +91,14 @@ public class AffectiveMotivationalCollaborationFramework {
 	
 	public static void main(String[] args) {
 		
-		tom           = new ToM();
-		collaboration = new Collaboration(args);
-		motivation    = new Motivation();
+		mentalProcesses = new MentalProcesses(args);
 		
-		relevance       = new Relevance();
-		controllability = new Controllability();
-		desirability    = new Desirability();
-		expectedness    = new Expectedness();
+//		GoalManagement goalManagement = new GoalManagement(collaboration, relevance, desirability);
 		
-		relevance.prepareRelevance(collaboration, motivation);
-		controllability.prepareControllability(collaboration);
-		desirability.prepareDesirability(collaboration);
-		expectedness.prepareExpectedness(collaboration);
-		
-		motivation.prepareMotivation(tom, controllability, expectedness);
-		
-		
-		GoalManagement goalManagement = new GoalManagement(collaboration, relevance, desirability);
-		
-		collaboration.getInteraction().start(true);
+		mentalProcesses.getCollaborationMechanism().getInteraction().start(true);
 		
 //		collaboration.getInteraction().getConsole().test("test/ABC1.test");
-		collaboration.getInteraction().getConsole().source("test/events2.txt");
+		mentalProcesses.getCollaborationMechanism().getInteraction().getConsole().source("test/events2.txt");
 		
 //		updateGoal(collaboration.getDisco().getFocus());
 		

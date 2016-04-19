@@ -227,21 +227,6 @@ public class Motivation extends Mechanisms {
 		// Later, I should check whether the current alternative recipe can remove the current impasse.
 	}
 	
-//	public double getMotiveImportance(Goal goal) {
-//		
-//		// I need non-failed alternative recipes for a failed task.
-//		// I might need to check whether the previous shared goal is failed/blocked, etc.!
-//		Plan plan = goal.getPlan();
-//		
-//		if (plan.isPrimitive())
-//			plan = goal.getPlan().getParent();
-//		
-//		if (plan.getDecompositions().size() > 0) // This is wrong!!!
-//			return 1.0;
-//		else
-//			return 0.0;
-//	}
-	
 	public double getMotiveUrgency(Motive motive) {
 		
 		double urgencySuccessorValue  = 0.0;

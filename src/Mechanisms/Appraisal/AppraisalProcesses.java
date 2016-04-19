@@ -1,10 +1,6 @@
 package Mechanisms.Appraisal;
 
-import java.util.ArrayList;
-
 import Mechanisms.Mechanisms;
-import Mechanisms.Collaboration.Collaboration;
-import Mechanisms.Perception.Perception;
 
 public class AppraisalProcesses extends Mechanisms {
 
@@ -19,5 +15,5 @@ public class AppraisalProcesses extends Mechanisms {
 	// The return value can be computed according to the emotional status of the human.
 	protected double getHumanEmotionalThreshold() { return 0.0; }
 	
-	public Collaboration getCollaboration() { return this.collaboration; }
+//	public Collaboration getCollaboration() { return this.collaboration; }
 }
