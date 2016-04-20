@@ -10,6 +10,7 @@ import Mechanisms.Perception.Perception;
 import MentalState.Belief;
 import MentalState.Goal;
 import MetaInformation.GoalTree;
+import MetaInformation.MentalProcesses;
 import MetaInformation.Node;
 import edu.wpi.cetask.Plan;
 
@@ -17,16 +18,11 @@ public class Relevance extends AppraisalProcesses {
 	
 	public enum RELEVANCE {RELEVANT, IRRELEVANT};
 	
-//	public Relevance(Collaboration collaboration) {
-//		this.collaboration = collaboration;
-//		this.motivation    = motivation;
-//	}
-
-	public void prepareRelevance(Collaboration collaboration, Motivation motivation) {
-		this.collaboration = collaboration;
-		this.motivation    = motivation;
+	public Relevance(MentalProcesses mentalProcesses) {
+		this.collaboration = mentalProcesses.getCollaborationMechanism();
+		this.motivation    = mentalProcesses.getMotivationMechanism();
 	}
-	
+
 	public RELEVANCE isEventRelevant(Goal eventGoal) {
 		
 		double eventUtility = getEventUtility(eventGoal);

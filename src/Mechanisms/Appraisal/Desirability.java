@@ -1,20 +1,16 @@
 package Mechanisms.Appraisal;
 
-import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.Collaboration.*;
 import MentalState.*;
+import MetaInformation.MentalProcesses;
 import edu.wpi.cetask.Plan;
 
 public class Desirability extends AppraisalProcesses{
 	
 	public enum DESIRABILITY {HIGH_DESIRABLE, DESIRABLE, NEUTRAL, HIGH_UNDESIRABLE, UNDESIRABLE};
 	
-//	public Desirability(Collaboration collaboration) {
-//		this.collaboration = collaboration;
-//	}
-	
-	public void prepareDesirability(Collaboration collaboration) {
-		this.collaboration = collaboration;
+	public Desirability(MentalProcesses mentalProcesses) {
+		this.collaboration = mentalProcesses.getCollaborationMechanism();
 	}
 	
 	public DESIRABILITY isEventDesirable(Goal eventGoal) {

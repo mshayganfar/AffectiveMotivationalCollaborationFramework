@@ -3,26 +3,22 @@ package Mechanisms.Appraisal;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskClass.Input;
 
-import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.Collaboration.FOCUS_TYPE;
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import MentalState.Goal;
 import MentalState.Goal.DIFFICULTY;
 import MentalState.MentalState;
 import MentalState.Motive.MOTIVE_TYPE;
+import MetaInformation.MentalProcesses;
 
 public class Controllability extends AppraisalProcesses{
 
 	public enum CONTROLLABILITY {CONTROLLABLE, UNCONTROLLABLE};
 	
-//	public Controllability(Collaboration collaboration) {
-//		this.collaboration = collaboration;
-//	}
-
-	public void prepareControllability(Collaboration collaboration) {
-		this.collaboration = collaboration;
+	public Controllability(MentalProcesses mentalProcesses) {
+		this.collaboration = mentalProcesses.getCollaborationMechanism();
 	}
-	
+
 	public CONTROLLABILITY isEventControllable(Goal eventGoal) {
 		
 		double dblAgency       			= getAgencyValue(eventGoal);

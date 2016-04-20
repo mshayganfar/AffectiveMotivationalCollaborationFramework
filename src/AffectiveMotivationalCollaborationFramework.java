@@ -1,17 +1,8 @@
-import Mechanisms.Appraisal.Controllability;
-import Mechanisms.Appraisal.Desirability;
-import Mechanisms.Appraisal.Expectedness;
-import Mechanisms.Appraisal.Relevance;
 import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Collaboration.Collaboration;
-import Mechanisms.Collaboration.GoalManagement;
-import Mechanisms.Motivation.Motivation;
 import Mechanisms.Motivation.SatisfactionDrive;
-import Mechanisms.ToM.ToM;
 import MentalState.Belief;
 import MentalState.Goal;
-import MentalState.Goal.DIFFICULTY;
-import MentalState.MentalState;
 import MentalState.Motive;
 import MetaInformation.MentalProcesses;
 import MetaInformation.Turns;

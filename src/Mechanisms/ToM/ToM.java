@@ -7,6 +7,7 @@ import Mechanisms.Appraisal.Expectedness;
 import Mechanisms.Appraisal.Relevance;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Motivation.Motivation;
+import MetaInformation.MentalProcesses;
 
 public class ToM extends Mechanisms{
 	
@@ -19,17 +20,17 @@ public class ToM extends Mechanisms{
 	
 	private double valence = 0.0;
 	
-	public double getValenceValue() {
-		return valence;
+	public ToM(MentalProcesses mentalProcesses) {
+		this.collaboration = mentalProcesses.getCollaborationMechanism();
+		this.motivation    = mentalProcesses.getMotivationMechanism();
+		
+		this.relevance       = mentalProcesses.getRelevanceProcess();
+		this.controllability = mentalProcesses.getControllabilityProcess();
+		this.desirability    = mentalProcesses.getDesirabilityProcess();
+		this.expectedness    = mentalProcesses.getExpectednessProcess();
 	}
 	
-	public void prepareToM(Collaboration collaboration, Motivation motivation, Relevance relevance, Controllability controllability, Desirability desirability, Expectedness expectedness) {
-		this.collaboration = collaboration;
-		this.motivation    = new Motivation();
-		
-		this.relevance       = new Relevance();
-		this.controllability = new Controllability();
-		this.desirability    = new Desirability();
-		this.expectedness    = new Expectedness();
+	public double getValenceValue() {
+		return valence;
 	}
 }

@@ -1,19 +1,15 @@
 package Mechanisms.Appraisal;
 
-import Mechanisms.Collaboration.Collaboration;
 import MentalState.Goal;
+import MetaInformation.MentalProcesses;
 import edu.wpi.disco.Disco;
 
 public class Expectedness extends AppraisalProcesses{
 	
 	public enum EXPECTEDNESS {MOST_EXPECTED, EXPECTED, LESS_EXPECTED, LESS_UNEXPECTED, UNEXPECTED, MOST_UNEXPECTED};
 	
-//	public Expectedness(Collaboration collaboration) {
-//		this.collaboration = collaboration;
-//	}
-
-	public void prepareExpectedness(Collaboration collaboration) {
-		this.collaboration = collaboration;
+	public Expectedness(MentalProcesses mentalProcesses) {
+		this.collaboration = mentalProcesses.getCollaborationMechanism();
 	}
 	
 	public EXPECTEDNESS isEventExpected(Goal eventGoal) {

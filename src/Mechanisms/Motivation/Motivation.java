@@ -7,11 +7,11 @@ import Mechanisms.Mechanisms;
 import Mechanisms.Appraisal.Controllability;
 import Mechanisms.Appraisal.Expectedness;
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
-import Mechanisms.Mechanisms.AGENT;
 import Mechanisms.ToM.ToM;
 import MentalState.Goal;
 import MentalState.Motive;
 import MentalState.Motive.MOTIVE_TYPE;
+import MetaInformation.MentalProcesses;
 import MetaInformation.Turns;
 import edu.wpi.cetask.Plan;
 import edu.wpi.disco.lang.Propose;
@@ -24,14 +24,12 @@ public class Motivation extends Mechanisms {
 	
 	private SatisfactionDrive satisfactionDrive;
 	
-	public Motivation() {
+	public Motivation(MentalProcesses mentalProcesses) {
 		 satisfactionDrive = new SatisfactionDrive();
-	}
-	
-	public void prepareMotivation(ToM tom, Controllability controllability, Expectedness expectedness) {
-		 this.tom  			  = tom;
-		 this.controllability = controllability;
-		 this.expectedness    = expectedness;
+		 
+		 this.tom  			  = mentalProcesses.getToMMechanism();
+		 this.controllability = mentalProcesses.getControllabilityProcess();
+		 this.expectedness    = mentalProcesses.getExpectednessProcess();
 	}
 	
 	private Motive createSatisfactionMotive(Goal goal) {
