@@ -29,7 +29,6 @@ public class Expectedness extends AppraisalProcesses{
 //				return EXPECTEDNESS.MOST_UNEXPECTED;
 //		}
 		else {
-//			System.out.println("EXPECTEDNESS: " + disco.isLastShift());
 			if (!disco.isLastShift())
 				return EXPECTEDNESS.MOST_EXPECTED;
 			else
