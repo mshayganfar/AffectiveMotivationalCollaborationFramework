@@ -10,11 +10,13 @@ import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
 import Mechanisms.Appraisal.Relevance.RELEVANCE;
 import Mechanisms.Collaboration.Collaboration;
+import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import Mechanisms.Motivation.Motivation;
 import MentalState.Goal;
 import MetaInformation.MentalProcesses;
 import edu.wpi.cetask.Plan;
 import edu.wpi.disco.lang.Propose;
+import edu.wpi.disco.lang.Propose.Failed;
 
 public class ToM extends Mechanisms{
 	
@@ -59,6 +61,14 @@ public class ToM extends Mechanisms{
 			return INFERRED_CONTEXT.AGENT_ACCEPTED;
 		else if (1==1/*Human Accepted*/)
 			return INFERRED_CONTEXT.HUMAN_ACCEPTED;
+		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.FAILED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.OTHER))
+			return INFERRED_CONTEXT.HUMAN_SELF_FAILUE;
+		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.FAILED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.SELF))
+			return INFERRED_CONTEXT.AGENT_SELF_FAILUE;
+		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.ACHIEVED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.OTHER))
+			return INFERRED_CONTEXT.HUMAN_SELF_ACHIEVEMENT;
+		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.ACHIEVED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.SELF))
+			return INFERRED_CONTEXT.AGENT_SELF_ACHIEVEMENT;
 		else
 			return null; //should be changed
 	}
