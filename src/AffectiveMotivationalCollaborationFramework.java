@@ -56,7 +56,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		Motive motive = new Motive(recognizedGoal);
 //		System.out.println("Recipe Count: " + motivation.getMotiveImportance(motive));
 		
-		AppraisalVector test1 = mentalProcesses.getToMMechanism().getReverseAppraisalValues(recognizedGoal);
+//		AppraisalVector test1 = mentalProcesses.getToMMechanism().getReverseAppraisalValues(recognizedGoal);
 		
 		collaboration.updatePreconditionApplicability();
 		System.out.println(collaboration.getPreconditionApplicabilities());

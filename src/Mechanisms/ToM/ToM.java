@@ -16,7 +16,10 @@ import MentalState.Goal;
 import MetaInformation.AppraisalVector;
 import MetaInformation.MentalProcesses;
 import edu.wpi.cetask.Plan;
+import edu.wpi.cetask.Task;
+import edu.wpi.disco.lang.Accept;
 import edu.wpi.disco.lang.Propose;
+import edu.wpi.disco.lang.Reject;
 
 public class ToM extends Mechanisms{
 	
@@ -76,13 +79,14 @@ public class ToM extends Mechanisms{
 			return INFERRED_CONTEXT.AGENT_PROPOSED;
 		else if ((eventPlan.getGoal() instanceof Propose.Should) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.OTHER))
 			return INFERRED_CONTEXT.HUMAN_PROPOSED;
-		else if (1==1/*Agent Rejected*/)
+		else if ((eventPlan.getGoal() instanceof Reject) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/).equals(AGENT.SELF)))
+//			((Reject)eventPlan.getGoal()).getProposal();
 			return INFERRED_CONTEXT.AGENT_REJECTED;
-		else if (1==1/*Human Rejected*/)
+		else if ((eventPlan.getGoal() instanceof Reject) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/).equals(AGENT.OTHER)))
 			return INFERRED_CONTEXT.HUMAN_REJECTED;
-		else if (1==1/*Agent Accepted*/)
+		else if ((eventPlan.getGoal() instanceof Accept) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/).equals(AGENT.SELF)))
 			return INFERRED_CONTEXT.AGENT_ACCEPTED;
-		else if (1==1/*Human Accepted*/)
+		else if ((eventPlan.getGoal() instanceof Accept) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/).equals(AGENT.OTHER)))
 			return INFERRED_CONTEXT.HUMAN_ACCEPTED;
 		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.FAILED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.OTHER))
 			return INFERRED_CONTEXT.HUMAN_SELF_FAILURE;
@@ -93,7 +97,7 @@ public class ToM extends Mechanisms{
 		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.ACHIEVED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.SELF))
 			return INFERRED_CONTEXT.AGENT_SELF_ACHIEVEMENT;
 		else
-			return null; //should be changed
+			throw new IllegalArgumentException("Event: " + eventPlan);
 	}
 	
 	public DESIRABILITY getDesirabilityUsingValence(double valence) {
