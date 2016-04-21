@@ -16,7 +16,7 @@ import edu.wpi.cetask.Plan;
 
 public class Relevance extends AppraisalProcesses {
 	
-	public enum RELEVANCE {RELEVANT, IRRELEVANT};
+	public enum RELEVANCE {RELEVANT, IRRELEVANT, UNKNOWN};
 	
 	public Relevance(MentalProcesses mentalProcesses) {
 		this.collaboration = mentalProcesses.getCollaborationMechanism();

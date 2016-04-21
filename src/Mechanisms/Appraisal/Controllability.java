@@ -13,7 +13,7 @@ import MetaInformation.MentalProcesses;
 
 public class Controllability extends AppraisalProcesses{
 
-	public enum CONTROLLABILITY {CONTROLLABLE, UNCONTROLLABLE};
+	public enum CONTROLLABILITY {CONTROLLABLE, UNCONTROLLABLE, UNKNOWN};
 	
 	public Controllability(MentalProcesses mentalProcesses) {
 		this.collaboration = mentalProcesses.getCollaborationMechanism();

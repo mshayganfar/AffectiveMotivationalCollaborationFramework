@@ -1,6 +1,7 @@
 import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Motivation.SatisfactionDrive;
+import Mechanisms.ToM.ToM.ReverseAppraisalVector;
 import MentalState.Belief;
 import MentalState.Goal;
 import MentalState.Motive;
@@ -47,6 +48,8 @@ public class AffectiveMotivationalCollaborationFramework {
 		Goal recognizedGoal = new Goal(collaboration.getActualFocus(collaboration.getDisco().getFocus()));
 		recognizedGoal.setGoalStatus(collaboration.getGoalStatus(recognizedGoal.getPlan()));
 		recognizedGoal.addGoalToMentalState();
+		
+		ReverseAppraisalVector test1 = mentalProcesses.getToMMechanism().getReverseAppraisalValues(recognizedGoal);
 		
 		Belief belief1 = new Belief(recognizedGoal);
 		Belief belief2 = new Belief(recognizedGoal);

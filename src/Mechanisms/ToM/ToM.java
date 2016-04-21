@@ -16,7 +16,6 @@ import MentalState.Goal;
 import MetaInformation.MentalProcesses;
 import edu.wpi.cetask.Plan;
 import edu.wpi.disco.lang.Propose;
-import edu.wpi.disco.lang.Propose.Failed;
 
 public class ToM extends Mechanisms{
 	
@@ -43,6 +42,26 @@ public class ToM extends Mechanisms{
 		this.controllability = mentalProcesses.getControllabilityProcess();
 		this.desirability    = mentalProcesses.getDesirabilityProcess();
 		this.expectedness    = mentalProcesses.getExpectednessProcess();
+	}
+	
+	public ReverseAppraisalVector getReverseAppraisalValues(Goal eventGoal) {
+		
+		double valenceValue      = getValenceValue();
+		INFERRED_CONTEXT context = getInferredContext(eventGoal);
+		
+		return getEstimatedAppraisal(valenceValue, context);
+	}
+	
+	private ReverseAppraisalVector getEstimatedAppraisal(double valenceValue, INFERRED_CONTEXT context) {
+		
+		ReverseAppraisalVector estimatedAppraisalVector = new ReverseAppraisalVector();
+		
+		estimatedAppraisalVector.setRelevanceValue(RELEVANCE.RELEVANT);
+		estimatedAppraisalVector.setDesirabilityValue(DESIRABILITY.DESIRABLE);
+		estimatedAppraisalVector.setExpectednessValue(EXPECTEDNESS.EXPECTED);
+		estimatedAppraisalVector.setControllabilityValue(CONTROLLABILITY.CONTROLLABLE);
+		
+		return estimatedAppraisalVector;
 	}
 	
 	private INFERRED_CONTEXT getInferredContext(Goal eventGoal) {
@@ -91,5 +110,40 @@ public class ToM extends Mechanisms{
 	
 	public EXPECTEDNESS isEventExpected(Goal eventGoal) {
 		return this.expectedness.isEventExpected(eventGoal);
+	}
+	
+	public void estimateAppraisalValues(Goal eventGoal) {
+		
+	}
+	
+	public class ReverseAppraisalVector {
+		
+		private RELEVANCE relevanceEstimate;
+		private DESIRABILITY desirabilityEstimate;
+		private EXPECTEDNESS expectednessEstimate;
+		private CONTROLLABILITY controllabilityEstimate;
+		
+		public ReverseAppraisalVector() {
+			this.relevanceEstimate = RELEVANCE.UNKNOWN;
+			this.desirabilityEstimate = DESIRABILITY.UNKNOWN;
+			this.expectednessEstimate = EXPECTEDNESS.UNKNOWN;
+			this.controllabilityEstimate = CONTROLLABILITY.UNKNOWN;
+		}
+		
+		private void setRelevanceValue(RELEVANCE relevance) {
+			this.relevanceEstimate = relevance;
+		}
+		
+		private void setDesirabilityValue(DESIRABILITY desirability) {
+			this.desirabilityEstimate = desirability;
+		}
+		
+		private void setExpectednessValue(EXPECTEDNESS expectedness) {
+			this.expectednessEstimate = expectedness;
+		}
+		
+		private void setControllabilityValue(CONTROLLABILITY controllability) {
+			this.controllabilityEstimate = controllability;
+		}
 	}
 }

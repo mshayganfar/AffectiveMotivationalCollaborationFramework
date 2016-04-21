@@ -6,7 +6,7 @@ import edu.wpi.disco.Disco;
 
 public class Expectedness extends AppraisalProcesses{
 	
-	public enum EXPECTEDNESS {MOST_EXPECTED, EXPECTED, LESS_EXPECTED, LESS_UNEXPECTED, UNEXPECTED, MOST_UNEXPECTED};
+	public enum EXPECTEDNESS {MOST_EXPECTED, EXPECTED, LESS_EXPECTED, LESS_UNEXPECTED, UNEXPECTED, MOST_UNEXPECTED, UNKNOWN};
 	
 	public Expectedness(MentalProcesses mentalProcesses) {
 		this.collaboration = mentalProcesses.getCollaborationMechanism();

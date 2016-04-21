@@ -7,7 +7,7 @@ import edu.wpi.cetask.Plan;
 
 public class Desirability extends AppraisalProcesses{
 	
-	public enum DESIRABILITY {HIGH_DESIRABLE, DESIRABLE, NEUTRAL, HIGH_UNDESIRABLE, UNDESIRABLE};
+	public enum DESIRABILITY {HIGH_DESIRABLE, DESIRABLE, NEUTRAL, HIGH_UNDESIRABLE, UNDESIRABLE, UNKNOWN};
 	
 	public Desirability(MentalProcesses mentalProcesses) {
 		this.collaboration = mentalProcesses.getCollaborationMechanism();
