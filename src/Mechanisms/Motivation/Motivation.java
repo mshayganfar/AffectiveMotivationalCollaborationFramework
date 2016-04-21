@@ -24,12 +24,14 @@ public class Motivation extends Mechanisms {
 	
 	private SatisfactionDrive satisfactionDrive;
 	
-	public Motivation(MentalProcesses mentalProcesses) {
+	public Motivation() {
 		 satisfactionDrive = new SatisfactionDrive();
-		 
-		 this.tom  			  = mentalProcesses.getToMMechanism();
-		 this.controllability = mentalProcesses.getControllabilityProcess();
-		 this.expectedness    = mentalProcesses.getExpectednessProcess();
+	}
+	
+	public void prepareMotivationMechanism(MentalProcesses mentalProcesses) {
+		this.tom  			 = mentalProcesses.getToMMechanism();
+		this.controllability = mentalProcesses.getControllabilityProcess();
+		this.expectedness    = mentalProcesses.getExpectednessProcess();
 	}
 	
 	private Motive createSatisfactionMotive(Goal goal) {
@@ -214,15 +216,17 @@ public class Motivation extends Mechanisms {
 	public double getMotiveImportance(Motive motive) {
 		
 		// This is based on the fact that if there is no alternative recipe, the motive is more important.
+		// And whether the current alternative recipe can remove the current impasse.
 		if(motive.getGoal().getPlan().isPrimitive())
 			return 1.0;
-		else
-			if (motive.getGoal().getPlan().getDecompositions().size() <= 1)
+		else {
+			if (motive.getGoal().getPlan().getDecompositions().size() < 1)
+				return 1.0;
+			else if ((motive.getGoal().getPlan().getDecompositions().size() >= 1) && (motive.getGoal().getPlan().getFailed().size() >= 1))
 				return 1.0;
 			else
 				return 0.0;
-		
-		// Later, I should check whether the current alternative recipe can remove the current impasse.
+		}
 	}
 	
 	public double getMotiveUrgency(Motive motive) {

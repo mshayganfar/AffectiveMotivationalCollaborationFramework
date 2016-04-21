@@ -237,8 +237,8 @@ public class Relevance extends AppraisalProcesses {
 		int n = preconditionKnownValue + postconditionKnownValue + predecessorsGoalsKnownValue + contributingGoalspredecessorsKnownValue;
 		int d = preconditionAllValue + postconditionAllValue + predecessorsGoalsAllValue + contributingGoalspredecessorsAllValue;
 		
-		double urgency    = motivation.getMotiveUrgency(goal.getActiveMotive());
-		double importance = motivation.getMotiveImportance(goal.getActiveMotive());
+		double urgency    = this.motivation.getMotiveUrgency(goal.getActiveMotive());
+		double importance = this.motivation.getMotiveImportance(goal.getActiveMotive());
 		
 		return (((double)n/d) + urgency + importance);
 	}

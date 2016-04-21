@@ -20,13 +20,16 @@ public class MentalProcesses {
 	
 	public MentalProcesses(String[] args) {
 		this.collaboration = new Collaboration(args);
-		this.motivation    = new Motivation(this);
-		this.tom           = new ToM(this);
+		this.motivation    = new Motivation();
+		this.tom           = new ToM();
 		
 		this.relevance       = new Relevance(this);
 		this.controllability = new Controllability(this);
 		this.desirability    = new Desirability(this);
 		this.expectedness    = new Expectedness(this);
+		
+		this.motivation.prepareMotivationMechanism(this);
+		this.tom.prepareAppraisalsOfToM(this);
 	}
 	
 	public Collaboration getCollaborationMechanism() {

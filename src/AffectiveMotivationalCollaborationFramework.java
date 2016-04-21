@@ -1,10 +1,10 @@
 import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Motivation.SatisfactionDrive;
-import Mechanisms.ToM.ToM.ReverseAppraisalVector;
 import MentalState.Belief;
 import MentalState.Goal;
 import MentalState.Motive;
+import MetaInformation.AppraisalVector;
 import MetaInformation.MentalProcesses;
 import MetaInformation.Turns;
 import edu.wpi.cetask.Plan;
@@ -49,14 +49,14 @@ public class AffectiveMotivationalCollaborationFramework {
 		recognizedGoal.setGoalStatus(collaboration.getGoalStatus(recognizedGoal.getPlan()));
 		recognizedGoal.addGoalToMentalState();
 		
-		ReverseAppraisalVector test1 = mentalProcesses.getToMMechanism().getReverseAppraisalValues(recognizedGoal);
-		
 		Belief belief1 = new Belief(recognizedGoal);
 		Belief belief2 = new Belief(recognizedGoal);
 		Belief belief3 = new Belief(recognizedGoal);
 		
 		Motive motive = new Motive(recognizedGoal);
 //		System.out.println("Recipe Count: " + motivation.getMotiveImportance(motive));
+		
+		AppraisalVector test1 = mentalProcesses.getToMMechanism().getReverseAppraisalValues(recognizedGoal);
 		
 		collaboration.updatePreconditionApplicability();
 		System.out.println(collaboration.getPreconditionApplicabilities());
