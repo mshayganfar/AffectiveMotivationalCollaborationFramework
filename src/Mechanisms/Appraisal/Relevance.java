@@ -3,9 +3,7 @@ package Mechanisms.Appraisal;
 import java.util.ArrayList;
 import java.util.List;
 
-import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
-import Mechanisms.Motivation.Motivation;
 import Mechanisms.Perception.Perception;
 import MentalState.Belief;
 import MentalState.Goal;

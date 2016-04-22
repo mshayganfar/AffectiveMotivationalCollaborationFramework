@@ -11,6 +11,7 @@ import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
 import Mechanisms.Appraisal.Relevance.RELEVANCE;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
+import Mechanisms.Collaboration.Collaboration.INFERRED_CONTEXT;
 import Mechanisms.Motivation.Motivation;
 import MentalState.Goal;
 import MetaInformation.AppraisalVector;
@@ -23,6 +24,8 @@ import edu.wpi.disco.lang.Reject;
 
 public class ToM extends Mechanisms{
 	
+	private MentalProcesses mentalProcesses;
+	
 	private Collaboration collaboration;
 	private Relevance relevance;
 	private Controllability controllability;
@@ -31,15 +34,6 @@ public class ToM extends Mechanisms{
 	private Motivation motivation;
 	
 	private double valence = 0.0;
-	
-	public enum INFERRED_CONTEXT{AGENT_PROPOSED, HUMAN_PROPOSED, AGENT_REJECTED, HUMAN_REJECTED, AGENT_ACCEPTED, HUMAN_ACCEPTED,
-		HUMAN_SELF_FAILURE, HUMAN_AGENT_FAILURE, HUMAN_OTHER_FAILURE, HUMAN_UNKOWN_FAILURE,
-		AGENT_SELF_FAILURE, AGENT_AGENT_FAILURE, AGENT_OTHER_FAILURE, AGENT_UNKOWN_FAILURE,
-		HUMAN_SELF_ACHIEVEMENT, HUMAN_AGENT_ACHIEVEMENT, HUMAN_OTHER_ACHIEVEMENT, HUMAN_UNKOWN_ACHIEVEMENT,
-		AGENT_SELF_ACHIEVEMENT, AGENT_AGENT_ACHIEVEMENT, AGENT_OTHER_ACHIEVEMENT, AGENT_UNKOWN_ACHIEVEMENT};
-	
-//	public ToM() {
-//	}
 	
 	public void prepareAppraisalsOfToM(MentalProcesses mentalProcesses) {
 		this.collaboration = mentalProcesses.getCollaborationMechanism();
@@ -54,14 +48,14 @@ public class ToM extends Mechanisms{
 	public AppraisalVector getReverseAppraisalValues(Goal eventGoal) {
 		
 		double valenceValue      = getValenceValue();
-		INFERRED_CONTEXT context = getInferredContext(eventGoal);
+		INFERRED_CONTEXT context = this.collaboration.getInferredContext(eventGoal);
 		
-		return getEstimatedAppraisal(valenceValue, context, eventGoal);
+		return getAnticipatedAppraisal(valenceValue, context, eventGoal);
 	}
 	
-	private AppraisalVector getEstimatedAppraisal(double valenceValue, INFERRED_CONTEXT context, Goal eventGoal) {
+	private AppraisalVector getAnticipatedAppraisal(double valenceValue, INFERRED_CONTEXT context, Goal eventGoal) {
 		
-		AppraisalVector estimatedAppraisalVector = new AppraisalVector();
+		AppraisalVector estimatedAppraisalVector = new AppraisalVector(mentalProcesses);
 		
 		estimatedAppraisalVector.setRelevanceValue(this.relevance.isEventRelevant(eventGoal));
 		estimatedAppraisalVector.setDesirabilityValue(getDesirabilityUsingValence(valenceValue));
@@ -69,35 +63,6 @@ public class ToM extends Mechanisms{
 		estimatedAppraisalVector.setControllabilityValue(this.controllability.isEventControllable(eventGoal));
 		
 		return estimatedAppraisalVector;
-	}
-	
-	private INFERRED_CONTEXT getInferredContext(Goal eventGoal) {
-		
-		Plan eventPlan = eventGoal.getPlan();
-		
-		if ((eventPlan.getGoal() instanceof Propose.Should) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.SELF))
-			return INFERRED_CONTEXT.AGENT_PROPOSED;
-		else if ((eventPlan.getGoal() instanceof Propose.Should) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.OTHER))
-			return INFERRED_CONTEXT.HUMAN_PROPOSED;
-		else if ((eventPlan.getGoal() instanceof Reject) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/).equals(AGENT.SELF)))
-//			((Reject)eventPlan.getGoal()).getProposal();
-			return INFERRED_CONTEXT.AGENT_REJECTED;
-		else if ((eventPlan.getGoal() instanceof Reject) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/).equals(AGENT.OTHER)))
-			return INFERRED_CONTEXT.HUMAN_REJECTED;
-		else if ((eventPlan.getGoal() instanceof Accept) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/).equals(AGENT.SELF)))
-			return INFERRED_CONTEXT.AGENT_ACCEPTED;
-		else if ((eventPlan.getGoal() instanceof Accept) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/).equals(AGENT.OTHER)))
-			return INFERRED_CONTEXT.HUMAN_ACCEPTED;
-		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.FAILED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.OTHER))
-			return INFERRED_CONTEXT.HUMAN_SELF_FAILURE;
-		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.FAILED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.SELF))
-			return INFERRED_CONTEXT.AGENT_SELF_FAILURE;
-		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.ACHIEVED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.OTHER))
-			return INFERRED_CONTEXT.HUMAN_SELF_ACHIEVEMENT;
-		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.ACHIEVED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.SELF))
-			return INFERRED_CONTEXT.AGENT_SELF_ACHIEVEMENT;
-		else
-			throw new IllegalArgumentException("Event: " + eventPlan);
 	}
 	
 	public DESIRABILITY getDesirabilityUsingValence(double valence) {

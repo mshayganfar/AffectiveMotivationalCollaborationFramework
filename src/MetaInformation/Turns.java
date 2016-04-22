@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
 import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
+import Mechanisms.Appraisal.Relevance.RELEVANCE;
+import MetaInformation.AppraisalVector.WHOSE_APPRAISAL;
 
 public class Turns {
 	
-	private static ArrayList<DESIRABILITY> desirabilities       = new ArrayList<DESIRABILITY>();
-	private static ArrayList<CONTROLLABILITY> controllabilities = new ArrayList<CONTROLLABILITY>();
-	private static ArrayList<EXPECTEDNESS> expectednesses       = new ArrayList<EXPECTEDNESS>();
+	private static ArrayList<AppraisalVector> appraisalVectors = new ArrayList<AppraisalVector>();
 	
 	private static Turns turn = new Turns();
 	
@@ -23,9 +23,10 @@ public class Turns {
 	public static Turns getInstance() {
 		return turn;
 	}
-	
-	public static void updateTurnDesirability(DESIRABILITY desirability) {
-		desirabilities.add(desirability);
+
+	public static void setTurnAppraisals(MentalProcesses mentalProcesses, WHOSE_APPRAISAL whoseAppraisal, RELEVANCE relevance, DESIRABILITY desirability, CONTROLLABILITY controllability, EXPECTEDNESS expectedness) {
+		
+		appraisalVectors.add(new AppraisalVector(mentalProcesses, getTurnNumber(), whoseAppraisal, relevance, desirability, expectedness, controllability));
 	}
 	
 	public static void updateTurn() {
@@ -40,16 +41,20 @@ public class Turns {
 		return ("turn:" + count);
 	}
 	
-	public ArrayList<DESIRABILITY> getDesirabilities() {
-		return this.desirabilities;
+	public ArrayList<AppraisalVector> getAppraisalVectors() {
+		return this.appraisalVectors;
 	}
 	
-	public ArrayList<CONTROLLABILITY> getControllabilities() {
-		return this.controllabilities;
-	}
-	
-	public ArrayList<EXPECTEDNESS> getExpectednesses() {
-		return this.expectednesses;
+	public ArrayList<AppraisalVector> getCurrentAppraisalVectors() {
+		
+		ArrayList<AppraisalVector> currentAppraisalVectors = new ArrayList<AppraisalVector>();
+		
+		for(AppraisalVector vector : appraisalVectors) {
+			if (vector.getTurnNumber() == getTurnNumber())
+				currentAppraisalVectors.add(vector);
+		}
+		
+		return currentAppraisalVectors;
 	}
 	
 	public double getDesirabilityValue(DESIRABILITY desirabilitySymbolicValue) {

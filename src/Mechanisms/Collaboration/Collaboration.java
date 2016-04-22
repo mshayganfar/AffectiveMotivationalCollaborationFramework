@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import Mechanisms.Mechanisms;
+import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
+import Mechanisms.Mechanisms.AGENT;
 import MentalState.Goal;
 import MentalState.MentalState;
 import MetaInformation.GoalTree;
@@ -19,9 +21,17 @@ import edu.wpi.disco.Agent;
 import edu.wpi.disco.Disco;
 import edu.wpi.disco.Interaction;
 import edu.wpi.disco.User;
+import edu.wpi.disco.lang.Accept;
+import edu.wpi.disco.lang.Propose;
+import edu.wpi.disco.lang.Reject;
 
 public class Collaboration extends Mechanisms{
 
+	public enum INFERRED_CONTEXT{AGENT_PROPOSED, HUMAN_PROPOSED, AGENT_REJECTED, HUMAN_REJECTED, AGENT_ACCEPTED, HUMAN_ACCEPTED,
+		HUMAN_SELF_FAILURE, HUMAN_AGENT_FAILURE, HUMAN_OTHER_FAILURE, HUMAN_UNKOWN_FAILURE,
+		AGENT_SELF_FAILURE, AGENT_AGENT_FAILURE, AGENT_OTHER_FAILURE, AGENT_UNKOWN_FAILURE,
+		HUMAN_SELF_ACHIEVEMENT, HUMAN_AGENT_ACHIEVEMENT, HUMAN_OTHER_ACHIEVEMENT, HUMAN_UNKOWN_ACHIEVEMENT,
+		AGENT_SELF_ACHIEVEMENT, AGENT_AGENT_ACHIEVEMENT, AGENT_OTHER_ACHIEVEMENT, AGENT_UNKOWN_ACHIEVEMENT};
 	public enum GOAL_STATUS{ACHIEVED, FAILED, PENDING, BLOCKED, INPROGRESS, INAPPLICABLE, DONE, UNKNOWN};
 	public enum FOCUS_TYPE{PRIMITIVE, NONPRIMITIVE};
 	
@@ -446,5 +456,35 @@ public class Collaboration extends Mechanisms{
 	public Boolean getPreconditionApplicability(Goal goal) {
 		
 		return preconditionsLOT.get(goal.getPlan().getGoal().getType().toString());
+	}
+	
+	public INFERRED_CONTEXT getInferredContext(Goal eventGoal) {
+		
+		Plan eventPlan = eventGoal.getPlan();
+		
+		// Think about what if both of the collaborators are responsible.
+		if ((eventPlan.getGoal() instanceof Propose.Should) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.SELF))
+			return INFERRED_CONTEXT.AGENT_PROPOSED;
+		else if ((eventPlan.getGoal() instanceof Propose.Should) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.OTHER))
+			return INFERRED_CONTEXT.HUMAN_PROPOSED;
+		else if ((eventPlan.getGoal() instanceof Reject) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/).equals(AGENT.SELF)))
+//			((Reject)eventPlan.getGoal()).getProposal();
+			return INFERRED_CONTEXT.AGENT_REJECTED;
+		else if ((eventPlan.getGoal() instanceof Reject) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/).equals(AGENT.OTHER)))
+			return INFERRED_CONTEXT.HUMAN_REJECTED;
+		else if ((eventPlan.getGoal() instanceof Accept) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/).equals(AGENT.SELF)))
+			return INFERRED_CONTEXT.AGENT_ACCEPTED;
+		else if ((eventPlan.getGoal() instanceof Accept) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/).equals(AGENT.OTHER)))
+			return INFERRED_CONTEXT.HUMAN_ACCEPTED;
+		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.FAILED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.OTHER))
+			return INFERRED_CONTEXT.HUMAN_SELF_FAILURE;
+		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.FAILED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.SELF))
+			return INFERRED_CONTEXT.AGENT_SELF_FAILURE;
+		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.ACHIEVED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.OTHER))
+			return INFERRED_CONTEXT.HUMAN_SELF_ACHIEVEMENT;
+		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.ACHIEVED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.SELF))
+			return INFERRED_CONTEXT.AGENT_SELF_ACHIEVEMENT;
+		else
+			throw new IllegalArgumentException("Event: " + eventPlan);
 	}
 }

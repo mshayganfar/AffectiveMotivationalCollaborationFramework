@@ -3,6 +3,7 @@ package Mechanisms.Motivation;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import MetaInformation.AppraisalVector.WHOSE_APPRAISAL;
 import MetaInformation.Turns;
 
 public class SatisfactionDrive {
@@ -49,8 +50,9 @@ public class SatisfactionDrive {
 		
 		ArrayList<Double> desirabilityValues = new ArrayList<Double>();
 		
-		for (int i = 0 ; i < Turns.getInstance().getDesirabilities().size() ; i++) {
-			desirabilityValues.add(Turns.getInstance().getDesirabilityValue(Turns.getInstance().getDesirabilities().get(i)));
+		for (int i = 0 ; i < Turns.getInstance().getAppraisalVectors().size() ; i++) {
+			if (Turns.getInstance().getAppraisalVectors().get(i).getWhoseAppraisalValue().equals(WHOSE_APPRAISAL.SELF))
+				desirabilityValues.add(Turns.getInstance().getDesirabilityValue(Turns.getInstance().getAppraisalVectors().get(i).getDesirabilityValue()));
 		}
 		
 		return desirabilityValues;

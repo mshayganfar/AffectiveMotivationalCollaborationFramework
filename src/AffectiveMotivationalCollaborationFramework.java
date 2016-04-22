@@ -1,4 +1,7 @@
+import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
 import Mechanisms.Appraisal.Desirability.DESIRABILITY;
+import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
+import Mechanisms.Appraisal.Relevance.RELEVANCE;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Motivation.SatisfactionDrive;
 import MentalState.Belief;
@@ -7,6 +10,7 @@ import MentalState.Motive;
 import MetaInformation.AppraisalVector;
 import MetaInformation.MentalProcesses;
 import MetaInformation.Turns;
+import MetaInformation.AppraisalVector.WHOSE_APPRAISAL;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskModel;
 
@@ -61,19 +65,27 @@ public class AffectiveMotivationalCollaborationFramework {
 		collaboration.updatePreconditionApplicability();
 		System.out.println(collaboration.getPreconditionApplicabilities());
 		
-		System.out.println(mentalProcesses.getRelevanceProcess().isEventRelevant(recognizedGoal));
-		System.out.println(mentalProcesses.getControllabilityProcess().isEventControllable(recognizedGoal));
+		RELEVANCE relevanceValue = mentalProcesses.getRelevanceProcess().isEventRelevant(recognizedGoal);
+		System.out.println(relevanceValue);
+		CONTROLLABILITY controllabilityValue = mentalProcesses.getControllabilityProcess().isEventControllable(recognizedGoal);
+		System.out.println(controllabilityValue);
 		DESIRABILITY desirabilityValue = mentalProcesses.getDesirabilityProcess().isEventDesirable(recognizedGoal);
 		System.out.println(desirabilityValue);
-		System.out.println(mentalProcesses.getExpectednessProcess().isEventExpected(recognizedGoal));
+		EXPECTEDNESS expectednessValue = mentalProcesses.getExpectednessProcess().isEventExpected(recognizedGoal);
+		System.out.println(expectednessValue);
 		
 //		System.out.println(DIFFICULTY.valueOf(recognizedGoal.getPlan().getType().getProperty("@difficulty")));
 		
-		turn.updateTurnDesirability(desirabilityValue);
+		turn.setTurnAppraisals(mentalProcesses, WHOSE_APPRAISAL.SELF, relevanceValue, desirabilityValue, controllabilityValue, expectednessValue);
 		
 		SatisfactionDrive test = new SatisfactionDrive();
 		System.out.println(test.getSatisfactionDriveDelta());
 		test.updatePrevSatisfactionDriveValue(test.getSatisfactionDriveValue());
+		
+		for(AppraisalVector vector : Turns.getInstance().getCurrentAppraisalVectors()) {
+			System.out.println(vector.getTurnNumber() + ", " + vector.getWhoseAppraisalValue() + ", " + vector.getRelevanceValue() + ", " + 
+					vector.getDesirabilityValue() + ", " + vector.getExpectednessValue() + ", " + vector.getControllabilityValue());
+		}
 		
 		turn.updateTurn();
 		
