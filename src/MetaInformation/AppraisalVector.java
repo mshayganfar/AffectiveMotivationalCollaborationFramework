@@ -2,6 +2,10 @@ package MetaInformation;
 
 import java.util.ArrayList;
 
+import javax.swing.text.Position;
+
+import com.sun.msv.datatype.xsd.PositiveIntegerType;
+
 import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
 import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
@@ -131,8 +135,7 @@ public class AppraisalVector {
 		if ((this.desirabilityAnticipatedValue.equals(DESIRABILITY.UNDESIRABLE)) ||
 			(this.desirabilityAnticipatedValue.equals(DESIRABILITY.HIGH_UNDESIRABLE)))
 				if (this.controllabilityAnticipatedValue.equals(CONTROLLABILITY.UNCONTROLLABLE))
-					if ((mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_PROPOSED)) ||
-						(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_REJECTED)) ||
+					if ((mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_REJECTED)) ||
 						(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.HUMAN_SELF_FAILURE)))
 							return true;
 					else
@@ -143,22 +146,44 @@ public class AppraisalVector {
 			return false;
 	}
 	
+	public boolean isEmotionWorry(Goal eventGoal) {
+		if ((this.desirabilityAnticipatedValue.equals(DESIRABILITY.UNDESIRABLE)) ||
+			(this.desirabilityAnticipatedValue.equals(DESIRABILITY.HIGH_UNDESIRABLE)))
+				if (this.controllabilityAnticipatedValue.equals(CONTROLLABILITY.UNCONTROLLABLE))
+					if (this.expectednessAnticipatedValue.equals(EXPECTEDNESS.EXPECTED))
+						if ((mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_PROPOSED)) ||
+							(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_REJECTED)) ||
+							(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.HUMAN_SELF_FAILURE)) ||
+							(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_SELF_FAILURE)))
+								return true;
+						else
+							return false;
+					else
+						return false;
+				else
+					return false;
+			else
+				return false;
+	}
 //	AGENT_PROPOSED, HUMAN_PROPOSED, AGENT_REJECTED, HUMAN_REJECTED, AGENT_ACCEPTED, HUMAN_ACCEPTED,
-//	HUMAN_SELF_FAILURE, HUMAN_AGENT_FAILURE, HUMAN_OTHER_FAILURE, HUMAN_UNKOWN_FAILURE,
-//	AGENT_SELF_FAILURE, AGENT_AGENT_FAILURE, AGENT_OTHER_FAILURE, AGENT_UNKOWN_FAILURE,
-//	HUMAN_SELF_ACHIEVEMENT, HUMAN_AGENT_ACHIEVEMENT, HUMAN_OTHER_ACHIEVEMENT, HUMAN_UNKOWN_ACHIEVEMENT,
-//	AGENT_SELF_ACHIEVEMENT, AGENT_AGENT_ACHIEVEMENT, AGENT_OTHER_ACHIEVEMENT, AGENT_UNKOWN_ACHIEVEMENT
-//	
-//	WORRY, FRUSTRATION, NEGATIVE_SURPRISE, SHAME, GUILT, SADNESS
+//	HUMAN_SELF_FAILURE, AGENT_SELF_FAILURE, HUMAN_SELF_ACHIEVEMENT, AGENT_SELF_ACHIEVEMENT
+
+//	FRUSTRATION, NEGATIVE_SURPRISE, SHAME, GUILT, SADNESS
 	
 	public ArrayList<EMOTION_INSTANCE> getEmotionInstance(Goal eventGoal) {
 		
 		ArrayList<EMOTION_INSTANCE> emotionInstances = new ArrayList<EMOTION_INSTANCE>();
 		
-		isEmotionJoy(eventGoal);
-		isEmotionContent(eventGoal);
-		isEmotionPositiveSurprise(eventGoal);
-		isEmotionAnger(eventGoal);
+		if (isEmotionJoy(eventGoal))
+			emotionInstances.add(EMOTION_INSTANCE.JOY);
+		if (isEmotionContent(eventGoal))
+			emotionInstances.add(EMOTION_INSTANCE.CONTENT);
+		if (isEmotionPositiveSurprise(eventGoal))
+			emotionInstances.add(EMOTION_INSTANCE.POSTIVE_SURPRISE);
+		if (isEmotionAnger(eventGoal))
+			emotionInstances.add(EMOTION_INSTANCE.ANGER);
+		if (isEmotionWorry(eventGoal))
+			emotionInstances.add(EMOTION_INSTANCE.WORRY);
 		
 		return emotionInstances;
 	}
