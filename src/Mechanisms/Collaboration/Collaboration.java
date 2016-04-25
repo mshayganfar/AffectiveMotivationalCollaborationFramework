@@ -28,7 +28,7 @@ import edu.wpi.disco.lang.Reject;
 public class Collaboration extends Mechanisms{
 
 	public enum INFERRED_CONTEXT{AGENT_PROPOSED, HUMAN_PROPOSED, AGENT_REJECTED, HUMAN_REJECTED, AGENT_ACCEPTED, HUMAN_ACCEPTED, 
-		HUMAN_SELF_FAILURE, AGENT_SELF_FAILURE, HUMAN_SELF_ACHIEVEMENT, AGENT_SELF_ACHIEVEMENT};
+		HUMAN_FAILED, AGENT_FAILED, HUMAN_ACHIEVED, AGENT_ACHIEVED};
 	public enum GOAL_STATUS{ACHIEVED, FAILED, PENDING, BLOCKED, INPROGRESS, INAPPLICABLE, DONE, UNKNOWN};
 	public enum FOCUS_TYPE{PRIMITIVE, NONPRIMITIVE};
 	
@@ -474,13 +474,13 @@ public class Collaboration extends Mechanisms{
 		else if ((eventPlan.getGoal() instanceof Accept) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/).equals(AGENT.OTHER)))
 			return INFERRED_CONTEXT.HUMAN_ACCEPTED;
 		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.FAILED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.OTHER))
-			return INFERRED_CONTEXT.HUMAN_SELF_FAILURE;
+			return INFERRED_CONTEXT.HUMAN_FAILED;
 		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.FAILED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.SELF))
-			return INFERRED_CONTEXT.AGENT_SELF_FAILURE;
+			return INFERRED_CONTEXT.AGENT_FAILED;
 		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.ACHIEVED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.OTHER))
-			return INFERRED_CONTEXT.HUMAN_SELF_ACHIEVEMENT;
+			return INFERRED_CONTEXT.HUMAN_ACHIEVED;
 		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.ACHIEVED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.SELF))
-			return INFERRED_CONTEXT.AGENT_SELF_ACHIEVEMENT;
+			return INFERRED_CONTEXT.AGENT_ACHIEVED;
 		else
 			throw new IllegalArgumentException("Event: " + eventPlan);
 	}
