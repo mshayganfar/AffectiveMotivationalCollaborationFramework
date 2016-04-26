@@ -87,6 +87,7 @@ public class AffectiveMotivationalCollaborationFramework {
 					vector.getDesirabilityValue() + ", " + vector.getExpectednessValue() + ", " + vector.getControllabilityValue());
 		}
 		
+//		mentalProcesses.getCollaborationMechanism().getLastContributingPlan(recognizedGoal.getPlan());
 		turn.updateTurn();
 		
 		if(collaboration.getDisco().getLastOccurrence() == null)
