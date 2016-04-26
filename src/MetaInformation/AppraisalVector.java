@@ -16,7 +16,7 @@ import MentalState.Goal;
 public class AppraisalVector {
 	
 	public enum WHOSE_APPRAISAL{SELF, HUMAN, UNKNOWN};
-	public enum EMOTION_INSTANCE{POSTIVE_SURPRISE, JOY, NEUTRAL, ANGER, WORRY, FRUSTRATION, NEGATIVE_SURPRISE, GUILT, SADNESS};
+	public enum EMOTION_INSTANCE{POSTIVE_SURPRISE, JOY, GRATITUDE, NEUTRAL, ANGER, WORRY, FRUSTRATION, NEGATIVE_SURPRISE, GUILT, SADNESS};
 	
 	private MentalProcesses mentalProcesses;
 	private WHOSE_APPRAISAL whoseAppraisal;
@@ -118,7 +118,46 @@ public class AppraisalVector {
 				(this.desirabilityAnticipatedValue.equals(DESIRABILITY.HIGH_DESIRABLE)))
 				if ((this.expectednessAnticipatedValue.equals(EXPECTEDNESS.EXPECTED)) ||
 					(this.expectednessAnticipatedValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
-					return true;
+					if (user) {
+						if (mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.HUMAN_ACHIEVED))
+							return true;
+						else
+							return false;
+					}
+					else {
+						if (mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_ACHIEVED))
+							return true;
+						else
+							return false;
+					}
+				else
+					return false;
+			else
+				return false;
+		else
+			return false;
+	}
+	
+	public boolean isEmotionGratitude(Goal eventGoal, boolean user) {
+		if (this.relevanceAnticipatedValue.equals(RELEVANCE.RELEVANT))
+			if ((this.desirabilityAnticipatedValue.equals(DESIRABILITY.DESIRABLE)) ||		
+				(this.desirabilityAnticipatedValue.equals(DESIRABILITY.HIGH_DESIRABLE)))
+				if ((this.expectednessAnticipatedValue.equals(EXPECTEDNESS.EXPECTED)) ||
+					(this.expectednessAnticipatedValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
+					if (user) {
+						if ((mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_ACCEPTED)) ||
+								(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_ACHIEVED)))
+							return true;
+						else
+							return false;
+					}
+					else {
+						if ((mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.HUMAN_ACCEPTED)) ||
+							(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.HUMAN_ACHIEVED)))
+							return true;
+						else
+							return false;
+					}
 				else
 					return false;
 			else
@@ -133,8 +172,19 @@ public class AppraisalVector {
 				(this.desirabilityAnticipatedValue.equals(DESIRABILITY.HIGH_UNDESIRABLE)))
 				if ((this.expectednessAnticipatedValue.equals(EXPECTEDNESS.EXPECTED)) ||
 					(this.expectednessAnticipatedValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
-					if (this.controllabilityAnticipatedValue.equals(CONTROLLABILITY.CONTROLLABLE))
-						return true;
+					if (this.controllabilityAnticipatedValue.equals(CONTROLLABILITY.UNCONTROLLABLE))
+						if (user) {
+							if (mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.HUMAN_FAILED))
+								return true;
+							else
+								return false;
+						}
+						else {
+							if (mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_FAILED))
+								return true;
+							else
+								return false;
+						}
 					else
 						return false;
 				else
@@ -301,7 +351,7 @@ public class AppraisalVector {
 		if (this.relevanceAnticipatedValue.equals(RELEVANCE.RELEVANT))
 			if ((this.desirabilityAnticipatedValue.equals(DESIRABILITY.UNDESIRABLE)) ||
 				(this.desirabilityAnticipatedValue.equals(DESIRABILITY.HIGH_UNDESIRABLE)))
-				if (this.controllabilityAnticipatedValue.equals(CONTROLLABILITY.UNCONTROLLABLE))
+				if (this.controllabilityAnticipatedValue.equals(CONTROLLABILITY.CONTROLLABLE))
 					if ((this.expectednessAnticipatedValue.equals(EXPECTEDNESS.EXPECTED)) ||
 						(this.expectednessAnticipatedValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
 						if (user) {
@@ -330,6 +380,8 @@ public class AppraisalVector {
 		
 		if (isEmotionJoy(eventGoal, user))
 			return EMOTION_INSTANCE.JOY;
+		if (isEmotionGratitude(eventGoal, user))
+			return EMOTION_INSTANCE.GRATITUDE;
 		else if (isEmotionSadness(eventGoal, user))
 			return EMOTION_INSTANCE.SADNESS;
 		else if (isEmotionPositiveSurprise(eventGoal, user))
