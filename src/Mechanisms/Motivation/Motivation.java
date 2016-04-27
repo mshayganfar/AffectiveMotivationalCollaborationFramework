@@ -19,6 +19,7 @@ import edu.wpi.disco.lang.Propose;
 public class Motivation extends Mechanisms {
 	
 	private ToM tom;
+	
 	private Controllability controllability;
 	private Expectedness expectedness;
 	

@@ -6,11 +6,11 @@ import Mechanisms.Appraisal.Desirability;
 import Mechanisms.Appraisal.Expectedness;
 import Mechanisms.Appraisal.Relevance;
 import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
+import Mechanisms.Appraisal.Coping;
 import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
 import Mechanisms.Appraisal.Relevance.RELEVANCE;
 import Mechanisms.Collaboration.Collaboration;
-import Mechanisms.Collaboration.Collaboration.INFERRED_CONTEXT;
 import Mechanisms.Motivation.Motivation;
 import MentalState.Goal;
 import MetaInformation.AppraisalVector;
@@ -22,17 +22,20 @@ public class ToM extends Mechanisms{
 	private MentalProcesses mentalProcesses;
 	
 	private Collaboration collaboration;
+	private Motivation motivation;
+	private Coping coping;
+	
 	private Relevance relevance;
 	private Controllability controllability;
 	private Desirability desirability;
 	private Expectedness expectedness;
-	private Motivation motivation;
 	
 	private double valence = 0.0;
 	
 	public void prepareAppraisalsOfToM(MentalProcesses mentalProcesses) {
 		this.collaboration = mentalProcesses.getCollaborationMechanism();
 		this.motivation    = mentalProcesses.getMotivationMechanism();
+		this.coping		   = mentalProcesses.getCopingMechanism();
 		
 		this.relevance       = mentalProcesses.getRelevanceProcess();
 		this.controllability = mentalProcesses.getControllabilityProcess();

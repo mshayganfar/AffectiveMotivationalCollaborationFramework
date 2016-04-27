@@ -1,6 +1,7 @@
 package MetaInformation;
 
 import Mechanisms.Appraisal.Controllability;
+import Mechanisms.Appraisal.Coping;
 import Mechanisms.Appraisal.Desirability;
 import Mechanisms.Appraisal.Expectedness;
 import Mechanisms.Appraisal.Relevance;
@@ -12,6 +13,7 @@ public class MentalProcesses {
 	private Collaboration collaboration;
 	private Motivation motivation;
 	private ToM tom;
+	private Coping coping;
 	
 	private Relevance relevance;
 	private Controllability controllability;
@@ -22,6 +24,7 @@ public class MentalProcesses {
 		this.collaboration = new Collaboration(args);
 		this.motivation    = new Motivation();
 		this.tom           = new ToM();
+		this.coping		   = new Coping();
 		
 		this.relevance       = new Relevance(this);
 		this.controllability = new Controllability(this);
@@ -30,6 +33,7 @@ public class MentalProcesses {
 		
 		this.motivation.prepareMotivationMechanism(this);
 		this.tom.prepareAppraisalsOfToM(this);
+		this.coping.prepareAppraisalsOfToM(this);
 	}
 	
 	public Collaboration getCollaborationMechanism() {
@@ -42,6 +46,10 @@ public class MentalProcesses {
 	
 	public ToM getToMMechanism() {
 		return this.tom;
+	}
+	
+	public Coping getCopingMechanism() {
+		return this.coping;
 	}
 	
 	public Relevance getRelevanceProcess() {
