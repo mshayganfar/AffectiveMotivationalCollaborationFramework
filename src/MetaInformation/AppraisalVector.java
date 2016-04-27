@@ -1,11 +1,5 @@
 package MetaInformation;
 
-import java.util.ArrayList;
-
-import javax.swing.text.Position;
-
-import com.sun.msv.datatype.xsd.PositiveIntegerType;
-
 import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
 import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
@@ -22,10 +16,10 @@ public class AppraisalVector {
 	private WHOSE_APPRAISAL whoseAppraisal;
 	private int turnNumber;
 	
-	private RELEVANCE relevanceAnticipatedValue;
-	private DESIRABILITY desirabilityAnticipatedValue;
-	private EXPECTEDNESS expectednessAnticipatedValue;
-	private CONTROLLABILITY controllabilityAnticipatedValue;
+	private RELEVANCE relevanceValue;
+	private DESIRABILITY desirabilityValue;
+	private EXPECTEDNESS expectednessValue;
+	private CONTROLLABILITY controllabilityValue;
 	
 	public AppraisalVector(MentalProcesses mentalProcesses) {
 		
@@ -34,10 +28,10 @@ public class AppraisalVector {
 		this.whoseAppraisal = WHOSE_APPRAISAL.UNKNOWN;
 		this.turnNumber     = -1;
 		
-		this.relevanceAnticipatedValue       = RELEVANCE.UNKNOWN;
-		this.desirabilityAnticipatedValue    = DESIRABILITY.UNKNOWN;
-		this.expectednessAnticipatedValue    = EXPECTEDNESS.UNKNOWN;
-		this.controllabilityAnticipatedValue = CONTROLLABILITY.UNKNOWN;
+		this.relevanceValue       = RELEVANCE.UNKNOWN;
+		this.desirabilityValue    = DESIRABILITY.UNKNOWN;
+		this.expectednessValue    = EXPECTEDNESS.UNKNOWN;
+		this.controllabilityValue = CONTROLLABILITY.UNKNOWN;
 	}
 	
 	public AppraisalVector(MentalProcesses mentalProcesses, int turnNumber, WHOSE_APPRAISAL whoseAppraisal, RELEVANCE relevance, DESIRABILITY desirability, EXPECTEDNESS expectedness, CONTROLLABILITY controllability) {
@@ -47,26 +41,26 @@ public class AppraisalVector {
 		this.whoseAppraisal = whoseAppraisal;
 		this.turnNumber     = turnNumber;
 		
-		this.relevanceAnticipatedValue       = relevance;
-		this.desirabilityAnticipatedValue    = desirability;
-		this.expectednessAnticipatedValue    = expectedness;
-		this.controllabilityAnticipatedValue = controllability;
+		this.relevanceValue       = relevance;
+		this.desirabilityValue    = desirability;
+		this.expectednessValue    = expectedness;
+		this.controllabilityValue = controllability;
 	}
 	
 	public void setRelevanceValue(RELEVANCE relevance) {
-		this.relevanceAnticipatedValue = relevance;
+		this.relevanceValue = relevance;
 	}
 	
 	public void setDesirabilityValue(DESIRABILITY desirability) {
-		this.desirabilityAnticipatedValue = desirability;
+		this.desirabilityValue = desirability;
 	}
 	
 	public void setExpectednessValue(EXPECTEDNESS expectedness) {
-		this.expectednessAnticipatedValue = expectedness;
+		this.expectednessValue = expectedness;
 	}
 	
 	public void setControllabilityValue(CONTROLLABILITY controllability) {
-		this.controllabilityAnticipatedValue = controllability;
+		this.controllabilityValue = controllability;
 	}
 	
 	public void setWhoseAppraisalValue(WHOSE_APPRAISAL whoseAppraisal) {
@@ -78,19 +72,19 @@ public class AppraisalVector {
 	}
 	
 	public RELEVANCE getRelevanceValue() {
-		return this.relevanceAnticipatedValue;
+		return this.relevanceValue;
 	}
 	
 	public DESIRABILITY getDesirabilityValue() {
-		return this.desirabilityAnticipatedValue;
+		return this.desirabilityValue;
 	}
 	
 	public EXPECTEDNESS getExpectednessValue() {
-		return this.expectednessAnticipatedValue;
+		return this.expectednessValue;
 	}
 	
 	public CONTROLLABILITY getControllabilityValue() {
-		return this.controllabilityAnticipatedValue;
+		return this.controllabilityValue;
 	}
 	
 	public WHOSE_APPRAISAL getWhoseAppraisalValue() {
@@ -106,18 +100,18 @@ public class AppraisalVector {
 	}
 	
 	public boolean isEmotionNeutral(Goal eventGoal, boolean user) {
-		if (this.desirabilityAnticipatedValue.equals(DESIRABILITY.NEUTRAL))		
+		if (this.desirabilityValue.equals(DESIRABILITY.NEUTRAL))		
 			return true;
 		else
 			return false;
 	}
 	
 	public boolean isEmotionJoy(Goal eventGoal, boolean user) {
-		if (this.relevanceAnticipatedValue.equals(RELEVANCE.RELEVANT))
-			if ((this.desirabilityAnticipatedValue.equals(DESIRABILITY.DESIRABLE)) ||		
-				(this.desirabilityAnticipatedValue.equals(DESIRABILITY.HIGH_DESIRABLE)))
-				if ((this.expectednessAnticipatedValue.equals(EXPECTEDNESS.EXPECTED)) ||
-					(this.expectednessAnticipatedValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
+		if (this.relevanceValue.equals(RELEVANCE.RELEVANT))
+			if ((this.desirabilityValue.equals(DESIRABILITY.DESIRABLE)) ||		
+				(this.desirabilityValue.equals(DESIRABILITY.HIGH_DESIRABLE)))
+				if ((this.expectednessValue.equals(EXPECTEDNESS.EXPECTED)) ||
+					(this.expectednessValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
 					if (user) {
 						if (mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.HUMAN_ACHIEVED))
 							return true;
@@ -139,11 +133,11 @@ public class AppraisalVector {
 	}
 	
 	public boolean isEmotionGratitude(Goal eventGoal, boolean user) {
-		if (this.relevanceAnticipatedValue.equals(RELEVANCE.RELEVANT))
-			if ((this.desirabilityAnticipatedValue.equals(DESIRABILITY.DESIRABLE)) ||		
-				(this.desirabilityAnticipatedValue.equals(DESIRABILITY.HIGH_DESIRABLE)))
-				if ((this.expectednessAnticipatedValue.equals(EXPECTEDNESS.EXPECTED)) ||
-					(this.expectednessAnticipatedValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
+		if (this.relevanceValue.equals(RELEVANCE.RELEVANT))
+			if ((this.desirabilityValue.equals(DESIRABILITY.DESIRABLE)) ||		
+				(this.desirabilityValue.equals(DESIRABILITY.HIGH_DESIRABLE)))
+				if ((this.expectednessValue.equals(EXPECTEDNESS.EXPECTED)) ||
+					(this.expectednessValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
 					if (user) {
 						if ((mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_ACCEPTED)) ||
 								(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_ACHIEVED)))
@@ -167,12 +161,12 @@ public class AppraisalVector {
 	}
 	
 	public boolean isEmotionSadness(Goal eventGoal, boolean user) {
-		if (this.relevanceAnticipatedValue.equals(RELEVANCE.RELEVANT))
-			if ((this.desirabilityAnticipatedValue.equals(DESIRABILITY.UNDESIRABLE)) ||
-				(this.desirabilityAnticipatedValue.equals(DESIRABILITY.HIGH_UNDESIRABLE)))
-				if ((this.expectednessAnticipatedValue.equals(EXPECTEDNESS.EXPECTED)) ||
-					(this.expectednessAnticipatedValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
-					if (this.controllabilityAnticipatedValue.equals(CONTROLLABILITY.UNCONTROLLABLE))
+		if (this.relevanceValue.equals(RELEVANCE.RELEVANT))
+			if ((this.desirabilityValue.equals(DESIRABILITY.UNDESIRABLE)) ||
+				(this.desirabilityValue.equals(DESIRABILITY.HIGH_UNDESIRABLE)))
+				if ((this.expectednessValue.equals(EXPECTEDNESS.EXPECTED)) ||
+					(this.expectednessValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
+					if (this.controllabilityValue.equals(CONTROLLABILITY.UNCONTROLLABLE))
 						if (user) {
 							if (mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.HUMAN_FAILED))
 								return true;
@@ -196,10 +190,10 @@ public class AppraisalVector {
 	}
 	
 	public boolean isEmotionPositiveSurprise(Goal eventGoal, boolean user) {
-		if (this.relevanceAnticipatedValue.equals(RELEVANCE.RELEVANT))
-			if (this.expectednessAnticipatedValue.equals(EXPECTEDNESS.MOST_UNEXPECTED))
-				if ((this.desirabilityAnticipatedValue.equals(DESIRABILITY.DESIRABLE)) ||
-					(this.desirabilityAnticipatedValue.equals(DESIRABILITY.HIGH_DESIRABLE)))
+		if (this.relevanceValue.equals(RELEVANCE.RELEVANT))
+			if (this.expectednessValue.equals(EXPECTEDNESS.MOST_UNEXPECTED))
+				if ((this.desirabilityValue.equals(DESIRABILITY.DESIRABLE)) ||
+					(this.desirabilityValue.equals(DESIRABILITY.HIGH_DESIRABLE)))
 					if (user) {
 						if ((mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_PROPOSED)) ||
 							(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_ACCEPTED)) ||
@@ -225,11 +219,11 @@ public class AppraisalVector {
 	}
 	
 	public boolean isEmotionAnger(Goal eventGoal, boolean user) {
-		if (this.relevanceAnticipatedValue.equals(RELEVANCE.RELEVANT))
-			if (this.desirabilityAnticipatedValue.equals(DESIRABILITY.HIGH_UNDESIRABLE))
-				if ((this.expectednessAnticipatedValue.equals(EXPECTEDNESS.EXPECTED)) ||
-					(this.expectednessAnticipatedValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
-					if (this.controllabilityAnticipatedValue.equals(CONTROLLABILITY.UNCONTROLLABLE))
+		if (this.relevanceValue.equals(RELEVANCE.RELEVANT))
+			if (this.desirabilityValue.equals(DESIRABILITY.HIGH_UNDESIRABLE))
+				if ((this.expectednessValue.equals(EXPECTEDNESS.EXPECTED)) ||
+					(this.expectednessValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
+					if (this.controllabilityValue.equals(CONTROLLABILITY.UNCONTROLLABLE))
 						if (user) {
 							if ((mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_REJECTED)) ||
 								(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_FAILED)))
@@ -255,11 +249,11 @@ public class AppraisalVector {
 	}
 	
 	public boolean isEmotionWorry(Goal eventGoal, boolean user) {
-		if (this.relevanceAnticipatedValue.equals(RELEVANCE.RELEVANT))
-			if ((this.desirabilityAnticipatedValue.equals(DESIRABILITY.UNDESIRABLE)) ||
-				(this.desirabilityAnticipatedValue.equals(DESIRABILITY.HIGH_UNDESIRABLE)))
-				if (this.controllabilityAnticipatedValue.equals(CONTROLLABILITY.UNCONTROLLABLE))
-					if (this.expectednessAnticipatedValue.equals(EXPECTEDNESS.UNEXPECTED))
+		if (this.relevanceValue.equals(RELEVANCE.RELEVANT))
+			if ((this.desirabilityValue.equals(DESIRABILITY.UNDESIRABLE)) ||
+				(this.desirabilityValue.equals(DESIRABILITY.HIGH_UNDESIRABLE)))
+				if (this.controllabilityValue.equals(CONTROLLABILITY.UNCONTROLLABLE))
+					if (this.expectednessValue.equals(EXPECTEDNESS.UNEXPECTED))
 						if (user) {
 							if ((mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_PROPOSED)) ||
 								(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_REJECTED)) ||
@@ -289,11 +283,11 @@ public class AppraisalVector {
 	}
 	
 	public boolean isEmotionFrustration(Goal eventGoal, boolean user) {
-		if (this.relevanceAnticipatedValue.equals(RELEVANCE.RELEVANT))
-			if (this.desirabilityAnticipatedValue.equals(DESIRABILITY.UNDESIRABLE))
-				if (this.controllabilityAnticipatedValue.equals(CONTROLLABILITY.UNCONTROLLABLE))
-					if ((this.expectednessAnticipatedValue.equals(EXPECTEDNESS.EXPECTED)) ||
-						(this.expectednessAnticipatedValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
+		if (this.relevanceValue.equals(RELEVANCE.RELEVANT))
+			if (this.desirabilityValue.equals(DESIRABILITY.UNDESIRABLE))
+				if (this.controllabilityValue.equals(CONTROLLABILITY.UNCONTROLLABLE))
+					if ((this.expectednessValue.equals(EXPECTEDNESS.EXPECTED)) ||
+						(this.expectednessValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
 						if (user) {
 							if ((mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_PROPOSED)) ||
 								(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_FAILED)))
@@ -319,10 +313,10 @@ public class AppraisalVector {
 	}
 	
 	public boolean isEmotionNegativeSurprise(Goal eventGoal, boolean user) {
-		if (this.relevanceAnticipatedValue.equals(RELEVANCE.RELEVANT))
-			if (this.expectednessAnticipatedValue.equals(EXPECTEDNESS.MOST_UNEXPECTED))
-				if ((this.desirabilityAnticipatedValue.equals(DESIRABILITY.UNDESIRABLE)) ||
-					(this.desirabilityAnticipatedValue.equals(DESIRABILITY.HIGH_UNDESIRABLE)))
+		if (this.relevanceValue.equals(RELEVANCE.RELEVANT))
+			if (this.expectednessValue.equals(EXPECTEDNESS.MOST_UNEXPECTED))
+				if ((this.desirabilityValue.equals(DESIRABILITY.UNDESIRABLE)) ||
+					(this.desirabilityValue.equals(DESIRABILITY.HIGH_UNDESIRABLE)))
 					if (user) {
 						if ((mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_PROPOSED)) ||
 							(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_REJECTED)) ||
@@ -348,12 +342,13 @@ public class AppraisalVector {
 	}
 	
 	public boolean isEmotionGuilt(Goal eventGoal, boolean user) {
-		if (this.relevanceAnticipatedValue.equals(RELEVANCE.RELEVANT))
-			if ((this.desirabilityAnticipatedValue.equals(DESIRABILITY.UNDESIRABLE)) ||
-				(this.desirabilityAnticipatedValue.equals(DESIRABILITY.HIGH_UNDESIRABLE)))
-				if (this.controllabilityAnticipatedValue.equals(CONTROLLABILITY.CONTROLLABLE))
-					if ((this.expectednessAnticipatedValue.equals(EXPECTEDNESS.EXPECTED)) ||
-						(this.expectednessAnticipatedValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
+		if (this.relevanceValue.equals(RELEVANCE.RELEVANT))
+			if ((this.desirabilityValue.equals(DESIRABILITY.UNDESIRABLE)) ||
+				(this.desirabilityValue.equals(DESIRABILITY.HIGH_UNDESIRABLE)))
+				if ((this.controllabilityValue.equals(CONTROLLABILITY.LOW_CONTROLLABLE)) ||
+					(this.controllabilityValue.equals(CONTROLLABILITY.HIGH_CONTROLLABLE)))
+					if ((this.expectednessValue.equals(EXPECTEDNESS.EXPECTED)) ||
+						(this.expectednessValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
 						if (user) {
 							if (mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.HUMAN_FAILED))
 								return true;

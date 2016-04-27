@@ -10,17 +10,12 @@ import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
 import Mechanisms.Appraisal.Relevance.RELEVANCE;
 import Mechanisms.Collaboration.Collaboration;
-import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import Mechanisms.Collaboration.Collaboration.INFERRED_CONTEXT;
 import Mechanisms.Motivation.Motivation;
 import MentalState.Goal;
 import MetaInformation.AppraisalVector;
+import MetaInformation.AppraisalVector.EMOTION_INSTANCE;
 import MetaInformation.MentalProcesses;
-import edu.wpi.cetask.Plan;
-import edu.wpi.cetask.Task;
-import edu.wpi.disco.lang.Accept;
-import edu.wpi.disco.lang.Propose;
-import edu.wpi.disco.lang.Reject;
 
 public class ToM extends Mechanisms{
 	
@@ -47,20 +42,24 @@ public class ToM extends Mechanisms{
 	
 	public AppraisalVector getReverseAppraisalValues(Goal eventGoal) {
 		
-		double valenceValue      = getValenceValue();
-		INFERRED_CONTEXT context = this.collaboration.getInferredContext(eventGoal);
-		
-		return getAnticipatedAppraisal(valenceValue, context, eventGoal);
+		return doReverseAppraisal(getValenceValue(), eventGoal);
 	}
 	
-	private AppraisalVector getAnticipatedAppraisal(double valenceValue, INFERRED_CONTEXT context, Goal eventGoal) {
+	public EMOTION_INSTANCE getAnticipatedHumanEmotion(Goal eventGoal) {
+		
+		AppraisalVector reverseAppraisalVector = doReverseAppraisal(getValenceValue(), eventGoal);
+		
+		return reverseAppraisalVector.getEmotionInstance(eventGoal, true);
+	}
+	
+	private AppraisalVector doReverseAppraisal(double valenceValue, Goal eventGoal) {
 		
 		AppraisalVector estimatedAppraisalVector = new AppraisalVector(mentalProcesses);
 		
-		estimatedAppraisalVector.setRelevanceValue(this.relevance.isEventRelevant(eventGoal));
+		estimatedAppraisalVector.setRelevanceValue(relevance.isEventRelevant(eventGoal));
 		estimatedAppraisalVector.setDesirabilityValue(getDesirabilityUsingValence(valenceValue));
-		estimatedAppraisalVector.setExpectednessValue(this.expectedness.isEventExpected(eventGoal));
-		estimatedAppraisalVector.setControllabilityValue(this.controllability.isEventControllable(eventGoal));
+		estimatedAppraisalVector.setExpectednessValue(expectedness.isEventExpected(eventGoal));
+		estimatedAppraisalVector.setControllabilityValue(controllability.isEventControllable(eventGoal));
 		
 		return estimatedAppraisalVector;
 	}
@@ -86,18 +85,18 @@ public class ToM extends Mechanisms{
 	}
 	
 	public RELEVANCE isEventRelevant(Goal eventGoal) {
-		return this.relevance.isEventRelevant(eventGoal);
+		return relevance.isEventRelevant(eventGoal);
 	}
 	
 	public CONTROLLABILITY isEventControllable(Goal eventGoal) {
-		return this.controllability.isEventControllable(eventGoal);
+		return controllability.isEventControllable(eventGoal);
 	}
 	
 	public DESIRABILITY isEventDesirable(Goal eventGoal) {
-		return this.desirability.isEventDesirable(eventGoal);
+		return desirability.isEventDesirable(eventGoal);
 	}
 	
 	public EXPECTEDNESS isEventExpected(Goal eventGoal) {
-		return this.expectedness.isEventExpected(eventGoal);
+		return expectedness.isEventExpected(eventGoal);
 	}
 }

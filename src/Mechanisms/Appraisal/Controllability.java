@@ -13,7 +13,7 @@ import MetaInformation.MentalProcesses;
 
 public class Controllability extends AppraisalProcesses{
 
-	public enum CONTROLLABILITY {CONTROLLABLE, UNCONTROLLABLE, UNKNOWN};
+	public enum CONTROLLABILITY {HIGH_CONTROLLABLE, LOW_CONTROLLABLE, UNCONTROLLABLE, UNKNOWN};
 	
 	public Controllability(MentalProcesses mentalProcesses) {
 		this.collaboration = mentalProcesses.getCollaborationMechanism();
@@ -33,7 +33,10 @@ public class Controllability extends AppraisalProcesses{
 						/(getAgencyWeight() + getAutonomyWeight() + getPredecessorRatioWeight() + getInputRatioWeight() + getGoalDifficultyWeight());
 		
 		if(controllabilityValue >= getHumanEmotionalThreshold())
-			return CONTROLLABILITY.CONTROLLABLE;
+			if (controllabilityValue > ((double)(1.0 + getHumanEmotionalThreshold())/2.0))
+				return CONTROLLABILITY.HIGH_CONTROLLABLE;
+			else
+				return CONTROLLABILITY.LOW_CONTROLLABLE;
 		else
 			return CONTROLLABILITY.UNCONTROLLABLE;
 	}

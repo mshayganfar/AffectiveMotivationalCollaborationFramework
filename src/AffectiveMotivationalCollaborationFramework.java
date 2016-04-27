@@ -65,14 +65,22 @@ public class AffectiveMotivationalCollaborationFramework {
 		collaboration.updatePreconditionApplicability();
 		System.out.println(collaboration.getPreconditionApplicabilities());
 		
+		AppraisalVector appraisalVector = new AppraisalVector(mentalProcesses);
+		
 		RELEVANCE relevanceValue = mentalProcesses.getRelevanceProcess().isEventRelevant(recognizedGoal);
+		appraisalVector.setRelevanceValue(relevanceValue);
 		System.out.println(relevanceValue);
 		CONTROLLABILITY controllabilityValue = mentalProcesses.getControllabilityProcess().isEventControllable(recognizedGoal);
+		appraisalVector.setControllabilityValue(controllabilityValue);
 		System.out.println(controllabilityValue);
 		DESIRABILITY desirabilityValue = mentalProcesses.getDesirabilityProcess().isEventDesirable(recognizedGoal);
+		appraisalVector.setDesirabilityValue(desirabilityValue);
 		System.out.println(desirabilityValue);
 		EXPECTEDNESS expectednessValue = mentalProcesses.getExpectednessProcess().isEventExpected(recognizedGoal);
+		appraisalVector.setExpectednessValue(expectednessValue);
 		System.out.println(expectednessValue);
+		
+		System.out.println("Emotion Instance: " + appraisalVector.getEmotionInstance(recognizedGoal, false));
 		
 //		System.out.println(DIFFICULTY.valueOf(recognizedGoal.getPlan().getType().getProperty("@difficulty")));
 		

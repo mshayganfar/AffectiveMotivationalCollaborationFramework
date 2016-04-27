@@ -78,8 +78,10 @@ public class Turns {
 	public double getControllabilityValue(CONTROLLABILITY controllabilitySymbolicValue) {
 		
 		switch (controllabilitySymbolicValue) {
-			case CONTROLLABLE:
+			case HIGH_CONTROLLABLE:
 				return 1.0;
+			case LOW_CONTROLLABLE:
+				return 0.5;
 			case UNCONTROLLABLE:
 				return 0.0;
 			default:
