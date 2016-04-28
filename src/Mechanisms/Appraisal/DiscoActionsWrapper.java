@@ -2,12 +2,14 @@ package Mechanisms.Appraisal;
 
 import Mechanisms.Collaboration.Collaboration;
 import MentalState.Goal;
+import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.Task;
 import edu.wpi.disco.lang.Accept;
 import edu.wpi.disco.lang.Ask;
 import edu.wpi.disco.lang.Mention;
 import edu.wpi.disco.lang.Propose;
 import edu.wpi.disco.lang.Reject;
+import edu.wpi.disco.lang.Utterance;
 
 public class DiscoActionsWrapper {
 	
@@ -17,41 +19,54 @@ public class DiscoActionsWrapper {
 		this.collaboration = collaboration;
 	}
 	
-	void proposeTask(Goal goal, boolean human) {
+	void proposeTask(Goal goal, Plan contributes, boolean speaker) {
 		
-		Task task = collaboration.getDisco().getTaskClass(goal.getPlan().getGoal().getType().toString()).newInstance();
-		Task taskToPropose = new Propose.Who(collaboration.getDisco(), human, task, null);
-		collaboration.getDisco().getInteraction().occurred(human, taskToPropose, null);
+		// NOTE: Speaker should be false when the agent is doing coping.
+		
+		Task taskToPropose;
+		Task task = goal.getPlan().getGoal();
+		
+		if (task.isPrimitive())
+			taskToPropose = new Propose.Who(collaboration.getDisco(), speaker, task, !speaker);
+		else
+			taskToPropose = new Propose.Should(collaboration.getDisco(), speaker, task);
+		
+		collaboration.getDisco().getInteraction().occurred(speaker, taskToPropose, contributes);
 	}
 	
-	void acceptProposedTask(Goal goal, boolean human) {
+	void acceptProposedTask(Goal goal, Plan contributes, boolean speaker) {
 		
-		Task proposedTask = new Accept(collaboration.getDisco(), human, (Propose)goal.getPlan().getGoal());
-		collaboration.getDisco().getInteraction().occurred(human, proposedTask, null);
+		Task task = goal.getPlan().getGoal();
+		
+		Utterance acceptance = new Accept(collaboration.getDisco(), speaker, new Propose.Should(collaboration.getDisco(), speaker, task));
+		collaboration.getDisco().getInteraction().occurred(speaker, acceptance, contributes);
 	}
 	
-	void rejectProposedTask(Goal goal, boolean human) {
+	void rejectProposedTask(Goal goal, Plan contributes, boolean speaker) {
 		
-		Task proposedTask = new Reject(collaboration.getDisco(), human, (Propose)goal.getPlan().getGoal());
-		collaboration.getDisco().getInteraction().occurred(human, proposedTask, null);
+		Task task = goal.getPlan().getGoal();
+		
+		Utterance rejection = new Reject(collaboration.getDisco(), speaker, new Propose.Should(collaboration.getDisco(), speaker, task));
+		collaboration.getDisco().getInteraction().occurred(speaker, rejection, contributes);
 	}
 	
-	void mentionTask(Goal goal, boolean human) {
+	void mentionTask(Goal goal, Plan contributes, boolean speaker) {
 		
-		Task taskToMention = new Mention(collaboration.getDisco(), human, goal.getPlan().getGoal());
-		collaboration.getDisco().getInteraction().occurred(human, taskToMention, null);
+		Task taskToMention = new Mention(collaboration.getDisco(), speaker, goal.getPlan().getGoal());
+		collaboration.getDisco().getInteraction().occurred(speaker, taskToMention, contributes);
 	}
 	
-	void askAboutTask(Goal goal, boolean human) {
+	void askAboutTask(Goal goal, Plan contributes, boolean speaker) {
 		
-		Task task = collaboration.getDisco().getTaskClass(goal.getPlan().getGoal().getType().toString()).newInstance();
-		Task taskToAsk = new Ask.Who(collaboration.getDisco(), human, task);
-		collaboration.getDisco().getInteraction().occurred(human, taskToAsk, null);
+		Task taskToAsk = new Ask.Who(collaboration.getDisco(), speaker, goal.getPlan().getGoal());
+		collaboration.getDisco().getInteraction().occurred(speaker, taskToAsk, contributes);
 	}
 	
-	void executeTask(Goal goal, boolean human) {
+	void executeTask(Goal goal, Plan contributes, boolean speaker) {
 		
-		Task taskToExecute = collaboration.getDisco().getTaskClass(goal.getPlan().getGoal().getType().toString()).newInstance();
-		collaboration.getDisco().getInteraction().occurred(human, taskToExecute, null);
+		if (goal.getPlan().getGoal().isPrimitive())
+			collaboration.getDisco().getInteraction().occurred(speaker, goal.getPlan().getGoal(), contributes);
+		else
+			throw new IllegalArgumentException("Non-primitive tasks can not be executed!");
 	}
 }
