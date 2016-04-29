@@ -24,11 +24,10 @@ public class DiscoActionsWrapper {
 		
 		// NOTE: Speaker should be false when the agent is doing coping.
 		
-		Task taskToPropose;
 		Plan plan = goal.getPlan();
 		
 		if (plan.isPrimitive()) {
-			taskToPropose = new Propose.Who(collaboration.getDisco(), speaker, plan.getGoal(), !speaker);
+			Utterance taskToPropose = new Propose.Who(collaboration.getDisco(), speaker, plan.getGoal(), !speaker);
 			collaboration.getDisco().getInteraction().occurred(speaker, taskToPropose, plan);
 		}
 		else
@@ -39,7 +38,7 @@ public class DiscoActionsWrapper {
 		
 		Plan plan = goal.getPlan();
 		
-		Task taskToPropose = Propose.Should.newInstance(collaboration.getDisco(), speaker, plan.getGoal());
+		Utterance taskToPropose = Propose.Should.newInstance(collaboration.getDisco(), speaker, plan.getGoal());
 		collaboration.getDisco().getInteraction().occurred(speaker, taskToPropose, plan);
 	}
 
@@ -47,17 +46,16 @@ public class DiscoActionsWrapper {
 		
 		Plan plan = goal.getPlan();
 		
-		Task taskToPropose = new Propose.What(collaboration.getDisco(), speaker, plan.getGoal(), slot, value);
+		Utterance taskToPropose = new Propose.What(collaboration.getDisco(), speaker, plan.getGoal(), slot, value);
 		collaboration.getDisco().getInteraction().occurred(speaker, taskToPropose, plan);
 	}
 	
 	void proposeTaskHow(Goal goal, boolean speaker, DecompositionClass decomp) {
 		
-		Task taskToPropose;
 		Plan plan = goal.getPlan();
 		
 		if (!plan.isPrimitive()) {
-			taskToPropose = new Propose.How(collaboration.getDisco(), speaker, plan, decomp);
+			Utterance taskToPropose = new Propose.How(collaboration.getDisco(), speaker, plan, decomp);
 			collaboration.getDisco().getInteraction().occurred(speaker, taskToPropose, plan);
 		}
 		else
@@ -69,7 +67,7 @@ public class DiscoActionsWrapper {
 		Plan plan = goal.getPlan();
 		
 		Utterance acceptance = new Accept(collaboration.getDisco(), speaker, Propose.Should.newInstance(collaboration.getDisco(), speaker, plan.getGoal()));
-		collaboration.getDisco().getInteraction().occurred(speaker, acceptance, plan);
+		collaboration.getDisco().getInteraction().occurred(speaker, acceptance, null);
 	}
 	
 	void rejectProposedTask(Goal goal, boolean speaker) {
@@ -77,14 +75,14 @@ public class DiscoActionsWrapper {
 		Plan plan = goal.getPlan();
 		
 		Utterance rejection = new Reject(collaboration.getDisco(), speaker, Propose.Should.newInstance(collaboration.getDisco(), speaker, plan.getGoal()));
-		collaboration.getDisco().getInteraction().occurred(speaker, rejection, plan);
+		collaboration.getDisco().getInteraction().occurred(speaker, rejection, null);
 	}
 	
 	void mentionTask(Goal goal, boolean speaker) {
 		
 		Plan plan = goal.getPlan();
 		
-		Task taskToMention = new Mention(collaboration.getDisco(), speaker, plan.getGoal());
+		Utterance taskToMention = new Mention(collaboration.getDisco(), speaker, plan.getGoal());
 		collaboration.getDisco().getInteraction().occurred(speaker, taskToMention, plan);
 	}
 	
@@ -93,7 +91,7 @@ public class DiscoActionsWrapper {
 		Plan plan = goal.getPlan();
 		
 		if (plan.isPrimitive()) {
-			Task taskToAsk = new Ask.Who(collaboration.getDisco(), speaker, plan.getGoal());
+			Utterance taskToAsk = new Ask.Who(collaboration.getDisco(), speaker, plan.getGoal());
 			collaboration.getDisco().getInteraction().occurred(speaker, taskToAsk, plan);
 		}
 		else
@@ -104,15 +102,15 @@ public class DiscoActionsWrapper {
 		
 		Plan plan = goal.getPlan();
 		
-		Task taskToAsk = new Ask.Should(collaboration.getDisco(), speaker, plan.getGoal());
+		Utterance taskToAsk = new Ask.Should(collaboration.getDisco(), speaker, plan.getGoal());
 		collaboration.getDisco().getInteraction().occurred(speaker, taskToAsk, plan);
 	}
 	
-	void askAboutTaskWhat(Goal goal, boolean speaker) {
+	void askAboutTaskWhat(Goal goal, boolean speaker, String slot) {
 		
 		Plan plan = goal.getPlan();
 		
-		Task taskToAsk = new Ask.What(collaboration.getDisco(), speaker, (Propose.What)plan.getGoal());
+		Utterance taskToAsk = new Ask.What(collaboration.getDisco(), speaker, plan.getGoal(), slot);
 		collaboration.getDisco().getInteraction().occurred(speaker, taskToAsk, plan);
 	}
 	
@@ -121,7 +119,7 @@ public class DiscoActionsWrapper {
 		Plan plan = goal.getPlan();
 		
 		if (!plan.isPrimitive()) {
-			Task taskToAsk = new Ask.How(collaboration.getDisco(), speaker, plan.getGoal());
+			Utterance taskToAsk = new Ask.How(collaboration.getDisco(), speaker, plan.getGoal());
 			collaboration.getDisco().getInteraction().occurred(speaker, taskToAsk, plan);
 		}
 		else
