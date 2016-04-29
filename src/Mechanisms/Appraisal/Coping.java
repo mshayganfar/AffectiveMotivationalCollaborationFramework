@@ -37,7 +37,7 @@ public class Coping {
 		discoActionsWrapper.executeTask(goal, human);
 	}
 	
-	// Goal management: Coming up with best action strategies to handle the problem. 
+	// Goal management: Coming up with best action strategies to handle the problem, aka, action selection.
 	private void doPlanning() {
 		
 	}
@@ -57,7 +57,7 @@ public class Coping {
 		
 	}
 	
-	// Waiting till an appropriate opportunity.
+	// Waiting till an appropriate opportunity, aka, procrastination.
 	private void doRestraintCoping() {
 		
 	}
@@ -72,6 +72,7 @@ public class Coping {
 		discoActionsWrapper.acceptProposedTask(goal, human);
 	}
 	
+	// Showing reflexive reaction to remove threat.
 	private void doAvoidance(Goal goal, boolean human) {
 		discoActionsWrapper.rejectProposedTask(goal, human);
 	}
@@ -86,6 +87,11 @@ public class Coping {
 		
 	}
 	
+	// Droping an intention to achieve a goal.
+	private void doResignation() {
+		
+	}
+		
 	// Reducing effort on attaining the goal with which the stressor is interferring.
 	private void doBehavioralDisengagement() {
 		
@@ -96,14 +102,17 @@ public class Coping {
 		
 	}
 	
+	// Taking an action to redress the harm and mitigate the negative feeling(s).
 	private void doMakingAmends() {
 		
 	}
 	
+	// Shifts an attribution of blame/credit from (towards) the self and towards (from) some other agent.
 	private void doShiftingResponsibility() {
 		
 	}
 	
+	// Assume some intervening act or actor will improve desirability.
 	private void doWishfulThinking() {
 		
 	}
