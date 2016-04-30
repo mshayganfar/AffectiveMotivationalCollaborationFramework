@@ -10,8 +10,9 @@ public class Goal {
 	
 	public enum DIFFICULTY {NORMAL, DIFFICULT, MOST_DIFFICULT};
 	
-	private ArrayList<Belief> Beliefs = new ArrayList<Belief>();
-	private ArrayList<Motive> Motives = new ArrayList<Motive>();
+	private ArrayList<Belief> Beliefs       = new ArrayList<Belief>();
+	private ArrayList<Intention> Intentions = new ArrayList<Intention>();
+	private ArrayList<Motive> Motives       = new ArrayList<Motive>();
 	
 	private Plan plan;
 	private Plan parentPlan;
@@ -59,6 +60,10 @@ public class Goal {
 		this.Beliefs.add(belief);
 	}
 	
+	public void addIntentions(Intention intention) {
+		this.Intentions.add(intention);
+	}
+	
 	public void addMotives(Motive motive) {
 		this.Motives.add(motive);
 	}
@@ -71,15 +76,19 @@ public class Goal {
 		return this.Beliefs;
 	}
 	
-//	public void addMotives(Motive motive) {
-//		if (Motives.size() == 0)
-//			this.setActiveMotive(motive);
-//		Motives.add(motive);
-//	}
+	public ArrayList<Intention> getIntentions() {
+		return this.Intentions;
+	}
 	
 	public ArrayList<Motive> getMotives() {
 		return this.Motives;
 	}
+	
+//	public void addMotives(Motive motive) {
+//	if (Motives.size() == 0)
+//		this.setActiveMotive(motive);
+//	Motives.add(motive);
+//}
 	
 //	public void setActiveMotive(Motive motive) {
 //		this.activeMotive = motive;
