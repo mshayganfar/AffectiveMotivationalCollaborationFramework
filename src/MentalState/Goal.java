@@ -3,6 +3,8 @@ package MentalState;
 import java.util.ArrayList;
 
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
+import MentalState.Motive.MOTIVE_TYPE;
+import MetaInformation.MotivationVector;
 import MetaInformation.Turns;
 import edu.wpi.cetask.Plan;
 
@@ -117,5 +119,33 @@ public class Goal {
 	
 	public void setGoalEffort(double effort) {
 		this.effort = effort;
+	}
+	
+	public Motive getSatisfactionMotive() {
+		for (Motive motive : this.Motives) {
+			if (motive.getMotiveType().equals(MOTIVE_TYPE.SATISFACTION))
+				return motive;
+		}
+		return null;
+	}
+	
+	public Motive getAchievementMotive() {
+		for (Motive motive : this.Motives) {
+			if (motive.getMotiveType().equals(MOTIVE_TYPE.ACHIEVEMENT))
+				return motive;
+		}
+		return null;
+	}
+	
+	public Motive getExternalMotive() {
+		for (Motive motive : this.Motives) {
+			if (motive.getMotiveType().equals(MOTIVE_TYPE.EXTERNAL))
+				return motive;
+		}
+		return null;
+	}
+	
+	public MotivationVector getMotivesVector() {
+		return new MotivationVector(this);
 	}
 }
