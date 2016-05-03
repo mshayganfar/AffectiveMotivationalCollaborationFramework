@@ -3,6 +3,7 @@ package MentalState;
 public class Motive {
 
 	public enum MOTIVE_TYPE{ACHIEVEMENT, SATISFACTION, INTERNAL_DEFAULT, EXTERNAL};
+	public enum MOTIVE_INTENSITY{HIGH_POSITIVE, MEDIUM_POSITIVE, LOW_POSITIVE, HIGH_NEGATIVE, MEDIUM_NEGATIVE, LOW_NEGATIVE};
 	
 	private String label;
 	private Goal goal;
@@ -57,5 +58,23 @@ public class Motive {
 	
 	public boolean isActiveMotive() {
 		return this.activeMotive; 
+	}
+	
+	public MOTIVE_INTENSITY getSymbolicMotiveIntensity() {
+		
+		if (motiveIntensity >= 0.67)
+			return MOTIVE_INTENSITY.HIGH_POSITIVE;
+		else if ((motiveIntensity < 0.67) && (motiveIntensity >= 0.34))
+			return MOTIVE_INTENSITY.MEDIUM_POSITIVE;
+		else if ((motiveIntensity > 0.0) && (motiveIntensity < 0.34))
+			return MOTIVE_INTENSITY.LOW_POSITIVE;
+		else if ((motiveIntensity < 0.0) && (motiveIntensity > -0.34))
+			return MOTIVE_INTENSITY.LOW_NEGATIVE;
+		else if ((motiveIntensity > -0.67) && (motiveIntensity <= -0.34))
+			return MOTIVE_INTENSITY.MEDIUM_NEGATIVE;
+		if (motiveIntensity <= -0.67)
+			return MOTIVE_INTENSITY.HIGH_NEGATIVE;
+		else
+			throw new IllegalArgumentException("Illegal motive intensity value:" + motiveIntensity);
 	}
 }
