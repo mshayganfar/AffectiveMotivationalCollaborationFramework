@@ -4,9 +4,15 @@ import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Motivation.Motivation;
 import Mechanisms.ToM.ToM;
 import MentalState.Goal;
+import MentalState.Intention;
+import MentalState.Intention;
+import MetaInformation.CopingElicitationFrame;
 import MetaInformation.MentalProcesses;
+import MetaInformation.CopingElicitationFrame.COPING_STRATEGY;
 
 public class Coping {
+	
+	private MentalProcesses mentalProcesses;
 	
 	private Collaboration collaboration;
 	private Motivation motivation;
@@ -20,16 +26,53 @@ public class Coping {
 	private DiscoActionsWrapper discoActionsWrapper;
 	
 	public void prepareAppraisalsOfToM(MentalProcesses mentalProcesses) {
-		this.collaboration = mentalProcesses.getCollaborationMechanism();
-		this.motivation    = mentalProcesses.getMotivationMechanism();
-		this.tom		   = mentalProcesses.getToMMechanism();
+		
+		this.mentalProcesses = mentalProcesses;
+		
+		this.collaboration   = mentalProcesses.getCollaborationMechanism();
+		this.motivation      = mentalProcesses.getMotivationMechanism();
+		this.tom		     = mentalProcesses.getToMMechanism();
 		
 		this.relevance       = mentalProcesses.getRelevanceProcess();
 		this.controllability = mentalProcesses.getControllabilityProcess();
 		this.desirability    = mentalProcesses.getDesirabilityProcess();
 		this.expectedness    = mentalProcesses.getExpectednessProcess();
 		
-		discoActionsWrapper = new DiscoActionsWrapper(collaboration);
+		discoActionsWrapper  = new DiscoActionsWrapper(collaboration);
+	}
+	
+	public void formIntentions(Goal eventGoal) {
+		
+		Intention planningIntention = null;
+		Intention activeCopingIntention = null;
+		Intention acceptanceIntention = null;
+		Intention wishfulThinkingIntention = null;
+		Intention mentalDisengagementIntention = null;
+		Intention shiftingResponsibilityIntention = null;
+		Intention seekingSocialSupportForInstrumentalReasonsIntention = null;
+		
+		CopingElicitationFrame planningStrategy		   = new CopingElicitationFrame(COPING_STRATEGY.PLANNING, mentalProcesses, eventGoal);
+		CopingElicitationFrame activeCopingStrategy    = new CopingElicitationFrame(COPING_STRATEGY.ACTIVE_COPING, mentalProcesses, eventGoal);
+		CopingElicitationFrame acceptanceStrategy 	   = new CopingElicitationFrame(COPING_STRATEGY.ACCEPTANCE, mentalProcesses, eventGoal);
+		CopingElicitationFrame wishfulThinkingStrategy = new CopingElicitationFrame(COPING_STRATEGY.WISHFUL_THINKING, mentalProcesses, eventGoal);
+		CopingElicitationFrame mentalDisengagementStrategy    = new CopingElicitationFrame(COPING_STRATEGY.MENTAL_DISENGAGEMENT, mentalProcesses, eventGoal);
+		CopingElicitationFrame shiftingResponsibilityStrategy = new CopingElicitationFrame(COPING_STRATEGY.SHIFTING_RESPONSIBILITY, mentalProcesses, eventGoal);
+		CopingElicitationFrame seekingSocialSupportForInstrumentalReasonsStrategy = new CopingElicitationFrame(COPING_STRATEGY.SEEKING_SOCIAL_SUPPORT_FOR_INSTRUMENTAL_REASONS, mentalProcesses, eventGoal);
+		
+		if (planningStrategy.isThisStrategySelected())
+			planningIntention = new Intention(eventGoal, COPING_STRATEGY.PLANNING);
+		if (activeCopingStrategy.isThisStrategySelected())
+			activeCopingIntention = new Intention(eventGoal, COPING_STRATEGY.ACTIVE_COPING);
+		if (acceptanceStrategy.isThisStrategySelected())
+			acceptanceIntention = new Intention(eventGoal, COPING_STRATEGY.ACCEPTANCE);
+		if (wishfulThinkingStrategy.isThisStrategySelected())
+			wishfulThinkingIntention = new Intention(eventGoal, COPING_STRATEGY.WISHFUL_THINKING);
+		if (mentalDisengagementStrategy.isThisStrategySelected())
+			mentalDisengagementIntention = new Intention(eventGoal, COPING_STRATEGY.MENTAL_DISENGAGEMENT);
+		if (shiftingResponsibilityStrategy.isThisStrategySelected())
+			shiftingResponsibilityIntention = new Intention(eventGoal, COPING_STRATEGY.SHIFTING_RESPONSIBILITY);
+		if (seekingSocialSupportForInstrumentalReasonsStrategy.isThisStrategySelected())
+			seekingSocialSupportForInstrumentalReasonsIntention = new Intention(eventGoal, COPING_STRATEGY.SEEKING_SOCIAL_SUPPORT_FOR_INSTRUMENTAL_REASONS);
 	}
 	
 	// Taking actions to try to remove or circumvent the stressor or to ameliorate its effects.

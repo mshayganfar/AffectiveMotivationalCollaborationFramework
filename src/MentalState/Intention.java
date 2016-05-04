@@ -1,5 +1,7 @@
 package MentalState;
 
+import MetaInformation.CopingElicitationFrame.COPING_STRATEGY;
+
 public class Intention {
 	
 	public enum INTENTION_TARGET {AGENT, HUMAN, ENVIRONMENT};
@@ -8,6 +10,14 @@ public class Intention {
 	private Goal goal;
 	private Motive motive;
 	private INTENTION_TARGET intentionTarget;
+	private COPING_STRATEGY copingStrategy;
+	
+	public Intention (Goal goal, COPING_STRATEGY copingStrategy) {
+		this.goal   = goal;
+		this.label  = goal.getPlan().getGoal().getType().toString();
+		this.copingStrategy = copingStrategy;
+		this.goal.addIntentions(this);
+	}
 	
 	public Intention (Goal goal, Motive motive) {
 		this.goal   = goal;

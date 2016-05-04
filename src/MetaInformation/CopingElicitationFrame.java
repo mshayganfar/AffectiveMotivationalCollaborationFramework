@@ -13,17 +13,17 @@ public class CopingElicitationFrame {
 		SUPPRESION_OF_COMPETING_ACTIVITIES, RESTRAINT_COPING, POSITIVE_REINTERPRETATION, ACCEPTANCE, AVOIDANCE, VENTING, DENIAL,
 		BEHAVIORAL_DISENGAGEMENT, MENTAL_DISENGAGEMENT, MAKING_AMENDS, SHIFTING_RESPONSIBILITY, WISHFUL_THINKING};
 	
-	private COPING_OBJECT copingObject;
-	private AGENT eventCause;
+//	private COPING_OBJECT copingObject;
+//	private AGENT eventCause;
 	private AppraisalVector copingEffect;
 	private MotivationVector motiveVector;
 	private COPING_STRATEGY copingStrategy;
 	private MentalProcesses mentalProcesses;
 	private Goal goal;
 	
-	public CopingElicitationFrame(COPING_STRATEGY copingStrategy, MentalProcesses mentalProcesses, Goal goal, COPING_OBJECT copingObject, AGENT eventCause) {
-		this.copingObject    = copingObject;
-		this.eventCause      = eventCause;
+	public CopingElicitationFrame(COPING_STRATEGY copingStrategy, MentalProcesses mentalProcesses, Goal goal/*, COPING_OBJECT copingObject, AGENT eventCause*/) {
+//		this.copingObject    = copingObject;
+//		this.eventCause      = eventCause;
 //		this.copingEffect    = ; This should use anticipated appraisals!
 		this.motiveVector    = goal.getMotivesVector();
 		this.copingStrategy  = copingStrategy;
@@ -161,37 +161,42 @@ public class CopingElicitationFrame {
 		
 		switch (copingStrategy) {
 			case PLANNING:
-				if(desirability.equals(CONTROLLABILITY.HIGH_CONTROLLABLE))
+				if(desirability.equals(DESIRABILITY.UNDESIRABLE) || desirability.equals(DESIRABILITY.NEUTRAL) || 
+				   desirability.equals(DESIRABILITY.DESIRABLE) || desirability.equals(DESIRABILITY.HIGH_DESIRABLE))
 					return true;
 				else
 					return false;
 			case ACTIVE_COPING:
-				if(desirability.equals(CONTROLLABILITY.HIGH_CONTROLLABLE))
+				if(desirability.equals(DESIRABILITY.NEUTRAL) || desirability.equals(DESIRABILITY.UNDESIRABLE) ||
+				   desirability.equals(DESIRABILITY.HIGH_UNDESIRABLE))
 					return true;
 				else
 					return false;
 			case SEEKING_SOCIAL_SUPPORT_FOR_INSTRUMENTAL_REASONS:
-				if(desirability.equals(CONTROLLABILITY.LOW_CONTROLLABLE))
+				if(desirability.equals(DESIRABILITY.DESIRABLE) || desirability.equals(DESIRABILITY.NEUTRAL) ||
+				   desirability.equals(DESIRABILITY.UNDESIRABLE) || desirability.equals(DESIRABILITY.HIGH_UNDESIRABLE))
 					return true;
 				else
 					return false;
 			case ACCEPTANCE:
-				if(desirability.equals(CONTROLLABILITY.UNCONTROLLABLE))
+				if(desirability.equals(DESIRABILITY.UNDESIRABLE) || desirability.equals(DESIRABILITY.HIGH_UNDESIRABLE))
 					return true;
 				else
 					return false;
 			case MENTAL_DISENGAGEMENT:
-				if(desirability.equals(CONTROLLABILITY.UNCONTROLLABLE))
+				if(desirability.equals(DESIRABILITY.NEUTRAL) || desirability.equals(DESIRABILITY.UNDESIRABLE) ||
+				   desirability.equals(DESIRABILITY.HIGH_UNDESIRABLE))
 					return true;
 				else
 					return false;
 			case SHIFTING_RESPONSIBILITY:
-				if((desirability.equals(CONTROLLABILITY.UNCONTROLLABLE)) || (desirability.equals(CONTROLLABILITY.LOW_CONTROLLABLE)))
+				if(desirability.equals(DESIRABILITY.UNDESIRABLE) || desirability.equals(DESIRABILITY.HIGH_UNDESIRABLE))
 					return true;
 				else
 					return false;
 			case WISHFUL_THINKING:
-				if(desirability.equals(CONTROLLABILITY.LOW_CONTROLLABLE))
+				if(desirability.equals(DESIRABILITY.DESIRABLE) || desirability.equals(DESIRABILITY.NEUTRAL) ||
+				   desirability.equals(DESIRABILITY.UNDESIRABLE) || desirability.equals(DESIRABILITY.HIGH_UNDESIRABLE))
 					return true;
 				else
 					return false;
