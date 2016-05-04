@@ -1,6 +1,8 @@
 package MetaInformation;
 
 import Mechanisms.Mechanisms.AGENT;
+import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
+import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import MentalState.Goal;
 import MentalState.Motive.MOTIVE_INTENSITY;
 
@@ -16,20 +18,30 @@ public class CopingElicitationFrame {
 	private AppraisalVector copingEffect;
 	private MotivationVector motiveVector;
 	private COPING_STRATEGY copingStrategy;
+	private MentalProcesses mentalProcesses;
+	private Goal goal;
 	
-	public CopingElicitationFrame(COPING_STRATEGY copingStrategy, Goal goal, COPING_OBJECT copingObject, AGENT eventCause) {
-		this.copingObject   = copingObject;
-		this.eventCause     = eventCause;
-//		this.copingEffect   = ; This should use anticipated appraisals!
-		this.motiveVector   = goal.getMotivesVector();
-		this.copingStrategy = copingStrategy;
+	public CopingElicitationFrame(COPING_STRATEGY copingStrategy, MentalProcesses mentalProcesses, Goal goal, COPING_OBJECT copingObject, AGENT eventCause) {
+		this.copingObject    = copingObject;
+		this.eventCause      = eventCause;
+//		this.copingEffect    = ; This should use anticipated appraisals!
+		this.motiveVector    = goal.getMotivesVector();
+		this.copingStrategy  = copingStrategy;
+		this.mentalProcesses = mentalProcesses;
+		this.goal            = goal;
 	}
 	
 	public boolean isThisStrategySelected() {
-		// 1. Whether we need to do it? ==> Motives
-		// 2. Whether we can do it?     ==> Controllability
-		// 3. Whether we should do it?  ==> Desirability
-		return true;
+		if (isThisStrategyNeeded())
+			if(canPursueThisStrategy())
+				if(isThisStrategySatisfactory())
+					return true;
+				else
+					return false;
+			else
+				return false;
+		else
+			return false;
 	}
 	
 	private boolean isThisStrategyNeeded() {
@@ -94,7 +106,97 @@ public class CopingElicitationFrame {
 				else
 					return false;
 			default:
-				throw new IllegalArgumentException("Illegal Coping Strategy: " + copingStrategy);	
+				throw new IllegalArgumentException("Illegal Coping Strategy: " + copingStrategy);
+		}
+	}
+	
+	private boolean canPursueThisStrategy() {
+		
+		CONTROLLABILITY controllability = mentalProcesses.getControllabilityProcess().isEventControllable(goal);
+		
+		switch (copingStrategy) {
+			case PLANNING:
+				if(controllability.equals(CONTROLLABILITY.HIGH_CONTROLLABLE))
+					return true;
+				else
+					return false;
+			case ACTIVE_COPING:
+				if(controllability.equals(CONTROLLABILITY.HIGH_CONTROLLABLE))
+					return true;
+				else
+					return false;
+			case SEEKING_SOCIAL_SUPPORT_FOR_INSTRUMENTAL_REASONS:
+				if(controllability.equals(CONTROLLABILITY.LOW_CONTROLLABLE))
+					return true;
+				else
+					return false;
+			case ACCEPTANCE:
+				if(controllability.equals(CONTROLLABILITY.UNCONTROLLABLE))
+					return true;
+				else
+					return false;
+			case MENTAL_DISENGAGEMENT:
+				if(controllability.equals(CONTROLLABILITY.UNCONTROLLABLE))
+					return true;
+				else
+					return false;
+			case SHIFTING_RESPONSIBILITY:
+				if((controllability.equals(CONTROLLABILITY.UNCONTROLLABLE)) || (controllability.equals(CONTROLLABILITY.LOW_CONTROLLABLE)))
+					return true;
+				else
+					return false;
+			case WISHFUL_THINKING:
+				if(controllability.equals(CONTROLLABILITY.LOW_CONTROLLABLE))
+					return true;
+				else
+					return false;
+			default:
+				throw new IllegalArgumentException("Illegal Controllability Value: " + controllability);
+		}
+	}
+	
+	private boolean isThisStrategySatisfactory() {
+		
+		DESIRABILITY desirability = mentalProcesses.getDesirabilityProcess().isEventDesirable(goal);
+		
+		switch (copingStrategy) {
+			case PLANNING:
+				if(desirability.equals(CONTROLLABILITY.HIGH_CONTROLLABLE))
+					return true;
+				else
+					return false;
+			case ACTIVE_COPING:
+				if(desirability.equals(CONTROLLABILITY.HIGH_CONTROLLABLE))
+					return true;
+				else
+					return false;
+			case SEEKING_SOCIAL_SUPPORT_FOR_INSTRUMENTAL_REASONS:
+				if(desirability.equals(CONTROLLABILITY.LOW_CONTROLLABLE))
+					return true;
+				else
+					return false;
+			case ACCEPTANCE:
+				if(desirability.equals(CONTROLLABILITY.UNCONTROLLABLE))
+					return true;
+				else
+					return false;
+			case MENTAL_DISENGAGEMENT:
+				if(desirability.equals(CONTROLLABILITY.UNCONTROLLABLE))
+					return true;
+				else
+					return false;
+			case SHIFTING_RESPONSIBILITY:
+				if((desirability.equals(CONTROLLABILITY.UNCONTROLLABLE)) || (desirability.equals(CONTROLLABILITY.LOW_CONTROLLABLE)))
+					return true;
+				else
+					return false;
+			case WISHFUL_THINKING:
+				if(desirability.equals(CONTROLLABILITY.LOW_CONTROLLABLE))
+					return true;
+				else
+					return false;
+			default:
+				throw new IllegalArgumentException("Illegal Desirability Value: " + desirability);
 		}
 	}
 }
