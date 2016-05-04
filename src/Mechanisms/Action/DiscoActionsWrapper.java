@@ -1,4 +1,4 @@
-package Mechanisms.Appraisal;
+package Mechanisms.Action;
 
 import Mechanisms.Collaboration.Collaboration;
 import MentalState.Goal;

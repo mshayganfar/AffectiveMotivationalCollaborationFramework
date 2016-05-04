@@ -26,11 +26,13 @@ public class Controllability extends AppraisalProcesses{
 		double dblPredecessors 			= checkSucceededPredecessorsRatio(eventGoal);
 		double dblInputs       			= checkAvailableInputRatio(eventGoal);
 		double dblOverallGoalDifficulty = getOverallDifficultyValue(eventGoal);
+		double dblAlternativeRecipe     = getAlternativeRecipeValue(eventGoal);
 		
 		double controllabilityValue = (double)((dblAgency * getAgencyWeight()) + (dblAutonomy * getAutonomyWeight()) + 
 						(dblPredecessors * getPredecessorRatioWeight()) + (dblInputs * getInputRatioWeight()) +
-						(dblOverallGoalDifficulty * getGoalDifficultyWeight()))
-						/(getAgencyWeight() + getAutonomyWeight() + getPredecessorRatioWeight() + getInputRatioWeight() + getGoalDifficultyWeight());
+						(dblOverallGoalDifficulty * getGoalDifficultyWeight()) + (dblAlternativeRecipe * getAlternativeRecipeWeight()))
+						/(getAgencyWeight() + getAutonomyWeight() + getPredecessorRatioWeight() + getInputRatioWeight() + 
+						getGoalDifficultyWeight() + getAlternativeRecipeWeight());
 		
 		if(controllabilityValue >= getHumanEmotionalThreshold())
 			if (controllabilityValue > ((double)(1.0 + getHumanEmotionalThreshold())/2.0))
@@ -176,10 +178,16 @@ public class Controllability extends AppraisalProcesses{
 		return dblOverallDifficultyValue;
 	}
 	
+	private double getAlternativeRecipeValue(Goal eventGoal) {
+		
+		return (eventGoal.getPlan().getDecompositions().size() == 0) ? 0.0 : 1.0;
+	}
+	
 	// Min = 0.0 and Max = 1.0
-	private double getAgencyWeight()           { return 1.0; }
-	private double getAutonomyWeight()         { return 1.0; }
-	private double getPredecessorRatioWeight() { return 1.0; }
-	private double getInputRatioWeight()       { return 1.0; }
-	private double getGoalDifficultyWeight()   { return 1.0; }
+	private double getAgencyWeight()            { return 1.0; }
+	private double getAutonomyWeight()          { return 1.0; }
+	private double getPredecessorRatioWeight()  { return 1.0; }
+	private double getInputRatioWeight()        { return 1.0; }
+	private double getGoalDifficultyWeight()    { return 1.0; }
+	private double getAlternativeRecipeWeight() { return 1.0; }
 }

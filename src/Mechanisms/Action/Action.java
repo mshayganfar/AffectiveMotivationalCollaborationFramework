@@ -2,10 +2,10 @@ package Mechanisms.Action;
 
 import Mechanisms.Mechanisms;
 import Mechanisms.Appraisal.Coping;
-import Mechanisms.Appraisal.DiscoActionsWrapper;
 import MentalState.Goal;
 import MentalState.Intention;
 import MetaInformation.MentalProcesses;
+import MetaInformation.Turns;
 import MetaInformation.CopingElicitationFrame.COPING_STRATEGY;
 
 public class Action extends Mechanisms{
@@ -27,13 +27,13 @@ public class Action extends Mechanisms{
 	
 	public void act(Goal goal) {
 		
-		System.out.println("");
+		System.out.println("Agent chose the following coping strtegies in turn: " + Turns.getInstance().getTurnNumber());
 		
 		for (Intention intention : goal.getIntentions()) {
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.SEEKING_SOCIAL_SUPPORT_FOR_INSTRUMENTAL_REASONS))
 				coping.doSeekingSocialSupportForInstrumentalReasons();
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.ACTIVE_COPING))
-				coping.doActiveCoping();
+				coping.doActiveCoping(goal);
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.PLANNING))
 				coping.doPlanning(goal, false);
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.WISHFUL_THINKING))
@@ -47,7 +47,19 @@ public class Action extends Mechanisms{
 		}
 	}
 	
+	public DiscoActionsWrapper getDiscoActions() {
+		return this.discoActionsWrapper;
+	}
+	
 	public void executeDomainAction(DomainAction action) {
 		action.run();
+	}
+	
+	public void say(String utterance) {
+		System.out.println(utterance);
+	}
+	
+	public void ask(String utterance) {
+		System.out.println(utterance);
 	}
 }

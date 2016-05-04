@@ -1,5 +1,6 @@
 package Mechanisms.Appraisal;
 
+import Mechanisms.Action.DiscoActionsWrapper;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Motivation.Motivation;
 import Mechanisms.ToM.ToM;
@@ -75,18 +76,23 @@ public class Coping {
 	}
 	
 	// Taking actions to try to remove or circumvent the stressor or to ameliorate its effects.
-	public void doActiveCoping() {
+	public void doActiveCoping(Goal goal) {
 		
+		System.out.println("COPING STRATEGY: Active Coping");
 	}
 	
 	// Goal management: Coming up with best action strategies to handle the problem, aka, action selection.
 	public void doPlanning(Goal goal, boolean human) {
+		
+		System.out.println("COPING STRATEGY: Planning");
+		
 		discoActionsWrapper.executeTask(goal, human);
 	}
 	
 	// Seeking advice, assistance or information.
 	public void doSeekingSocialSupportForInstrumentalReasons() {
 		
+		System.out.println("COPING STRATEGY: Seeking Social Support for Instrumental Reasons");
 	}
 	
 	// Seeking emotional support or understanding.
@@ -112,6 +118,7 @@ public class Coping {
 	// Acceptance of a stressor as real (specially when the event has low changeability).
 	public void doAcceptance(Goal goal, boolean human) {
 		// discoActionsWrapper.acceptProposedTask(goal, human);
+		System.out.println("COPING STRATEGY: Acceptance");
 	}
 	
 	// Showing reflexive reaction to remove threat.
@@ -142,6 +149,7 @@ public class Coping {
 	// Distracting the self from thinking about behavioral dimension or goal with which the stressor is interferring. 
 	public void doMentalDisengagement() {
 		
+		System.out.println("COPING STRATEGY: Mental Disengagement");
 	}
 	
 	// Taking an action to redress the harm and mitigate the negative feeling(s).
@@ -152,10 +160,12 @@ public class Coping {
 	// Shifts an attribution of blame/credit from (towards) the self and towards (from) some other agent.
 	public void doShiftingResponsibility() {
 		
+		System.out.println("COPING STRATEGY: Shifting Responsibility");
 	}
 	
 	// Assume some intervening act or actor will improve desirability.
 	public void doWishfulThinking() {
 		
+		System.out.println("COPING STRATEGY: Wishful Thinking");
 	}
 }
