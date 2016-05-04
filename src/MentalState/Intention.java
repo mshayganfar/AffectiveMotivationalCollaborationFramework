@@ -50,4 +50,8 @@ public class Intention {
 	public INTENTION_TARGET getIntentionTarget() {
 		return this.intentionTarget;
 	}
+	
+	public COPING_STRATEGY getCopingStrategy() {
+		return this.copingStrategy;
+	}
 }

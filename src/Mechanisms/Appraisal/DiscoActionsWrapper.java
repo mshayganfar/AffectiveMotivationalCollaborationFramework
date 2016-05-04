@@ -20,7 +20,7 @@ public class DiscoActionsWrapper {
 		this.collaboration = collaboration;
 	}
 	
-	void proposeTaskWho(Goal goal, boolean speaker) {
+	public void proposeTaskWho(Goal goal, boolean speaker) {
 		
 		// NOTE: Speaker should be false when the agent is doing coping.
 		
@@ -34,7 +34,7 @@ public class DiscoActionsWrapper {
 			throw new IllegalArgumentException("Both of the collaborators are responsible for non-primitives");
 	}
 	
-	void proposeTaskShould(Goal goal, boolean speaker) {
+	public void proposeTaskShould(Goal goal, boolean speaker) {
 		
 		Plan plan = goal.getPlan();
 		
@@ -42,7 +42,7 @@ public class DiscoActionsWrapper {
 		collaboration.getDisco().getInteraction().occurred(speaker, taskToPropose, plan);
 	}
 
-	void proposeTaskWhat(Goal goal, boolean speaker, String slot, Object value) {
+	public void proposeTaskWhat(Goal goal, boolean speaker, String slot, Object value) {
 		
 		Plan plan = goal.getPlan();
 		
@@ -50,7 +50,7 @@ public class DiscoActionsWrapper {
 		collaboration.getDisco().getInteraction().occurred(speaker, taskToPropose, plan);
 	}
 	
-	void proposeTaskHow(Goal goal, boolean speaker, DecompositionClass decomp) {
+	public void proposeTaskHow(Goal goal, boolean speaker, DecompositionClass decomp) {
 		
 		Plan plan = goal.getPlan();
 		
@@ -62,7 +62,7 @@ public class DiscoActionsWrapper {
 			throw new IllegalArgumentException("Primitives does not need recepies!");
 	}
 	
-	void acceptProposedTask(Goal goal, boolean speaker) {
+	public void acceptProposedTask(Goal goal, boolean speaker) {
 		
 		Plan plan = goal.getPlan();
 		
@@ -70,7 +70,7 @@ public class DiscoActionsWrapper {
 		collaboration.getDisco().getInteraction().occurred(speaker, acceptance, null);
 	}
 	
-	void rejectProposedTask(Goal goal, boolean speaker) {
+	public void rejectProposedTask(Goal goal, boolean speaker) {
 		
 		Plan plan = goal.getPlan();
 		
@@ -78,7 +78,7 @@ public class DiscoActionsWrapper {
 		collaboration.getDisco().getInteraction().occurred(speaker, rejection, null);
 	}
 	
-	void mentionTask(Goal goal, boolean speaker) {
+	public void mentionTask(Goal goal, boolean speaker) {
 		
 		Plan plan = goal.getPlan();
 		
@@ -86,7 +86,7 @@ public class DiscoActionsWrapper {
 		collaboration.getDisco().getInteraction().occurred(speaker, taskToMention, plan);
 	}
 	
-	void askAboutTaskWho(Goal goal, boolean speaker) {
+	public void askAboutTaskWho(Goal goal, boolean speaker) {
 		
 		Plan plan = goal.getPlan();
 		
@@ -98,7 +98,7 @@ public class DiscoActionsWrapper {
 			throw new IllegalArgumentException("Both of the collaborators are responsible for non-primitives");
 	}
 	
-	void askAboutTaskShould(Goal goal, boolean speaker) {
+	public void askAboutTaskShould(Goal goal, boolean speaker) {
 		
 		Plan plan = goal.getPlan();
 		
@@ -106,7 +106,7 @@ public class DiscoActionsWrapper {
 		collaboration.getDisco().getInteraction().occurred(speaker, taskToAsk, plan);
 	}
 	
-	void askAboutTaskWhat(Goal goal, boolean speaker, String slot) {
+	public void askAboutTaskWhat(Goal goal, boolean speaker, String slot) {
 		
 		Plan plan = goal.getPlan();
 		
@@ -114,7 +114,7 @@ public class DiscoActionsWrapper {
 		collaboration.getDisco().getInteraction().occurred(speaker, taskToAsk, plan);
 	}
 	
-	void askAboutTaskHow(Goal goal, boolean speaker) {
+	public void askAboutTaskHow(Goal goal, boolean speaker) {
 		
 		Plan plan = goal.getPlan();
 		
@@ -126,7 +126,7 @@ public class DiscoActionsWrapper {
 			throw new IllegalArgumentException("Primitives does not need recepies!");
 	}
 
-	void executeTask(Goal goal, boolean actor) {
+	public void executeTask(Goal goal, boolean actor) {
 		
 		Plan plan = goal.getPlan();
 		

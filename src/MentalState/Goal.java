@@ -13,8 +13,8 @@ public class Goal {
 	public enum DIFFICULTY {NORMAL, DIFFICULT, MOST_DIFFICULT};
 	
 	private ArrayList<Belief> Beliefs       = new ArrayList<Belief>();
-	private ArrayList<Intention> Intentions = new ArrayList<Intention>();
 	private ArrayList<Motive> Motives       = new ArrayList<Motive>();
+	private ArrayList<Intention> Intentions = new ArrayList<Intention>();
 	
 	private Plan plan;
 	private Plan parentPlan;

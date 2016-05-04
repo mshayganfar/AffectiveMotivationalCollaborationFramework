@@ -5,7 +5,6 @@ import Mechanisms.Motivation.Motivation;
 import Mechanisms.ToM.ToM;
 import MentalState.Goal;
 import MentalState.Intention;
-import MentalState.Intention;
 import MetaInformation.CopingElicitationFrame;
 import MetaInformation.MentalProcesses;
 import MetaInformation.CopingElicitationFrame.COPING_STRATEGY;
@@ -76,17 +75,17 @@ public class Coping {
 	}
 	
 	// Taking actions to try to remove or circumvent the stressor or to ameliorate its effects.
-	private void doActiveCoping(Goal goal, boolean human) {
-		discoActionsWrapper.executeTask(goal, human);
-	}
-	
-	// Goal management: Coming up with best action strategies to handle the problem, aka, action selection.
-	private void doPlanning() {
+	public void doActiveCoping() {
 		
 	}
 	
+	// Goal management: Coming up with best action strategies to handle the problem, aka, action selection.
+	public void doPlanning(Goal goal, boolean human) {
+		discoActionsWrapper.executeTask(goal, human);
+	}
+	
 	// Seeking advice, assistance or information.
-	private void doSeekingSocialSupportForInstrumentalReasons() {
+	public void doSeekingSocialSupportForInstrumentalReasons() {
 		
 	}
 	
@@ -111,8 +110,8 @@ public class Coping {
 	}
 	
 	// Acceptance of a stressor as real (specially when the event has low changeability).
-	private void doAcceptance(Goal goal, boolean human) {
-		discoActionsWrapper.acceptProposedTask(goal, human);
+	public void doAcceptance(Goal goal, boolean human) {
+		// discoActionsWrapper.acceptProposedTask(goal, human);
 	}
 	
 	// Showing reflexive reaction to remove threat.
@@ -141,7 +140,7 @@ public class Coping {
 	}
 	
 	// Distracting the self from thinking about behavioral dimension or goal with which the stressor is interferring. 
-	private void doMentalDisengagement() {
+	public void doMentalDisengagement() {
 		
 	}
 	
@@ -151,12 +150,12 @@ public class Coping {
 	}
 	
 	// Shifts an attribution of blame/credit from (towards) the self and towards (from) some other agent.
-	private void doShiftingResponsibility() {
+	public void doShiftingResponsibility() {
 		
 	}
 	
 	// Assume some intervening act or actor will improve desirability.
-	private void doWishfulThinking() {
+	public void doWishfulThinking() {
 		
 	}
 }
