@@ -15,56 +15,75 @@ import edu.wpi.cetask.TaskClass.Precondition;
 
 public class AnticipatedDesirability extends Mechanisms{
 
+	ArrayList<Plan> unachievedChildren = new ArrayList<Plan>();
+	
 	public AnticipatedDesirability(MentalProcesses mentalProcesses) {
 		this.collaboration = mentalProcesses.getCollaborationMechanism();
 		this.desirability  = mentalProcesses.getDesirabilityProcess();
 	}
 	
-	private ArrayList<Input> getUndefinedInputs(Goal eventGoal) {
+	private ArrayList<Input> getUndefinedInputs(Plan eventPlan) {
 		
 		ArrayList<Input> undefinedInputs = new ArrayList<Input>();
 		
-		Plan plan = eventGoal.getPlan();
-		
-		for (Input input : plan.getType().getDeclaredInputs())
-			if (!input.isDefinedSlot(plan.getGoal()))
+		for (Input input : eventPlan.getType().getDeclaredInputs())
+			if (!input.isDefinedSlot(eventPlan.getGoal()))
 				undefinedInputs.add(input);
 		
 		return undefinedInputs;
 	}
 	
-	private boolean hasPreconditionFailed(Goal eventGoal) {
+	private boolean hasPreconditionFailed(Plan eventPlan) {
 		
-		Plan plan = eventGoal.getPlan();
-		Precondition precondition = plan.getType().getPrecondition();
-		
-		if (!precondition.evalCondition(plan.getGoal()))
+		if (!eventPlan.getType().getPrecondition().evalCondition(eventPlan.getGoal()))
 			return true;
 		else
 			return false;
 	}
 	
-	private ArrayList<Plan> getUnachievedPredecessors(Goal eventGoal) {
+	private boolean hasUnachievedChild(Plan eventPlan) {
+		
+		for (Plan child : eventPlan.getChildren())
+			if (!collaboration.getGoalStatus(child).equals(GOAL_STATUS.ACHIEVED))
+				return true;
+
+		return false;
+	}
+	
+	private ArrayList<Plan> getUnachievedPredecessors(Plan eventPlan) {
 		
 		ArrayList<Plan> unachievedPredecessors = new ArrayList<Plan>();
 		
-		Plan plan = eventGoal.getPlan();
-		
-		for (Plan predecessor : plan.getPredecessors())
-			if (!collaboration.getGoalStatus(plan).equals(GOAL_STATUS.ACHIEVED))
+		for (Plan predecessor : eventPlan.getPredecessors())
+			if (!collaboration.getGoalStatus(predecessor).equals(GOAL_STATUS.ACHIEVED))
 				unachievedPredecessors.add(predecessor);
 		
 		return unachievedPredecessors;
 	}
 	
-	private ArrayList<Input> getAvailableInputs(ArrayList<Input> undefinedInputs) {
+	private ArrayList<Input> getAvailableInputs(Plan eventPlan, ArrayList<Input> undefinedInputs) {
 		
-		return new ArrayList<Input>();
+		ArrayList<Input> availableInputs = new ArrayList<Input>();
+		
+		for (Input input : undefinedInputs)
+			if (isInputAvailable(eventPlan, input))
+				availableInputs.add(input);
+		
+		return availableInputs;
 	}
 	
-	public boolean canSolveInputIssue(Goal eventGoal, ArrayList<Input> undefinedInputs) {
+	private boolean isInputAvailable(Plan eventPlan, Input input) {
+		return true;
+	}
+	
+	public boolean canPreconditionSucceed(Plan eventPlan) {
+		return true;
+	}
+	
+	public boolean canProvideInput(Plan eventPlan) {
 		
-		ArrayList<Input> definedInputs = getAvailableInputs(undefinedInputs);
+		ArrayList<Input> undefinedInputs = getUndefinedInputs(eventPlan);
+		ArrayList<Input> definedInputs   = getAvailableInputs(eventPlan, undefinedInputs);
 		
 		if (!definedInputs.isEmpty())
 			return true;
@@ -72,13 +91,59 @@ public class AnticipatedDesirability extends Mechanisms{
 			return false;
 	}
 	
-	public boolean canPreconditionSucceed(Goal eventGoal) {
+	private void getUnachievedChildren(Plan plan) {
+		
+		if (plan.isPrimitive()) {
+			if (!collaboration.getGoalStatus(plan).equals(GOAL_STATUS.ACHIEVED))
+				unachievedChildren.add(plan);
+		}
+		else {
+			for (Plan child : plan.getChildren())
+				 getUnachievedChildren(child);
+		}
+	}
+	
+	public boolean canChildrenSucceed(Plan plan) {
+		
+		unachievedChildren.clear();
+		getUnachievedChildren(plan);
+		
+		for (Plan child : unachievedChildren) {
+			if (!(canProvideInput(child) && canPreconditionSucceed(child) && canPredecessorSucceed(child)))
+				return false;
+		}
 		
 		return true;
 	}
 	
-	public boolean canPredecessorsSucceed(Goal eventGoal, ArrayList<Plan> unachievedPredecessors) {
+	public boolean canPredecessorSucceed(Plan plan) {
 		
+		ArrayList<Plan> unachievedPredecessors = getUnachievedPredecessors(plan);
+		
+		if(!unachievedPredecessors.isEmpty()) {
+			for (Plan predecessor : unachievedPredecessors) {
+				if (predecessor.isPrimitive()) {
+					if (!(canProvideInput(predecessor) && canPreconditionSucceed(predecessor) && canPredecessorSucceed(predecessor)))
+						return false;
+				}
+				else {
+					for (Plan child : predecessor.getChildren())
+						if (!canPredecessorSucceed(child))
+							return false;
+				}
+			}
+		}
+		else {
+			if (plan.isPrimitive()) {
+				if (!(canProvideInput(plan) && canPreconditionSucceed(plan)))
+					return false;
+			}
+			else {
+				for (Plan child : plan.getChildren())
+					if (!canPredecessorSucceed(child))
+						return false;
+			}
+		}
 		return true;
 	}
 
@@ -87,23 +152,28 @@ public class AnticipatedDesirability extends Mechanisms{
 		boolean availableInput 		 = false;
 		boolean improvePreconditions = false;
 		boolean succeedPredecessors  = false;
+		boolean succeedChildren      = false;
 		
-		ArrayList<Input> undefinedInputs 	   = getUndefinedInputs(eventGoal);
-		ArrayList<Plan> unachievedPredecessors = getUnachievedPredecessors(eventGoal);
+		ArrayList<Input> undefinedInputs 	   = getUndefinedInputs(eventGoal.getPlan());
+		ArrayList<Plan> unachievedPredecessors = getUnachievedPredecessors(eventGoal.getPlan());
 		
 		if (!undefinedInputs.isEmpty())
-			if (canSolveInputIssue(eventGoal, undefinedInputs))
+			if (canProvideInput(eventGoal.getPlan()))
 				availableInput = true;
 		
-		if (hasPreconditionFailed(eventGoal))
-			if (canPreconditionSucceed(eventGoal))
+		if (hasPreconditionFailed(eventGoal.getPlan()))
+			if (canPreconditionSucceed(eventGoal.getPlan()))
 				improvePreconditions = true;
 		
 		if (!unachievedPredecessors.isEmpty())
-			if (canPredecessorsSucceed(eventGoal, unachievedPredecessors))
+			if (canPredecessorSucceed(eventGoal.getPlan()))
 				succeedPredecessors = true;
 		
-		if (availableInput || improvePreconditions || succeedPredecessors)
+		if (hasUnachievedChild(eventGoal.getPlan()))
+			if (canChildrenSucceed(eventGoal.getPlan()))
+				succeedChildren = true;
+		
+		if (availableInput || improvePreconditions || succeedPredecessors || succeedChildren)
 			return DESIRABILITY.DESIRABLE;
 		else
 			return desirability.isEventDesirable(eventGoal); 
