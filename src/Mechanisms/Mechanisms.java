@@ -1,5 +1,6 @@
 package Mechanisms;
 
+import Mechanisms.Appraisal.Desirability;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Motivation.Motivation;
 import MentalState.MentalState;
@@ -13,6 +14,7 @@ public class Mechanisms {
 	
 	protected Turns currentTurn;
 	protected Collaboration collaboration;
+	protected Desirability desirability;
 	protected Motivation motivation;
 	
 //	public Mechanisms() {}
