@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import Mechanisms.Mechanisms;
-import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
-import Mechanisms.Mechanisms.AGENT;
 import MentalState.Goal;
 import MentalState.MentalState;
 import MetaInformation.GoalTree;
@@ -17,6 +15,7 @@ import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskModel;
 import edu.wpi.cetask.Plan.Status;
 import edu.wpi.cetask.TaskClass.Input;
+import edu.wpi.cetask.TaskClass.Precondition;
 import edu.wpi.disco.Agent;
 import edu.wpi.disco.Disco;
 import edu.wpi.disco.Interaction;
@@ -42,6 +41,10 @@ public class Collaboration extends Mechanisms{
 	private ArrayList<AGENT> childrenResponsibinity;
 	
 	private Map<String, Boolean> preconditionsLOT = new HashMap<String, Boolean>();
+	
+	// These two maps have been used in Anticipated Desirability algorithm.
+	private Map<String, Object> inputValues = new HashMap<String, Object>();
+	private Map<String, Boolean> preconditionValues = new HashMap<String, Boolean>();
 	
 	private Interaction interaction;
 	
@@ -97,6 +100,24 @@ public class Collaboration extends Mechanisms{
 //		else
 //			return false;
 //	}
+	
+	// Use this method in initialization of the whole system.
+	public void setInputValue(Plan plan, ArrayList<Object> values) {
+		for (int i = 0 ; i < plan.getType().getInputs().size() ; i++)
+			inputValues.put(plan.getType().getInputs().get(i).getName(), values.get(i));
+	}
+	
+	public Object getInputValue(Input input) {
+		return inputValues.get(input.getName());
+	}
+	
+	public void setPreconditionValue(Plan plan, Boolean value) {
+		preconditionValues.put(plan.getType().getPrecondition().getScript(), value);
+	}
+	
+	public Object getPreconditionValue(Precondition precondition) {
+		return preconditionValues.get(precondition.getScript());
+	}
 	
 	public boolean isGoalAchieved(Goal goal) {
 		

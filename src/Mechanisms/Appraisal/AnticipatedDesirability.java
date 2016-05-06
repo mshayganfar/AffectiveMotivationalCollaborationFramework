@@ -35,7 +35,8 @@ public class AnticipatedDesirability extends Mechanisms{
 	
 	private boolean hasPreconditionFailed(Plan eventPlan) {
 		
-		if (!eventPlan.getType().getPrecondition().evalCondition(eventPlan.getGoal()))
+//		if (!eventPlan.getType().getPrecondition().evalCondition(eventPlan.getGoal()))
+		if (!eventPlan.getGoal().isApplicable())
 			return true;
 		else
 			return false;
@@ -73,11 +74,13 @@ public class AnticipatedDesirability extends Mechanisms{
 	}
 	
 	private boolean isInputAvailable(Plan eventPlan, Input input) {
-		return true;
+		
+		return (collaboration.getInputValue(input) != null) ? true : false;
 	}
 	
 	public boolean canPreconditionSucceed(Plan eventPlan) {
-		return true;
+		
+		return (collaboration.getPreconditionValue(eventPlan.getType().getPrecondition()) != null) ? true : false;
 	}
 	
 	public boolean canProvideInput(Plan eventPlan) {
