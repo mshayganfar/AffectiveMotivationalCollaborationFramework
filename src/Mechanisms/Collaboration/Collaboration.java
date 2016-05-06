@@ -342,7 +342,7 @@ public class Collaboration extends Mechanisms{
 	
 	public List<Input> getInputs(Goal goal) {
 		
-		return goal.getPlan().getGoal().getType().getInputs();
+		return goal.getPlan().getGoal().getType().getDeclaredInputs();
 	}
 	
 //	public Goal recognizeGoal(/*Events event*/) {
@@ -399,7 +399,7 @@ public class Collaboration extends Mechanisms{
 		return plan.isApplicable();
 	}
 	
-	public ArrayList<AGENT> getChildrenResponsibility() {
+	public ArrayList<AGENT> getDescendentResponsibility() {
 		return childrenResponsibinity;
 	}
 	

@@ -3,17 +3,27 @@ package Mechanisms.Appraisal;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskClass.Input;
 
+import java.util.ArrayList;
+
 import Mechanisms.Collaboration.Collaboration.FOCUS_TYPE;
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import MentalState.Goal;
 import MentalState.Goal.DIFFICULTY;
 import MentalState.MentalState;
 import MentalState.Motive.MOTIVE_TYPE;
+import MetaInformation.GoalTree;
 import MetaInformation.MentalProcesses;
+import MetaInformation.Node;
 
 public class Controllability extends AppraisalProcesses{
 
 	public enum CONTROLLABILITY {HIGH_CONTROLLABLE, LOW_CONTROLLABLE, UNCONTROLLABLE, UNKNOWN};
+	
+	private int achievedPredecessorCount = 0;
+	private int totalPredecessorCount    = 0;
+	
+	ArrayList<Plan> unachievedChildren = new ArrayList<Plan>();
+	ArrayList<Goal> descendentGoals = new ArrayList<Goal>();
 	
 	public Controllability(MentalProcesses mentalProcesses) {
 		this.collaboration = mentalProcesses.getCollaborationMechanism();
@@ -23,8 +33,8 @@ public class Controllability extends AppraisalProcesses{
 		
 		double dblAgency       			= getAgencyValue(eventGoal);
 		double dblAutonomy     			= getAutonomyValue(eventGoal);
-		double dblPredecessors 			= checkSucceededPredecessorsRatio(eventGoal);
-		double dblInputs       			= checkAvailableInputRatio(eventGoal);
+		double dblPredecessors 			= getSucceededPredecessorsRatio(eventGoal.getPlan());
+		double dblInputs       			= getAvailableInputRatio(eventGoal);
 		double dblOverallGoalDifficulty = getOverallDifficultyValue(eventGoal);
 		double dblAlternativeRecipe     = getAlternativeRecipeValue(eventGoal);
 		
@@ -43,27 +53,41 @@ public class Controllability extends AppraisalProcesses{
 			return CONTROLLABILITY.UNCONTROLLABLE;
 	}
 	
+	private void getDescendentGoals(Goal goal) {
+		
+		int i;
+		
+		GoalTree goalTree = new GoalTree(collaboration.getDisco());
+		ArrayList<Node> treeNodes = goalTree.createTree();
+		
+		for (i = 0 ; i < treeNodes.size() ; i++)
+			if (treeNodes.get(i).getNodeGoalPlan().getType().equals(goal.getPlan().getType()))
+				break;
+		for (i = i+1 ; i < treeNodes.size() ; i++)
+			descendentGoals.add(treeNodes.get(i).getNodeGoal());
+	}
+	
 	// Agency: The capacity, condition, or state of acting or of exerting power.
 	private double getAgencyValue(Goal eventGoal) {
 		
-		if (collaboration.getGoalType(eventGoal).equals(FOCUS_TYPE.PRIMITIVE)) {
+		if (eventGoal.getPlan().isPrimitive()) {
 			if (!eventGoal.getActiveMotive().getMotiveType().equals(MOTIVE_TYPE.EXTERNAL))
 				return 1.0;
 			else
 				return 0.0;
 		}
 		else {
-			double motiveTypeSum = 0.0;
-			int countMotives = 0;
-			for (Plan plan : eventGoal.getPlan().getChildren()) {
-				for (Goal goal : MentalState.getInstance().getGoals())
-					if (goal.getPlan().getType().equals(plan.getType())) {
-						if (!goal.getActiveMotive().getMotiveType().equals(MOTIVE_TYPE.EXTERNAL))
-							motiveTypeSum++;
-						countMotives++;
-					}
-			}
-			return (double)motiveTypeSum/((countMotives == 0) ? 1 : countMotives);
+			return 0.5;
+//			double motiveTypeSum = 0.0;
+//			int countMotives = 0;
+//			descendentGoals.clear();
+//			getDescendentGoals(eventGoal);
+//			for (Goal descendent : descendentGoals) {
+//				if (!descendent.getActiveMotive().getMotiveType().equals(MOTIVE_TYPE.EXTERNAL))
+//					motiveTypeSum++;
+//				countMotives++;
+//			}
+//			return (double)motiveTypeSum/((countMotives == 0) ? 1 : countMotives);
 		}
 	}
 	
@@ -79,14 +103,14 @@ public class Controllability extends AppraisalProcesses{
 				return -0.5;
 			else  if (collaboration.getResponsibleAgent(eventGoal.getPlan()).equals(AGENT.UNKNOWN))
 				return -1.0;
-			else // Should never happen
-				return 0.0;
+			else 
+				throw new IllegalArgumentException("Illegal Agent Type: " + collaboration.getResponsibleAgent(eventGoal.getPlan()));
 		}
 		else {
 			collaboration.clearChildrenResponsibility();
 			collaboration.getResponsibleAgent(eventGoal.getPlan());
 			
-			for (AGENT agent : collaboration.getChildrenResponsibility()) {
+			for (AGENT agent : collaboration.getDescendentResponsibility()) {
 				if (agent.equals(AGENT.SELF))
 					countSelfResponsible++;
 				else if (agent.equals(AGENT.BOTH))
@@ -97,28 +121,161 @@ public class Controllability extends AppraisalProcesses{
 					countSelfResponsible -= 1.0;
 			}
 			
-			return ((double)countSelfResponsible/((collaboration.getChildrenResponsibility().size() == 0) ? 1 : collaboration.getChildrenResponsibility().size()));
+			return ((double)countSelfResponsible/((collaboration.getDescendentResponsibility().size() == 0) ? 1 : collaboration.getDescendentResponsibility().size()));
 		}
 	}
 	
-	private double checkSucceededPredecessorsRatio(Goal eventGoal) {
+	private double getSucceededPredecessorsRatio(Plan eventPlan) {
 		
-		double dblSucceededPredecessorCounter = 0.0;
+		int achievedCount = achievedPredecessorCount;
+		int totalCount    = totalPredecessorCount;
 		
-		for (Plan plan : collaboration.getPredecessors(eventGoal)) {
-			if (!collaboration.getGoalStatus(plan).equals(GOAL_STATUS.UNKNOWN))
-				if (collaboration.getGoalStatus(plan).equals(GOAL_STATUS.ACHIEVED))
-					dblSucceededPredecessorCounter++;
-		}
-		return (double)dblSucceededPredecessorCounter/((collaboration.getPredecessors(eventGoal).size() == 0) ? 1 : collaboration.getPredecessors(eventGoal).size());
+		achievedPredecessorCount = 0;
+		totalPredecessorCount    = 0;
+		
+		return (double)achievedCount/((totalCount !=0) ? totalCount : 1);  
 	}
 	
-	private double checkAvailableInputRatio(Goal eventGoal) {
+	private void checkSucceededPredecessors(Plan eventPlan) {
+		
+		for (Plan predecessor : eventPlan.getPredecessors()) {
+			if (predecessor.isPrimitive()) {
+				if (collaboration.getGoalStatus(predecessor).equals(GOAL_STATUS.ACHIEVED))
+					achievedPredecessorCount++;
+				totalPredecessorCount++;
+			}
+			else {
+				for (Plan child : predecessor.getChildren())
+					checkSucceededPredecessors(child);
+			}
+		}
+		
+//		double dblSucceededPredecessorCounter = 0.0;
+//		
+//		for (Plan plan : collaboration.getPredecessors(eventGoal)) {
+//			if (!collaboration.getGoalStatus(plan).equals(GOAL_STATUS.UNKNOWN))
+//				if (collaboration.getGoalStatus(plan).equals(GOAL_STATUS.ACHIEVED))
+//					dblSucceededPredecessorCounter++;
+//		}
+//		return (double)dblSucceededPredecessorCounter/((collaboration.getPredecessors(eventGoal).size() == 0) ? 1 : collaboration.getPredecessors(eventGoal).size());
+	}
+	
+	private ArrayList<Plan> getUnachievedPredecessors(Plan eventPlan) {
+		
+		ArrayList<Plan> unachievedPredecessors = new ArrayList<Plan>();
+		
+		for (Plan predecessor : eventPlan.getPredecessors())
+			if (!collaboration.getGoalStatus(predecessor).equals(GOAL_STATUS.ACHIEVED))
+				unachievedPredecessors.add(predecessor);
+		
+		return unachievedPredecessors;
+	}
+	
+	private ArrayList<Input> getUndefinedInputs(Plan eventPlan) {
+		
+		ArrayList<Input> undefinedInputs = new ArrayList<Input>();
+		
+		for (Input input : eventPlan.getType().getDeclaredInputs())
+			if (!input.isDefinedSlot(eventPlan.getGoal()))
+				undefinedInputs.add(input);
+		
+		return undefinedInputs;
+	}
+	
+	private ArrayList<Input> getAvailableInputs(Plan eventPlan, ArrayList<Input> undefinedInputs) {
+		
+		ArrayList<Input> availableInputs = new ArrayList<Input>();
+		
+		for (Input input : undefinedInputs)
+			if (isInputAvailable(eventPlan, input))
+				availableInputs.add(input);
+		
+		return availableInputs;
+	}
+	
+	private boolean isInputAvailable(Plan eventPlan, Input input) {
+		
+		return (collaboration.getInputValue(input) != null) ? true : false;
+	}
+	
+	public boolean canProvideInput(Plan eventPlan) {
+		
+		ArrayList<Input> undefinedInputs = getUndefinedInputs(eventPlan);
+		ArrayList<Input> definedInputs   = getAvailableInputs(eventPlan, undefinedInputs);
+		
+		if (!definedInputs.isEmpty())
+			return true;
+		else
+			return false;
+	}
+	
+	public boolean canPreconditionSucceed(Plan eventPlan) {
+		
+		return (collaboration.getPreconditionValue(eventPlan.getType().getPrecondition()) != null) ? true : false;
+	}
+	
+	public boolean canPredecessorSucceed(Plan plan) {
+		
+		ArrayList<Plan> unachievedPredecessors = getUnachievedPredecessors(plan);
+		
+		if(!unachievedPredecessors.isEmpty()) {
+			for (Plan predecessor : unachievedPredecessors) {
+				if (predecessor.isPrimitive()) {
+					if (!(canProvideInput(predecessor) && canPreconditionSucceed(predecessor) && canPredecessorSucceed(predecessor)))
+						return false;
+				}
+				else {
+					for (Plan child : predecessor.getChildren())
+						if (!canPredecessorSucceed(child))
+							return false;
+				}
+			}
+		}
+		else {
+			if (plan.isPrimitive()) {
+				if (!(canProvideInput(plan) && canPreconditionSucceed(plan)))
+					return false;
+			}
+			else {
+				for (Plan child : plan.getChildren())
+					if (!canPredecessorSucceed(child))
+						return false;
+			}
+		}
+		return true;
+	}
+	
+	private void getUnachievedChildren(Plan plan) {
+		
+		if (plan.isPrimitive()) {
+			if (!collaboration.getGoalStatus(plan).equals(GOAL_STATUS.ACHIEVED))
+				unachievedChildren.add(plan);
+		}
+		else {
+			for (Plan child : plan.getChildren())
+				 getUnachievedChildren(child);
+		}
+	}
+	
+	public boolean canChildrenSucceed(Plan plan) {
+		
+		unachievedChildren.clear();
+		getUnachievedChildren(plan);
+		
+		for (Plan child : unachievedChildren) {
+			if (!(canProvideInput(child) && canPreconditionSucceed(child) && canPredecessorSucceed(child)))
+				return false;
+		}
+		
+		return true;
+	}
+	
+	private double getAvailableInputRatio(Goal eventGoal) {
 		
 		double dblAvailableInputCounter = 0.0;
 		
 		for (Input input : collaboration.getInputs(eventGoal)) {
-			if (!input.equals(null))
+			if (input != null)
 				if(collaboration.isInputAvailable(eventGoal, input))
 					dblAvailableInputCounter++;
 		}
@@ -128,9 +285,7 @@ public class Controllability extends AppraisalProcesses{
 	
 	private double getOverallDifficultyValue(Goal eventGoal) {
 		
-		double dblOverallDifficultyValue = 0.0;
-		
-		if (collaboration.getGoalType(eventGoal).equals(FOCUS_TYPE.PRIMITIVE)) {
+		if (eventGoal.getPlan().isPrimitive()) {
 			switch (DIFFICULTY.valueOf(eventGoal.getPlan().getType().getProperty("@difficulty"))) {
 				case NORMAL:
 					return 0.0;
@@ -159,8 +314,11 @@ public class Controllability extends AppraisalProcesses{
 					throw new IllegalStateException("Difficulty value: " + DIFFICULTY.valueOf(eventGoal.getPlan().getType().getProperty("@difficulty")));
 			}
 			
-			for (Plan plan : eventGoal.getPlan().getChildren()) {
-				switch (DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty"))) {
+			descendentGoals.clear();
+			getDescendentGoals(eventGoal);
+			
+			for (Goal descendent : descendentGoals) {
+				switch (DIFFICULTY.valueOf(descendent.getPlan().getType().getProperty("@difficulty"))) {
 					case NORMAL:
 						goalDifficultySum += 0.0;
 						break;
@@ -174,8 +332,8 @@ public class Controllability extends AppraisalProcesses{
 						throw new IllegalStateException("Difficulty value: " + DIFFICULTY.valueOf(eventGoal.getPlan().getType().getProperty("@difficulty")));
 				}
 			}
+			return goalDifficultySum;
 		}
-		return dblOverallDifficultyValue;
 	}
 	
 	private double getAlternativeRecipeValue(Goal eventGoal) {

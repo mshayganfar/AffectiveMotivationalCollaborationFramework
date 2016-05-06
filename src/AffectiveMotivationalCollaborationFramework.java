@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
 import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
@@ -8,7 +10,9 @@ import MentalState.Belief;
 import MentalState.Goal;
 import MentalState.Motive;
 import MetaInformation.AppraisalVector;
+import MetaInformation.GoalTree;
 import MetaInformation.MentalProcesses;
+import MetaInformation.Node;
 import MetaInformation.Turns;
 import MetaInformation.AppraisalVector.WHOSE_APPRAISAL;
 import edu.wpi.cetask.Plan;
