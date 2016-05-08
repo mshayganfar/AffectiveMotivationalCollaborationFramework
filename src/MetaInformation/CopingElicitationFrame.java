@@ -34,10 +34,7 @@ public class CopingElicitationFrame {
 	public boolean isThisStrategySelected() {
 		if (isThisStrategyNeeded())
 			if(canPursueThisStrategy())
-				if(isThisStrategySatisfactory())
-					return true;
-				else
-					return false;
+				return true;
 			else
 				return false;
 		else
@@ -155,53 +152,53 @@ public class CopingElicitationFrame {
 		}
 	}
 	
-	private boolean isThisStrategySatisfactory() {
-		
-		DESIRABILITY desirability = mentalProcesses.getDesirabilityProcess().isEventDesirable(goal);
-		
-		switch (copingStrategy) {
-			case PLANNING:
-				if(desirability.equals(DESIRABILITY.UNDESIRABLE) || desirability.equals(DESIRABILITY.NEUTRAL) || 
-				   desirability.equals(DESIRABILITY.DESIRABLE) || desirability.equals(DESIRABILITY.HIGH_DESIRABLE))
-					return true;
-				else
-					return false;
-			case ACTIVE_COPING:
-				if(desirability.equals(DESIRABILITY.NEUTRAL) || desirability.equals(DESIRABILITY.UNDESIRABLE) ||
-				   desirability.equals(DESIRABILITY.HIGH_UNDESIRABLE))
-					return true;
-				else
-					return false;
-			case SEEKING_SOCIAL_SUPPORT_FOR_INSTRUMENTAL_REASONS:
-				if(desirability.equals(DESIRABILITY.DESIRABLE) || desirability.equals(DESIRABILITY.NEUTRAL) ||
-				   desirability.equals(DESIRABILITY.UNDESIRABLE) || desirability.equals(DESIRABILITY.HIGH_UNDESIRABLE))
-					return true;
-				else
-					return false;
-			case ACCEPTANCE:
-				if(desirability.equals(DESIRABILITY.UNDESIRABLE) || desirability.equals(DESIRABILITY.HIGH_UNDESIRABLE))
-					return true;
-				else
-					return false;
-			case MENTAL_DISENGAGEMENT:
-				if(desirability.equals(DESIRABILITY.NEUTRAL) || desirability.equals(DESIRABILITY.UNDESIRABLE) ||
-				   desirability.equals(DESIRABILITY.HIGH_UNDESIRABLE))
-					return true;
-				else
-					return false;
-			case SHIFTING_RESPONSIBILITY:
-				if(desirability.equals(DESIRABILITY.UNDESIRABLE) || desirability.equals(DESIRABILITY.HIGH_UNDESIRABLE))
-					return true;
-				else
-					return false;
-			case WISHFUL_THINKING:
-				if(desirability.equals(DESIRABILITY.DESIRABLE) || desirability.equals(DESIRABILITY.NEUTRAL) ||
-				   desirability.equals(DESIRABILITY.UNDESIRABLE) || desirability.equals(DESIRABILITY.HIGH_UNDESIRABLE))
-					return true;
-				else
-					return false;
-			default:
-				throw new IllegalArgumentException("Illegal Desirability Value: " + desirability);
-		}
-	}
+//	private boolean isThisStrategySatisfactory() {
+//		
+//		DESIRABILITY desirability = mentalProcesses.getDesirabilityProcess().isEventDesirable(goal);
+//		
+//		switch (copingStrategy) {
+//			case PLANNING:
+//				if(desirability.equals(DESIRABILITY.UNDESIRABLE) || desirability.equals(DESIRABILITY.NEUTRAL) || 
+//				   desirability.equals(DESIRABILITY.DESIRABLE) || desirability.equals(DESIRABILITY.HIGH_DESIRABLE))
+//					return true;
+//				else
+//					return false;
+//			case ACTIVE_COPING:
+//				if(desirability.equals(DESIRABILITY.NEUTRAL) || desirability.equals(DESIRABILITY.UNDESIRABLE) ||
+//				   desirability.equals(DESIRABILITY.HIGH_UNDESIRABLE))
+//					return true;
+//				else
+//					return false;
+//			case SEEKING_SOCIAL_SUPPORT_FOR_INSTRUMENTAL_REASONS:
+//				if(desirability.equals(DESIRABILITY.DESIRABLE) || desirability.equals(DESIRABILITY.NEUTRAL) ||
+//				   desirability.equals(DESIRABILITY.UNDESIRABLE) || desirability.equals(DESIRABILITY.HIGH_UNDESIRABLE))
+//					return true;
+//				else
+//					return false;
+//			case ACCEPTANCE:
+//				if(desirability.equals(DESIRABILITY.UNDESIRABLE) || desirability.equals(DESIRABILITY.HIGH_UNDESIRABLE))
+//					return true;
+//				else
+//					return false;
+//			case MENTAL_DISENGAGEMENT:
+//				if(desirability.equals(DESIRABILITY.NEUTRAL) || desirability.equals(DESIRABILITY.UNDESIRABLE) ||
+//				   desirability.equals(DESIRABILITY.HIGH_UNDESIRABLE))
+//					return true;
+//				else
+//					return false;
+//			case SHIFTING_RESPONSIBILITY:
+//				if(desirability.equals(DESIRABILITY.UNDESIRABLE) || desirability.equals(DESIRABILITY.HIGH_UNDESIRABLE))
+//					return true;
+//				else
+//					return false;
+//			case WISHFUL_THINKING:
+//				if(desirability.equals(DESIRABILITY.DESIRABLE) || desirability.equals(DESIRABILITY.NEUTRAL) ||
+//				   desirability.equals(DESIRABILITY.UNDESIRABLE) || desirability.equals(DESIRABILITY.HIGH_UNDESIRABLE))
+//					return true;
+//				else
+//					return false;
+//			default:
+//				throw new IllegalArgumentException("Illegal Desirability Value: " + desirability);
+//		}
+//	}
 }
