@@ -5,6 +5,9 @@ import MentalState.Goal;
 import edu.wpi.cetask.DecompositionClass;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.Task;
+import edu.wpi.disco.Agenda.Plugin;
+import edu.wpi.disco.Agent;
+import edu.wpi.disco.Interaction;
 import edu.wpi.disco.lang.Accept;
 import edu.wpi.disco.lang.Ask;
 import edu.wpi.disco.lang.Mention;
@@ -134,5 +137,12 @@ public class DiscoActionsWrapper {
 			collaboration.getDisco().getInteraction().occurred(actor, plan.getGoal(), plan);
 		else
 			throw new IllegalArgumentException("Non-primitive tasks can not be executed!");
+	}
+	
+	public void executeTask() {
+		
+		Plugin.Item occurrence = (new Agent("agent")).generateBest(collaboration.getInteraction());
+		
+		collaboration.getDisco().getInteraction().occurred(false, occurrence.task, null);
 	}
 }

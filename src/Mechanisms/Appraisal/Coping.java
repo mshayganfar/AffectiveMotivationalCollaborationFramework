@@ -93,6 +93,13 @@ public class Coping {
 		discoActionsWrapper.executeTask(goal, human);
 	}
 	
+	public void doPlanning() {
+		
+		System.out.println("COPING STRATEGY: (automatic) Planning");
+		
+		discoActionsWrapper.executeTask();
+	}
+
 	// Seeking advice, assistance or information.
 	public void doSeekingSocialSupportForInstrumentalReasons() {
 		
