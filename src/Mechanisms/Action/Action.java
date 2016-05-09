@@ -7,7 +7,7 @@ import MentalState.Goal;
 import MentalState.Intention;
 import MetaInformation.MentalProcesses;
 import MetaInformation.Turns;
-import MetaInformation.CopingElicitationFrame.COPING_STRATEGY;
+import MetaInformation.CopingActivation.COPING_STRATEGY;
 import edu.wpi.disco.Disco;
 import edu.wpi.disco.lang.Say;
 
@@ -22,7 +22,7 @@ public class Action extends Mechanisms{
 		discoActionsWrapper  = new DiscoActionsWrapper(collaboration);
 	}
 	
-	public void prepareCopingMechanism(MentalProcesses mentalProcesses) {
+	public void prepareActionMechanism(MentalProcesses mentalProcesses) {
 		this.collaboration = mentalProcesses.getCollaborationMechanism();
 		this.coping 	   = mentalProcesses.getCopingMechanism();
 		this.tom    	   = mentalProcesses.getToMMechanism();

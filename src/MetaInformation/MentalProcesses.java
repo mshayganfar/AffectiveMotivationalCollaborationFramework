@@ -41,8 +41,8 @@ public class MentalProcesses {
 		this.perception.preparePerceptionMechanism(this);
 		this.motivation.prepareMotivationMechanism(this);
 		this.tom.prepareAppraisalsOfToM(this);
-		this.coping.prepareAppraisalsOfToM(this);
-		this.action.prepareCopingMechanism(this);
+		this.coping.prepareCopingMechanism(this);
+		this.action.prepareActionMechanism(this);
 	}
 	
 	public Perception getPerceptionMechanism() {

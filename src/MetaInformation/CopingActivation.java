@@ -1,12 +1,10 @@
 package MetaInformation;
 
-import Mechanisms.Mechanisms.AGENT;
 import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
-import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import MentalState.Goal;
 import MentalState.Motive.MOTIVE_INTENSITY;
 
-public class CopingElicitationFrame {
+public class CopingActivation {
 
 	public enum COPING_OBJECT {SELF, OTHER, ENVIRONMENT};
 	public enum COPING_STRATEGY {PLANNING, ACTIVE_COPING, SEEKING_SOCIAL_SUPPORT_FOR_INSTRUMENTAL_REASONS, SEEKING_SOCIAL_SUPPORT_FOR_EMOTIONAL_REASONS,
@@ -21,7 +19,7 @@ public class CopingElicitationFrame {
 	private MentalProcesses mentalProcesses;
 	private Goal goal;
 	
-	public CopingElicitationFrame(COPING_STRATEGY copingStrategy, MentalProcesses mentalProcesses, Goal goal/*, COPING_OBJECT copingObject, AGENT eventCause*/) {
+	public CopingActivation(COPING_STRATEGY copingStrategy, MentalProcesses mentalProcesses, Goal goal/*, COPING_OBJECT copingObject, AGENT eventCause*/) {
 //		this.copingObject    = copingObject;
 //		this.eventCause      = eventCause;
 //		this.copingEffect    = ; This should use anticipated appraisals!

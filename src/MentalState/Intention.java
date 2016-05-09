@@ -1,6 +1,6 @@
 package MentalState;
 
-import MetaInformation.CopingElicitationFrame.COPING_STRATEGY;
+import MetaInformation.CopingActivation.COPING_STRATEGY;
 
 public class Intention {
 	

@@ -8,9 +8,9 @@ import Mechanisms.Perception.Perception;
 import Mechanisms.ToM.ToM;
 import MentalState.Goal;
 import MentalState.Intention;
-import MetaInformation.CopingElicitationFrame;
+import MetaInformation.CopingActivation;
 import MetaInformation.MentalProcesses;
-import MetaInformation.CopingElicitationFrame.COPING_STRATEGY;
+import MetaInformation.CopingActivation.COPING_STRATEGY;
 
 public class Coping {
 	
@@ -29,7 +29,7 @@ public class Coping {
 	
 	private DiscoActionsWrapper discoActionsWrapper;
 	
-	public void prepareAppraisalsOfToM(MentalProcesses mentalProcesses) {
+	public void prepareCopingMechanism(MentalProcesses mentalProcesses) {
 		
 		this.mentalProcesses = mentalProcesses;
 		
@@ -49,36 +49,28 @@ public class Coping {
 	
 	public void formIntentions(Goal eventGoal) {
 		
-		Intention planningIntention = null;
-		Intention activeCopingIntention = null;
-		Intention acceptanceIntention = null;
-		Intention wishfulThinkingIntention = null;
-		Intention mentalDisengagementIntention = null;
-		Intention shiftingResponsibilityIntention = null;
-		Intention seekingSocialSupportForInstrumentalReasonsIntention = null;
-		
-		CopingElicitationFrame planningStrategy		   = new CopingElicitationFrame(COPING_STRATEGY.PLANNING, mentalProcesses, eventGoal);
-		CopingElicitationFrame activeCopingStrategy    = new CopingElicitationFrame(COPING_STRATEGY.ACTIVE_COPING, mentalProcesses, eventGoal);
-		CopingElicitationFrame acceptanceStrategy 	   = new CopingElicitationFrame(COPING_STRATEGY.ACCEPTANCE, mentalProcesses, eventGoal);
-		CopingElicitationFrame wishfulThinkingStrategy = new CopingElicitationFrame(COPING_STRATEGY.WISHFUL_THINKING, mentalProcesses, eventGoal);
-		CopingElicitationFrame mentalDisengagementStrategy    = new CopingElicitationFrame(COPING_STRATEGY.MENTAL_DISENGAGEMENT, mentalProcesses, eventGoal);
-		CopingElicitationFrame shiftingResponsibilityStrategy = new CopingElicitationFrame(COPING_STRATEGY.SHIFTING_RESPONSIBILITY, mentalProcesses, eventGoal);
-		CopingElicitationFrame seekingSocialSupportForInstrumentalReasonsStrategy = new CopingElicitationFrame(COPING_STRATEGY.SEEKING_SOCIAL_SUPPORT_FOR_INSTRUMENTAL_REASONS, mentalProcesses, eventGoal);
+		CopingActivation planningStrategy		 = new CopingActivation(COPING_STRATEGY.PLANNING, mentalProcesses, eventGoal);
+		CopingActivation activeCopingStrategy    = new CopingActivation(COPING_STRATEGY.ACTIVE_COPING, mentalProcesses, eventGoal);
+		CopingActivation acceptanceStrategy 	 = new CopingActivation(COPING_STRATEGY.ACCEPTANCE, mentalProcesses, eventGoal);
+		CopingActivation wishfulThinkingStrategy = new CopingActivation(COPING_STRATEGY.WISHFUL_THINKING, mentalProcesses, eventGoal);
+		CopingActivation mentalDisengagementStrategy    = new CopingActivation(COPING_STRATEGY.MENTAL_DISENGAGEMENT, mentalProcesses, eventGoal);
+		CopingActivation shiftingResponsibilityStrategy = new CopingActivation(COPING_STRATEGY.SHIFTING_RESPONSIBILITY, mentalProcesses, eventGoal);
+		CopingActivation seekingSocialSupportForInstrumentalReasonsStrategy = new CopingActivation(COPING_STRATEGY.SEEKING_SOCIAL_SUPPORT_FOR_INSTRUMENTAL_REASONS, mentalProcesses, eventGoal);
 		
 		if (planningStrategy.isThisStrategySelected())
-			planningIntention = new Intention(eventGoal, COPING_STRATEGY.PLANNING);
+			eventGoal.addIntentions(new Intention(eventGoal, COPING_STRATEGY.PLANNING));
 		if (activeCopingStrategy.isThisStrategySelected())
-			activeCopingIntention = new Intention(eventGoal, COPING_STRATEGY.ACTIVE_COPING);
+			eventGoal.addIntentions(new Intention(eventGoal, COPING_STRATEGY.ACTIVE_COPING));
 		if (acceptanceStrategy.isThisStrategySelected())
-			acceptanceIntention = new Intention(eventGoal, COPING_STRATEGY.ACCEPTANCE);
+			eventGoal.addIntentions(new Intention(eventGoal, COPING_STRATEGY.ACCEPTANCE));
 		if (wishfulThinkingStrategy.isThisStrategySelected())
-			wishfulThinkingIntention = new Intention(eventGoal, COPING_STRATEGY.WISHFUL_THINKING);
+			eventGoal.addIntentions(new Intention(eventGoal, COPING_STRATEGY.WISHFUL_THINKING));
 		if (mentalDisengagementStrategy.isThisStrategySelected())
-			mentalDisengagementIntention = new Intention(eventGoal, COPING_STRATEGY.MENTAL_DISENGAGEMENT);
+			eventGoal.addIntentions(new Intention(eventGoal, COPING_STRATEGY.MENTAL_DISENGAGEMENT));
 		if (shiftingResponsibilityStrategy.isThisStrategySelected())
-			shiftingResponsibilityIntention = new Intention(eventGoal, COPING_STRATEGY.SHIFTING_RESPONSIBILITY);
+			eventGoal.addIntentions(new Intention(eventGoal, COPING_STRATEGY.SHIFTING_RESPONSIBILITY));
 		if (seekingSocialSupportForInstrumentalReasonsStrategy.isThisStrategySelected())
-			seekingSocialSupportForInstrumentalReasonsIntention = new Intention(eventGoal, COPING_STRATEGY.SEEKING_SOCIAL_SUPPORT_FOR_INSTRUMENTAL_REASONS);
+			eventGoal.addIntentions(new Intention(eventGoal, COPING_STRATEGY.SEEKING_SOCIAL_SUPPORT_FOR_INSTRUMENTAL_REASONS));
 	}
 	
 	// Taking actions to try to remove or circumvent the stressor or to ameliorate its effects.
