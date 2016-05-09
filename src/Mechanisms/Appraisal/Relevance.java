@@ -19,6 +19,7 @@ public class Relevance extends AppraisalProcesses {
 	public Relevance(MentalProcesses mentalProcesses) {
 		this.collaboration = mentalProcesses.getCollaborationMechanism();
 		this.motivation    = mentalProcesses.getMotivationMechanism();
+		this.perception    = mentalProcesses.getPerceptionMechanism();
 	}
 
 	public RELEVANCE isEventRelevant(Goal eventGoal) {
@@ -49,7 +50,7 @@ public class Relevance extends AppraisalProcesses {
 	
 	private double getEmotionalThreshold() { 
 		
-		double emotionValence = Perception.getEmotionValence();
+		double emotionValence = perception.getEmotionValence();
 		
 		return (emotionValence > 0) ? (1-emotionValence) : Math.abs(emotionValence); 
 	}

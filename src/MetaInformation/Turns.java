@@ -6,6 +6,7 @@ import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
 import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
 import Mechanisms.Appraisal.Relevance.RELEVANCE;
+import MentalState.Goal;
 import MetaInformation.AppraisalVector.WHOSE_APPRAISAL;
 
 public class Turns {
@@ -24,9 +25,9 @@ public class Turns {
 		return turn;
 	}
 
-	public static void setTurnAppraisals(MentalProcesses mentalProcesses, WHOSE_APPRAISAL whoseAppraisal, RELEVANCE relevance, DESIRABILITY desirability, CONTROLLABILITY controllability, EXPECTEDNESS expectedness) {
+	public static void setTurnAppraisals(MentalProcesses mentalProcesses, Goal eventGoal, WHOSE_APPRAISAL whoseAppraisal, RELEVANCE relevance, DESIRABILITY desirability, CONTROLLABILITY controllability, EXPECTEDNESS expectedness) {
 		
-		appraisalVectors.add(new AppraisalVector(mentalProcesses, getTurnNumber(), whoseAppraisal, relevance, desirability, expectedness, controllability));
+		appraisalVectors.add(new AppraisalVector(mentalProcesses, eventGoal, getTurnNumber(), whoseAppraisal, relevance, desirability, expectedness, controllability));
 	}
 	
 	public static void updateTurn() {
@@ -43,6 +44,16 @@ public class Turns {
 	
 	public ArrayList<AppraisalVector> getAppraisalVectors() {
 		return this.appraisalVectors;
+	}
+	
+	public AppraisalVector getAppraisalVector(Goal goal) {
+		
+		for(AppraisalVector vector : appraisalVectors) {
+			if (vector.getGoal().getLabel().equals(goal.getLabel()))
+				return vector;
+		}
+		
+		return null;
 	}
 	
 	public ArrayList<AppraisalVector> getCurrentAppraisalVectors() {

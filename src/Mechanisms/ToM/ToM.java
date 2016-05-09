@@ -52,12 +52,12 @@ public class ToM extends Mechanisms{
 		
 		AppraisalVector reverseAppraisalVector = doReverseAppraisal(getValenceValue(), eventGoal);
 		
-		return reverseAppraisalVector.getEmotionInstance(eventGoal, true);
+		return reverseAppraisalVector.getEmotionInstance();
 	}
 	
 	private AppraisalVector doReverseAppraisal(double valenceValue, Goal eventGoal) {
 		
-		AppraisalVector estimatedAppraisalVector = new AppraisalVector(mentalProcesses);
+		AppraisalVector estimatedAppraisalVector = new AppraisalVector(mentalProcesses, eventGoal);
 		
 		estimatedAppraisalVector.setRelevanceValue(relevance.isEventRelevant(eventGoal));
 		estimatedAppraisalVector.setDesirabilityValue(getDesirabilityUsingValence(valenceValue));

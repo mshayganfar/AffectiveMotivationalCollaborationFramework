@@ -1,8 +1,10 @@
 package Mechanisms.Appraisal;
 
+import Mechanisms.Action.Action;
 import Mechanisms.Action.DiscoActionsWrapper;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Motivation.Motivation;
+import Mechanisms.Perception.Perception;
 import Mechanisms.ToM.ToM;
 import MentalState.Goal;
 import MentalState.Intention;
@@ -14,9 +16,11 @@ public class Coping {
 	
 	private MentalProcesses mentalProcesses;
 	
+	private Perception perception;
 	private Collaboration collaboration;
 	private Motivation motivation;
 	private ToM tom;
+	private Action action;
 	
 	private Relevance relevance;
 	private Controllability controllability;
@@ -29,16 +33,18 @@ public class Coping {
 		
 		this.mentalProcesses = mentalProcesses;
 		
-		this.collaboration   = mentalProcesses.getCollaborationMechanism();
-		this.motivation      = mentalProcesses.getMotivationMechanism();
-		this.tom		     = mentalProcesses.getToMMechanism();
+		this.perception    = mentalProcesses.getPerceptionMechanism();
+		this.collaboration = mentalProcesses.getCollaborationMechanism();
+		this.motivation    = mentalProcesses.getMotivationMechanism();
+		this.tom		   = mentalProcesses.getToMMechanism();
+		this.action        = mentalProcesses.getActionMechanism();
 		
 		this.relevance       = mentalProcesses.getRelevanceProcess();
 		this.controllability = mentalProcesses.getControllabilityProcess();
 		this.desirability    = mentalProcesses.getDesirabilityProcess();
 		this.expectedness    = mentalProcesses.getExpectednessProcess();
 		
-		discoActionsWrapper  = new DiscoActionsWrapper(collaboration);
+//		discoActionsWrapper  = new DiscoActionsWrapper(collaboration);
 	}
 	
 	public void formIntentions(Goal eventGoal) {
@@ -79,6 +85,12 @@ public class Coping {
 	public void doActiveCoping(Goal goal) {
 		
 		System.out.println("COPING STRATEGY: Active Coping");
+		
+		if (perception.getEmotionValence() < 0) {
+			action.acknowledgeEmotion(goal);
+		}
+		
+		action.expressEmotion(goal);
 	}
 	
 	// Goal management: Coming up with best action strategies to handle the problem, aka, action selection.

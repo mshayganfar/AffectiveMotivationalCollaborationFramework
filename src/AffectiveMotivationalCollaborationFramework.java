@@ -69,7 +69,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		collaboration.updatePreconditionApplicability();
 		System.out.println(collaboration.getPreconditionApplicabilities());
 		
-		AppraisalVector appraisalVector = new AppraisalVector(mentalProcesses);
+		AppraisalVector appraisalVector = new AppraisalVector(mentalProcesses, recognizedGoal);
 		
 		RELEVANCE relevanceValue = mentalProcesses.getRelevanceProcess().isEventRelevant(recognizedGoal);
 		appraisalVector.setRelevanceValue(relevanceValue);
@@ -84,11 +84,11 @@ public class AffectiveMotivationalCollaborationFramework {
 		appraisalVector.setExpectednessValue(expectednessValue);
 		System.out.println(expectednessValue);
 		
-		System.out.println("Emotion Instance: " + appraisalVector.getEmotionInstance(recognizedGoal, false));
+		System.out.println("Emotion Instance: " + appraisalVector.getEmotionInstance());
 		
 //		System.out.println(DIFFICULTY.valueOf(recognizedGoal.getPlan().getType().getProperty("@difficulty")));
 		
-		turn.setTurnAppraisals(mentalProcesses, WHOSE_APPRAISAL.SELF, relevanceValue, desirabilityValue, controllabilityValue, expectednessValue);
+		turn.setTurnAppraisals(mentalProcesses, recognizedGoal, WHOSE_APPRAISAL.SELF, relevanceValue, desirabilityValue, controllabilityValue, expectednessValue);
 		
 		SatisfactionDrive test = new SatisfactionDrive();
 		System.out.println(test.getSatisfactionDriveDelta());
