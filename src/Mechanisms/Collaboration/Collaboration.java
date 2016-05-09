@@ -9,6 +9,7 @@ import Mechanisms.Mechanisms;
 import MentalState.Goal;
 import MentalState.MentalState;
 import MetaInformation.GoalTree;
+import MetaInformation.MentalProcesses;
 import MetaInformation.Node;
 import MetaInformation.Turns;
 import edu.wpi.cetask.Plan;
@@ -35,6 +36,7 @@ public class Collaboration extends Mechanisms{
 	private TaskModel taskModel;
 	private Plan prevFocus;
 	private Goal topLevelGoal = null;
+	private MentalProcesses mentalProcesses;
 	
 	private boolean collaborationStatus = true;
 	
@@ -67,6 +69,10 @@ public class Collaboration extends Mechanisms{
 		childrenResponsibinity = new ArrayList<AGENT>();
 		
 		this.collaboration = this;
+	}
+	
+	public void prepareCollaborationMechanism(MentalProcesses mentalProcesses) {
+		this.mentalProcesses = mentalProcesses;
 	}
 	
 	public Turns getCurrentTurn() {
@@ -165,7 +171,7 @@ public class Collaboration extends Mechanisms{
 		Plan plan       = disco.getFocus();
 		String taskID   = plan.getType()+"@"+Integer.toHexString(System.identityHashCode(plan));
 		
-		Goal goal = new Goal(plan); //MentalState.getInstance().getSpecificGoal(plan); // Change the agent type by reading the value from Disco.
+		Goal goal = new Goal(mentalProcesses, plan); //MentalState.getInstance().getSpecificGoal(plan); // Change the agent type by reading the value from Disco.
 		
 		return goal;
 	}
@@ -242,7 +248,7 @@ public class Collaboration extends Mechanisms{
 		for (int i=0 ; i < contributerPlanList.size() ; i++) {
 			goal = contributerPlanList.get(i);
 			id = goal.getType()+"@"+Integer.toHexString(System.identityHashCode(goal));
-			contributerGoalList.add(new Goal(goal)); // Change the agent type by reading the value from Disco.
+			contributerGoalList.add(new Goal(mentalProcesses, goal)); // Change the agent type by reading the value from Disco.
 		}
 		
 		return contributerGoalList;
@@ -458,7 +464,7 @@ public class Collaboration extends Mechanisms{
 	
 	public void updatePreconditionApplicability() {
 		
-		GoalTree goalTree = new GoalTree(collaboration.getDisco());
+		GoalTree goalTree = new GoalTree(mentalProcesses);
 		
 		ArrayList<Node> treeNodes = goalTree.createTree();
 		

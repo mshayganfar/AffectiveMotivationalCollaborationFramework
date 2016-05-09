@@ -4,16 +4,15 @@ import Mechanisms.Collaboration.Collaboration;
 import MentalState.Goal;
 import edu.wpi.cetask.DecompositionClass;
 import edu.wpi.cetask.Plan;
-import edu.wpi.cetask.Task;
 import edu.wpi.cetask.TaskClass.Input;
 import edu.wpi.disco.Agenda.Plugin;
 import edu.wpi.disco.Agent;
-import edu.wpi.disco.Interaction;
 import edu.wpi.disco.lang.Accept;
 import edu.wpi.disco.lang.Ask;
 import edu.wpi.disco.lang.Mention;
 import edu.wpi.disco.lang.Propose;
 import edu.wpi.disco.lang.Reject;
+import edu.wpi.disco.lang.Say;
 import edu.wpi.disco.lang.Utterance;
 
 public class DiscoActionsWrapper {
@@ -90,6 +89,13 @@ public class DiscoActionsWrapper {
 		collaboration.getDisco().getInteraction().occurred(speaker, taskToMention, plan);
 	}
 	
+	public void saySomethingAboutTask(Goal goal, boolean speaker, String utterance) {
+		
+//		Plan plan = goal.getPlan();
+		Utterance utteranceTask = new Say.Agent(collaboration.getDisco(), utterance);
+		collaboration.getDisco().getInteraction().occurred(speaker, utteranceTask, null);
+	}
+
 	public void askAboutTaskWho(Goal goal, boolean speaker) {
 		
 		Plan plan = goal.getPlan();

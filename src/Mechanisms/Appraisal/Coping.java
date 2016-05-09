@@ -1,11 +1,14 @@
 package Mechanisms.Appraisal;
 
-import org.omg.CORBA.UNKNOWN;
+import java.util.HashMap;
+import java.util.Map;
 
 import Mechanisms.Mechanisms.AGENT;
 import Mechanisms.Action.Action;
 import Mechanisms.Action.DiscoActionsWrapper;
+import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Collaboration.Collaboration;
+import Mechanisms.Collaboration.GoalManagement;
 import Mechanisms.Motivation.Motivation;
 import Mechanisms.Perception.Perception;
 import Mechanisms.ToM.ToM;
@@ -13,10 +16,14 @@ import MentalState.Goal;
 import MentalState.Intention;
 import MetaInformation.CopingActivation;
 import MetaInformation.MentalProcesses;
+import MetaInformation.Turns;
 import MetaInformation.CopingActivation.COPING_STRATEGY;
+import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskClass.Input;
 import edu.wpi.disco.Agent;
+import edu.wpi.disco.Disco;
 import edu.wpi.disco.lang.Propose;
+import edu.wpi.disco.lang.Say;
 
 public class Coping {
 	
@@ -169,6 +176,83 @@ public class Coping {
 			return true;
 	}
 	
+	// Acceptance of a stressor as real (specially when the event has low changeability).
+	public void doAcceptance(Goal goal, boolean human) {
+
+		System.out.println("COPING STRATEGY: Acceptance");
+		
+		new Say.Agent(collaboration.getDisco(), "I believe we cannot continue this collaboration!");
+		System.exit(0);
+	}
+	
+	// Shifts an attribution of blame/credit from (towards) the self and towards (from) some other agent.
+	public void doShiftingResponsibility(Goal goal) {
+		
+		System.out.println("COPING STRATEGY: Shifting Responsibility");
+		
+		Plan plan = goal.getPlan();
+		
+		if (plan.isPrimitive()) {
+			if (collaboration.getResponsibleAgent(plan).equals(AGENT.SELF))
+				discoActionsWrapper.proposeTaskWho(goal, true);
+			else if (collaboration.getResponsibleAgent(plan).equals(AGENT.OTHER))
+				discoActionsWrapper.proposeTaskWho(goal, false);
+			else
+				throw new IllegalArgumentException("Illegal Responsibility Value: " + collaboration.getResponsibleAgent(plan));
+		}
+		else
+			throw new IllegalArgumentException("Illegal Shifting Responsibility Operation on a Non-Primitive Goal.");
+	}
+	
+	private Goal getMinCostGoal() {
+		
+		Map<Goal, Double> costValues = new HashMap<Goal, Double>();
+		
+		GoalManagement goalManagement = new GoalManagement(mentalProcesses);
+		
+		Disco disco = collaboration.getDisco();
+		
+		for(Plan alternativePlan : disco.getTop(disco.getFocus()).getLiveDescendants()) {
+			Goal alternativeGoal = new Goal(mentalProcesses, alternativePlan);
+			costValues.put(alternativeGoal, goalManagement.computeCostValue(alternativeGoal));
+		}
+		
+		double min = 10.0;
+		Goal minCostGoal = null;
+		
+		for (Map.Entry<Goal, Double> entry : costValues.entrySet()) {
+			if(min > entry.getValue()) {
+				min = entry.getValue();
+				minCostGoal = entry.getKey();
+			}
+		}
+		
+		return minCostGoal;
+	}
+	
+	// Distracting the self from thinking about behavioral dimension or goal with which the stressor is interferring. 
+	public boolean doMentalDisengagement() {
+		
+		System.out.println("COPING STRATEGY: Mental Disengagement");
+		
+		Goal minCostGoal = getMinCostGoal();
+		
+		if (minCostGoal != null) {
+			discoActionsWrapper.proposeTaskShould(minCostGoal, false);
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	// Assume some intervening act or actor will improve desirability.
+	public void doWishfulThinking(Goal goal) {
+		
+		System.out.println("COPING STRATEGY: Wishful Thinking");
+		
+		Turns.getInstance().setDesirabilityValue(goal, DESIRABILITY.DESIRABLE);
+	}
+	
 	// Seeking emotional support or understanding.
 	private void doSeekingSocialSupportForEmotionalReasons() {
 		
@@ -189,15 +273,9 @@ public class Coping {
 		
 	}
 	
-	// Acceptance of a stressor as real (specially when the event has low changeability).
-	public void doAcceptance(Goal goal, boolean human) {
-		// discoActionsWrapper.acceptProposedTask(goal, human);
-		System.out.println("COPING STRATEGY: Acceptance");
-	}
-	
 	// Showing reflexive reaction to remove threat.
 	private void doAvoidance(Goal goal, boolean human) {
-		discoActionsWrapper.rejectProposedTask(goal, human);
+//		discoActionsWrapper.rejectProposedTask(goal, human);
 	}
 
 	// Focusing on whatever is the source of stress (e.g., trying to accomodate loss).
@@ -220,26 +298,8 @@ public class Coping {
 		
 	}
 	
-	// Distracting the self from thinking about behavioral dimension or goal with which the stressor is interferring. 
-	public void doMentalDisengagement() {
-		
-		System.out.println("COPING STRATEGY: Mental Disengagement");
-	}
-	
 	// Taking an action to redress the harm and mitigate the negative feeling(s).
 	private void doMakingAmends() {
 		
-	}
-	
-	// Shifts an attribution of blame/credit from (towards) the self and towards (from) some other agent.
-	public void doShiftingResponsibility() {
-		
-		System.out.println("COPING STRATEGY: Shifting Responsibility");
-	}
-	
-	// Assume some intervening act or actor will improve desirability.
-	public void doWishfulThinking() {
-		
-		System.out.println("COPING STRATEGY: Wishful Thinking");
 	}
 }

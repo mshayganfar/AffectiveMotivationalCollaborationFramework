@@ -8,8 +8,6 @@ import MentalState.Intention;
 import MetaInformation.MentalProcesses;
 import MetaInformation.Turns;
 import MetaInformation.CopingActivation.COPING_STRATEGY;
-import edu.wpi.disco.Disco;
-import edu.wpi.disco.lang.Say;
 
 public class Action extends Mechanisms{
 
@@ -40,11 +38,11 @@ public class Action extends Mechanisms{
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.PLANNING))
 				coping.doPlanning(goal, false);
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.WISHFUL_THINKING))
-				coping.doWishfulThinking();
+				coping.doWishfulThinking(goal);
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.MENTAL_DISENGAGEMENT))
 				coping.doMentalDisengagement();
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.SHIFTING_RESPONSIBILITY))
-				coping.doShiftingResponsibility();
+				coping.doShiftingResponsibility(goal);
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.ACCEPTANCE))
 				coping.doAcceptance(goal, false);
 		}
@@ -54,22 +52,22 @@ public class Action extends Mechanisms{
 		
 		switch(tom.getAnticipatedHumanEmotion(eventGoal)) {
 			case ANGER:
-				new Say.Agent(collaboration.getDisco(), "I see you are angry!");
+				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "I see you are angry!");
 				break;
 			case FRUSTRATION:
-				new Say.Agent(collaboration.getDisco(), "I see! It is frustrating!");
+				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "I see! It is frustrating!");
 				break;
 			case SADNESS:
-				new Say.Agent(collaboration.getDisco(), "It is so sad!");
+				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "It is so sad!");
 				break;
 			case WORRY:
-				new Say.Agent(collaboration.getDisco(), "Don't worry!");
+				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "Don't worry!");
 				break;
 			case NEGATIVE_SURPRISE:
-				new Say.Agent(collaboration.getDisco(), "I was not expecting that either!");
+				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "I was not expecting that!");
 				break;
 			case GUILT:
-				new Say.Agent(collaboration.getDisco(), "It was not your fault!");
+				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "It was not your fault!");
 				break;
 		}
 	}
@@ -78,34 +76,34 @@ public class Action extends Mechanisms{
 		
 		switch(Turns.getInstance().getAppraisalVector(eventGoal).getEmotionInstance()) {
 			case ANGER:
-				new Say.Agent(collaboration.getDisco(), "I am Angry!");
+				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "I am Angry!");
 				break;
 			case FRUSTRATION:
-				new Say.Agent(collaboration.getDisco(), "I am frustrated!");
+				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "I am frustrated!");
 				break;
 			case SADNESS:
-				new Say.Agent(collaboration.getDisco(), "I am sad!");
+				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "I am sad!");
 				break;
 			case WORRY:
-				new Say.Agent(collaboration.getDisco(), "I am worried!");
+				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "I am worried!");
 				break;
 			case NEGATIVE_SURPRISE:
-				new Say.Agent(collaboration.getDisco(), "Oh no! I am surprised");
+				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "Oh no! I am surprised");
 				break;
 			case GUILT:
-				new Say.Agent(collaboration.getDisco(), "Sorry, it is my fault!");
+				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "Sorry, it is my fault!");
 				break;
 			case JOY:
-				new Say.Agent(collaboration.getDisco(), "I am happy!");
+				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "I am happy!");
 				break;
 			case POSTIVE_SURPRISE:
-				new Say.Agent(collaboration.getDisco(), "Wow, I was not expecting that!");
+				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "Wow, I was not expecting that!");
 				break;
 			case GRATITUDE:
-				new Say.Agent(collaboration.getDisco(), "Thank you for doing this!");
+				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "Thank you for doing this!");
 				break;
 			case NEUTRAL:
-				new Say.Agent(collaboration.getDisco(), "No feeling!");
+				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "No feeling!");
 				break;
 		}
 	}

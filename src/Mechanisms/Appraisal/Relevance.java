@@ -17,9 +17,10 @@ public class Relevance extends AppraisalProcesses {
 	public enum RELEVANCE {RELEVANT, IRRELEVANT, UNKNOWN};
 	
 	public Relevance(MentalProcesses mentalProcesses) {
-		this.collaboration = mentalProcesses.getCollaborationMechanism();
-		this.motivation    = mentalProcesses.getMotivationMechanism();
-		this.perception    = mentalProcesses.getPerceptionMechanism();
+		this.mentalProcesses = mentalProcesses;
+		this.collaboration   = mentalProcesses.getCollaborationMechanism();
+		this.motivation      = mentalProcesses.getMotivationMechanism();
+		this.perception      = mentalProcesses.getPerceptionMechanism();
 	}
 
 	public RELEVANCE isEventRelevant(Goal eventGoal) {
@@ -118,7 +119,7 @@ public class Relevance extends AppraisalProcesses {
 		
 		Node lcaGoalNode = null;
 		
-		GoalTree goalTree = new GoalTree(collaboration.getDisco());
+		GoalTree goalTree = new GoalTree(mentalProcesses);
 		
 		ArrayList<Node> treeNodes = goalTree.createTree();
 		

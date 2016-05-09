@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
 import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
@@ -10,9 +8,7 @@ import MentalState.Belief;
 import MentalState.Goal;
 import MentalState.Motive;
 import MetaInformation.AppraisalVector;
-import MetaInformation.GoalTree;
 import MetaInformation.MentalProcesses;
-import MetaInformation.Node;
 import MetaInformation.Turns;
 import MetaInformation.AppraisalVector.WHOSE_APPRAISAL;
 import edu.wpi.cetask.Plan;
@@ -31,7 +27,7 @@ public class AffectiveMotivationalCollaborationFramework {
 			while (!plan.getType().getNamespace().toString().equals(taskModel.toString()))
 				plan = plan.getParent();
 			
-			goal = new Goal(plan);
+			goal = new Goal(mentalProcesses, plan);
 //			goal = plan.getGoal().getType(); // Was TaskClass
 		}
 		else
@@ -53,7 +49,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
 		
-		Goal recognizedGoal = new Goal(collaboration.getActualFocus(collaboration.getDisco().getFocus()));
+		Goal recognizedGoal = new Goal(mentalProcesses, collaboration.getActualFocus(collaboration.getDisco().getFocus()));
 		recognizedGoal.setGoalStatus(collaboration.getGoalStatus(recognizedGoal.getPlan()));
 		recognizedGoal.addGoalToMentalState();
 		

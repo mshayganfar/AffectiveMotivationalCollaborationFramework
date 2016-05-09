@@ -3,7 +3,6 @@ package MetaInformation;
 import java.util.ArrayList;
 
 import MentalState.Goal;
-import MentalState.MentalState;
 import edu.wpi.cetask.Plan;
 import edu.wpi.disco.Disco;
 
@@ -12,13 +11,16 @@ public class GoalTree {
 	private int nodeCounter = 1;
 	private Node topLevelNode;
 	private Disco disco;
+	private MentalProcesses mentalProcesses;
 	
 	private ArrayList<Node> preorderTree = new ArrayList<Node>();
 	
-	public GoalTree(Disco disco) {
+	public GoalTree(MentalProcesses mentalProcesses) {
 		
-		this.disco = disco;
-		topLevelNode = new Node(new Goal(disco.getTop(disco.getFocus())), 0);
+		this.mentalProcesses = mentalProcesses;
+		this.disco = mentalProcesses.getCollaborationMechanism().getDisco();
+		
+		topLevelNode = new Node(new Goal(mentalProcesses, disco.getTop(disco.getFocus())), 0);
 	}
 	
 	public ArrayList<Node> createTree() {
@@ -58,7 +60,7 @@ public class GoalTree {
 	private Node createNode(Plan goalPlan, int planDepthValue) {
 		
 		if (goalPlan != null)
-			return new Node(new Goal(goalPlan), planDepthValue);
+			return new Node(new Goal(mentalProcesses, goalPlan), planDepthValue);
 		else
 			return null;
 	}

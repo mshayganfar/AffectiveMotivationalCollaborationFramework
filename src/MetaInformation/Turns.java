@@ -46,6 +46,16 @@ public class Turns {
 		return this.appraisalVectors;
 	}
 	
+	public void setDesirabilityValue(Goal goal, DESIRABILITY desirability) {
+		
+		for(int i = 0 ; i< appraisalVectors.size() ; i++) {
+			if (appraisalVectors.get(i).getGoal().getLabel().equals(goal.getLabel())) {
+				appraisalVectors.get(i).setDesirabilityValue(desirability);
+				return;
+			}
+		}
+	}
+	
 	public AppraisalVector getAppraisalVector(Goal goal) {
 		
 		for(AppraisalVector vector : appraisalVectors) {

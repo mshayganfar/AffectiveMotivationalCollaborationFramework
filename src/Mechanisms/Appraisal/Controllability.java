@@ -27,7 +27,8 @@ public class Controllability extends AppraisalProcesses{
 	ArrayList<Goal> descendentGoals = new ArrayList<Goal>();
 	
 	public Controllability(MentalProcesses mentalProcesses) {
-		this.collaboration = mentalProcesses.getCollaborationMechanism();
+		this.collaboration   = mentalProcesses.getCollaborationMechanism();
+		this.mentalProcesses = mentalProcesses;
 	}
 
 	public CONTROLLABILITY isEventControllable(Goal eventGoal) {
@@ -72,7 +73,7 @@ public class Controllability extends AppraisalProcesses{
 		
 		int i;
 		
-		GoalTree goalTree = new GoalTree(collaboration.getDisco());
+		GoalTree goalTree = new GoalTree(mentalProcesses);
 		ArrayList<Node> treeNodes = goalTree.createTree();
 		
 		for (i = 0 ; i < treeNodes.size() ; i++)

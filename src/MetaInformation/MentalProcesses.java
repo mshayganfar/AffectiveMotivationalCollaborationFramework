@@ -38,6 +38,7 @@ public class MentalProcesses {
 		this.desirability    = new Desirability(this);
 		this.expectedness    = new Expectedness(this);
 		
+		this.collaboration.prepareCollaborationMechanism(this);
 		this.perception.preparePerceptionMechanism(this);
 		this.motivation.prepareMotivationMechanism(this);
 		this.tom.prepareAppraisalsOfToM(this);
