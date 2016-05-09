@@ -1,5 +1,8 @@
 package Mechanisms.Appraisal;
 
+import org.omg.CORBA.UNKNOWN;
+
+import Mechanisms.Mechanisms.AGENT;
 import Mechanisms.Action.Action;
 import Mechanisms.Action.DiscoActionsWrapper;
 import Mechanisms.Collaboration.Collaboration;
@@ -11,6 +14,9 @@ import MentalState.Intention;
 import MetaInformation.CopingActivation;
 import MetaInformation.MentalProcesses;
 import MetaInformation.CopingActivation.COPING_STRATEGY;
+import edu.wpi.cetask.TaskClass.Input;
+import edu.wpi.disco.Agent;
+import edu.wpi.disco.lang.Propose;
 
 public class Coping {
 	
@@ -101,9 +107,66 @@ public class Coping {
 	}
 
 	// Seeking advice, assistance or information.
-	public void doSeekingSocialSupportForInstrumentalReasons() {
+	public void doSeekingSocialSupportForInstrumentalReasons(Goal goal) {
 		
 		System.out.println("COPING STRATEGY: Seeking Social Support for Instrumental Reasons");
+		
+		if (perception.getEmotionValence() >= 0) {
+			if (!knowWhetherAchieve(goal))
+				discoActionsWrapper.askAboutTaskShould(goal, false);
+			if (!knowInputValue(goal))
+				discoActionsWrapper.askAboutTaskWhat(goal, false, getUnknownInput(goal));
+			if (!knowHowToDo(goal))
+				discoActionsWrapper.askAboutTaskHow(goal, false);
+			if (!knowWhoShouldDo(goal))
+				discoActionsWrapper.askAboutTaskWho(goal, false);
+		}
+	}
+	
+	private boolean knowWhetherAchieve(Goal goal) {
+		
+		if (((new Agent("agent")).generateBest(collaboration.getInteraction()).task != null) ||
+			(goal.getPlan().getGoal() instanceof Propose.Should))
+			return true;
+		else
+			return false;
+	}
+	
+	private boolean knowInputValue(Goal goal) {
+		
+		for (Input input : goal.getPlan().getType().getDeclaredInputs())
+			if (!input.isDefinedSlot(goal.getPlan().getGoal()))
+				if (collaboration.getInputValue(input) == null)
+					return false;
+		
+		return true;
+	}
+	
+	private Input getUnknownInput(Goal goal) {
+		
+		for (Input input : goal.getPlan().getType().getDeclaredInputs())
+			if (!input.isDefinedSlot(goal.getPlan().getGoal()))
+				if (collaboration.getInputValue(input) == null)
+					return input;
+		
+		return null;
+	}
+	
+	private boolean knowHowToDo(Goal goal) {
+		
+		// Later, I should check for on the fly recipes!
+		if (goal.getPlan().getDecompositions().size() != 0)
+			return true;
+		else
+			return false;
+	}
+	
+	private boolean knowWhoShouldDo(Goal goal) {
+		
+		if (collaboration.getResponsibleAgent(goal.getPlan()).equals(AGENT.UNKNOWN))
+			return false;
+		else
+			return true;
 	}
 	
 	// Seeking emotional support or understanding.

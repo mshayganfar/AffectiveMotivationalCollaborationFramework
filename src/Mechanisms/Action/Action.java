@@ -34,7 +34,7 @@ public class Action extends Mechanisms{
 		
 		for (Intention intention : goal.getIntentions()) {
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.SEEKING_SOCIAL_SUPPORT_FOR_INSTRUMENTAL_REASONS))
-				coping.doSeekingSocialSupportForInstrumentalReasons();
+				coping.doSeekingSocialSupportForInstrumentalReasons(goal);
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.ACTIVE_COPING))
 				coping.doActiveCoping(goal);
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.PLANNING))

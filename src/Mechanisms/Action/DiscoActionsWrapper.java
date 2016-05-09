@@ -5,6 +5,7 @@ import MentalState.Goal;
 import edu.wpi.cetask.DecompositionClass;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.Task;
+import edu.wpi.cetask.TaskClass.Input;
 import edu.wpi.disco.Agenda.Plugin;
 import edu.wpi.disco.Agent;
 import edu.wpi.disco.Interaction;
@@ -109,11 +110,11 @@ public class DiscoActionsWrapper {
 		collaboration.getDisco().getInteraction().occurred(speaker, taskToAsk, plan);
 	}
 	
-	public void askAboutTaskWhat(Goal goal, boolean speaker, String slot) {
+	public void askAboutTaskWhat(Goal goal, boolean speaker, Input input) {
 		
 		Plan plan = goal.getPlan();
 		
-		Utterance taskToAsk = new Ask.What(collaboration.getDisco(), speaker, plan.getGoal(), slot);
+		Utterance taskToAsk = new Ask.What(collaboration.getDisco(), speaker, plan.getGoal(), input.getName());
 		collaboration.getDisco().getInteraction().occurred(speaker, taskToAsk, plan);
 	}
 	
