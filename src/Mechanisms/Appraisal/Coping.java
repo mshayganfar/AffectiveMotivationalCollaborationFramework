@@ -25,7 +25,6 @@ import edu.wpi.cetask.TaskClass.Input;
 import edu.wpi.disco.Agent;
 import edu.wpi.disco.Disco;
 import edu.wpi.disco.lang.Ask;
-import edu.wpi.disco.lang.Propose;
 import edu.wpi.disco.lang.Say;
 
 public class Coping {
@@ -185,7 +184,7 @@ public class Coping {
 		return (goal.getPlan().getGoal() instanceof Ask) ? true : false;
 	}
 	
-	// Goal management: Coming up with best action strategies to handle the problem, aka, action selection.
+	// The same Planning used in Disco.
 	public void doPlanning(Goal goal, boolean human) {
 		
 		System.out.println("COPING STRATEGY: Planning");
@@ -336,7 +335,8 @@ public class Coping {
 	}
 	
 	// Distracting the self from thinking about behavioral dimension or goal with which the stressor is interferring. 
-	public boolean doMentalDisengagement() {
+	// Goal management: Coming up with best action strategies to handle the problem, aka, action selection.
+	public boolean doMentalDisengagement(Goal goal) {
 		
 		System.out.println("COPING STRATEGY: Mental Disengagement");
 		
@@ -346,8 +346,10 @@ public class Coping {
 			discoActionsWrapper.proposeTaskShould(minCostGoal, false);
 			return true;
 		}
-		else
+		else {
+			discoActionsWrapper.saySomethingAboutTask(goal, false, "I do not know what to do!");
 			return false;
+		}
 	}
 	
 	// Assume some intervening act or actor will improve desirability.

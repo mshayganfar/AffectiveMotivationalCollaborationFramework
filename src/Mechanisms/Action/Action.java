@@ -40,7 +40,7 @@ public class Action extends Mechanisms{
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.WISHFUL_THINKING))
 				coping.doWishfulThinking(goal);
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.MENTAL_DISENGAGEMENT))
-				coping.doMentalDisengagement();
+				coping.doMentalDisengagement(goal);
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.SHIFTING_RESPONSIBILITY))
 				coping.doShiftingResponsibility(goal);
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.ACCEPTANCE))
