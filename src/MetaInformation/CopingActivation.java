@@ -111,37 +111,37 @@ public class CopingActivation {
 		
 		switch (copingStrategy) {
 			case PLANNING:
-				if(controllability.equals(CONTROLLABILITY.HIGH_CONTROLLABLE))
+				if (controllability.equals(CONTROLLABILITY.HIGH_CONTROLLABLE))
 					return true;
 				else
 					return false;
 			case ACTIVE_COPING:
-				if(controllability.equals(CONTROLLABILITY.HIGH_CONTROLLABLE))
+				if ((controllability.equals(CONTROLLABILITY.HIGH_CONTROLLABLE)) || (controllability.equals(CONTROLLABILITY.UNCONTROLLABLE)))
 					return true;
 				else
 					return false;
 			case SEEKING_SOCIAL_SUPPORT_FOR_INSTRUMENTAL_REASONS:
-				if(controllability.equals(CONTROLLABILITY.LOW_CONTROLLABLE))
+				if (controllability.equals(CONTROLLABILITY.LOW_CONTROLLABLE))
 					return true;
 				else
 					return false;
 			case ACCEPTANCE:
-				if(controllability.equals(CONTROLLABILITY.UNCONTROLLABLE))
+				if (controllability.equals(CONTROLLABILITY.UNCONTROLLABLE))
 					return true;
 				else
 					return false;
 			case MENTAL_DISENGAGEMENT:
-				if(controllability.equals(CONTROLLABILITY.UNCONTROLLABLE))
+				if (controllability.equals(CONTROLLABILITY.UNCONTROLLABLE))
 					return true;
 				else
 					return false;
 			case SHIFTING_RESPONSIBILITY:
-				if((controllability.equals(CONTROLLABILITY.UNCONTROLLABLE)) || (controllability.equals(CONTROLLABILITY.LOW_CONTROLLABLE)))
+				if ((controllability.equals(CONTROLLABILITY.UNCONTROLLABLE)) || (controllability.equals(CONTROLLABILITY.LOW_CONTROLLABLE)))
 					return true;
 				else
 					return false;
 			case WISHFUL_THINKING:
-				if(controllability.equals(CONTROLLABILITY.LOW_CONTROLLABLE))
+				if (controllability.equals(CONTROLLABILITY.LOW_CONTROLLABLE))
 					return true;
 				else
 					return false;

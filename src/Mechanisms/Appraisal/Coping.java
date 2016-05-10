@@ -6,6 +6,7 @@ import java.util.Map;
 import Mechanisms.Mechanisms.AGENT;
 import Mechanisms.Action.Action;
 import Mechanisms.Action.DiscoActionsWrapper;
+import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
 import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.GoalManagement;
@@ -18,10 +19,12 @@ import MetaInformation.CopingActivation;
 import MetaInformation.MentalProcesses;
 import MetaInformation.Turns;
 import MetaInformation.CopingActivation.COPING_STRATEGY;
+import edu.wpi.cetask.DecompositionClass;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskClass.Input;
 import edu.wpi.disco.Agent;
 import edu.wpi.disco.Disco;
+import edu.wpi.disco.lang.Ask;
 import edu.wpi.disco.lang.Propose;
 import edu.wpi.disco.lang.Say;
 
@@ -96,6 +99,90 @@ public class Coping {
 		}
 		
 		action.expressEmotion(goal);
+		
+		if (didHumanAsk(goal))
+			respondToHuman(goal);
+	}
+	
+	private void respondToHuman(Goal goal) {
+		
+		if (didHumanAskAboutTaskWhat(goal)) {
+			Input input = null;// = goal.getPlan().getGoal();
+			if (knowInputValue(goal, input)) {
+				Object value = getInputValue(goal, input); 
+				discoActionsWrapper.proposeTaskWhat(goal, false, input.getName(), value);
+			}
+		}
+		
+		if (didHumanAskAboutTaskHow(goal)) {
+			DecompositionClass askedDecomp = null; // I should ask how to get this!
+			if (askedDecomp == null) {
+				if (knowHowToDo(goal)) {
+					DecompositionClass decomp = getAlternativeRecipe(goal);
+					discoActionsWrapper.proposeTaskHow(goal, false, decomp);
+				}
+			}
+			else {
+				if (knowHowToDo(goal, askedDecomp)) {
+					discoActionsWrapper.proposeTaskHow(goal, false, askedDecomp);
+				}
+			}
+		}
+		
+		if (didHumanAskAboutTaskShould(goal)) {
+			if (controllability.isEventControllable(goal).equals(CONTROLLABILITY.HIGH_CONTROLLABLE))
+				discoActionsWrapper.acceptProposedTask(goal, false);
+			else if (controllability.isEventControllable(goal).equals(CONTROLLABILITY.UNCONTROLLABLE))
+				discoActionsWrapper.rejectProposedTask(goal, false);
+		}
+		
+		if (didHumanAskAboutTaskWho(goal)) {
+			if (knowWhoShouldDo(goal)) {
+				AGENT responsibleAgent = collaboration.getResponsibleAgent(goal.getPlan());
+				if (responsibleAgent.equals(AGENT.SELF))
+					discoActionsWrapper.proposeTaskWho(goal, false);
+				else if (responsibleAgent.equals(AGENT.OTHER))
+					discoActionsWrapper.proposeTaskWho(goal, true);
+				else if (responsibleAgent.equals(AGENT.BOTH))
+					discoActionsWrapper.saySomethingAboutTask(goal, false, "Both of us are responsible for this task!"); // --> This might be wrong! What do we need to do here?!
+			}
+			else
+				discoActionsWrapper.saySomethingAboutTask(goal, false, "I do not know who is responsible for this task!");
+		}
+	}
+	
+	private boolean didHumanAskAboutTaskWho(Goal goal) {
+		return (goal.getPlan().getGoal() instanceof Ask.Who) ? true : false;
+	}
+	
+	private boolean didHumanAskAboutTaskShould(Goal goal) {
+		return (goal.getPlan().getGoal() instanceof Ask.Should) ? true : false;
+	}
+	
+	private DecompositionClass getAlternativeRecipe(Goal goal) {
+		return goal.getPlan().getDecompositions().get(0);
+	}
+	
+	private boolean didHumanAskAboutTaskHow(Goal goal) {
+		return (goal.getPlan().getGoal() instanceof Ask.How) ? true : false;
+	}
+	
+	private Object getInputValue(Goal goal, Input input) {
+		
+		Object value = input.getSlotValue(goal.getPlan().getGoal());
+		
+		if (value == null)
+			value = collaboration.getInputValue(input);
+		
+		return value;
+	}
+	
+	private boolean didHumanAskAboutTaskWhat(Goal goal) {
+		return (goal.getPlan().getGoal() instanceof Ask.What) ? true : false;
+	}
+	
+	private boolean didHumanAsk(Goal goal) {
+		return (goal.getPlan().getGoal() instanceof Ask) ? true : false;
 	}
 	
 	// Goal management: Coming up with best action strategies to handle the problem, aka, action selection.
@@ -132,11 +219,20 @@ public class Coping {
 	
 	private boolean knowWhetherAchieve(Goal goal) {
 		
-		if (((new Agent("agent")).generateBest(collaboration.getInteraction()).task != null) ||
-			(goal.getPlan().getGoal() instanceof Propose.Should))
+		if ((new Agent("agent")).generateBest(collaboration.getInteraction()).task != null)
+//			|| (goal.getPlan().getGoal() instanceof Propose.Should)) --> Check this later whether it is required?
 			return true;
 		else
 			return false;
+	}
+	
+	private boolean knowInputValue(Goal goal, Input input) {
+		
+		if (!input.isDefinedSlot(goal.getPlan().getGoal()))
+			if (collaboration.getInputValue(input) == null)
+				return false;
+		
+		return true;
 	}
 	
 	private boolean knowInputValue(Goal goal) {
@@ -157,6 +253,15 @@ public class Coping {
 					return input;
 		
 		return null;
+	}
+	
+	private boolean knowHowToDo(Goal goal, DecompositionClass askedDecomp) {
+		
+		for (DecompositionClass decomp : goal.getPlan().getDecompositions())
+			if (decomp.getId().equals(askedDecomp.getId()))
+				return true;
+		
+		return false;
 	}
 	
 	private boolean knowHowToDo(Goal goal) {
