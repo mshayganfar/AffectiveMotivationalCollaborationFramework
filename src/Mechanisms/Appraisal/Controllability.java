@@ -215,7 +215,7 @@ public class Controllability extends AppraisalProcesses{
 	
 	private boolean isInputAvailable(Plan eventPlan, Input input) {
 		
-		return (collaboration.getInputValue(input) != null) ? true : false;
+		return (collaboration.getInputValue(eventPlan, input.getName()) != null) ? true : false;
 	}
 	
 	public boolean canProvideInput(Plan eventPlan) {

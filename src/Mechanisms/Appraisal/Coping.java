@@ -24,6 +24,7 @@ import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskClass.Input;
 import edu.wpi.disco.Agent;
 import edu.wpi.disco.Disco;
+import edu.wpi.disco.Interaction;
 import edu.wpi.disco.lang.Ask;
 import edu.wpi.disco.lang.Say;
 
@@ -105,26 +106,17 @@ public class Coping {
 	
 	private void respondToHuman(Goal goal) {
 		
+		// This needs to be fixed.
 		if (didHumanAskAboutTaskWhat(goal)) {
-			Input input = null;// = goal.getPlan().getGoal();
-			if (knowInputValue(goal, input)) {
-				Object value = getInputValue(goal, input); 
-				discoActionsWrapper.proposeTaskWhat(goal, false, input.getName(), value);
+			String inputName = ((Ask.What)goal.getPlan().getGoal()).getSlot();
+			if (knowInputValue(goal, inputName)) {
+				discoActionsWrapper.proposeTaskWhat(goal, false, inputName, getInputValue(goal, inputName));
 			}
 		}
 		
 		if (didHumanAskAboutTaskHow(goal)) {
-			DecompositionClass askedDecomp = null; // I should ask how to get this!
-			if (askedDecomp == null) {
-				if (knowHowToDo(goal)) {
-					DecompositionClass decomp = getAlternativeRecipe(goal);
-					discoActionsWrapper.proposeTaskHow(goal, false, decomp);
-				}
-			}
-			else {
-				if (knowHowToDo(goal, askedDecomp)) {
-					discoActionsWrapper.proposeTaskHow(goal, false, askedDecomp);
-				}
+			if (knowHowToDo(goal)) {
+				discoActionsWrapper.proposeTaskHow(goal, false, getAlternativeRecipe(goal));
 			}
 		}
 		
@@ -143,10 +135,10 @@ public class Coping {
 				else if (responsibleAgent.equals(AGENT.OTHER))
 					discoActionsWrapper.proposeTaskWho(goal, true);
 				else if (responsibleAgent.equals(AGENT.BOTH))
-					discoActionsWrapper.saySomethingAboutTask(goal, false, "Both of us are responsible for this task!"); // --> This might be wrong! What do we need to do here?!
+					discoActionsWrapper.saySomethingAboutTask(false, "Both of us are responsible for this task!"); // --> This might be wrong! What do we need to do here?!
 			}
 			else
-				discoActionsWrapper.saySomethingAboutTask(goal, false, "I do not know who is responsible for this task!");
+				discoActionsWrapper.saySomethingAboutTask(false, "I do not know who is responsible for this task!");
 		}
 	}
 	
@@ -159,6 +151,7 @@ public class Coping {
 	}
 	
 	private DecompositionClass getAlternativeRecipe(Goal goal) {
+		// TO DO: I can choose between available alternative recipes.
 		return goal.getPlan().getDecompositions().get(0);
 	}
 	
@@ -166,12 +159,15 @@ public class Coping {
 		return (goal.getPlan().getGoal() instanceof Ask.How) ? true : false;
 	}
 	
-	private Object getInputValue(Goal goal, Input input) {
+	private Object getInputValue(Goal goal, String inputName) {
 		
-		Object value = input.getSlotValue(goal.getPlan().getGoal());
+		// TO DO: I should check whether this can be null.
+//		String inputName = ((Ask.What)goal.getPlan().getGoal()).getSlot();
+//		goal.getPlan().getType().getSlot(inputName).getSlotValue(goal.getPlan().getGoal());
+		String value = (String)goal.getPlan().getGoal().getSlotValue(inputName);
 		
 		if (value == null)
-			value = collaboration.getInputValue(input);
+			value = collaboration.getInputValue(goal.getPlan(), inputName);
 		
 		return value;
 	}
@@ -218,17 +214,21 @@ public class Coping {
 	
 	private boolean knowWhetherAchieve(Goal goal) {
 		
-		if ((new Agent("agent")).generateBest(collaboration.getInteraction()).task != null)
+		Interaction interaction = collaboration.getInteraction();
+		
+		if (interaction.getSystem().generateBest(interaction) != null)
 //			|| (goal.getPlan().getGoal() instanceof Propose.Should)) --> Check this later whether it is required?
 			return true;
 		else
 			return false;
 	}
 	
-	private boolean knowInputValue(Goal goal, Input input) {
+	private boolean knowInputValue(Goal goal, String inputName) {
 		
-		if (!input.isDefinedSlot(goal.getPlan().getGoal()))
-			if (collaboration.getInputValue(input) == null)
+		Plan plan = goal.getPlan();
+		
+		if (!plan.getGoal().isDefinedSlot(inputName))
+			if (collaboration.getInputValue(plan, inputName) == null)
 				return false;
 		
 		return true;
@@ -238,7 +238,7 @@ public class Coping {
 		
 		for (Input input : goal.getPlan().getType().getDeclaredInputs())
 			if (!input.isDefinedSlot(goal.getPlan().getGoal()))
-				if (collaboration.getInputValue(input) == null)
+				if (collaboration.getInputValue(goal.getPlan(), input.getName()) == null)
 					return false;
 		
 		return true;
@@ -248,7 +248,7 @@ public class Coping {
 		
 		for (Input input : goal.getPlan().getType().getDeclaredInputs())
 			if (!input.isDefinedSlot(goal.getPlan().getGoal()))
-				if (collaboration.getInputValue(input) == null)
+				if (collaboration.getInputValue(goal.getPlan(), input.getName()) == null)
 					return input;
 		
 		return null;
@@ -347,7 +347,7 @@ public class Coping {
 			return true;
 		}
 		else {
-			discoActionsWrapper.saySomethingAboutTask(goal, false, "I do not know what to do!");
+			discoActionsWrapper.saySomethingAboutTask(false, "I do not know what to do!");
 			return false;
 		}
 	}

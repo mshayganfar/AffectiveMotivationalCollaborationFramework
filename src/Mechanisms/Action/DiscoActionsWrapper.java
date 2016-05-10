@@ -7,6 +7,7 @@ import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskClass.Input;
 import edu.wpi.disco.Agenda.Plugin;
 import edu.wpi.disco.Agent;
+import edu.wpi.disco.Interaction;
 import edu.wpi.disco.lang.Accept;
 import edu.wpi.disco.lang.Ask;
 import edu.wpi.disco.lang.Mention;
@@ -89,9 +90,8 @@ public class DiscoActionsWrapper {
 		collaboration.getDisco().getInteraction().occurred(speaker, taskToMention, plan);
 	}
 	
-	public void saySomethingAboutTask(Goal goal, boolean speaker, String utterance) {
+	public void saySomethingAboutTask(boolean speaker, String utterance) {
 		
-//		Plan plan = goal.getPlan();
 		Utterance utteranceTask = new Say.Agent(collaboration.getDisco(), utterance);
 		collaboration.getDisco().getInteraction().occurred(speaker, utteranceTask, null);
 	}
@@ -148,8 +148,8 @@ public class DiscoActionsWrapper {
 	
 	public void executeTask() {
 		
-		Plugin.Item occurrence = (new Agent("agent")).generateBest(collaboration.getInteraction());
-		
-		collaboration.getDisco().getInteraction().occurred(false, occurrence.task, null);
+		Interaction interaction = collaboration.getInteraction();
+		Plugin.Item item = interaction.getSystem().generateBest(interaction);
+		collaboration.getDisco().getInteraction().occurred(false, item.task, item.contributes);
 	}
 }

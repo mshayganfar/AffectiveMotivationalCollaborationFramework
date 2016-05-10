@@ -45,7 +45,7 @@ public class Collaboration extends Mechanisms{
 	private Map<String, Boolean> preconditionsLOT = new HashMap<String, Boolean>();
 	
 	// These two maps have been used in Anticipated Desirability algorithm.
-	private Map<String, Object> inputValues = new HashMap<String, Object>();
+	private Map<String, String> inputValues = new HashMap<String, String>();
 	private Map<String, Boolean> preconditionValues = new HashMap<String, Boolean>();
 	
 	private Interaction interaction;
@@ -108,13 +108,24 @@ public class Collaboration extends Mechanisms{
 //	}
 	
 	// Use this method in initialization of the whole system.
-	public void setInputValue(Plan plan, ArrayList<Object> values) {
-		for (int i = 0 ; i < plan.getType().getInputs().size() ; i++)
-			inputValues.put(plan.getType().getInputs().get(i).getName(), values.get(i));
+	public void setInputValue(String keyString, String value) {
+		inputValues.put(keyString, value);
 	}
 	
-	public Object getInputValue(Input input) {
-		return inputValues.get(input.getName());
+	private String getKeyValue(Plan plan, String inputName) {
+		
+		String keyString = "";
+		
+		while (plan != null) {
+			keyString += plan.getParent().getDecomposition().getType().getId();
+			keyString += plan.getParent().getDecomposition().findStep(plan);
+			plan = plan.getParent();
+		}
+		return (keyString+inputName);
+	}
+	
+	public String getInputValue(Plan plan, String inputName) {
+		return inputValues.get(getKeyValue(plan, inputName));
 	}
 	
 	public void setPreconditionValue(Plan plan, Boolean value) {

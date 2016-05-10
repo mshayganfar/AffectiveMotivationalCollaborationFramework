@@ -52,22 +52,22 @@ public class Action extends Mechanisms{
 		
 		switch(tom.getAnticipatedHumanEmotion(eventGoal)) {
 			case ANGER:
-				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "I see you are angry!");
+				discoActionsWrapper.saySomethingAboutTask(false, "I see you are angry!");
 				break;
 			case FRUSTRATION:
-				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "I see! It is frustrating!");
+				discoActionsWrapper.saySomethingAboutTask(false, "I see! It is frustrating!");
 				break;
 			case SADNESS:
-				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "It is so sad!");
+				discoActionsWrapper.saySomethingAboutTask(false, "It is so sad!");
 				break;
 			case WORRY:
-				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "Don't worry!");
+				discoActionsWrapper.saySomethingAboutTask(false, "Don't worry!");
 				break;
 			case NEGATIVE_SURPRISE:
-				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "I was not expecting that!");
+				discoActionsWrapper.saySomethingAboutTask(false, "I was not expecting that!");
 				break;
 			case GUILT:
-				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "It was not your fault!");
+				discoActionsWrapper.saySomethingAboutTask(false, "It was not your fault!");
 				break;
 		}
 	}
@@ -76,34 +76,34 @@ public class Action extends Mechanisms{
 		
 		switch(Turns.getInstance().getAppraisalVector(eventGoal).getEmotionInstance()) {
 			case ANGER:
-				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "I am Angry!");
+				discoActionsWrapper.saySomethingAboutTask(false, "I am Angry!");
 				break;
 			case FRUSTRATION:
-				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "I am frustrated!");
+				discoActionsWrapper.saySomethingAboutTask(false, "I am frustrated!");
 				break;
 			case SADNESS:
-				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "I am sad!");
+				discoActionsWrapper.saySomethingAboutTask(false, "I am sad!");
 				break;
 			case WORRY:
-				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "I am worried!");
+				discoActionsWrapper.saySomethingAboutTask(false, "I am worried!");
 				break;
 			case NEGATIVE_SURPRISE:
-				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "Oh no! I am surprised");
+				discoActionsWrapper.saySomethingAboutTask(false, "Oh no! I am surprised");
 				break;
 			case GUILT:
-				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "Sorry, it is my fault!");
+				discoActionsWrapper.saySomethingAboutTask(false, "Sorry, it is my fault!");
 				break;
 			case JOY:
-				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "I am happy!");
+				discoActionsWrapper.saySomethingAboutTask(false, "I am happy!");
 				break;
 			case POSTIVE_SURPRISE:
-				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "Wow, I was not expecting that!");
+				discoActionsWrapper.saySomethingAboutTask(false, "Wow, I was not expecting that!");
 				break;
 			case GRATITUDE:
-				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "Thank you for doing this!");
+				discoActionsWrapper.saySomethingAboutTask(false, "Thank you for doing this!");
 				break;
 			case NEUTRAL:
-				discoActionsWrapper.saySomethingAboutTask(eventGoal, false, "No feeling!");
+				discoActionsWrapper.saySomethingAboutTask(false, "No feeling!");
 				break;
 		}
 	}
