@@ -6,7 +6,6 @@ import edu.wpi.cetask.DecompositionClass;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskClass.Input;
 import edu.wpi.disco.Agenda.Plugin;
-import edu.wpi.disco.Agent;
 import edu.wpi.disco.Interaction;
 import edu.wpi.disco.lang.Accept;
 import edu.wpi.disco.lang.Ask;

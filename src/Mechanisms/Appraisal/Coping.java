@@ -21,8 +21,8 @@ import MetaInformation.Turns;
 import MetaInformation.CopingActivation.COPING_STRATEGY;
 import edu.wpi.cetask.DecompositionClass;
 import edu.wpi.cetask.Plan;
+import edu.wpi.cetask.Task;
 import edu.wpi.cetask.TaskClass.Input;
-import edu.wpi.disco.Agent;
 import edu.wpi.disco.Disco;
 import edu.wpi.disco.Interaction;
 import edu.wpi.disco.lang.Ask;
@@ -106,18 +106,20 @@ public class Coping {
 	
 	private void respondToHuman(Goal goal) {
 		
-		// This needs to be fixed.
+		// This needs to be fixed. --> I do not know why!
 		if (didHumanAskAboutTaskWhat(goal)) {
 			String inputName = ((Ask.What)goal.getPlan().getGoal()).getSlot();
-			if (knowInputValue(goal, inputName)) {
+			if (knowInputValue(goal, inputName))
 				discoActionsWrapper.proposeTaskWhat(goal, false, inputName, getInputValue(goal, inputName));
-			}
+			else
+				discoActionsWrapper.rejectProposedTask(goal, false);
 		}
 		
 		if (didHumanAskAboutTaskHow(goal)) {
-			if (knowHowToDo(goal)) {
+			if (knowHowToDo(goal))
 				discoActionsWrapper.proposeTaskHow(goal, false, getAlternativeRecipe(goal));
-			}
+			else
+				discoActionsWrapper.rejectProposedTask(goal, false);
 		}
 		
 		if (didHumanAskAboutTaskShould(goal)) {
@@ -125,6 +127,8 @@ public class Coping {
 				discoActionsWrapper.acceptProposedTask(goal, false);
 			else if (controllability.isEventControllable(goal).equals(CONTROLLABILITY.UNCONTROLLABLE))
 				discoActionsWrapper.rejectProposedTask(goal, false);
+			else
+				doSeekingSocialSupportForEmotionalReasons();
 		}
 		
 		if (didHumanAskAboutTaskWho(goal)) {
@@ -161,10 +165,11 @@ public class Coping {
 	
 	private Object getInputValue(Goal goal, String inputName) {
 		
-		// TO DO: I should check whether this can be null.
-//		String inputName = ((Ask.What)goal.getPlan().getGoal()).getSlot();
-//		goal.getPlan().getType().getSlot(inputName).getSlotValue(goal.getPlan().getGoal());
-		String value = (String)goal.getPlan().getGoal().getSlotValue(inputName);
+		String value = null;
+		Task askWhatGoal = ((Ask.What) goal.getPlan().getGoal()).getGoal();
+		
+		if (askWhatGoal.isDefinedSlot(inputName))
+			value = (String) askWhatGoal.getSlotValue(inputName);
 		
 		if (value == null)
 			value = collaboration.getInputValue(goal.getPlan(), inputName);
