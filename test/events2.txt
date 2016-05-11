@@ -1,36 +1,36 @@
 verbose
 next false
 task A
-eval appraise()
+eval process()
 task B
-eval appraise()
+eval process()
 execute e / false
-eval appraise()
+eval process()
 task F
-eval appraise()
+eval process()
 execute k / false
-eval appraise()
+eval process()
 task C
-eval appraise()
+eval process()
 execute g / false
-eval appraise()
+eval process()
 execute h / false
-eval appraise()
+eval process()
 task D
-eval appraise()
+eval process()
 eval $disco.isLastShift()
 task I
-eval appraise()
+eval process()
 execute l / false
-eval appraise()
+eval process()
 execute m / false
-eval appraise()
+eval process()
 task J
-eval appraise()
+eval process()
 eval $disco.isLastShift()
 execute n / false
-eval appraise()
+eval process()
 execute o / false
-eval appraise()
+eval process()
 execute p / false
-eval appraise()
+eval process()

@@ -18,6 +18,7 @@ public class Motive {
 		this.activeMotive = true;
 		this.motiveIntensity = 0.5;
 		this.goal.addMotives(this);
+		MentalState.getInstance().addMotive(this);
 	}
 	
 	public Motive (Goal goal, MOTIVE_TYPE motiveType, double motiveIntensity) {
@@ -27,7 +28,12 @@ public class Motive {
 		this.activeMotive = false;
 		this.motiveIntensity = motiveIntensity;
 		this.goal.addMotives(this);
+		MentalState.getInstance().addMotive(this);
 	}
+	
+//	public void addMotiveToMentalState() {
+//		MentalState.getInstance().addMotive(this);
+//	}
 	
 	public Goal getGoal() {
 		return this.goal;

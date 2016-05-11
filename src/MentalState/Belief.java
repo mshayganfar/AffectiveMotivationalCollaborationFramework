@@ -13,11 +13,16 @@ public class Belief {
 		this.goal  = goal;
 		this.label = goal.getPlan().getGoal().getType().toString();
 		this.goal.addBeliefs(this);
+		MentalState.getInstance().addBelief(this);
 	}
 	
 	public Goal getGoal() {
 		return this.goal;
 	}
+	
+//	public void addBeliefToMentalState() {
+//		MentalState.getInstance().addBelief(this);
+//	}
 	
 	public String getLabel() {
 		return this.label;

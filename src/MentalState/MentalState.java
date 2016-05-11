@@ -15,6 +15,7 @@ public class MentalState {
 	
 	private static ArrayList<Goal> goals     = new ArrayList<Goal>();
 	private static ArrayList<Belief> beliefs = new ArrayList<Belief>();
+	private static ArrayList<Motive> motives = new ArrayList<Motive>();
 	
 	private static Map goalBeliefs = new HashMap();
 	
@@ -43,8 +44,12 @@ public class MentalState {
 		goals.add(goal);
 	}
 	
-	public static void addBelief(Goal goal, Belief belief) {
+	public static void addBelief(Belief belief) {
 		beliefs.add(belief);
+	}
+	
+	public static void addMotive(Motive motive) {
+		motives.add(motive);
 	}
 	
 	public static Goal getParentGoal(Goal childGoal) {

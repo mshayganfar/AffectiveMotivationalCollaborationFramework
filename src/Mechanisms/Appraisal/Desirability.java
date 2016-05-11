@@ -20,14 +20,10 @@ public class Desirability extends AppraisalProcesses{
 		Plan eventGoalPlan    = eventGoal.getPlan();
 		Plan topLevelGoalPlan = topLevelGoal.getPlan();
 		
-		if(collaboration.getActualFocus(eventGoal.getPlan()) == null)
+		if(collaboration.getActualFocus() == null)
 			return DESIRABILITY.NEUTRAL;
 		
-		System.out.println(">>> Top Level Goal Status: " + collaboration.getGoalStatus(topLevelGoalPlan));
-		
 		GOAL_STATUS topLevelGoalStatus= collaboration.getGoalStatus(topLevelGoalPlan);
-		
-		System.out.println(collaboration.getPreconditionApplicability(topLevelGoal));
 		
 		if (topLevelGoalStatus.equals(GOAL_STATUS.ACHIEVED)) 
 			return DESIRABILITY.HIGH_DESIRABLE;
@@ -41,8 +37,6 @@ public class Desirability extends AppraisalProcesses{
 		else if ((topLevelGoalStatus.equals(GOAL_STATUS.PENDING)) || (topLevelGoalStatus.equals(GOAL_STATUS.INPROGRESS))) {
 
 			GOAL_STATUS eventGoalStatus= collaboration.getGoalStatus(eventGoalPlan);
-			
-			System.out.println(">>> Event Goal Status: " + collaboration.getGoalStatus(eventGoalPlan));
 			
 			if (eventGoalStatus.equals(GOAL_STATUS.ACHIEVED)) 
 				return DESIRABILITY.DESIRABLE; //postcondition

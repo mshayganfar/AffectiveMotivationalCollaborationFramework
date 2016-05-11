@@ -116,12 +116,24 @@ public class Collaboration extends Mechanisms{
 		
 		String keyString = "";
 		
-		while (plan != null) {
+		while (!plan.getGoal().getType().equals(getDisco().getTop(plan).getType())) {
 			keyString += plan.getParent().getDecomposition().getType().getId();
 			keyString += plan.getParent().getDecomposition().findStep(plan);
 			plan = plan.getParent();
 		}
 		return (keyString+inputName);
+	}
+	
+	private String getApplicabilityKeyValue(Plan plan, String precondition) {
+		
+		String keyString = "";
+
+		while (!plan.getGoal().getType().equals(getDisco().getTop(plan).getType())) {
+			keyString += plan.getParent().getDecomposition().getType().getId();
+			keyString += plan.getParent().getDecomposition().findStep(plan);
+			plan = plan.getParent();
+		}
+		return (keyString+precondition);
 	}
 	
 	public String getInputValue(Plan plan, String inputName) {
@@ -179,10 +191,9 @@ public class Collaboration extends Mechanisms{
 	}
 	
 	public Goal getFocusedGoal() {
-		Plan plan       = disco.getFocus();
-		String taskID   = plan.getType()+"@"+Integer.toHexString(System.identityHashCode(plan));
-		
-		Goal goal = new Goal(mentalProcesses, plan); //MentalState.getInstance().getSpecificGoal(plan); // Change the agent type by reading the value from Disco.
+		Plan plan     = disco.getFocus();
+		String taskID = plan.getType()+"@"+Integer.toHexString(System.identityHashCode(plan));
+		Goal goal     = new Goal(mentalProcesses); //MentalState.getInstance().getSpecificGoal(plan); // Change the agent type by reading the value from Disco.
 		
 		return goal;
 	}
@@ -250,16 +261,12 @@ public class Collaboration extends Mechanisms{
 	
 	public List<Goal> getContributingGoals(Plan parentGoal) {
 		
-		Plan goal;
 		String id;
-		
 		List<Goal> contributerGoalList = new ArrayList<Goal>();
-		List<Plan> contributerPlanList = parentGoal.getChildren();
 		
-		for (int i=0 ; i < contributerPlanList.size() ; i++) {
-			goal = contributerPlanList.get(i);
-			id = goal.getType()+"@"+Integer.toHexString(System.identityHashCode(goal));
-			contributerGoalList.add(new Goal(mentalProcesses, goal)); // Change the agent type by reading the value from Disco.
+		for (Plan childPlan : parentGoal.getChildren()) {
+			id = childPlan.getType()+"@"+Integer.toHexString(System.identityHashCode(childPlan));
+			contributerGoalList.add(new Goal(mentalProcesses, childPlan)); // Change the agent type by reading the value from Disco.
 		}
 		
 		return contributerGoalList;
@@ -451,7 +458,7 @@ public class Collaboration extends Mechanisms{
 		return this.interaction;
 	}
 	
-	public Plan getActualFocus(Plan discoFocus) {
+	public Plan getActualFocus() {
 		
 		Plan actualPlan = this.disco.getFocus();
 		
@@ -475,12 +482,13 @@ public class Collaboration extends Mechanisms{
 	
 	public void updatePreconditionApplicability() {
 		
+		Plan plan;
 		GoalTree goalTree = new GoalTree(mentalProcesses);
-		
 		ArrayList<Node> treeNodes = goalTree.createTree();
 		
 		for (Node node : treeNodes) {
-			preconditionsLOT.put(node.getNodeGoalPlan().getGoal().getType().toString(), node.getNodeGoalPlan().isApplicable());
+			plan = node.getNodeGoalPlan();
+			preconditionsLOT.put(getApplicabilityKeyValue(plan, plan.getType().getPrecondition().getScript()), plan.isApplicable());
 		}
 	}
 	

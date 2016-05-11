@@ -31,26 +31,37 @@ public class Goal {
 	private MentalProcesses mentalProcesses;
 //	private Motive activeMotive = null;
 	
-	public Goal (MentalProcesses mentalProcesses, Plan plan) {
-		this.plan        = plan;
-		this.parentPlan  = plan.getParent();
-		this.label       = plan.getGoal().getType().toString();
-		this.currentTurn = Turns.getInstance().getTurnNumber();
-		this.goalStatus  = GOAL_STATUS.UNKNOWN;
-		this.effort      = 1.0;
-		this.collaboration   = mentalProcesses.getCollaborationMechanism();
+	public Goal (MentalProcesses mentalProcesses) {
 		this.mentalProcesses = mentalProcesses;
+		this.collaboration   = mentalProcesses.getCollaborationMechanism();
+		this.plan            = collaboration.getActualFocus();
+		this.parentPlan      = plan.getParent();
+		this.label           = plan.getGoal().getType().toString();
+		this.currentTurn     = Turns.getInstance().getTurnNumber();
+		this.goalStatus      = GOAL_STATUS.UNKNOWN;
+		this.effort          = 1.0;
+	}
+	
+	public Goal (MentalProcesses mentalProcesses, Plan plan) {
+		this.mentalProcesses = mentalProcesses;
+		this.collaboration   = mentalProcesses.getCollaborationMechanism();
+		this.plan            = plan;
+		this.parentPlan      = plan.getParent();
+		this.label           = plan.getGoal().getType().toString();
+		this.currentTurn     = Turns.getInstance().getTurnNumber();
+		this.goalStatus      = GOAL_STATUS.UNKNOWN;
+		this.effort          = 1.0;
 	}
 	
 	public Goal (MentalProcesses mentalProcesses, Plan plan, GOAL_STATUS goalStatus) {
-		this.plan        = plan;
-		this.parentPlan  = plan.getParent();
-		this.label       = plan.getGoal().getType().toString();
-		this.currentTurn = Turns.getInstance().getTurnNumber();
-		this.goalStatus  = goalStatus;
-		this.effort      = 1.0;
-		this.collaboration   = mentalProcesses.getCollaborationMechanism();
 		this.mentalProcesses = mentalProcesses;
+		this.collaboration   = mentalProcesses.getCollaborationMechanism();
+		this.plan            = collaboration.getActualFocus();;
+		this.parentPlan      = plan.getParent();
+		this.label           = plan.getGoal().getType().toString();
+		this.currentTurn     = Turns.getInstance().getTurnNumber();
+		this.goalStatus      = goalStatus;
+		this.effort          = 1.0;
 	}
 	
 	public void setGoalStatus (GOAL_STATUS goalStatus) {
