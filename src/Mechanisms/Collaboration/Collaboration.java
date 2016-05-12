@@ -127,7 +127,7 @@ public class Collaboration extends Mechanisms{
 		return (keyString+inputName);
 	}
 	
-	private String getApplicabilityKeyValue(Plan plan, String precondition) {
+	public String getApplicabilityKeyValue(Plan plan, String precondition) {
 		
 		String keyString = "";
 
@@ -144,11 +144,11 @@ public class Collaboration extends Mechanisms{
 	}
 	
 	public void setPreconditionValue(Plan plan, Boolean value) {
-		preconditionValues.put(plan.getType().getPrecondition().getScript(), value);
+		preconditionValues.put(getApplicabilityKeyValue(plan, plan.getType().getPrecondition().getScript()), value);
 	}
 	
-	public Object getPreconditionValue(Precondition precondition) {
-		return preconditionValues.get(precondition.getScript());
+	public Object getPreconditionValue(Plan eventPlan) {
+		return preconditionValues.get(getApplicabilityKeyValue(eventPlan, eventPlan.getType().getPrecondition().getScript()));
 	}
 	
 	public boolean isGoalAchieved(Goal goal) {
@@ -272,29 +272,33 @@ public class Collaboration extends Mechanisms{
 		return contributerGoalList;
 	}
 	
-	// NOTE: We assume all goals have postconditions.
 	public AGENT getResponsibleAgent(Plan plan) {
+		
+		clearResponsibleAgents();
+		extractResponsibleAgent(plan);
+		return getOverallResponsibleAgent();
+	}
+	
+	private void clearResponsibleAgents() {
+		childrenResponsibinity.clear();
+	}
+	
+	// NOTE: We assume all goals have postconditions.
+	private void extractResponsibleAgent(Plan plan) {
 		
 		if(plan.getGoal().isPrimitive()) {
 			if (plan.getGoal().getExternal() == null)
-				return AGENT.UNKNOWN;
+				childrenResponsibinity.add(AGENT.UNKNOWN);
 			else if (plan.getGoal().getExternal() == false)
-				return AGENT.SELF;
+				childrenResponsibinity.add(AGENT.SELF);
 			else
-				return AGENT.OTHER;
+				childrenResponsibinity.add(AGENT.OTHER);
 		}
 		else {
-			for (Plan childPlan : plan.getChildren()) {
-				if (childPlan.getGoal().isPrimitive()) {
-					childrenResponsibinity.add(getResponsibleAgent(childPlan));
-				}
-				else {
-					getResponsibleAgent(childPlan);
-				}
-			}
-			
-			return getOverallResponsibleAgent();
+			for (Plan childPlan : plan.getChildren())
+				extractResponsibleAgent(childPlan);
 		}
+		return;
 	}
 
 	private AGENT getOverallResponsibleAgent() {
@@ -312,26 +316,16 @@ public class Collaboration extends Mechanisms{
 				unknownCount++;
 		}
 		
-		if (((agentCount == 0) || (otherCount == 0)) && (unknownCount != 0)) {
-			clearChildrenResponsibility();
+		if (((agentCount == 0) || (otherCount == 0)) && (unknownCount != 0))
 			return AGENT.UNKNOWN;
-		}
-		else if ((agentCount != 0) && (otherCount != 0)) {
-			clearChildrenResponsibility();
+		else if ((agentCount != 0) && (otherCount != 0))
 			return AGENT.BOTH;
-		}
-		else if ((agentCount != 0) && (otherCount == 0) && (unknownCount == 0)) {
-			clearChildrenResponsibility();
+		else if ((agentCount != 0) && (otherCount == 0) && (unknownCount == 0))
 			return AGENT.SELF;
-		}
-		else if ((agentCount == 0) && (otherCount != 0) && (unknownCount == 0)) {
-			clearChildrenResponsibility();
+		else if ((agentCount == 0) && (otherCount != 0) && (unknownCount == 0))
 			return AGENT.OTHER;
-		}
-		else {
-			clearChildrenResponsibility();
-			return null;
-		}
+		else
+			throw new IllegalArgumentException("Illegal Agent Type!");
 	}
 	
 //	public AGENT getResponsibleAgent(Plan plan) {
@@ -403,7 +397,7 @@ public class Collaboration extends Mechanisms{
 	public List<Plan> getContributingPlans(Goal goal) {
 		
 		Plan plan = goal.getParentPlan();
-		clearChildrenResponsibility();
+		clearContributingPlans();
 		extractContributingPlans(plan);
 		return this.contributingPlans;
 	}
@@ -463,10 +457,6 @@ public class Collaboration extends Mechanisms{
 	
 	public ArrayList<AGENT> getDescendentResponsibility() {
 		return childrenResponsibinity;
-	}
-	
-	public void clearChildrenResponsibility() {
-		childrenResponsibinity.clear();
 	}
 	
 	public void test() {

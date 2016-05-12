@@ -4,6 +4,7 @@ import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskClass.Input;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import MentalState.Goal;
@@ -35,13 +36,15 @@ public class Controllability extends AppraisalProcesses{
 		double dblPredecessorsRatio		 	  = getSucceededPredecessorsRatio(eventGoal.getPlan());
 		double dblInputsRatio 			 	  = getAvailableInputRatio(eventGoal);
 		double dblOverallGoalDifficultyValue  = getOverallDifficultyValue(eventGoal);
-		double dblAlternativeRecipeRatio 	  = getAlternativeRecipeRatio(eventGoal);
 		
+		// Next two values are only used for goal failure cases.
+		double dblAlternativeRecipeRatio = getAlternativeRecipeRatio(eventGoal);
 		// This value is useful when the agent needs to check recovery from a failure.
-		double dblRecoveryProbability   = getRecoveryProbability(eventGoal);
+		double dblRecoveryProbability    = getRecoveryProbability(eventGoal);
 		
 		double controllabilityValue = 0.0;
 		
+		// I consider UNKNOWN goal status *not* as a failure.
 		if ((collaboration.getGoalStatus(eventGoal.getPlan()).equals(GOAL_STATUS.BLOCKED)) ||
 				(collaboration.getGoalStatus(eventGoal.getPlan()).equals(GOAL_STATUS.FAILED)) ||
 				(collaboration.getGoalStatus(eventGoal.getPlan()).equals(GOAL_STATUS.INAPPLICABLE))) {
@@ -66,7 +69,14 @@ public class Controllability extends AppraisalProcesses{
 			return CONTROLLABILITY.UNCONTROLLABLE;
 	}
 	
-	private void getDescendentGoals(Goal goal) {
+	private List<Goal> getDescendentGoals(Goal goal) {
+		
+		descendentGoals.clear();
+		extractDescendentGoals(goal);
+		return descendentGoals;
+	}
+	
+	private void extractDescendentGoals(Goal goal) {
 		
 		int i;
 		
@@ -90,7 +100,9 @@ public class Controllability extends AppraisalProcesses{
 				return 0.0;
 		}
 		else {
+			// TO DO: This can be an average of the children's non-external count.
 			return 0.5;
+		}
 //			double motiveTypeSum = 0.0;
 //			int countMotives = 0;
 //			descendentGoals.clear();
@@ -101,13 +113,12 @@ public class Controllability extends AppraisalProcesses{
 //				countMotives++;
 //			}
 //			return (double)motiveTypeSum/((countMotives == 0) ? 1 : countMotives);
-		}
 	}
 	
 	// Autonomy: The quality or state of being self-governing. Self-directing freedom or self-governing state.
 	private double getAutonomyValue(Goal eventGoal) {
 
-		double countSelfResponsible = 0;
+		double countSelfResponsible = 0.0;
 		
 		Plan plan = eventGoal.getPlan();
 		
@@ -115,14 +126,13 @@ public class Controllability extends AppraisalProcesses{
 			if (collaboration.getResponsibleAgent(plan).equals(AGENT.SELF))
 				return 1.0;
 			else if (collaboration.getResponsibleAgent(plan).equals(AGENT.OTHER))
-				return -0.5;
-			else  if (collaboration.getResponsibleAgent(plan).equals(AGENT.UNKNOWN))
 				return -1.0;
+			else  if (collaboration.getResponsibleAgent(plan).equals(AGENT.UNKNOWN))
+				return -0.5;
 			else 
 				throw new IllegalArgumentException("Illegal Agent Type: " + collaboration.getResponsibleAgent(plan));
 		}
 		else {
-			collaboration.clearChildrenResponsibility();
 			collaboration.getResponsibleAgent(plan);
 			
 			for (AGENT agent : collaboration.getDescendentResponsibility()) {
@@ -131,12 +141,11 @@ public class Controllability extends AppraisalProcesses{
 				else if (agent.equals(AGENT.BOTH))
 					countSelfResponsible += 0.5;
 				else if (agent.equals(AGENT.OTHER))
-					countSelfResponsible -= 0.5;
-				else if (agent.equals(AGENT.UNKNOWN))
 					countSelfResponsible -= 1.0;
+				else if (agent.equals(AGENT.UNKNOWN))
+					countSelfResponsible -= 0.5;
 			}
-			
-			return ((double)countSelfResponsible/((collaboration.getDescendentResponsibility().size() == 0) ? 1 : collaboration.getDescendentResponsibility().size()));
+			return ((double)countSelfResponsible/((collaboration.getDescendentResponsibility().size() == 0) ? 1.0 : collaboration.getDescendentResponsibility().size()));
 		}
 	}
 	
@@ -204,6 +213,7 @@ public class Controllability extends AppraisalProcesses{
 		ArrayList<Input> availableInputs = new ArrayList<Input>();
 		
 		for (Input input : undefinedInputs)
+			// I check only private beliefs about input availabilities (since they include shared beliefs about input availabilities).
 			if (isInputAvailable(eventPlan, input))
 				availableInputs.add(input);
 		
@@ -228,7 +238,7 @@ public class Controllability extends AppraisalProcesses{
 	
 	public boolean canPreconditionSucceed(Plan eventPlan) {
 		
-		return (collaboration.getPreconditionValue(eventPlan.getType().getPrecondition()) != null) ? true : false;
+		return (collaboration.getPreconditionValue(eventPlan) != null) ? true : false;
 	}
 	
 	public boolean canPredecessorSucceed(Plan plan) {
@@ -296,7 +306,7 @@ public class Controllability extends AppraisalProcesses{
 				if(collaboration.isInputAvailable(eventGoal, input))
 					dblAvailableInputCounter++;
 		}
-		return ((double)dblAvailableInputCounter/((collaboration.getInputs(eventGoal).size() == 0) ? 1 : collaboration.getInputs(eventGoal).size()));
+		return ((double)dblAvailableInputCounter/((collaboration.getInputs(eventGoal).size() == 0) ? 1.0 : collaboration.getInputs(eventGoal).size()));
 		
 	}
 	
@@ -333,10 +343,9 @@ public class Controllability extends AppraisalProcesses{
 					throw new IllegalStateException("Difficulty value: " + DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty")));
 			}
 			
-			descendentGoals.clear();
-			getDescendentGoals(eventGoal);
+			List<Goal> descendents = getDescendentGoals(eventGoal);
 			
-			for (Goal descendent : descendentGoals) {
+			for (Goal descendent : descendents) {
 				switch (DIFFICULTY.valueOf(descendent.getPlan().getType().getProperty("@difficulty"))) {
 					case NORMAL:
 						goalDifficultySum += 0.0;
@@ -367,8 +376,19 @@ public class Controllability extends AppraisalProcesses{
 	
 	private boolean hasPreconditionFailed(Plan eventPlan) {
 		
-//		if (!eventPlan.getType().getPrecondition().evalCondition(eventPlan.getGoal()))
-		if (!eventPlan.getGoal().isApplicable())
+//		Boolean preconditionStatus = collaboration.getPreconditionApplicabilities().get(
+//				collaboration.getApplicabilityKeyValue(eventPlan, eventPlan.getType().getPrecondition().getScript()));
+//		
+//		if (preconditionStatus == null)
+//			return true;
+//		else if (preconditionStatus)
+//			return false;
+//		else
+//			return true;
+		
+		if (eventPlan.getGoal().isApplicable() == null)
+			return true;
+		else if (!eventPlan.getGoal().isApplicable())
 			return true;
 		else
 			return false;
