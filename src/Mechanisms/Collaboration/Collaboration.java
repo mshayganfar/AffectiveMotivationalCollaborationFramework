@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import Mechanisms.Mechanisms;
+import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import MentalState.Goal;
 import MentalState.MentalState;
 import MetaInformation.GoalTree;
@@ -41,6 +42,8 @@ public class Collaboration extends Mechanisms{
 	private boolean collaborationStatus = true;
 	
 	private ArrayList<AGENT> childrenResponsibinity;
+	private List<Plan> predecessors = new ArrayList<Plan>();
+	private List<Plan> contributingPlans = new ArrayList<Plan>();
 	
 	private Map<String, Boolean> preconditionsLOT = new HashMap<String, Boolean>();
 	
@@ -228,9 +231,7 @@ public class Collaboration extends Mechanisms{
 		else if (status.equals(Status.INAPPLICABLE))
 			return GOAL_STATUS.INAPPLICABLE;
 		else if (status.equals(Status.DONE)) {
-//			return GOAL_STATUS.DONE;
 //			Boolean planAchievement = isPlanAchieved(plan);
-			
 			Boolean planAchievement = plan.getGoal().getSuccess();
 			
 			if (planAchievement == null)
@@ -241,7 +242,6 @@ public class Collaboration extends Mechanisms{
 				return GOAL_STATUS.FAILED;
 			else
 				throw new IllegalStateException("Status: " + status.toString() + " , getSuccess()'s result: " + planAchievement);
-			
 //			if (!plan.isFailed())
 //				return GOAL_STATUS.ACHIEVED;
 //			else 
@@ -266,7 +266,7 @@ public class Collaboration extends Mechanisms{
 		
 		for (Plan childPlan : parentGoal.getChildren()) {
 			id = childPlan.getType()+"@"+Integer.toHexString(System.identityHashCode(childPlan));
-			contributerGoalList.add(new Goal(mentalProcesses, childPlan)); // Change the agent type by reading the value from Disco.
+			contributerGoalList.add(new Goal(mentalProcesses)); // Change the agent type by reading the value from Disco.
 		}
 		
 		return contributerGoalList;
@@ -375,14 +375,52 @@ public class Collaboration extends Mechanisms{
 	
 //	public RECIPE_APPLICABILITY getRecipeApplicability(Goal goal) { return RECIPE_APPLICABILITY.APPLICABLE; }
 	
+	private void clearPredecessors() {
+		this.predecessors.clear();
+	}
+	
 	public List<Plan> getPredecessors(Goal goal) {
 		
-		return goal.getPlan().getPredecessors();
+		Plan plan = goal.getPlan();
+		clearPredecessors();
+		extractPredecessors(plan);
+		return this.predecessors;
+	}
+	
+	private void extractPredecessors(Plan plan) {
+		
+		for (Plan predecessor : plan.getPredecessors()) {
+			if (predecessor.isPrimitive())
+				this.predecessors.add(predecessor);
+			else {
+				for (Plan child : predecessor.getChildren())
+					extractPredecessors(child);
+			}
+		}
+		return;
 	}
 	
 	public List<Plan> getContributingPlans(Goal goal) {
 		
-		return goal.getPlan().getChildren();
+		Plan plan = goal.getParentPlan();
+		clearChildrenResponsibility();
+		extractContributingPlans(plan);
+		return this.contributingPlans;
+	}
+	
+	public void clearContributingPlans() {
+		this.contributingPlans.clear();
+	}
+	
+	public void extractContributingPlans(Plan plan) {
+		
+		if (plan.isPrimitive()) {
+			contributingPlans.add(plan);
+		}
+		else {
+			for (Plan child : plan.getChildren())
+				extractContributingPlans(child);
+		}
 	}
 	
 	public void updatePreviousFocus() {

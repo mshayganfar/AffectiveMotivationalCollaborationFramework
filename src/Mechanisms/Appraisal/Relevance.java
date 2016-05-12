@@ -3,8 +3,9 @@ package Mechanisms.Appraisal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.omg.CORBA.UNKNOWN;
+
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
-import Mechanisms.Perception.Perception;
 import MentalState.Belief;
 import MentalState.Goal;
 import MetaInformation.GoalTree;
@@ -38,7 +39,7 @@ public class Relevance extends AppraisalProcesses {
 		
 		int goalStatus           = getGoalStatusImpact(eventGoal);
 		double beliefPersistence = getBeliefPersistence(eventGoal);
-		double beliefSaliency    = getBeliefSaliency(eventGoal); //Distance between live nodes 
+		double beliefSaliency    = getBeliefSaliency(eventGoal); // Distance between live nodes 
 		double saliencyMagnitude = getSaliencyMagnitude(eventGoal);
 		
 		if (saliencyMagnitude > 0)
@@ -60,18 +61,17 @@ public class Relevance extends AppraisalProcesses {
 		
 		int repeatedBeliefsCount = 1;
 		int repeatedBeliefsSum = 0;
-		double repeatedBeliefsAverage = 1;
+		double repeatedBeliefsAverage = 1.0;
 		
 		List<String> uniqueBeliefs = new ArrayList<String>();
 		
 		for (Belief belief : eventGoal.getBeliefs()) {
-//			if (belief.getTurn() == eventGoal.getTurn()) {
-				if ((belief.getOccurrenceCount() > 1) && (!uniqueBeliefs.contains(belief.getLabel()))) {
-					uniqueBeliefs.add(belief.getLabel());
-					repeatedBeliefsCount++;
-					repeatedBeliefsSum += belief.getOccurrenceCount();
-				}
-//			}
+//			if (belief.getTurn() == eventGoal.getTurn())
+			if ((belief.getOccurrenceCount() > 1) && (!uniqueBeliefs.contains(belief.getLabel()))) {
+				uniqueBeliefs.add(belief.getLabel());
+				repeatedBeliefsCount++;
+				repeatedBeliefsSum += belief.getOccurrenceCount();
+			}
 		}
 		
 		repeatedBeliefsCount = (repeatedBeliefsCount > 1) ? (repeatedBeliefsCount-1) : repeatedBeliefsCount;
@@ -96,11 +96,14 @@ public class Relevance extends AppraisalProcesses {
 		
 		Node lcaNode = getLowestCommonAncestor(goal.getPlan(), collaboration.getDisco().getFocus());
 		
-		int lcaGoalDistance  = getDistanceFromTop(lcaNode.getNodeGoalPlan());
+		if (lcaNode != null) {
+			int lcaGoalDistance  = getDistanceFromTop(lcaNode.getNodeGoalPlan());
+			int distance = firstGoalDistance + secondGoalDistance - 2*lcaGoalDistance;
 		
-		double distance = firstGoalDistance + secondGoalDistance - 2*lcaGoalDistance;
-		
-		return (double)2.0/distance;
+			return (distance != 0) ? (double)2.0/distance : 2.0;
+		}
+		else
+			return 0.0;
 	}
 	
 	private int getDistanceFromTop(Plan goalPlan) {
@@ -123,74 +126,13 @@ public class Relevance extends AppraisalProcesses {
 		
 		ArrayList<Node> treeNodes = goalTree.createTree();
 		
-		ArrayList<Node> leveledUpNodes = levelUpNodes(treeNodes, firstGoalPlan, secondGoalPlan);
+		ArrayList<Node> leveledUpNodes = goalTree.levelUpNodes(treeNodes, firstGoalPlan, secondGoalPlan);
 		
 		if (leveledUpNodes != null) {
-			lcaGoalNode = goUpToCommonAncestor(treeNodes, leveledUpNodes);
+			lcaGoalNode = goalTree.goUpToCommonAncestor(treeNodes, leveledUpNodes);
 		}
 		
 		return lcaGoalNode;
-	}
-	
-	private Node goUpToCommonAncestor(ArrayList<Node> treeNodes, ArrayList<Node> leveledUpNodes) {
-		
-		Node firstNodeAncestor, secondNodeAncestor;
-		
-		firstNodeAncestor  = leveledUpNodes.get(0);
-		secondNodeAncestor = leveledUpNodes.get(1);
-		
-		while (!firstNodeAncestor.getNodeTaskClass().equals(secondNodeAncestor.getNodeTaskClass())) {
-			firstNodeAncestor  = getParentNode(treeNodes, leveledUpNodes.get(0));
-			secondNodeAncestor = getParentNode(treeNodes, leveledUpNodes.get(1));
-			if ((firstNodeAncestor == null) || (secondNodeAncestor == null)) {
-				return null;
-			}
-		}
-		
-		return firstNodeAncestor;
-	}
-	
-	private Node getParentNode(ArrayList<Node> treeNodes, Node targetNode) {
-		
-		for(int i = treeNodes.size()-1 ; i >= 0 ; i--) {
-			if (treeNodes.get(i).equals(targetNode)) {
-				for(int j = i-1 ; j >= 0 ; j--) {
-					if (treeNodes.get(j).getNodeDepthValue() == targetNode.getNodeDepthValue()-1) {
-						return treeNodes.get(j);
-					}
-				}
-			}
-		}
-		
-		return null;
-	}
-	
-	private ArrayList<Node> levelUpNodes(ArrayList<Node> treeNodes, Plan firstGoalPlan, Plan secondGoalPlan) {
-		
-		Node firstNode = null, secondNode = null;
-		
-		ArrayList<Node> twoLeveledNodes = new ArrayList<Node>();
-		
-		for (Node node : treeNodes) {
-			if(node.getNodeGoalPlan().getType().equals(firstGoalPlan.getType()))
-				firstNode = node;
-			if(node.getNodeGoalPlan().getType().equals(secondGoalPlan.getType()))
-				secondNode = node;
-		}
-		
-		while (firstNode.getNodeDepthValue() > secondNode.getNodeDepthValue())
-			firstNode = getParentNode(treeNodes, firstNode);
-		
-		while (firstNode.getNodeDepthValue() < secondNode.getNodeDepthValue())
-			secondNode = getParentNode(treeNodes, secondNode);
-		
-		twoLeveledNodes.add(firstNode);
-		twoLeveledNodes.add(secondNode);
-		
-		if (twoLeveledNodes.size() == 2)
-			return twoLeveledNodes;
-		else
-			return null;
 	}
 	
 	private int getGoalStatusImpact(Goal goal) {
@@ -203,39 +145,40 @@ public class Relevance extends AppraisalProcesses {
 			return 1;
 		else if (goalStatus.equals(GOAL_STATUS.FAILED) || 
 				goalStatus.equals(GOAL_STATUS.BLOCKED) || 
-				goalStatus.equals(GOAL_STATUS.INAPPLICABLE)) 
+				goalStatus.equals(GOAL_STATUS.INAPPLICABLE) ||
+				goalStatus.equals(GOAL_STATUS.UNKNOWN))
 			return -1;
 		else
-			return 0;
+			throw new IllegalArgumentException("Illegal Goal Status: " + goalStatus);
 	}
 	
 	private double getSaliencyMagnitude(Goal goal) {
 		
-		int preconditionKnownValue  = (collaboration.getPreConditionStatus(goal.getPlan()) != null) ? 1 : 0;
-		int postconditionKnownValue = (collaboration.getPostConditionStatus(goal.getPlan()) != null) ? 1 : 0;
-		int predecessorsGoalsKnownValue             = 0;
-		int contributingGoalspredecessorsKnownValue = 0;
+		int knownPreconditionValue  = (collaboration.getPreConditionStatus(goal.getPlan()) != null) ? 1 : 0;		
+		int knownPostconditionValue = (!collaboration.getPostConditionStatus(goal.getPlan()).equals(GOAL_STATUS.UNKNOWN)) ? 1 : 0;
+		int knownPredecessorGoalsCount  = 0;
+		int knownContributingGoalsCount = 0;
 		
-		List<Plan> predecessors      = collaboration.getPredecessors(goal);
+		List<Plan> predecessors 	 = collaboration.getPredecessors(goal);
 		List<Plan> contributingGoals = collaboration.getContributingPlans(goal);
 
-		int preconditionAllValue  = 1;
-		int postconditionAllValue = 1;
-		int predecessorsGoalsAllValue             = predecessors.size();
-		int contributingGoalspredecessorsAllValue = contributingGoals.size();
+		int totalPreconditionValue  = 1;
+		int totalPostconditionValue = 1;
+		int totalPredecessorGoalsCount  = predecessors.size();
+		int totalContributingGoalsCount = contributingGoals.size();
 		
 		for(Plan predecessor : predecessors) {
-			if (collaboration.getPreConditionStatus(predecessor) != null)
-				predecessorsGoalsKnownValue++;
+			if (!collaboration.getPostConditionStatus(predecessor).equals(GOAL_STATUS.UNKNOWN))
+				knownPredecessorGoalsCount++;
 		}
 		
 		for(Plan contributingGoal : contributingGoals) {
 			if (collaboration.getPreConditionStatus(contributingGoal) != null)
-				contributingGoalspredecessorsKnownValue++;
+				knownContributingGoalsCount++;
 		}
 		
-		int n = preconditionKnownValue + postconditionKnownValue + predecessorsGoalsKnownValue + contributingGoalspredecessorsKnownValue;
-		int d = preconditionAllValue + postconditionAllValue + predecessorsGoalsAllValue + contributingGoalspredecessorsAllValue;
+		int n = knownPreconditionValue + knownPostconditionValue + knownPredecessorGoalsCount + knownContributingGoalsCount;
+		int d = totalPreconditionValue + totalPostconditionValue + totalPredecessorGoalsCount + totalContributingGoalsCount;
 		
 		double urgency    = this.motivation.getMotiveUrgency(goal.getActiveMotive());
 		double importance = this.motivation.getMotiveImportance(goal.getActiveMotive());

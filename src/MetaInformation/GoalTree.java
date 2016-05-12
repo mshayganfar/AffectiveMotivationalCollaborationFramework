@@ -57,6 +57,67 @@ public class GoalTree {
 		return count;
 	}
 	
+	public ArrayList<Node> levelUpNodes(ArrayList<Node> treeNodes, Plan firstGoalPlan, Plan secondGoalPlan) {
+		
+		Node firstNode = null, secondNode = null;
+		
+		ArrayList<Node> twoLeveledNodes = new ArrayList<Node>();
+		
+		for (Node node : treeNodes) {
+			if(node.getNodeGoalPlan().getType().equals(firstGoalPlan.getType()))
+				firstNode = node;
+			if(node.getNodeGoalPlan().getType().equals(secondGoalPlan.getType()))
+				secondNode = node;
+		}
+		
+		while (firstNode.getNodeDepthValue() > secondNode.getNodeDepthValue())
+			firstNode = getParentNode(treeNodes, firstNode);
+		
+		while (firstNode.getNodeDepthValue() < secondNode.getNodeDepthValue())
+			secondNode = getParentNode(treeNodes, secondNode);
+		
+		twoLeveledNodes.add(firstNode);
+		twoLeveledNodes.add(secondNode);
+		
+		if (twoLeveledNodes.size() == 2)
+			return twoLeveledNodes;
+		else
+			return null;
+	}
+	
+	public Node goUpToCommonAncestor(ArrayList<Node> treeNodes, ArrayList<Node> leveledUpNodes) {
+		
+		Node firstNodeAncestor, secondNodeAncestor;
+		
+		firstNodeAncestor  = leveledUpNodes.get(0);
+		secondNodeAncestor = leveledUpNodes.get(1);
+		
+		while (!firstNodeAncestor.getNodeTaskClass().equals(secondNodeAncestor.getNodeTaskClass())) {
+			firstNodeAncestor  = getParentNode(treeNodes, leveledUpNodes.get(0));
+			secondNodeAncestor = getParentNode(treeNodes, leveledUpNodes.get(1));
+			if ((firstNodeAncestor == null) || (secondNodeAncestor == null)) {
+				return null;
+			}
+		}
+		
+		return firstNodeAncestor;
+	}
+
+	private Node getParentNode(ArrayList<Node> treeNodes, Node targetNode) {
+		
+		for(int i = treeNodes.size()-1 ; i >= 0 ; i--) {
+			if (treeNodes.get(i).equals(targetNode)) {
+				for(int j = i-1 ; j >= 0 ; j--) {
+					if (treeNodes.get(j).getNodeDepthValue() == targetNode.getNodeDepthValue()-1) {
+						return treeNodes.get(j);
+					}
+				}
+			}
+		}
+		
+		return null;
+	}
+	
 	private Node createNode(Plan goalPlan, int planDepthValue) {
 		
 		if (goalPlan != null)

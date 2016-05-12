@@ -218,12 +218,14 @@ public class Motivation extends Mechanisms {
 		
 		// This is based on the fact that if there is no alternative recipe, the motive is more important.
 		// And whether the current alternative recipe can remove the current impasse.
-		if(motive.getGoal().getPlan().isPrimitive())
+		Plan plan = motive.getGoal().getPlan();
+		
+		if(plan.isPrimitive())
 			return 1.0;
 		else {
-			if (motive.getGoal().getPlan().getDecompositions().size() < 1)
+			if (plan.getDecompositions().size() < 1)
 				return 1.0;
-			else if ((motive.getGoal().getPlan().getDecompositions().size() >= 1) && (motive.getGoal().getPlan().getFailed().size() >= 1))
+			else if ((plan.getDecompositions().size() >= 1) && (plan.getFailed().size() >= 1))
 				return 1.0;
 			else
 				return 0.0;
@@ -236,20 +238,14 @@ public class Motivation extends Mechanisms {
 		double urgencyMitigationValue = 0.0;
 		
 		for (Plan plan : motive.getGoal().getPlan().getSuccessors()) {
-			if (collaboration.getResponsibleAgent(motive.getGoal().getPlan()).equals(AGENT.OTHER))
+			if (collaboration.getResponsibleAgent(plan).equals(AGENT.OTHER))
 				urgencySuccessorValue++;
-			else if (collaboration.getResponsibleAgent(motive.getGoal().getPlan()).equals(AGENT.BOTH))
+			else if (collaboration.getResponsibleAgent(plan).equals(AGENT.BOTH))
 				urgencySuccessorValue += 0.5;
 		}
-		
-		// Later, I should check whether the goal is a tactical one, then influence urgency of the related motive.
-		urgencyMitigationValue = (isAcknowledgementMotive(motive.getGoal())) ? 1 : 0;
+		urgencyMitigationValue = (motive.getGoal().isTactical()) ? 1.0 : 0.0;
 		
 		return (urgencySuccessorValue + urgencyMitigationValue);
-	}
-	
-	private boolean isAcknowledgementMotive(Goal goal) {
-		return false;
 	}
 	
 	public double getMotiveInsistence(Motive motive) {

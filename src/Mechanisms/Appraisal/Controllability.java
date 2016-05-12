@@ -5,12 +5,9 @@ import edu.wpi.cetask.TaskClass.Input;
 
 import java.util.ArrayList;
 
-import Mechanisms.Appraisal.Desirability.DESIRABILITY;
-import Mechanisms.Collaboration.Collaboration.FOCUS_TYPE;
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import MentalState.Goal;
 import MentalState.Goal.DIFFICULTY;
-import MentalState.MentalState;
 import MentalState.Motive.MOTIVE_TYPE;
 import MetaInformation.GoalTree;
 import MetaInformation.MentalProcesses;

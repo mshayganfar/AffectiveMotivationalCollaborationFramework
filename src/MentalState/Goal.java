@@ -26,6 +26,7 @@ public class Goal {
 	private String label;
 	private int currentTurn;
 	private double effort;
+	private boolean tactical;
 	private GOAL_STATUS goalStatus;
 	private Collaboration collaboration;
 	private MentalProcesses mentalProcesses;
@@ -40,6 +41,7 @@ public class Goal {
 		this.currentTurn     = Turns.getInstance().getTurnNumber();
 		this.goalStatus      = GOAL_STATUS.UNKNOWN;
 		this.effort          = 1.0;
+		this.tactical        = false;
 	}
 	
 	public Goal (MentalProcesses mentalProcesses, Plan plan) {
@@ -51,6 +53,19 @@ public class Goal {
 		this.currentTurn     = Turns.getInstance().getTurnNumber();
 		this.goalStatus      = GOAL_STATUS.UNKNOWN;
 		this.effort          = 1.0;
+		this.tactical        = false;
+	}
+	
+	public Goal (MentalProcesses mentalProcesses, Plan plan, boolean tactical) {
+		this.mentalProcesses = mentalProcesses;
+		this.collaboration   = mentalProcesses.getCollaborationMechanism();
+		this.plan            = plan;
+		this.parentPlan      = plan.getParent();
+		this.label           = plan.getGoal().getType().toString();
+		this.currentTurn     = Turns.getInstance().getTurnNumber();
+		this.goalStatus      = GOAL_STATUS.UNKNOWN;
+		this.effort          = 1.0;
+		this.tactical        = tactical;
 	}
 	
 	public Goal (MentalProcesses mentalProcesses, Plan plan, GOAL_STATUS goalStatus) {
@@ -62,6 +77,11 @@ public class Goal {
 		this.currentTurn     = Turns.getInstance().getTurnNumber();
 		this.goalStatus      = goalStatus;
 		this.effort          = 1.0;
+		this.tactical        = false;
+	}
+	
+	public boolean isTactical() {
+		return this.tactical;
 	}
 	
 	public void setGoalStatus (GOAL_STATUS goalStatus) {
