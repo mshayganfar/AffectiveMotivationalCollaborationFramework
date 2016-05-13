@@ -210,9 +210,6 @@ public class Collaboration extends Mechanisms{
 		else {
 			return MentalState.getInstance().getGoals().get(0); // First Goal is always the top level goal.
 		}
-
-		// String taskID = plan.getType()+"@"+Integer.toHexString(System.identityHashCode(plan));
-		
 		return null;
 	}
 	
@@ -220,15 +217,19 @@ public class Collaboration extends Mechanisms{
 		
 		Status status = plan.getStatus();
 		
+		Boolean preconditionApplicability = getPreconditionApplicability(plan);
+		
 		if (status.equals(Status.IN_PROGRESS))
 			return GOAL_STATUS.INPROGRESS;
 		else if (status.equals(Status.BLOCKED))
 			return GOAL_STATUS.BLOCKED;
 		else if (status.equals(Status.PENDING))
 			return GOAL_STATUS.PENDING;
-		else if (status.equals(Status.INAPPLICABLE))
-			return GOAL_STATUS.INAPPLICABLE;
-		else if (status.equals(Status.DONE)) {
+		else if (preconditionApplicability != null)
+			if (!preconditionApplicability)
+				return GOAL_STATUS.INAPPLICABLE;
+		
+		if (status.equals(Status.DONE)) {
 //			Boolean planAchievement = isPlanAchieved(plan);
 			Boolean planAchievement = plan.getGoal().getSuccess();
 			
@@ -522,9 +523,9 @@ public class Collaboration extends Mechanisms{
 		return preconditionsLOT;
 	}
 	
-	public Boolean getPreconditionApplicability(Goal goal) {
+	public Boolean getPreconditionApplicability(Plan plan) {
 		
-		return preconditionsLOT.get(goal.getPlan().getGoal().getType().toString());
+		return preconditionsLOT.get(plan.getGoal().getType().toString());
 	}
 	
 	private Plan getLastContributingPlan(Plan plan) {

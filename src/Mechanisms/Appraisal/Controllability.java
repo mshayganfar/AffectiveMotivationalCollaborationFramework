@@ -263,17 +263,19 @@ public class Controllability extends AppraisalProcesses{
 				}
 			}
 		}
-		else {
-			if (plan.isPrimitive()) {
-				if (!(canProvideInput(plan) && canPreconditionSucceed(plan)))
-					return false;
-			}
-			else {
-				for (Plan child : plan.getChildren())
-					if (!canPredecessorSucceed(child))
-						return false;
-			}
-		}
+		// I found no need for the following code, since no unachieved predecessor requires no inspection.
+		
+//		else {
+//			if (plan.isPrimitive()) {
+//				if (!(canProvideInput(plan) && canPreconditionSucceed(plan)))
+//					return false;
+//			}
+//			else {
+//				for (Plan child : plan.getChildren())
+//					if (!canPredecessorSucceed(child))
+//						return false;
+//			}
+//		}
 		return true;
 	}
 	
