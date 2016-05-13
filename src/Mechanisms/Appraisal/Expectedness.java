@@ -22,18 +22,16 @@ public class Expectedness extends AppraisalProcesses{
 			else
 				return EXPECTEDNESS.MOST_UNEXPECTED;
 		}
-//		else if (disco.getLastOccurrence().isUnexplained()) {
-//			if (disco.getTop(disco.getFocus()).getType().isPathFrom(eventGoal.getPlan().getType()))
-//				return EXPECTEDNESS.UNEXPECTED;
-//			else
-//				return EXPECTEDNESS.MOST_UNEXPECTED;
-//		}
 		else {
 			if (!disco.isLastShift())
 				return EXPECTEDNESS.MOST_EXPECTED;
 			else
 				return EXPECTEDNESS.EXPECTED;
 		}
-		
+//		else if (disco.getLastOccurrence().isUnexplained()) {
+//		if (disco.getTop(disco.getFocus()).getType().isPathFrom(eventGoal.getPlan().getType()))
+//			return EXPECTEDNESS.UNEXPECTED;
+//		else
+//			return EXPECTEDNESS.MOST_UNEXPECTED;
 	}
 }
