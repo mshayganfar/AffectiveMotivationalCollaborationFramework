@@ -238,7 +238,12 @@ public class Controllability extends AppraisalProcesses{
 	
 	public boolean canPreconditionSucceed(Plan eventPlan) {
 		
-		return (collaboration.getPreconditionValue(eventPlan) != null) ? true : false;
+		if (collaboration.getPreconditionValue(eventPlan) == null)
+			return false;
+		else if (collaboration.getPreconditionValue(eventPlan))
+			return true;
+		else
+			return false;
 	}
 	
 	public boolean canPredecessorSucceed(Plan plan) {
@@ -272,7 +277,14 @@ public class Controllability extends AppraisalProcesses{
 		return true;
 	}
 	
-	private void getUnachievedChildren(Plan plan) {
+	private List<Plan> getUnachievedChildren(Plan plan) {
+		
+		unachievedChildren.clear();
+		extractUnachievedChildren(plan);
+		return unachievedChildren;
+	}
+	
+	private void extractUnachievedChildren(Plan plan) {
 		
 		if (plan.isPrimitive()) {
 			if (!collaboration.getGoalStatus(plan).equals(GOAL_STATUS.ACHIEVED))
@@ -280,19 +292,17 @@ public class Controllability extends AppraisalProcesses{
 		}
 		else {
 			for (Plan child : plan.getChildren())
-				 getUnachievedChildren(child);
+				extractUnachievedChildren(child);
 		}
 	}
 	
 	public boolean canChildrenSucceed(Plan plan) {
 		
-		unachievedChildren.clear();
-		getUnachievedChildren(plan);
+		List<Plan> unachievedDescendents = getUnachievedChildren(plan);
 		
-		for (Plan child : unachievedChildren) {
+		for (Plan child : unachievedDescendents)
 			if (!(canProvideInput(child) && canPreconditionSucceed(child) && canPredecessorSucceed(child)))
 				return false;
-		}
 		
 		return true;
 	}

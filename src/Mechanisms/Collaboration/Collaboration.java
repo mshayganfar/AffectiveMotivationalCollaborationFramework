@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import Mechanisms.Mechanisms;
-import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import MentalState.Goal;
 import MentalState.MentalState;
 import MetaInformation.GoalTree;
@@ -17,7 +16,6 @@ import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskModel;
 import edu.wpi.cetask.Plan.Status;
 import edu.wpi.cetask.TaskClass.Input;
-import edu.wpi.cetask.TaskClass.Precondition;
 import edu.wpi.disco.Agent;
 import edu.wpi.disco.Disco;
 import edu.wpi.disco.Interaction;
@@ -147,7 +145,7 @@ public class Collaboration extends Mechanisms{
 		preconditionValues.put(getApplicabilityKeyValue(plan, plan.getType().getPrecondition().getScript()), value);
 	}
 	
-	public Object getPreconditionValue(Plan eventPlan) {
+	public Boolean getPreconditionValue(Plan eventPlan) {
 		return preconditionValues.get(getApplicabilityKeyValue(eventPlan, eventPlan.getType().getPrecondition().getScript()));
 	}
 	
@@ -402,11 +400,11 @@ public class Collaboration extends Mechanisms{
 		return this.contributingPlans;
 	}
 	
-	public void clearContributingPlans() {
+	private void clearContributingPlans() {
 		this.contributingPlans.clear();
 	}
 	
-	public void extractContributingPlans(Plan plan) {
+	private void extractContributingPlans(Plan plan) {
 		
 		if (plan.isPrimitive()) {
 			contributingPlans.add(plan);

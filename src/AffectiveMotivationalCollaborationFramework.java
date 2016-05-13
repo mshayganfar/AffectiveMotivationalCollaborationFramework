@@ -2,8 +2,6 @@ import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
 import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
 import Mechanisms.Appraisal.Relevance.RELEVANCE;
-import Mechanisms.Collaboration.Collaboration;
-import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import Mechanisms.Motivation.SatisfactionDrive;
 import MentalState.Belief;
 import MentalState.Goal;
