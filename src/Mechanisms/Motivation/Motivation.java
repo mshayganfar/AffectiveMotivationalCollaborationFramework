@@ -223,7 +223,7 @@ public class Motivation extends Mechanisms {
 		if(plan.isPrimitive())
 			return 1.0;
 		else {
-			if (plan.getDecompositions().size() < 1)
+			if (plan.getDecompositions().size() == 0)
 				return 1.0;
 			else if ((plan.getDecompositions().size() >= 1) && (plan.getFailed().size() >= 1))
 				return 1.0;
@@ -245,7 +245,10 @@ public class Motivation extends Mechanisms {
 		}
 		urgencyMitigationValue = (motive.getGoal().isTactical()) ? 1.0 : 0.0;
 		
-		return (urgencySuccessorValue + urgencyMitigationValue);
+		urgencySuccessorValue  = (motive.getGoal().getPlan().getSuccessors().size() == 0) ? 0.0 : 
+			(double)urgencySuccessorValue/motive.getGoal().getPlan().getSuccessors().size();
+		
+		return ((double)(urgencySuccessorValue + urgencyMitigationValue))/2.0;
 	}
 	
 	public double getMotiveInsistence(Motive motive) {

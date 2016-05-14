@@ -167,7 +167,8 @@ public class Collaboration extends Mechanisms{
 	
 	public boolean isInputAvailable(Goal goal, Input input) {
 		
-		if(!goal.getPlan().getGoal().isDefinedSlot(input.getName()))
+		if(inputValues.get(getKeyValue(goal.getPlan(), input.getName())) == null)
+//		if(!goal.getPlan().getGoal().isDefinedSlot(input.getName()))
 			return false;
 		
 		return true;
@@ -525,7 +526,7 @@ public class Collaboration extends Mechanisms{
 	
 	public Boolean getPreconditionApplicability(Plan plan) {
 		
-		return preconditionsLOT.get(plan.getGoal().getType().toString());
+		return preconditionsLOT.get(getApplicabilityKeyValue(plan, plan.getType().getPrecondition().getScript()));
 	}
 	
 	private Plan getLastContributingPlan(Plan plan) {

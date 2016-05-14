@@ -60,7 +60,7 @@ public class Relevance extends AppraisalProcesses {
 	private double getBeliefPersistence(Goal eventGoal) {
 		
 		int repeatedBeliefsCount = 1;
-		int repeatedBeliefsSum = 0;
+		int repeatedBeliefsSum   = 0;
 		double repeatedBeliefsAverage = 1.0;
 		
 		List<String> uniqueBeliefs = new ArrayList<String>();
@@ -154,7 +154,7 @@ public class Relevance extends AppraisalProcesses {
 	
 	private double getSaliencyMagnitude(Goal goal) {
 		
-		int knownPreconditionValue  = (collaboration.getPreConditionStatus(goal.getPlan()) != null) ? 1 : 0;		
+		int knownPreconditionValue  = (collaboration.getPreconditionApplicability(goal.getPlan()) != null) ? 1 : 0;		
 		int knownPostconditionValue = (!collaboration.getPostConditionStatus(goal.getPlan()).equals(GOAL_STATUS.UNKNOWN)) ? 1 : 0;
 		int knownPredecessorGoalsCount  = 0;
 		int knownContributingGoalsCount = 0;
