@@ -57,14 +57,14 @@ public class Controllability extends AppraisalProcesses{
 			double dblOverallGoalDifficultyValue = getOverallDifficultyValue(eventGoal);
 			
 			controllabilityValue = ((double)((dblAgencyValue * getAgencyWeight()) + 
-											 (dblAutonomyValue * getAutonomyWeight()) + 
-											 (((dblPredecessorsRatio == null) ? 0.0 : dblPredecessorsRatio) * getPredecessorRatioWeight()) + 
-											 (((dblInputsRatio == null) ? 0.0 : dblInputsRatio) * getInputRatioWeight()) +
-											 (dblOverallGoalDifficultyValue * getGoalDifficultyWeight())))
-											 /(getAgencyWeight() + getAutonomyWeight() + 
-											  ((dblPredecessorsRatio == null) ? 0.0 : getPredecessorRatioWeight()) + 
-											  ((dblInputsRatio == null) ? 0.0 : getInputRatioWeight()) + 
-											  getGoalDifficultyWeight());
+									(dblAutonomyValue * getAutonomyWeight()) + 
+									(((dblPredecessorsRatio == null) ? 0.0 : dblPredecessorsRatio) * getPredecessorRatioWeight()) + 
+									(((dblInputsRatio == null) ? 0.0 : dblInputsRatio) * getInputRatioWeight()) +
+									(dblOverallGoalDifficultyValue * getGoalDifficultyWeight())))
+									/(getAgencyWeight() + getAutonomyWeight() + 
+									((dblPredecessorsRatio == null) ? 0.0 : getPredecessorRatioWeight()) + 
+									((dblInputsRatio == null) ? 0.0 : getInputRatioWeight()) + 
+									getGoalDifficultyWeight());
 		}
 		
 		if (controllabilityValue >= 0) // Not sure if human emotion threshold is needed here!

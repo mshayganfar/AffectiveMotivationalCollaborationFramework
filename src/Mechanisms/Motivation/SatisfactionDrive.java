@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import MetaInformation.AppraisalVector.WHOSE_APPRAISAL;
+import MetaInformation.AppraisalVector;
 import MetaInformation.Turns;
 
 public class SatisfactionDrive {
@@ -50,9 +51,16 @@ public class SatisfactionDrive {
 		
 		ArrayList<Double> desirabilityValues = new ArrayList<Double>();
 		
-		for (int i = 0 ; i < Turns.getInstance().getAppraisalVectors().size() ; i++) {
-			if (Turns.getInstance().getAppraisalVectors().get(i).getWhoseAppraisalValue().equals(WHOSE_APPRAISAL.SELF))
-				desirabilityValues.add(Turns.getInstance().getDesirabilityValue(Turns.getInstance().getAppraisalVectors().get(i).getDesirabilityValue()));
+		Turns currentTurn = Turns.getInstance();
+		
+		for (int i = 1 ; i <= currentTurn.getTurnNumber() ; i++) {
+			ArrayList<AppraisalVector> turnAppraisalVectors = currentTurn.getTurnAppraisalVectors(i, WHOSE_APPRAISAL.SELF);
+			if (turnAppraisalVectors != null)
+				desirabilityValues.add(currentTurn.getTurnOverallDesirabilityValue(turnAppraisalVectors));
+			else
+				return null;
+			
+			turnAppraisalVectors.clear();
 		}
 		
 		return desirabilityValues;
@@ -63,12 +71,17 @@ public class SatisfactionDrive {
 		double satisfactionValue = 0.0;
 		
 		ArrayList<Double> weights = getDesirabilityWeights();
-		ArrayList<Double> desirabilityValues = getDesirabilityValues();
 		
-		for (int i = 0 ; i < Turns.getInstance().getTurnNumber() ; i++)
-			satisfactionValue += weights.get(i) * desirabilityValues.get(i);
-		
-		return satisfactionValue;
+		if (getDesirabilityValues() != null) {
+			ArrayList<Double> desirabilityValues = getDesirabilityValues();
+			
+			for (int i = 0 ; i < Turns.getInstance().getTurnNumber() ; i++)
+				satisfactionValue += weights.get(i) * desirabilityValues.get(i);
+			
+			return satisfactionValue;
+		}
+		else
+			return prevSatisfactionValue;
 	}
 	
 	public double getSatisfactionDriveDelta() {
@@ -76,7 +89,7 @@ public class SatisfactionDrive {
 		double satValue = getSatisfactionDriveValue();
 		double satPrevValue = getPrevSatisfactionDriveValue();
 		
-		double satValueSum = ((satValue + satPrevValue) == 0) ? 1 : (satValue + satPrevValue);
+		double satValueSum = ((satValue + satPrevValue) == 0) ? 1.0 : (satValue + satPrevValue);
 		
 		return  ((double)satValue/satValueSum) - ((double)satPrevValue/satValueSum);
 	}

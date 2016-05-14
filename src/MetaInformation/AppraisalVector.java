@@ -77,19 +77,19 @@ public class AppraisalVector {
 		this.turnNumber = turnNumber;
 	}
 	
-	public RELEVANCE getRelevanceValue() {
+	public RELEVANCE getRelevanceSymbolicValue() {
 		return this.relevanceValue;
 	}
 	
-	public DESIRABILITY getDesirabilityValue() {
+	public DESIRABILITY getDesirabilitySymbolicValue() {
 		return this.desirabilityValue;
 	}
 	
-	public EXPECTEDNESS getExpectednessValue() {
+	public EXPECTEDNESS getExpectednessSymbolicValue() {
 		return this.expectednessValue;
 	}
 	
-	public CONTROLLABILITY getControllabilityValue() {
+	public CONTROLLABILITY getControllabilitySymbolicValue() {
 		return this.controllabilityValue;
 	}
 	

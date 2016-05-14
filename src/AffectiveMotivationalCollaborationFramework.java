@@ -55,14 +55,16 @@ public class AffectiveMotivationalCollaborationFramework {
 		EXPECTEDNESS expectednessValue = mentalProcesses.getExpectednessProcess().isEventExpected(recognizedGoal);
 		appraisalVector.setExpectednessValue(expectednessValue);
 		
-		turn.setTurnAppraisals(mentalProcesses, recognizedGoal, WHOSE_APPRAISAL.SELF, appraisalVector.getRelevanceValue(), 
-				appraisalVector.getDesirabilityValue(), appraisalVector.getControllabilityValue(), appraisalVector.getExpectednessValue());
+		turn.setTurnAppraisals(mentalProcesses, recognizedGoal, WHOSE_APPRAISAL.SELF, appraisalVector.getRelevanceSymbolicValue(), 
+				appraisalVector.getDesirabilitySymbolicValue(), appraisalVector.getControllabilitySymbolicValue(), 
+				appraisalVector.getExpectednessSymbolicValue());
 		
 		System.out.println("Emotion Instance: " + appraisalVector.getEmotionInstance());
 		
 		for(AppraisalVector vector : Turns.getInstance().getCurrentAppraisalVectors()) {
-			System.out.println(vector.getTurnNumber() + ", " + vector.getWhoseAppraisalValue() + ", " + vector.getRelevanceValue() + ", " + 
-					vector.getDesirabilityValue() + ", " + vector.getExpectednessValue() + ", " + vector.getControllabilityValue());
+			System.out.println(vector.getTurnNumber() + ", " + vector.getWhoseAppraisalValue() + ", " + vector.getRelevanceSymbolicValue() + ", " + 
+					vector.getDesirabilitySymbolicValue() + ", " + vector.getExpectednessSymbolicValue() + ", " + 
+					vector.getControllabilitySymbolicValue());
 		}
 		
 		return appraisalVector;

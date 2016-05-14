@@ -66,6 +66,18 @@ public class Turns {
 		return null;
 	}
 	
+	public ArrayList<AppraisalVector> getTurnAppraisalVectors(int turnNumber, WHOSE_APPRAISAL whoseAppraisal) {
+		
+		ArrayList<AppraisalVector> turnAppraisalVectors = new ArrayList<AppraisalVector>();
+		
+		for(AppraisalVector vector : appraisalVectors)
+			if (vector.getTurnNumber() == turnNumber)
+				if (vector.getWhoseAppraisalValue().equals(whoseAppraisal))
+					turnAppraisalVectors.add(vector);
+		
+		return (turnAppraisalVectors.size() == 0) ? null : turnAppraisalVectors;
+	}
+	
 	public ArrayList<AppraisalVector> getCurrentAppraisalVectors() {
 		
 		ArrayList<AppraisalVector> currentAppraisalVectors = new ArrayList<AppraisalVector>();
@@ -76,6 +88,34 @@ public class Turns {
 		}
 		
 		return currentAppraisalVectors;
+	}
+	
+	public double getTurnOverallDesirabilityValue(ArrayList<AppraisalVector> turnAppraisalVectors) {
+		
+		double overallDesirabilityValue = 0.0;
+		
+		for (int i = 0 ; i < turnAppraisalVectors.size() ; i++) {
+			overallDesirabilityValue += getDesirabilityValue(turnAppraisalVectors.get(i).getDesirabilitySymbolicValue());
+		}
+		
+		if (turnAppraisalVectors.size() == 0) 
+			return 0.0; // This might bias agent's behavior.
+		else {
+			overallDesirabilityValue = ((double)overallDesirabilityValue)/turnAppraisalVectors.size();
+			
+			if (overallDesirabilityValue >= 0.6)
+				return 1.0;
+			else if ((overallDesirabilityValue >= 0.2) && (overallDesirabilityValue < 0.6))
+				return 0.5;
+			else if ((overallDesirabilityValue > -0.2) && (overallDesirabilityValue < 0.2))
+				return 0.0;
+			else if ((overallDesirabilityValue <= -0.2) && (overallDesirabilityValue > -0.6))
+				return -0.5;
+			else if (overallDesirabilityValue <= -0.6)
+				return -1.0;
+			else
+				throw new IllegalArgumentException("Illegal Overall Desirability Value: " + overallDesirabilityValue);
+		}
 	}
 	
 	public double getDesirabilityValue(DESIRABILITY desirabilitySymbolicValue) {
@@ -92,7 +132,7 @@ public class Turns {
 			case HIGH_UNDESIRABLE:
 				return -1.0;
 			default:
-				return 0.0;	
+				throw new IllegalArgumentException("Illegal Desirability Symbolic Value: " + desirabilitySymbolicValue);	
 		}
 	}
 	
@@ -106,7 +146,7 @@ public class Turns {
 			case UNCONTROLLABLE:
 				return 0.0;
 			default:
-				return -0.1;	
+				throw new IllegalArgumentException("Illegal Controllability Symbolic Value: " + controllabilitySymbolicValue);
 		}
 	}
 	
@@ -126,7 +166,7 @@ public class Turns {
 			case MOST_UNEXPECTED:
 				return 0.0;
 			default:
-				return -0.1;	
+				throw new IllegalArgumentException("Illegal Expectedness Symbolic Value: " + expectednessSymbolicValue);	
 		}
 	}
 }
