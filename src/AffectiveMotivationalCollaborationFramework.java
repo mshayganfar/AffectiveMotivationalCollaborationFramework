@@ -19,7 +19,7 @@ public class AffectiveMotivationalCollaborationFramework {
 	private static Goal goal = null;
 	
 	private static MentalProcesses mentalProcesses;
-	private static SatisfactionDrive satisfactionDrive = new SatisfactionDrive();
+//	private static SatisfactionDrive satisfactionDrive = new SatisfactionDrive();
 	
 	private static Goal updateGoal(Plan plan) {
 
@@ -71,13 +71,13 @@ public class AffectiveMotivationalCollaborationFramework {
 		return appraisalVector;
 	}
 	
-	private static void runMotivations() {
-		runSatisfactionMotivation();
+	private static void runMotivations(Goal goal) {
+		runSatisfactionMotivation(goal);
 	}
 	
-	private static void runSatisfactionMotivation() {
-		double satisfactionDriveDelta = satisfactionDrive.getSatisfactionDriveDelta();
-		System.out.println(satisfactionDriveDelta);
+	private static void runSatisfactionMotivation(Goal goal) {
+		Motive satisfactionMotive = mentalProcesses.getMotivationMechanism().createSatisfactionMotive(goal);
+		System.out.println(satisfactionMotive.getLabel() + "," + satisfactionMotive.getMotiveIntensity());
 	}
 	
 	private static void initializeFramework(Goal recognizedGoal) {
@@ -102,7 +102,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		mentalProcesses.getCollaborationMechanism().updatePreconditionApplicability();
 		doAppraisal(turn, recognizedGoal);
 		
-		runMotivations();
+		runMotivations(recognizedGoal);
 		
 		// This needs to be done after running all the mechanisms.
 		turn.updateTurn();

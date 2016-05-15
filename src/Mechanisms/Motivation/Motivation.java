@@ -35,50 +35,60 @@ public class Motivation extends Mechanisms {
 		this.expectedness    = mentalProcesses.getExpectednessProcess();
 	}
 	
-	private Motive createSatisfactionMotive(Goal goal) {
+	public Motive createSatisfactionMotive(Goal goal) {
 		
-		double firstSigmoidValue  = 0.0;
-		double secondSigmoidValue = 0.0;
+//		double firstSigmoidValue  = 0.0;
+//		double secondSigmoidValue = 0.0;
 		
-		double firstGradient  = 0.0;
-		double secondGradient = 0.0;
+//		double firstGradient  = 0.0;
+//		double secondGradient = 0.0;
+		
+//		if (satDelta >= 0) {
+//			if (valence >= 0) {
+//				firstGradient  = 2.0;
+//				secondGradient = 8.0;
+//				firstSigmoidValue  = (double)1.0 / (1 + Math.exp(firstGradient * ((1 - satDelta) - valence)));
+//				secondSigmoidValue = (double)1.0 / (1 + Math.exp(secondGradient * (1.5 - valence)));
+//			}
+//			else {
+//				firstGradient  = 1.5;
+//				secondGradient = 1.5;
+//				firstSigmoidValue  = (double)1.0 / (1 + Math.exp(-firstGradient * (satDelta - (2 * Math.abs(valence)))));
+//				secondSigmoidValue = (double)1.0 / (1 + Math.exp(-secondGradient * (1.5 - (Math.abs(valence)))));
+//			}
+//		}
+//		else {
+//			if (valence >= 0) {
+//				firstGradient  = 1.5;
+//				secondGradient = 1.5;
+//				firstSigmoidValue  = (double)1.0 / (1 + Math.exp(firstGradient * (Math.abs(satDelta) - (3 * valence))));
+//				secondSigmoidValue = (double)1.0 / (1 + Math.exp(secondGradient * (1.5 - valence)));
+//			}
+//			else {
+//				firstGradient  = 2.0;
+//				secondGradient = 8.0;
+//				firstSigmoidValue  = (double)1.0 / (1 + Math.exp(-firstGradient * ((1 - Math.abs(satDelta)) - (2 * Math.abs(valence)))));
+//				secondSigmoidValue = (double)1.0 / (1 + Math.exp(-secondGradient * (1.5 - (Math.abs(valence)))));
+//			}
+//		}
+
+//		goal.addMotives(satisfactionMotive);
+		
+		double satisfactionMotiveValue = 0.0;
 		
 		double valence  = tom.getValenceValue();
 		double satDelta = satisfactionDrive.getSatisfactionDriveDelta();
 		
 		Motive satisfactionMotive;
 		
-		if (satDelta >= 0) {
-			if (valence >= 0) {
-				firstGradient  = 2.0;
-				secondGradient = 8.0;
-				firstSigmoidValue  = (double)1.0 / (1 + Math.exp(firstGradient * ((1 - satDelta) - valence)));
-				secondSigmoidValue = (double)1.0 / (1 + Math.exp(secondGradient * (1.5 - valence)));
-			}
-			else {
-				firstGradient  = 1.5;
-				secondGradient = 1.5;
-				firstSigmoidValue  = (double)1.0 / (1 + Math.exp(-firstGradient * (satDelta - (2 * Math.abs(valence)))));
-				secondSigmoidValue = (double)1.0 / (1 + Math.exp(-secondGradient * (1.5 - (Math.abs(valence)))));
-			}
-		}
-		else {
-			if (valence >= 0) {
-				firstGradient  = 1.5;
-				secondGradient = 1.5;
-				firstSigmoidValue  = (double)1.0 / (1 + Math.exp(firstGradient * (Math.abs(satDelta) - (3 * valence))));
-				secondSigmoidValue = (double)1.0 / (1 + Math.exp(secondGradient * (1.5 - valence)));
-			}
-			else {
-				firstGradient  = 2.0;
-				secondGradient = 8.0;
-				firstSigmoidValue  = (double)1.0 / (1 + Math.exp(-firstGradient * ((1 - Math.abs(satDelta)) - (2 * Math.abs(valence)))));
-				secondSigmoidValue = (double)1.0 / (1 + Math.exp(-secondGradient * (1.5 - (Math.abs(valence)))));
-			}
-		}
+		if (valence == 0)
+			satisfactionMotiveValue = Math.atan(1.5*satDelta);
+		else if (valence > 0)
+			satisfactionMotiveValue = Math.pow(3, 2*(satDelta-1));
+		else if (valence > 0)
+			satisfactionMotiveValue = Math.pow(-3, -2*(satDelta+1));
 		
-		satisfactionMotive = new Motive(goal, MOTIVE_TYPE.SATISFACTION, firstSigmoidValue - secondSigmoidValue);
-		goal.addMotives(satisfactionMotive);
+		satisfactionMotive = new Motive(goal, MOTIVE_TYPE.SATISFACTION, satisfactionMotiveValue);
 		
 		return satisfactionMotive;
 	}
