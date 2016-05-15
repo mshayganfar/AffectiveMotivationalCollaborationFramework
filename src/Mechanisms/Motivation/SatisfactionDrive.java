@@ -89,9 +89,9 @@ public class SatisfactionDrive {
 		double satValue = getSatisfactionDriveValue();
 		double satPrevValue = getPrevSatisfactionDriveValue();
 		
-		double satValueSum = ((satValue + satPrevValue) == 0) ? 1.0 : (satValue + satPrevValue);
+		prevSatisfactionValue = satValue;
 		
-		return  ((double)satValue/satValueSum) - ((double)satPrevValue/satValueSum);
+		return (satValue - satPrevValue);
 	}
 	
 	private double getPrevSatisfactionDriveValue() {

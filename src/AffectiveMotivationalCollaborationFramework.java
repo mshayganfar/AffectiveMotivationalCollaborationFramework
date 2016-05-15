@@ -19,6 +19,7 @@ public class AffectiveMotivationalCollaborationFramework {
 	private static Goal goal = null;
 	
 	private static MentalProcesses mentalProcesses;
+	private static SatisfactionDrive satisfactionDrive = new SatisfactionDrive();
 	
 	private static Goal updateGoal(Plan plan) {
 
@@ -75,9 +76,8 @@ public class AffectiveMotivationalCollaborationFramework {
 	}
 	
 	private static void runSatisfactionMotivation() {
-		SatisfactionDrive test = new SatisfactionDrive();
-		System.out.println(test.getSatisfactionDriveDelta());
-		test.updatePrevSatisfactionDriveValue(test.getSatisfactionDriveValue());
+		double satisfactionDriveDelta = satisfactionDrive.getSatisfactionDriveDelta();
+		System.out.println(satisfactionDriveDelta);
 	}
 	
 	private static void initializeFramework(Goal recognizedGoal) {
