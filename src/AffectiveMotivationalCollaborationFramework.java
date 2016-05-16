@@ -74,6 +74,7 @@ public class AffectiveMotivationalCollaborationFramework {
 	private static void runMotivations(Goal goal) {
 		runSatisfactionMotivation(goal);
 		runAchievementMotivation(goal);
+		runExternalMotivation(goal);
 	}
 	
 	private static void runSatisfactionMotivation(Goal goal) {
@@ -84,6 +85,14 @@ public class AffectiveMotivationalCollaborationFramework {
 	private static void runAchievementMotivation(Goal goal) {
 		Motive achievementMotive = mentalProcesses.getMotivationMechanism().createAchievementMotive(goal);
 		System.out.println("ACHIEVEMENT MOTIVE: (" + achievementMotive.getLabel() + "," + achievementMotive.getMotiveIntensity() + ")");
+	}
+	
+	private static void runExternalMotivation(Goal goal) {
+		Motive externalMotive = mentalProcesses.getMotivationMechanism().createExternalMotive(goal);
+		if (externalMotive != null)
+			System.out.println("EXTERNAL MOTIVE: (" + externalMotive.getLabel() + "," + externalMotive.getMotiveIntensity() + ")");
+		else
+			System.out.println("NO EXTERNAL MOTIVE!");
 	}
 	
 	private static void initializeFramework(Goal recognizedGoal) {
