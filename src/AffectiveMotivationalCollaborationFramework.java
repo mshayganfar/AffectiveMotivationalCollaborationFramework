@@ -59,13 +59,13 @@ public class AffectiveMotivationalCollaborationFramework {
 				appraisalVector.getDesirabilitySymbolicValue(), appraisalVector.getControllabilitySymbolicValue(), 
 				appraisalVector.getExpectednessSymbolicValue());
 		
-		System.out.println("Emotion Instance: " + appraisalVector.getEmotionInstance());
-		
 		for(AppraisalVector vector : Turns.getInstance().getCurrentAppraisalVectors()) {
 			System.out.println(vector.getTurnNumber() + ", " + vector.getWhoseAppraisalValue() + ", " + vector.getRelevanceSymbolicValue() + ", " + 
 					vector.getDesirabilitySymbolicValue() + ", " + vector.getExpectednessSymbolicValue() + ", " + 
 					vector.getControllabilitySymbolicValue());
 		}
+		
+		System.out.println("EMOTION INSTANCE: " + appraisalVector.getEmotionInstance());
 		
 		return appraisalVector;
 	}
@@ -94,7 +94,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		// This is required before doing appraisals.
 		mentalProcesses.getCollaborationMechanism().updatePreconditionApplicability();
-		doAppraisal(turn, recognizedGoal);
+		AppraisalVector appraisalVector = doAppraisal(turn, recognizedGoal);
 		
 		runMotivations(recognizedGoal);
 		

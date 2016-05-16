@@ -240,8 +240,6 @@ public class Motivation extends Mechanisms {
 		
 		MOTIVE_TYPE winnerMotive = arbitrateMotives(goal, externalMotive, satisfactionMotive, achievementMotive);
 		
-		System.out.println(winnerMotive);
-		
 		return winnerMotive;
 	}
 }
