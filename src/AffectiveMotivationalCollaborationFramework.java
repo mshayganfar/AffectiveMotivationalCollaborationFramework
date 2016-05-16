@@ -77,7 +77,7 @@ public class AffectiveMotivationalCollaborationFramework {
 	
 	private static void runSatisfactionMotivation(Goal goal) {
 		Motive satisfactionMotive = mentalProcesses.getMotivationMechanism().createSatisfactionMotive(goal);
-		System.out.println(satisfactionMotive.getLabel() + "," + satisfactionMotive.getMotiveIntensity());
+		System.out.println("(" + satisfactionMotive.getLabel() + "," + satisfactionMotive.getMotiveIntensity() + ")");
 	}
 	
 	private static void initializeFramework(Goal recognizedGoal) {

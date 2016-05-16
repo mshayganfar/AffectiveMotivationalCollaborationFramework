@@ -27,24 +27,29 @@ public class SatisfactionDrive {
 		return satisfactionDrive;
 	}
 	
-	private ArrayList<Double> getDesirabilityWeights() {
-		
-		double weightSum = 0.0;
+	private ArrayList<Double> getDesirabilityWeights(int turnNumber) {
 		
 		ArrayList<Double> weights = new ArrayList<Double>();
 		
-		for (int i = 0 ; i < Turns.getInstance().getTurnNumber() ; i++) {
+		for (int i = 0 ; i < turnNumber ; i++) {
 			weights.add(Math.pow(0.5, i));
-			weightSum += Math.pow(0.5, i);
-		}
-		
-		for (int i = 0 ; i < weights.size() ; i++) {
-			weights.set(i, weights.get(i)/weightSum);
 		}
 		
 		Collections.sort(weights);
 		
 		return weights;
+	}
+	
+	private double getDesirabilityWeightsSum(int turnNumber) {
+		
+		double weightSum = 0.0;
+		
+		ArrayList<Double> weights = getDesirabilityWeights(turnNumber);
+		
+		for (int i = 0 ; i < turnNumber ; i++)
+			weightSum += Math.pow(0.5, i);
+		
+		return weightSum;
 	}
 	
 	private ArrayList<Double> getDesirabilityValues() {
@@ -70,7 +75,7 @@ public class SatisfactionDrive {
 		
 		double satisfactionValue = 0.0;
 		
-		ArrayList<Double> weights = getDesirabilityWeights();
+		ArrayList<Double> weights = getDesirabilityWeights(Turns.getInstance().getTurnNumber());
 		
 		if (getDesirabilityValues() != null) {
 			ArrayList<Double> desirabilityValues = getDesirabilityValues();
@@ -91,7 +96,11 @@ public class SatisfactionDrive {
 		
 		prevSatisfactionValue = satValue;
 		
-		return (satValue - satPrevValue);
+		double currentWeightSum = getDesirabilityWeightsSum(Turns.getInstance().getTurnNumber());
+		double previousWeightSum = (getDesirabilityWeightsSum(Turns.getInstance().getTurnNumber()-1) == 0) ? 1.0 :
+								   getDesirabilityWeightsSum(Turns.getInstance().getTurnNumber()-1);
+		
+		return (((double)satValue/currentWeightSum) - ((double)satPrevValue/previousWeightSum));
 	}
 	
 	private double getPrevSatisfactionDriveValue() {
