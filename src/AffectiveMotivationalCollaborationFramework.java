@@ -2,7 +2,6 @@ import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
 import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
 import Mechanisms.Appraisal.Relevance.RELEVANCE;
-import Mechanisms.Motivation.SatisfactionDrive;
 import MentalState.Belief;
 import MentalState.Goal;
 import MentalState.Motive;
@@ -72,27 +71,7 @@ public class AffectiveMotivationalCollaborationFramework {
 	}
 	
 	private static void runMotivations(Goal goal) {
-		runSatisfactionMotivation(goal);
-		runAchievementMotivation(goal);
-		runExternalMotivation(goal);
-	}
-	
-	private static void runSatisfactionMotivation(Goal goal) {
-		Motive satisfactionMotive = mentalProcesses.getMotivationMechanism().createSatisfactionMotive(goal);
-		System.out.println("SATISFACTION MOTIVE: (" + satisfactionMotive.getLabel() + "," + satisfactionMotive.getMotiveIntensity() + ")");
-	}
-	
-	private static void runAchievementMotivation(Goal goal) {
-		Motive achievementMotive = mentalProcesses.getMotivationMechanism().createAchievementMotive(goal);
-		System.out.println("ACHIEVEMENT MOTIVE: (" + achievementMotive.getLabel() + "," + achievementMotive.getMotiveIntensity() + ")");
-	}
-	
-	private static void runExternalMotivation(Goal goal) {
-		Motive externalMotive = mentalProcesses.getMotivationMechanism().createExternalMotive(goal);
-		if (externalMotive != null)
-			System.out.println("EXTERNAL MOTIVE: (" + externalMotive.getLabel() + "," + externalMotive.getMotiveIntensity() + ")");
-		else
-			System.out.println("NO EXTERNAL MOTIVE!");
+		mentalProcesses.getMotivationMechanism().createMotives(goal);
 	}
 	
 	private static void initializeFramework(Goal recognizedGoal) {

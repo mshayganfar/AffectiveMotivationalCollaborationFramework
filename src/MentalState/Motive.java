@@ -1,5 +1,13 @@
 package MentalState;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
+import Mechanisms.Mechanisms.AGENT;
+import MetaInformation.MentalProcesses;
+import edu.wpi.cetask.Plan;
+
 public class Motive {
 
 	public enum MOTIVE_TYPE{ACHIEVEMENT, SATISFACTION, INTERNAL_DEFAULT, EXTERNAL};
@@ -10,13 +18,19 @@ public class Motive {
 	private MOTIVE_TYPE motiveType;
 	private boolean activeMotive;
 	private double motiveIntensity;
+	private double motiveImportance;
+	private double motiveUrgency;
+	private double motiveInsistence;
 	
 	public Motive (Goal goal) {
 		this.goal  = goal;
 		this.label = goal.getPlan().getGoal().getType().toString();
 		this.motiveType   = MOTIVE_TYPE.INTERNAL_DEFAULT;
 		this.activeMotive = true;
-		this.motiveIntensity = 0.5;
+		this.motiveIntensity  = 1.0;
+		this.motiveImportance = computeMotiveImportance();
+		this.motiveUrgency    = computeMotiveUrgency();
+//		this.motiveInsistence = computeMotiveInsistence();
 		this.goal.addMotives(this);
 		MentalState.getInstance().addMotive(this);
 	}
@@ -27,6 +41,9 @@ public class Motive {
 		this.motiveType   = motiveType;
 		this.activeMotive = false;
 		this.motiveIntensity = motiveIntensity;
+		this.motiveImportance = computeMotiveImportance();
+		this.motiveUrgency    = computeMotiveUrgency();
+//		this.motiveInsistence = computeMotiveInsistence();
 		this.goal.addMotives(this);
 		MentalState.getInstance().addMotive(this);
 	}
@@ -58,9 +75,21 @@ public class Motive {
 		this.activeMotive = false;
 	}
 	
+	public double getMotiveImportance() {
+		return this.motiveImportance;
+	}
+	
+	public double getMotiveUrgency() {
+		return this.motiveUrgency;
+	}
+	
 	public double getMotiveIntensity() {
 		return this.motiveIntensity;
 	}
+	
+//	public double getMotiveInsistence() {
+//		return this.motiveInsistence;
+//	}
 	
 	public boolean isActiveMotive() {
 		return this.activeMotive; 
@@ -82,5 +111,77 @@ public class Motive {
 			return MOTIVE_INTENSITY.HIGH_NEGATIVE;
 		else
 			throw new IllegalArgumentException("Illegal motive intensity value:" + motiveIntensity);
+	}
+	
+	private double computeMotiveImportance() {
+		
+		// This is based on the fact that if there is no alternative recipe, the motive is more important.
+		// And whether the current alternative recipe can remove the current impasse.
+		Plan plan = this.getGoal().getPlan();
+		
+		if(plan.isPrimitive())
+			return 1.0;
+		else {
+			if (plan.getDecompositions().size() == 0)
+				return 1.0;
+			else if ((plan.getDecompositions().size() >= 1) && (plan.getFailed().size() >= 1))
+				return 1.0;
+			else
+				return 0.0;
+		}
+	}
+	
+	private double computeMotiveUrgency() {
+		
+		double urgencySuccessorValue  = 0.0;
+		double urgencyMitigationValue = 0.0;
+		
+		for (Plan plan : this.getGoal().getPlan().getSuccessors()) {
+			if (this.getGoal().getMentalProcesses().getCollaborationMechanism().getResponsibleAgent(plan).equals(AGENT.OTHER))
+				urgencySuccessorValue++;
+			else if (this.getGoal().getMentalProcesses().getCollaborationMechanism().getResponsibleAgent(plan).equals(AGENT.BOTH))
+				urgencySuccessorValue += 0.5;
+		}
+		urgencyMitigationValue = (this.getGoal().isTactical()) ? 1.0 : 0.0;
+		
+		urgencySuccessorValue  = (this.getGoal().getPlan().getSuccessors().size() == 0) ? 0.0 : 
+			(double)urgencySuccessorValue/this.getGoal().getPlan().getSuccessors().size();
+		
+		return ((double)(urgencySuccessorValue + urgencyMitigationValue))/2.0;
+	}
+	
+	// TO DO: This method needs to be fixed.
+//	public double computeMotiveInsistence() {
+//		
+//		double motiveInsistence = 0.0;
+//		
+//		List<GOAL_STATUS> goalAntecedentsStatus = new ArrayList<GOAL_STATUS>();
+//		
+//		getGoalAntecedents(this.getGoal().getPlan(), goalAntecedentsStatus);
+//		
+//		for(GOAL_STATUS goalStatus : goalAntecedentsStatus) {
+//			if (goalAntecedentsStatus.equals(GOAL_STATUS.INPROGRESS) || 
+//					goalAntecedentsStatus.equals(GOAL_STATUS.ACHIEVED) ||
+//					goalAntecedentsStatus.equals(GOAL_STATUS.PENDING))
+//				motiveInsistence++;
+//			else
+//				motiveInsistence--;
+//		}
+//		
+//		return motiveInsistence;
+//	}
+	
+	private void getGoalAntecedents(Plan plan, List<GOAL_STATUS> goalAntecedents) {
+		
+		if (plan.getParent() == null)
+			return;
+		
+		goalAntecedents.add(this.getGoal().getMentalProcesses().getCollaborationMechanism().getGoalStatus(plan.getParent()));
+		
+		for (Plan predecessor : plan.getPredecessors()) {
+			goalAntecedents.add(this.getGoal().getMentalProcesses().getCollaborationMechanism().getGoalStatus(predecessor));
+		}
+		
+		getGoalAntecedents(plan.getParent(), goalAntecedents);
 	}
 }

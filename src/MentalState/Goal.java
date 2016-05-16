@@ -92,6 +92,10 @@ public class Goal {
 		return this.plan;
 	}
 	
+	public MentalProcesses getMentalProcesses() {
+		return this.mentalProcesses;
+	}
+	
 	public String getLabel() {
 		return this.label;
 	}
