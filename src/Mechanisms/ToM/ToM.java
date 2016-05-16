@@ -30,7 +30,7 @@ public class ToM extends Mechanisms{
 	private Desirability desirability;
 	private Expectedness expectedness;
 	
-	private double valence = 0.0;
+	private double valence = -1.0;
 	
 	public void prepareAppraisalsOfToM(MentalProcesses mentalProcesses) {
 		this.collaboration = mentalProcesses.getCollaborationMechanism();

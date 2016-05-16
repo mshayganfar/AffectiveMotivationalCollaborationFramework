@@ -33,7 +33,7 @@ public class Controllability extends AppraisalProcesses{
 		
 		double controllabilityValue = 0.0;
 		
-		System.out.println(collaboration.getGoalStatus(eventGoal.getPlan()));
+//		System.out.println(collaboration.getGoalStatus(eventGoal.getPlan()));
 		
 		// I consider UNKNOWN goal status *not* as a failure.
 		if ((collaboration.getGoalStatus(eventGoal.getPlan()).equals(GOAL_STATUS.BLOCKED)) ||

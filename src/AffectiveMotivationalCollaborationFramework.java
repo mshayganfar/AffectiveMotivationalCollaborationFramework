@@ -73,11 +73,17 @@ public class AffectiveMotivationalCollaborationFramework {
 	
 	private static void runMotivations(Goal goal) {
 		runSatisfactionMotivation(goal);
+		runAchievementMotivation(goal);
 	}
 	
 	private static void runSatisfactionMotivation(Goal goal) {
 		Motive satisfactionMotive = mentalProcesses.getMotivationMechanism().createSatisfactionMotive(goal);
-		System.out.println("(" + satisfactionMotive.getLabel() + "," + satisfactionMotive.getMotiveIntensity() + ")");
+		System.out.println("SATISFACTION MOTIVE: (" + satisfactionMotive.getLabel() + "," + satisfactionMotive.getMotiveIntensity() + ")");
+	}
+	
+	private static void runAchievementMotivation(Goal goal) {
+		Motive achievementMotive = mentalProcesses.getMotivationMechanism().createAchievementMotive(goal);
+		System.out.println("ACHIEVEMENT MOTIVE: (" + achievementMotive.getLabel() + "," + achievementMotive.getMotiveIntensity() + ")");
 	}
 	
 	private static void initializeFramework(Goal recognizedGoal) {

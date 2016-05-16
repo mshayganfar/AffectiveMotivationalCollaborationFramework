@@ -85,21 +85,22 @@ public class Motivation extends Mechanisms {
 			satisfactionMotiveValue = Math.atan(1.5*satDelta);
 		else if (valence > 0)
 			satisfactionMotiveValue = Math.pow(3, 2*(satDelta-1));
-		else if (valence > 0)
-			satisfactionMotiveValue = Math.pow(-3, -2*(satDelta+1));
-		
+		else if (valence < 0) {
+			System.out.println(satDelta);
+			satisfactionMotiveValue = -Math.pow(3, -2*(satDelta+1));
+		}
 		satisfactionMotive = new Motive(goal, MOTIVE_TYPE.SATISFACTION, satisfactionMotiveValue);
 		
 		return satisfactionMotive;
 	}
 	
-	private Motive createAchievementMotive(Goal goal) {
+	public Motive createAchievementMotive(Goal goal) {
 		
 		double firstSigmoidValue  = 0.0;
 		double secondSigmoidValue = 0.0;
 		
-		double firstGradient  = 4.0;
-		double secondGradient = 10.0;
+		double firstGradient  = 2.0;
+		double secondGradient = 12.0;
 		
 		Motive achievementMotive;
 		
@@ -111,12 +112,12 @@ public class Motivation extends Mechanisms {
 		double successProbability = controllabilityValue * expectednessValue;
 		
 		if (valence >= 0) {
-			firstSigmoidValue  = (double)1.0 / (1 + Math.exp(firstGradient * (valence - successProbability)));
-			secondSigmoidValue = (double)1.0 / (1 + Math.exp(secondGradient * (valence - successProbability)));
+			firstSigmoidValue  = (double)2.0 / (1 + Math.exp((firstGradient - valence) * (1 - successProbability)));
+			secondSigmoidValue = (double)1.0 / (1 + Math.exp((secondGradient - valence) * (1 - successProbability)));
 		}
 		else {
-			firstSigmoidValue  = (double)1.0 / (1 + Math.exp(-firstGradient * (valence - successProbability)));
-			secondSigmoidValue = (double)1.0 / (1 + Math.exp(-secondGradient * (valence - successProbability)));
+			firstSigmoidValue  = (double)-2.0 / (1 + Math.exp((firstGradient - Math.abs(valence)) * (1 - successProbability)));
+			secondSigmoidValue = (double)-1.0 / (1 + Math.exp((secondGradient - Math.abs(valence)) * (1 - successProbability)));
 		}
 		
 		achievementMotive = new Motive(goal, MOTIVE_TYPE.ACHIEVEMENT, firstSigmoidValue - secondSigmoidValue);
