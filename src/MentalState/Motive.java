@@ -1,11 +1,9 @@
 package MentalState;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import Mechanisms.Mechanisms.AGENT;
-import MetaInformation.MentalProcesses;
 import edu.wpi.cetask.Plan;
 
 public class Motive {
