@@ -2,10 +2,14 @@ package Mechanisms.Appraisal;
 
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskClass.Input;
+import edu.wpi.disco.lang.Accept;
+import edu.wpi.disco.lang.Ask;
+import edu.wpi.disco.lang.Reject;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import MentalState.Goal;
 import MentalState.Goal.DIFFICULTY;

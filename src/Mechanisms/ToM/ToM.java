@@ -15,13 +15,22 @@ import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
 import Mechanisms.Appraisal.Relevance.RELEVANCE;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
+import Mechanisms.Mechanisms.AGENT;
 import Mechanisms.Motivation.Motivation;
 import MentalState.Goal;
+import MentalState.Goal.DIFFICULTY;
+import MentalState.Motive.MOTIVE_TYPE;
 import MetaInformation.AppraisalVector;
+import MetaInformation.GoalTree;
 import MetaInformation.AppraisalVector.EMOTION_INSTANCE;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskClass.Input;
+import edu.wpi.disco.lang.Accept;
+import edu.wpi.disco.lang.Ask;
+import edu.wpi.disco.lang.Propose;
+import edu.wpi.disco.lang.Reject;
 import MetaInformation.MentalProcesses;
+import MetaInformation.Node;
 
 public class ToM extends Mechanisms{
 	
@@ -38,7 +47,11 @@ public class ToM extends Mechanisms{
 	
 	private double valence = 0.0;
 	
+	private int achievedPredecessorCount = 0;
+	private int totalPredecessorCount    = 0;
+	
 	private ArrayList<Plan> unachievedChildren = new ArrayList<Plan>();
+	private ArrayList<Goal> descendentGoals = new ArrayList<Goal>();
 	
 	public void prepareAppraisalsOfToM(MentalProcesses mentalProcesses) {
 		this.collaboration = mentalProcesses.getCollaborationMechanism();
@@ -75,16 +88,242 @@ public class ToM extends Mechanisms{
 		return estimatedAppraisalVector;
 	}
 	
+	public CONTROLLABILITY getAlternativeReverseControllability(Goal eventGoal) {
+		
+		Plan plan = eventGoal.getPlan();
+		
+		if ((eventGoal.getPlan().getGoal() instanceof Accept) || 
+				(mentalProcesses.getCollaborationMechanism().getGoalStatus(plan).equals(GOAL_STATUS.ACHIEVED)) || 
+				(mentalProcesses.getCollaborationMechanism().getGoalStatus(plan).equals(GOAL_STATUS.PENDING)) ||
+				(mentalProcesses.getCollaborationMechanism().getGoalStatus(plan).equals(GOAL_STATUS.INPROGRESS)))
+			return CONTROLLABILITY.HIGH_CONTROLLABLE;
+		else if ((plan.getGoal() instanceof Ask.What) || 
+				 (plan.getGoal() instanceof Ask.How) ||
+				 (plan.getGoal() instanceof Ask.Who))
+			return CONTROLLABILITY.LOW_CONTROLLABLE;
+		else if ((plan.getGoal() instanceof Reject) ||
+				(mentalProcesses.getCollaborationMechanism().getGoalStatus(plan).equals(GOAL_STATUS.FAILED)) ||
+				(mentalProcesses.getCollaborationMechanism().getGoalStatus(plan).equals(GOAL_STATUS.BLOCKED)) ||
+				(mentalProcesses.getCollaborationMechanism().getGoalStatus(plan).equals(GOAL_STATUS.INAPPLICABLE)))
+			return CONTROLLABILITY.UNCONTROLLABLE;
+		else
+			throw new IllegalStateException("Illegal Reverse Controllability State for Goal:" + plan.getType());
+	}
+	
 	private CONTROLLABILITY getReverseControllability(Goal eventGoal) {
+		
+		double controllabilityValue = 0.0;
 		
 		if ((collaboration.getGoalStatus(eventGoal.getPlan()).equals(GOAL_STATUS.BLOCKED)) ||
 				(collaboration.getGoalStatus(eventGoal.getPlan()).equals(GOAL_STATUS.FAILED)) ||
 				(collaboration.getGoalStatus(eventGoal.getPlan()).equals(GOAL_STATUS.INAPPLICABLE))) {
 			
 			double dblAlternativeRecipeRatio = collaboration.getAlternativeRecipeRatio(eventGoal);
+			double dblRecoveryProbability    = getRecoveryProbability(eventGoal);
+			
+			controllabilityValue = ((double)((dblAlternativeRecipeRatio * getAlternativeRecipeWeight()) +
+					(dblRecoveryProbability * getRecoveryProbabilityWeight())))
+					/(getAlternativeRecipeWeight() + getRecoveryProbabilityWeight());
+		}
+		else {
+			double dblAgencyValue  			 	 = getAgencyValue(eventGoal);
+			double dblAutonomyValue			 	 = getAutonomyValue(eventGoal);
+			Double dblPredecessorsRatio		 	 = getSucceededPredecessorsRatio(eventGoal.getPlan());
+			Double dblInputsRatio 			 	 = getAvailableInputRatio(eventGoal);
+			double dblOverallGoalDifficultyValue = getOverallDifficultyValue(eventGoal);
+			
+			controllabilityValue = ((double)((dblAgencyValue * getAgencyWeight()) + 
+					(dblAutonomyValue * getAutonomyWeight()) + 
+					(((dblPredecessorsRatio == null) ? 0.0 : dblPredecessorsRatio) * getPredecessorRatioWeight()) + 
+					(((dblInputsRatio == null) ? 0.0 : dblInputsRatio) * getInputRatioWeight()) +
+					(dblOverallGoalDifficultyValue * getGoalDifficultyWeight())))
+					/(getAgencyWeight() + getAutonomyWeight() + 
+					((dblPredecessorsRatio == null) ? 0.0 : getPredecessorRatioWeight()) + 
+					((dblInputsRatio == null) ? 0.0 : getInputRatioWeight()) + 
+					getGoalDifficultyWeight());
 		}
 		
-		return CONTROLLABILITY.UNCONTROLLABLE;
+		if (controllabilityValue >= 0)
+			if (controllabilityValue > 0.5)
+				return CONTROLLABILITY.HIGH_CONTROLLABLE;
+			else
+				return CONTROLLABILITY.LOW_CONTROLLABLE;
+		else
+			return CONTROLLABILITY.UNCONTROLLABLE;
+	}
+	
+	private double getOverallDifficultyValue(Goal eventGoal) {
+		
+		Plan plan = eventGoal.getPlan();
+		
+		if (plan.isPrimitive()) {
+			switch (DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty"))) {
+				case NORMAL:
+					return 0.0;
+				case DIFFICULT:
+					return 0.5;
+				case MOST_DIFFICULT:
+					return 1.0;
+				default:
+					throw new IllegalStateException("Difficulty value: " + DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty")));
+			}
+		}
+		else {
+			int goalDifficultyCount = 0;
+			double goalDifficultySum = 0.0;
+			
+			switch (DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty"))) {
+				case NORMAL:
+					goalDifficultySum = 0.0;
+					goalDifficultyCount++;
+					break;
+				case DIFFICULT:
+					goalDifficultySum = 0.5;
+					goalDifficultyCount++;
+					break;
+				case MOST_DIFFICULT:
+					goalDifficultySum = 1.0;
+					goalDifficultyCount++;
+					break;
+				default:
+					throw new IllegalStateException("Difficulty value: " + DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty")));
+			}
+			
+			List<Goal> descendents = getDescendentGoals(eventGoal);
+			
+			for (Goal descendent : descendents) {
+				switch (DIFFICULTY.valueOf(descendent.getPlan().getType().getProperty("@difficulty"))) {
+					case NORMAL:
+						goalDifficultySum += 0.0;
+						goalDifficultyCount++;
+						break;
+					case DIFFICULT:
+						goalDifficultySum += 0.5;
+						goalDifficultyCount++;
+						break;
+					case MOST_DIFFICULT:
+						goalDifficultySum += 1.0;
+						goalDifficultyCount++;
+						break;
+					default:
+						throw new IllegalStateException("Difficulty value: " + DIFFICULTY.valueOf(descendent.getPlan().getType().getProperty("@difficulty")));
+				}
+			}
+			return ((double)goalDifficultySum/goalDifficultyCount);
+		}
+	}
+	
+	private List<Goal> getDescendentGoals(Goal goal) {
+		
+		descendentGoals.clear();
+		extractDescendentGoals(goal);
+		return descendentGoals;
+	}
+	
+	private void extractDescendentGoals(Goal goal) {
+		
+		int i;
+		
+		GoalTree goalTree = new GoalTree(mentalProcesses);
+		ArrayList<Node> treeNodes = goalTree.createTree();
+		
+		for (i = 0 ; i < treeNodes.size() ; i++)
+			if (treeNodes.get(i).getNodeGoalPlan().getType().equals(goal.getPlan().getType()))
+				break;
+		for (i = i+1 ; i < treeNodes.size() ; i++)
+			descendentGoals.add(treeNodes.get(i).getNodeGoal());
+	}
+	
+	private Double getAvailableInputRatio(Goal eventGoal) {
+		
+		double dblAvailableInputCounter = 0.0;
+		
+		if (collaboration.getInputs(eventGoal).size() == 0)
+			return null;
+		
+		for (Input input : collaboration.getInputs(eventGoal)) {
+			if (input != null)
+				if(isInputAvailable(eventGoal.getPlan(), input))
+					dblAvailableInputCounter++;
+		}
+		return ((double)dblAvailableInputCounter/((collaboration.getInputs(eventGoal).size() == 0) ? 1.0 : collaboration.getInputs(eventGoal).size()));
+	}
+	
+	private Double getSucceededPredecessorsRatio(Plan eventPlan) {
+		
+		checkSucceededPredecessors(eventPlan);
+		
+		int achievedCount = achievedPredecessorCount;
+		int totalCount    = totalPredecessorCount;
+		
+		achievedPredecessorCount = 0;
+		totalPredecessorCount    = 0;
+		
+		if (totalCount == 0)
+			return null;
+		
+		return ((double)achievedCount/totalCount);  
+	}
+	
+	private void checkSucceededPredecessors(Plan eventPlan) {
+		
+		for (Plan predecessor : eventPlan.getPredecessors()) {
+			if (predecessor.isPrimitive()) {
+				if (collaboration.getGoalStatus(predecessor).equals(GOAL_STATUS.ACHIEVED))
+					achievedPredecessorCount++;
+				totalPredecessorCount++;
+			}
+			else {
+				for (Plan child : predecessor.getChildren())
+					checkSucceededPredecessors(child);
+			}
+		}
+	}
+	
+	private double getAutonomyValue(Goal eventGoal) {
+
+		double countSelfResponsible = 0.0;
+		
+		Plan plan = eventGoal.getPlan();
+		
+		if (plan.isPrimitive()) {
+			if (collaboration.getResponsibleAgent(plan).equals(AGENT.OTHER))
+				return 1.0;
+			else if (collaboration.getResponsibleAgent(plan).equals(AGENT.SELF))
+				return -1.0;
+			else  if (collaboration.getResponsibleAgent(plan).equals(AGENT.UNKNOWN))
+				return -0.5;
+			else 
+				throw new IllegalArgumentException("Illegal Agent Type: " + collaboration.getResponsibleAgent(plan));
+		}
+		else {
+			collaboration.getResponsibleAgent(plan);
+			
+			for (AGENT agent : collaboration.getDescendentResponsibility()) {
+				if (agent.equals(AGENT.OTHER))
+					countSelfResponsible++;
+				else if (agent.equals(AGENT.BOTH))
+					countSelfResponsible += 0.5;
+				else if (agent.equals(AGENT.SELF))
+					countSelfResponsible -= 1.0;
+				else if (agent.equals(AGENT.UNKNOWN))
+					countSelfResponsible -= 0.5;
+			}
+			return ((double)countSelfResponsible/((collaboration.getDescendentResponsibility().size() == 0) ? 1.0 : collaboration.getDescendentResponsibility().size()));
+		}
+	}
+	
+	private double getAgencyValue(Goal eventGoal) {
+		
+		if (eventGoal.getPlan().isPrimitive()) {
+			if (!(eventGoal.getPlan().getGoal() instanceof Propose.Should)) // Later, I might need to check whether the Robot proposed this goal!
+				return 1.0;
+			else
+				return 0.0;
+		}
+		else {
+			return 0.5;
+		}
 	}
 	
 	public double getRecoveryProbability(Goal eventGoal) {
@@ -269,4 +508,12 @@ public class ToM extends Mechanisms{
 	public EXPECTEDNESS isEventExpected(Goal eventGoal) {
 		return expectedness.isEventExpected(eventGoal);
 	}
+	
+	private double getAgencyWeight()              { return 1.0; }
+	private double getAutonomyWeight()            { return 1.0; }
+	private double getPredecessorRatioWeight()    { return 1.0; }
+	private double getInputRatioWeight()          { return 1.0; }
+	private double getGoalDifficultyWeight()      { return 1.0; }
+	private double getAlternativeRecipeWeight()   { return 1.0; }
+	private double getRecoveryProbabilityWeight() { return 1.0; }
 }
