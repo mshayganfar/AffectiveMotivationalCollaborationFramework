@@ -104,9 +104,6 @@ public class Motivation extends Mechanisms {
 		double firstSigmoidValue  = 0.0;
 		double secondSigmoidValue = 0.0;
 		
-		double firstGradient  = 2.0;
-		double secondGradient = 12.0;
-		
 		double valence  = tom.getValenceValue();
 		
 		double controllabilityValue = Turns.getInstance().getControllabilityValue(controllability.isEventControllable(goal));
@@ -115,12 +112,16 @@ public class Motivation extends Mechanisms {
 		double successProbability = controllabilityValue * expectednessValue;
 		
 		if (valence >= 0) {
+			double firstGradient  = 2.0;
+			double secondGradient = 12.0;
 			firstSigmoidValue  = (double)2.0 / (1 + Math.exp((firstGradient - valence) * (1.05 - successProbability)));
 			secondSigmoidValue = (double)1.0 / (1 + Math.exp((secondGradient - valence) * (1.1 - successProbability)));
 		}
 		else {
-			firstSigmoidValue  = (double)-2.0 / (1 + Math.exp((firstGradient - Math.abs(valence)) * (1.05 - successProbability)));
-			secondSigmoidValue = (double)-1.0 / (1 + Math.exp((secondGradient - Math.abs(valence)) * (1.1 - successProbability)));
+			double firstGradient  = 0.5;
+			double secondGradient = 12.0;
+			firstSigmoidValue  = (double)1.0 / (1 + Math.exp((firstGradient - valence) * (1.05 - successProbability)));
+			secondSigmoidValue = (double)1.0 / (1 + Math.exp((secondGradient - valence) * (successProbability - 1.02)));
 		}
 		
 		return (firstSigmoidValue - secondSigmoidValue);
@@ -139,9 +140,6 @@ public class Motivation extends Mechanisms {
 		double firstSigmoidValue  = 0.0;
 		double secondSigmoidValue = 0.0;
 		
-		double firstGradient  = 2.0;
-		double secondGradient = 12.0;
-			
 		double valence  = tom.getValenceValue();
 			
 		// I might need to read these values later using ToM mechanism.
@@ -151,12 +149,16 @@ public class Motivation extends Mechanisms {
 		double successProbability = controllabilityValue * expectednessValue;
 			
 		if (valence <= 0) {
+			double firstGradient  = 2.0;
+			double secondGradient = 12.0;
 			firstSigmoidValue  = (double)2.0 / (1 + Math.exp((firstGradient - Math.abs(valence)) * (1.05 - successProbability)));
 			secondSigmoidValue = (double)1.0 / (1 + Math.exp((secondGradient - Math.abs(valence)) * (1.1 - successProbability)));
 		}
 		else {
-			firstSigmoidValue  = (double)-2.0 / (1 + Math.exp((firstGradient - valence) * (1.05 - successProbability)));
-			secondSigmoidValue = (double)-1.0 / (1 + Math.exp((secondGradient - valence) * (1.1 - successProbability)));
+			double firstGradient  = 0.5;
+			double secondGradient = 12.0;
+			firstSigmoidValue  = (double)1.0 / (1 + Math.exp((firstGradient - valence) * (1.05 - successProbability)));
+			secondSigmoidValue = (double)1.0 / (1 + Math.exp((secondGradient - valence) * (successProbability - 1.02)));
 		}
 		
 		return (firstSigmoidValue - secondSigmoidValue);
