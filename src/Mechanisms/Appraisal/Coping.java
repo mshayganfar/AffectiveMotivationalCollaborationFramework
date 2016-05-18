@@ -352,7 +352,7 @@ public class Coping {
 			return true;
 		}
 		else {
-			discoActionsWrapper.saySomethingAboutTask(false, "I do not know what to do!");
+			discoActionsWrapper.saySomethingAboutTask(false, "GOAL MANAGEMENT: I do not know what to do!");
 			return false;
 		}
 	}

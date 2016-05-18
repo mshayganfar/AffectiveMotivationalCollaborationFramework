@@ -20,6 +20,7 @@ public class Goal {
 	private ArrayList<Belief> Beliefs       = new ArrayList<Belief>();
 	private ArrayList<Motive> Motives       = new ArrayList<Motive>();
 	private ArrayList<Intention> Intentions = new ArrayList<Intention>();
+	private ArrayList<Goal> descendentGoals = new ArrayList<Goal>();
 	
 	private Plan plan;
 	private Plan parentPlan;
@@ -40,10 +41,11 @@ public class Goal {
 		this.label           = plan.getGoal().getType().toString();
 		this.currentTurn     = Turns.getInstance().getTurnNumber();
 		this.goalStatus      = GOAL_STATUS.UNKNOWN;
-		this.effort          = 1.0;
+		this.effort          = getOverallDifficultyValue();
 		this.tactical        = false;
 	}
 	
+	//This constructor either should not be used or the associated goal's effort should be set manually.
 	public Goal (MentalProcesses mentalProcesses, Plan plan) {
 		this.mentalProcesses = mentalProcesses;
 		this.collaboration   = mentalProcesses.getCollaborationMechanism();
@@ -52,7 +54,7 @@ public class Goal {
 		this.label           = plan.getGoal().getType().toString();
 		this.currentTurn     = Turns.getInstance().getTurnNumber();
 		this.goalStatus      = GOAL_STATUS.UNKNOWN;
-		this.effort          = 1.0;
+		this.effort          = -1;
 		this.tactical        = false;
 	}
 	
@@ -64,7 +66,7 @@ public class Goal {
 		this.label           = plan.getGoal().getType().toString();
 		this.currentTurn     = Turns.getInstance().getTurnNumber();
 		this.goalStatus      = GOAL_STATUS.UNKNOWN;
-		this.effort          = 1.0;
+		this.effort          = getOverallDifficultyValue();
 		this.tactical        = tactical;
 	}
 	
@@ -76,7 +78,7 @@ public class Goal {
 		this.label           = plan.getGoal().getType().toString();
 		this.currentTurn     = Turns.getInstance().getTurnNumber();
 		this.goalStatus      = goalStatus;
-		this.effort          = 1.0;
+		this.effort          = getOverallDifficultyValue();
 		this.tactical        = false;
 	}
 	
@@ -370,8 +372,8 @@ public class Goal {
 		
 		ArrayList<Goal> descendants = findDescendants(treeNodes);
 		
-		for (Goal node : descendants) {
-			effortSum += node.getGoalEffort();
+		for (Goal goal : descendants) {
+			effortSum += goal.getGoalEffort();
 		}
 		
 		return effortSum;
@@ -383,8 +385,8 @@ public class Goal {
 		
 		ArrayList<Goal> predecessors = findPredecessors(new GoalTree(mentalProcesses).createTree(), this.getPlan().getPredecessors());
 		
-		for (Goal node : predecessors) {
-			effortSum += node.getGoalEffort();
+		for (Goal goal : predecessors) {
+			effortSum += goal.getGoalEffort();
 		}
 		
 		return effortSum;
@@ -417,12 +419,95 @@ public class Goal {
 		return null;
 	}
 	
+	private double getOverallDifficultyValue() {
+		
+		Plan plan = this.getPlan();
+		
+		if (plan.isPrimitive()) {
+			switch (DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty"))) {
+				case NORMAL:
+					return 0.0;
+				case DIFFICULT:
+					return 0.5;
+				case MOST_DIFFICULT:
+					return 1.0;
+				default:
+					throw new IllegalStateException("Difficulty value: " + DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty")));
+			}
+		}
+		else {
+			int goalDifficultyCount = 0;
+			double goalDifficultySum = 0.0;
+			
+			switch (DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty"))) {
+				case NORMAL:
+					goalDifficultySum = 0.0;
+					goalDifficultyCount++;
+					break;
+				case DIFFICULT:
+					goalDifficultySum = 0.5;
+					goalDifficultyCount++;
+					break;
+				case MOST_DIFFICULT:
+					goalDifficultySum = 1.0;
+					goalDifficultyCount++;
+					break;
+				default:
+					throw new IllegalStateException("Difficulty value: " + DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty")));
+			}
+			
+			List<Goal> descendents = getDescendentGoals(this);
+			
+			for (Goal descendent : descendents) {
+				switch (DIFFICULTY.valueOf(descendent.getPlan().getType().getProperty("@difficulty"))) {
+					case NORMAL:
+						goalDifficultySum += 0.0;
+						goalDifficultyCount++;
+						break;
+					case DIFFICULT:
+						goalDifficultySum += 0.5;
+						goalDifficultyCount++;
+						break;
+					case MOST_DIFFICULT:
+						goalDifficultySum += 1.0;
+						goalDifficultyCount++;
+						break;
+					default:
+						throw new IllegalStateException("Difficulty value: " + DIFFICULTY.valueOf(descendent.getPlan().getType().getProperty("@difficulty")));
+				}
+			}
+			return ((double)goalDifficultySum/goalDifficultyCount);
+		}
+	}
+	
+	private List<Goal> getDescendentGoals(Goal goal) {
+		
+		descendentGoals.clear();
+		extractDescendentGoals(goal);
+		return descendentGoals;
+	}
+	
+	private void extractDescendentGoals(Goal goal) {
+		
+		int i;
+		
+		GoalTree goalTree = new GoalTree(mentalProcesses);
+		ArrayList<Node> treeNodes = goalTree.createTree();
+		
+		for (i = 0 ; i < treeNodes.size() ; i++)
+			if (treeNodes.get(i).getNodeGoalPlan().getType().equals(goal.getPlan().getType()))
+				break;
+		for (i = i+1 ; i < treeNodes.size() ; i++)
+			descendentGoals.add(treeNodes.get(i).getNodeGoal());
+	}
+	
 	public double getGoalSpecificity() {
 		
 		Integer goalDepth = getGoalDepth();
 		
-		if (goalDepth == null) System.out.println("Goal Management: Goal was not find in the tree!");
+		if (goalDepth == null) System.out.println("Goal Management: Goal was not found in the tree!");
 		
+		// Later, I might need to change to number of descendents instead of children. 
 		int goalDegree = this.getPlan().getChildren().size();
 		
 		return ((double)goalDepth/(goalDegree+1));

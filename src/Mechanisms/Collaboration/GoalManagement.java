@@ -1,17 +1,12 @@
 package Mechanisms.Collaboration;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import Mechanisms.Appraisal.Desirability;
 import Mechanisms.Appraisal.Relevance;
 import MentalState.Goal;
-import MetaInformation.GoalTree;
 import MetaInformation.MentalProcesses;
-import MetaInformation.Node;
-import edu.wpi.cetask.Plan;
 
 public class GoalManagement {
 	
@@ -63,7 +58,7 @@ public class GoalManagement {
 			case IRRELEVANT:
 				return 0.0;
 			default:
-				return 0.0;
+				throw new IllegalArgumentException("Illegal Relevance Value: " + relevance.isEventRelevant(eventGoal));
 		}
 	}
 	
@@ -81,7 +76,7 @@ public class GoalManagement {
 			case HIGH_UNDESIRABLE:
 				return -1.0;
 			default:
-				return 0.0;
+				throw new IllegalArgumentException("Illegal Desirability Value: " + desirability.isEventDesirable(eventGoal));
 		}
 	}
 	

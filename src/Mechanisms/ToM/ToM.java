@@ -130,7 +130,7 @@ public class ToM extends Mechanisms{
 			double dblAutonomyValue			 	 = getAutonomyValue(eventGoal);
 			Double dblPredecessorsRatio		 	 = getSucceededPredecessorsRatio(eventGoal.getPlan());
 			Double dblInputsRatio 			 	 = getAvailableInputRatio(eventGoal);
-			double dblOverallGoalDifficultyValue = getOverallDifficultyValue(eventGoal);
+			double dblOverallGoalDifficultyValue = eventGoal.getGoalEffort();
 			
 			controllabilityValue = ((double)((dblAgencyValue * getAgencyWeight()) + 
 					(dblAutonomyValue * getAutonomyWeight()) + 
@@ -150,67 +150,6 @@ public class ToM extends Mechanisms{
 				return CONTROLLABILITY.LOW_CONTROLLABLE;
 		else
 			return CONTROLLABILITY.UNCONTROLLABLE;
-	}
-	
-	private double getOverallDifficultyValue(Goal eventGoal) {
-		
-		Plan plan = eventGoal.getPlan();
-		
-		if (plan.isPrimitive()) {
-			switch (DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty"))) {
-				case NORMAL:
-					return 0.0;
-				case DIFFICULT:
-					return 0.5;
-				case MOST_DIFFICULT:
-					return 1.0;
-				default:
-					throw new IllegalStateException("Difficulty value: " + DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty")));
-			}
-		}
-		else {
-			int goalDifficultyCount = 0;
-			double goalDifficultySum = 0.0;
-			
-			switch (DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty"))) {
-				case NORMAL:
-					goalDifficultySum = 0.0;
-					goalDifficultyCount++;
-					break;
-				case DIFFICULT:
-					goalDifficultySum = 0.5;
-					goalDifficultyCount++;
-					break;
-				case MOST_DIFFICULT:
-					goalDifficultySum = 1.0;
-					goalDifficultyCount++;
-					break;
-				default:
-					throw new IllegalStateException("Difficulty value: " + DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty")));
-			}
-			
-			List<Goal> descendents = getDescendentGoals(eventGoal);
-			
-			for (Goal descendent : descendents) {
-				switch (DIFFICULTY.valueOf(descendent.getPlan().getType().getProperty("@difficulty"))) {
-					case NORMAL:
-						goalDifficultySum += 0.0;
-						goalDifficultyCount++;
-						break;
-					case DIFFICULT:
-						goalDifficultySum += 0.5;
-						goalDifficultyCount++;
-						break;
-					case MOST_DIFFICULT:
-						goalDifficultySum += 1.0;
-						goalDifficultyCount++;
-						break;
-					default:
-						throw new IllegalStateException("Difficulty value: " + DIFFICULTY.valueOf(descendent.getPlan().getType().getProperty("@difficulty")));
-				}
-			}
-			return ((double)goalDifficultySum/goalDifficultyCount);
-		}
 	}
 	
 	private List<Goal> getDescendentGoals(Goal goal) {

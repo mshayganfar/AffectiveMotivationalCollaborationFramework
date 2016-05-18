@@ -26,7 +26,6 @@ public class Controllability extends AppraisalProcesses{
 	private int totalPredecessorCount    = 0;
 	
 	private ArrayList<Plan> unachievedChildren = new ArrayList<Plan>();
-	private ArrayList<Goal> descendentGoals = new ArrayList<Goal>();
 	
 	public Controllability(MentalProcesses mentalProcesses) {
 		this.collaboration   = mentalProcesses.getCollaborationMechanism();
@@ -58,7 +57,7 @@ public class Controllability extends AppraisalProcesses{
 			double dblAutonomyValue			 	 = getAutonomyValue(eventGoal);
 			Double dblPredecessorsRatio		 	 = getSucceededPredecessorsRatio(eventGoal.getPlan());
 			Double dblInputsRatio 			 	 = getAvailableInputRatio(eventGoal);
-			double dblOverallGoalDifficultyValue = getOverallDifficultyValue(eventGoal);
+			double dblOverallGoalDifficultyValue = eventGoal.getGoalEffort();
 			
 			controllabilityValue = ((double)((dblAgencyValue * getAgencyWeight()) + 
 									(dblAutonomyValue * getAutonomyWeight()) + 
@@ -78,27 +77,6 @@ public class Controllability extends AppraisalProcesses{
 				return CONTROLLABILITY.LOW_CONTROLLABLE;
 		else
 			return CONTROLLABILITY.UNCONTROLLABLE;
-	}
-	
-	private List<Goal> getDescendentGoals(Goal goal) {
-		
-		descendentGoals.clear();
-		extractDescendentGoals(goal);
-		return descendentGoals;
-	}
-	
-	private void extractDescendentGoals(Goal goal) {
-		
-		int i;
-		
-		GoalTree goalTree = new GoalTree(mentalProcesses);
-		ArrayList<Node> treeNodes = goalTree.createTree();
-		
-		for (i = 0 ; i < treeNodes.size() ; i++)
-			if (treeNodes.get(i).getNodeGoalPlan().getType().equals(goal.getPlan().getType()))
-				break;
-		for (i = i+1 ; i < treeNodes.size() ; i++)
-			descendentGoals.add(treeNodes.get(i).getNodeGoal());
 	}
 	
 	// Agency: The capacity, condition, or state of acting or of exerting power.
@@ -335,67 +313,6 @@ public class Controllability extends AppraisalProcesses{
 					dblAvailableInputCounter++;
 		}
 		return ((double)dblAvailableInputCounter/((collaboration.getInputs(eventGoal).size() == 0) ? 1.0 : collaboration.getInputs(eventGoal).size()));
-	}
-	
-	private double getOverallDifficultyValue(Goal eventGoal) {
-		
-		Plan plan = eventGoal.getPlan();
-		
-		if (plan.isPrimitive()) {
-			switch (DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty"))) {
-				case NORMAL:
-					return 0.0;
-				case DIFFICULT:
-					return 0.5;
-				case MOST_DIFFICULT:
-					return 1.0;
-				default:
-					throw new IllegalStateException("Difficulty value: " + DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty")));
-			}
-		}
-		else {
-			int goalDifficultyCount = 0;
-			double goalDifficultySum = 0.0;
-			
-			switch (DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty"))) {
-				case NORMAL:
-					goalDifficultySum = 0.0;
-					goalDifficultyCount++;
-					break;
-				case DIFFICULT:
-					goalDifficultySum = 0.5;
-					goalDifficultyCount++;
-					break;
-				case MOST_DIFFICULT:
-					goalDifficultySum = 1.0;
-					goalDifficultyCount++;
-					break;
-				default:
-					throw new IllegalStateException("Difficulty value: " + DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty")));
-			}
-			
-			List<Goal> descendents = getDescendentGoals(eventGoal);
-			
-			for (Goal descendent : descendents) {
-				switch (DIFFICULTY.valueOf(descendent.getPlan().getType().getProperty("@difficulty"))) {
-					case NORMAL:
-						goalDifficultySum += 0.0;
-						goalDifficultyCount++;
-						break;
-					case DIFFICULT:
-						goalDifficultySum += 0.5;
-						goalDifficultyCount++;
-						break;
-					case MOST_DIFFICULT:
-						goalDifficultySum += 1.0;
-						goalDifficultyCount++;
-						break;
-					default:
-						throw new IllegalStateException("Difficulty value: " + DIFFICULTY.valueOf(descendent.getPlan().getType().getProperty("@difficulty")));
-				}
-			}
-			return ((double)goalDifficultySum/goalDifficultyCount);
-		}
 	}
 	
 	private boolean hasPreconditionFailed(Plan eventPlan) {
