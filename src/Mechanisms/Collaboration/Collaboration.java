@@ -537,6 +537,16 @@ public class Collaboration extends Mechanisms{
 		return getLastContributingPlan(plan.getChildren().get(plan.getChildren().size()-1));
 	}
 	
+	public double getAlternativeRecipeRatio(Goal eventGoal) {
+		
+		Plan plan = eventGoal.getPlan(); 
+		
+		double alternativePlansCount = plan.getDecompositions().size();
+		double failedPlansCount      = plan.getFailed().size();
+		
+		return ((alternativePlansCount + failedPlansCount) != 0) ? (double)alternativePlansCount/(alternativePlansCount + failedPlansCount) : alternativePlansCount;
+	}
+	
 	public INFERRED_CONTEXT getInferredContext(Goal eventGoal) {
 		
 		Plan eventPlan = eventGoal.getPlan();

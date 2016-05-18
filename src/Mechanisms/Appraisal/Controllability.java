@@ -21,8 +21,8 @@ public class Controllability extends AppraisalProcesses{
 	private int achievedPredecessorCount = 0;
 	private int totalPredecessorCount    = 0;
 	
-	ArrayList<Plan> unachievedChildren = new ArrayList<Plan>();
-	ArrayList<Goal> descendentGoals = new ArrayList<Goal>();
+	private ArrayList<Plan> unachievedChildren = new ArrayList<Plan>();
+	private ArrayList<Goal> descendentGoals = new ArrayList<Goal>();
 	
 	public Controllability(MentalProcesses mentalProcesses) {
 		this.collaboration   = mentalProcesses.getCollaborationMechanism();
@@ -41,7 +41,7 @@ public class Controllability extends AppraisalProcesses{
 				(collaboration.getGoalStatus(eventGoal.getPlan()).equals(GOAL_STATUS.INAPPLICABLE))) {
 				
 				// Next two values are only used for goal failure cases.
-				double dblAlternativeRecipeRatio = getAlternativeRecipeRatio(eventGoal);
+				double dblAlternativeRecipeRatio = collaboration.getAlternativeRecipeRatio(eventGoal);
 				// This value is useful when the agent needs to check recovery from a failure.
 				double dblRecoveryProbability    = getRecoveryProbability(eventGoal);
 				
@@ -223,7 +223,7 @@ public class Controllability extends AppraisalProcesses{
 		ArrayList<Input> availableInputs = new ArrayList<Input>();
 		
 		for (Input input : undefinedInputs)
-			// I check only private beliefs about input availabilities (since they include shared beliefs about input availabilities).
+			// I only check private beliefs about input availabilities (since they include shared beliefs about input availabilities).
 			if (isInputAvailable(eventPlan, input))
 				availableInputs.add(input);
 		
@@ -260,21 +260,20 @@ public class Controllability extends AppraisalProcesses{
 		
 		ArrayList<Plan> unachievedPredecessors = getUnachievedPredecessors(plan);
 		
-		if(!unachievedPredecessors.isEmpty()) {
-			for (Plan predecessor : unachievedPredecessors) {
-				if (predecessor.isPrimitive()) {
-					if (!(canProvideInput(predecessor) && canPreconditionSucceed(predecessor) && canPredecessorSucceed(predecessor)))
+		for (Plan predecessor : unachievedPredecessors) {
+			if (predecessor.isPrimitive()) {
+				if (!(canProvideInput(predecessor) && canPreconditionSucceed(predecessor) && canPredecessorSucceed(predecessor)))
+					return false;
+			}
+			else {
+				for (Plan child : predecessor.getChildren())
+					if (!canPredecessorSucceed(child))
 						return false;
-				}
-				else {
-					for (Plan child : predecessor.getChildren())
-						if (!canPredecessorSucceed(child))
-							return false;
-				}
 			}
 		}
 		// I found no need for the following code, since no unachieved predecessor requires no inspection.
-		
+
+//		if(!unachievedPredecessors.isEmpty()) { }
 //		else {
 //			if (plan.isPrimitive()) {
 //				if (!(canProvideInput(plan) && canPreconditionSucceed(plan)))
@@ -393,16 +392,6 @@ public class Controllability extends AppraisalProcesses{
 			}
 			return ((double)goalDifficultySum/goalDifficultyCount);
 		}
-	}
-	
-	private double getAlternativeRecipeRatio(Goal eventGoal) {
-		
-		Plan plan = eventGoal.getPlan(); 
-		
-		double alternativePlansCount = plan.getDecompositions().size();
-		double failedPlansCount      = plan.getFailed().size();
-		
-		return ((alternativePlansCount + failedPlansCount) != 0) ? (double)alternativePlansCount/(alternativePlansCount + failedPlansCount) : alternativePlansCount;
 	}
 	
 	private boolean hasPreconditionFailed(Plan eventPlan) {
