@@ -95,17 +95,17 @@ public class Motive {
 	
 	public MOTIVE_INTENSITY getSymbolicMotiveIntensity() {
 		
-		if (motiveIntensity >= 0.67)
+		if ((motiveIntensity >= 0.67) && (motiveIntensity <= 1.0))
 			return MOTIVE_INTENSITY.HIGH_POSITIVE;
 		else if ((motiveIntensity < 0.67) && (motiveIntensity >= 0.34))
 			return MOTIVE_INTENSITY.MEDIUM_POSITIVE;
-		else if ((motiveIntensity > 0.0) && (motiveIntensity < 0.34))
+		else if ((motiveIntensity >= 0.0) && (motiveIntensity < 0.34))
 			return MOTIVE_INTENSITY.LOW_POSITIVE;
 		else if ((motiveIntensity < 0.0) && (motiveIntensity > -0.34))
 			return MOTIVE_INTENSITY.LOW_NEGATIVE;
 		else if ((motiveIntensity > -0.67) && (motiveIntensity <= -0.34))
 			return MOTIVE_INTENSITY.MEDIUM_NEGATIVE;
-		if (motiveIntensity <= -0.67)
+		if ((motiveIntensity <= -0.67) && (motiveIntensity >= -1.0))
 			return MOTIVE_INTENSITY.HIGH_NEGATIVE;
 		else
 			throw new IllegalArgumentException("Illegal motive intensity value:" + motiveIntensity);
