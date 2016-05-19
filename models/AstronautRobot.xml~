@@ -2,128 +2,135 @@
            xmlns="http://www.cs.wpi.edu/~rich/cetask/cea-2018-ext"
            xmlns:disco="urn:disco.wpi.edu:Disco">
 
-  <task id="A">
+  <task id="InstallSolarPanel">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_e &amp;&amp; post_k &amp;&amp; post_g &amp;&amp; post_h &amp;&amp; post_l &amp;&amp; post_m &amp;&amp; post_n &amp;&amp; post_o &amp;&amp; post_p </postcondition>
+		<postcondition sufficient="true"> post_PrepareControlSwitch &amp;&amp; post_RemoveCover &amp;&amp; post_ConnectAdaptor &amp;&amp; post_PlacePanel &amp;&amp; post_WeldPanel &amp;&amp; post_CheckPanelAttachment &amp;&amp; post_CheckWirings &amp;&amp; post_CheckControlSwitch &amp;&amp; post_CheckCascadingCells &amp;&amp; post_CheckOutputCurrent </postcondition>
     <subtasks id="recipeA" ordered="false">
-      <step name="step1" task ="B"/>
-      <step name="step2" task="C"/>
-      <step name="step3" task="D"/>
+      <step name="prepare" task ="PreparePanel"/>
+      <step name="fix" task="FixPanel"/>
+      <step name="check" task="CheckPanel"/>
     </subtasks>
   </task>
 
-  <task id="B">
+  <task id="PreparePanel">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_e &amp;&amp; post_k </postcondition>
+		<postcondition sufficient="true"> post_PrepareControlSwitch &amp;&amp; post_RemoveCover &amp;&amp; post_ConnectAdaptor</postcondition>
     <subtasks id="recipeB" ordered="false">
-      <step name="step1" task ="e"/>
-      <step name="step2" task="F"/>
+      <step name="switch" task ="PrepareControlSwitch"/>
+      <step name="connector" task="PrepareConnector"/>
 
-      <binding slot="$step1.external" value="false"/>
+      <binding slot="$switch.external" value="false"/>
     </subtasks>
   </task>
 
-  <task id="C">
+  <task id="FixPanel">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_g &amp;&amp; post_h </postcondition>
+		<postcondition sufficient="true"> post_PlacePanel &amp;&amp; post_WeldPanel </postcondition>
     <subtasks id="recipeC" ordered="false">
-      <step name="step1" task ="g"/>
-      <step name="step2" task="h"/>
+      <step name="place" task ="PlacePanel"/>
+      <step name="weld" task="WeldPanel"/>
 
-      <binding slot="$step1.external" value="false"/>
-      <binding slot="$step2.external" value="false"/>
+      <binding slot="$place.external" value="false"/>
+      <binding slot="$weld.external" value="false"/>
     </subtasks>
   </task>
 
-  <task id="D">
+  <task id="CheckPanel">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_l &amp;&amp; post_m &amp;&amp; post_n &amp;&amp; post_o &amp;&amp; post_p </postcondition>
+		<postcondition sufficient="true"> post_CheckPanelAttachment &amp;&amp; post_CheckWirings &amp;&amp; post_CheckControlSwitch &amp;&amp; post_CheckCascadingCells &amp;&amp; post_CheckOutputCurrent </postcondition>
     <subtasks id="recipeD" ordered="false">
-      <step name="step1" task ="I"/>
-      <step name="step2" task="J"/>
+      <step name="hardware" task ="CheckHardware"/>
+      <step name="function" task="CheckFunction"/>
     </subtasks>
   </task>
 
-  <task id="F">
+  <task id="PrepareConnector">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_k </postcondition>
+		<postcondition sufficient="true"> post_RemoveCover &amp;&amp; post_ConnectAdaptor </postcondition>
     <subtasks id="recipeF" ordered="false">
-      <step name="step1" task ="k"/>
+      <step name="cover" task ="RemoveCover"/>
+      <step name="adaptor" task ="ConnectAdaptor"/>
 
-      <binding slot="$step1.external" value="false"/>
+      <binding slot="$cover.external" value="false"/>
+      <binding slot="$adaptor.external" value="false"/>
     </subtasks>
   </task>
 
-  <task id="I">
+  <task id="CheckHardware">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_l &amp;&amp; post_m </postcondition>
+		<postcondition sufficient="true"> post_CheckPanelAttachment &amp;&amp; post_CheckWirings </postcondition>
     <subtasks id="recipeI" ordered="false">
-      <step name="step1" task ="l"/>
-      <step name="step2" task ="m"/>
+      <step name="panelattachment" task ="CheckPanelAttachment"/>
+      <step name="wirings" task ="CheckWirings"/>
 
-      <binding slot="$step1.external" value="false"/>
-      <binding slot="$step2.external" value="false"/>
+      <binding slot="$panelattachment.external" value="false"/>
+      <binding slot="$wirings.external" value="false"/>
     </subtasks>
   </task>
 
-  <task id="J">
+  <task id="CheckFunction">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_n &amp;&amp; post_o &amp;&amp; post_p </postcondition>
+		<postcondition sufficient="true"> post_CheckControlSwitch &amp;&amp; post_CheckCascadingCells &amp;&amp; post_CheckOutputCurrent </postcondition>
     <subtasks id="recipeJ" ordered="false">
-      <step name="step1" task ="n"/>
-      <step name="step2" task ="o"/>
-      <step name="step3" task ="p"/>
+      <step name="controlswitch" task ="CheckControlSwitch"/>
+      <step name="cascadingcells" task ="CheckCascadingCells"/>
+      <step name="outputcurrent" task ="CheckOutputCurrent"/>
 
-      <binding slot="$step1.external" value="false"/>
-      <binding slot="$step2.external" value="false"/>
-      <binding slot="$step3.external" value="false"/>
+      <binding slot="$controlswitch.external" value="false"/>
+      <binding slot="$cascadingcells.external" value="false"/>
+      <binding slot="$outputcurrent.external" value="false"/>
     </subtasks>
   </task>
 
-  <task id="e">
+  <task id="PrepareControlSwitch">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_e </postcondition> 
-		<script> post_e = true; </script>
+		<postcondition sufficient="true"> post_PrepareControlSwitch </postcondition> 
+		<script> post_PrepareControlSwitch = true; </script>
 	</task>
-  <task id="k">
+  <task id="RemoveCover">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_k </postcondition>
-		<script> post_k = true; </script>
+		<postcondition sufficient="true"> post_RemoveCover </postcondition>
+		<script> post_RemoveCover = true; </script>
 	</task>
-  <task id="g">
+  <task id="ConnectAdaptor">
+		<precondition>true</precondition>
+		<postcondition sufficient="true"> post_ConnectAdaptor </postcondition>
+		<script> post_ConnectAdaptor = true; </script>
+	</task>
+  <task id="PlacePanel">
 		<precondition>true</precondition> 
-		<postcondition sufficient="true"> post_g </postcondition>
-		<script> post_g = true; </script>
+		<postcondition sufficient="true"> post_PlacePanel </postcondition>
+		<script> post_PlacePanel = true; </script>
 	</task>
-  <task id="h">
+  <task id="WeldPanel">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_h </postcondition>
-		<script> post_h = true; </script> 
+		<postcondition sufficient="true"> post_WeldPanel </postcondition>
+		<script> post_WeldPanel = true; </script> 
 	</task>
-  <task id="l">
+  <task id="CheckPanelAttachment">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_l </postcondition>
-		<script> post_l = true; </script>
+		<postcondition sufficient="true"> post_CheckPanelAttachment </postcondition>
+		<script> post_CheckPanelAttachment = true; </script>
 	</task>
-  <task id="m">
+  <task id="CheckWirings">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_m </postcondition>
-		<script> post_m = true; </script>
+		<postcondition sufficient="true"> post_CheckWirings </postcondition>
+		<script> post_CheckWirings = true; </script>
 	</task>
-  <task id="n">
+  <task id="CheckControlSwitch">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_n </postcondition>
-		<script> post_n = true; </script>
+		<postcondition sufficient="true"> post_CheckControlSwitch </postcondition>
+		<script> post_CheckControlSwitch = true; </script>
 	</task>
-  <task id="o">
+  <task id="CheckCascadingCells">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_o </postcondition>
-		<script> post_o = true; </script>
+		<postcondition sufficient="true"> post_CheckCascadingCells </postcondition>
+		<script> post_CheckCascadingCells = true; </script>
 	</task>
-  <task id="p">
+  <task id="CheckOutputCurrent">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_p </postcondition>
-		<script> post_p = true; </script>
+		<postcondition sufficient="true"> post_CheckOutputCurrent </postcondition>
+		<script> post_CheckOutputCurrent = true; </script>
 	</task>
   
 </taskModel>

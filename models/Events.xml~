@@ -15,8 +15,8 @@
 		 var post_o;
 		 var post_p;
 
-		function appraise () {
-       return Packages.AffectiveMotivationalCollaborationFramework.doAppraisal();
+		function process () {
+       return Packages.AffectiveMotivationalCollaborationFramework.process();
     }
 
 		function updatePreviousCollaborationStatus () {

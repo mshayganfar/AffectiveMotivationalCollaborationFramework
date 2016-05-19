@@ -5,7 +5,7 @@
 
   <script init="true">
 
-		 var post_e;
+		 var post_PrepareControlSwitch;
 		 var post_k;
 		 var post_g;
 		 var post_h;
