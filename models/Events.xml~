@@ -5,15 +5,16 @@
 
   <script init="true">
 
-		 var post_e;
-		 var post_k;
-		 var post_g;
-		 var post_h;
-		 var post_l;
-		 var post_m;
-		 var post_n;
-		 var post_o;
-		 var post_p;
+		 var post_PrepareControlSwitch;
+		 var post_RemoveCover;
+		 var post_ConnectAdaptor;
+		 var post_PlacePanel;
+		 var post_WeldPanel;
+		 var post_CheckPanelAttachment;
+		 var post_CheckWirings;
+		 var post_CheckControlSwitch;
+		 var post_CheckCascadingCells;
+		 var post_CheckOutputCurrent;
 
 		function process () {
        return Packages.AffectiveMotivationalCollaborationFramework.process();
