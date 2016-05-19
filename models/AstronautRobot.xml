@@ -1,0 +1,129 @@
+<taskModel about="urn:shayganfar.wpi.edu:models:ABC" 
+           xmlns="http://www.cs.wpi.edu/~rich/cetask/cea-2018-ext"
+           xmlns:disco="urn:disco.wpi.edu:Disco">
+
+  <task id="InstallSolarPanel">
+		<precondition>true</precondition>
+		<postcondition sufficient="true"> post_e &amp;&amp; post_k &amp;&amp; post_g &amp;&amp; post_h &amp;&amp; post_l &amp;&amp; post_m &amp;&amp; post_n &amp;&amp; post_o &amp;&amp; post_p </postcondition>
+    <subtasks id="recipeA" ordered="false">
+      <step name="step1" task ="B"/>
+      <step name="step2" task="C"/>
+      <step name="step3" task="D"/>
+    </subtasks>
+  </task>
+
+  <task id="B">
+		<precondition>true</precondition>
+		<postcondition sufficient="true"> post_e &amp;&amp; post_k </postcondition>
+    <subtasks id="recipeB" ordered="false">
+      <step name="step1" task ="e"/>
+      <step name="step2" task="F"/>
+
+      <binding slot="$step1.external" value="false"/>
+    </subtasks>
+  </task>
+
+  <task id="C">
+		<precondition>true</precondition>
+		<postcondition sufficient="true"> post_g &amp;&amp; post_h </postcondition>
+    <subtasks id="recipeC" ordered="false">
+      <step name="step1" task ="g"/>
+      <step name="step2" task="h"/>
+
+      <binding slot="$step1.external" value="false"/>
+      <binding slot="$step2.external" value="false"/>
+    </subtasks>
+  </task>
+
+  <task id="D">
+		<precondition>true</precondition>
+		<postcondition sufficient="true"> post_l &amp;&amp; post_m &amp;&amp; post_n &amp;&amp; post_o &amp;&amp; post_p </postcondition>
+    <subtasks id="recipeD" ordered="false">
+      <step name="step1" task ="I"/>
+      <step name="step2" task="J"/>
+    </subtasks>
+  </task>
+
+  <task id="F">
+		<precondition>true</precondition>
+		<postcondition sufficient="true"> post_k </postcondition>
+    <subtasks id="recipeF" ordered="false">
+      <step name="step1" task ="k"/>
+
+      <binding slot="$step1.external" value="false"/>
+    </subtasks>
+  </task>
+
+  <task id="I">
+		<precondition>true</precondition>
+		<postcondition sufficient="true"> post_l &amp;&amp; post_m </postcondition>
+    <subtasks id="recipeI" ordered="false">
+      <step name="step1" task ="l"/>
+      <step name="step2" task ="m"/>
+
+      <binding slot="$step1.external" value="false"/>
+      <binding slot="$step2.external" value="false"/>
+    </subtasks>
+  </task>
+
+  <task id="J">
+		<precondition>true</precondition>
+		<postcondition sufficient="true"> post_n &amp;&amp; post_o &amp;&amp; post_p </postcondition>
+    <subtasks id="recipeJ" ordered="false">
+      <step name="step1" task ="n"/>
+      <step name="step2" task ="o"/>
+      <step name="step3" task ="p"/>
+
+      <binding slot="$step1.external" value="false"/>
+      <binding slot="$step2.external" value="false"/>
+      <binding slot="$step3.external" value="false"/>
+    </subtasks>
+  </task>
+
+  <task id="e">
+		<precondition>true</precondition>
+		<postcondition sufficient="true"> post_e </postcondition> 
+		<script> post_e = true; </script>
+	</task>
+  <task id="k">
+		<precondition>true</precondition>
+		<postcondition sufficient="true"> post_k </postcondition>
+		<script> post_k = true; </script>
+	</task>
+  <task id="g">
+		<precondition>true</precondition> 
+		<postcondition sufficient="true"> post_g </postcondition>
+		<script> post_g = true; </script>
+	</task>
+  <task id="h">
+		<precondition>true</precondition>
+		<postcondition sufficient="true"> post_h </postcondition>
+		<script> post_h = true; </script> 
+	</task>
+  <task id="l">
+		<precondition>true</precondition>
+		<postcondition sufficient="true"> post_l </postcondition>
+		<script> post_l = true; </script>
+	</task>
+  <task id="m">
+		<precondition>true</precondition>
+		<postcondition sufficient="true"> post_m </postcondition>
+		<script> post_m = true; </script>
+	</task>
+  <task id="n">
+		<precondition>true</precondition>
+		<postcondition sufficient="true"> post_n </postcondition>
+		<script> post_n = true; </script>
+	</task>
+  <task id="o">
+		<precondition>true</precondition>
+		<postcondition sufficient="true"> post_o </postcondition>
+		<script> post_o = true; </script>
+	</task>
+  <task id="p">
+		<precondition>true</precondition>
+		<postcondition sufficient="true"> post_p </postcondition>
+		<script> post_p = true; </script>
+	</task>
+  
+</taskModel>
