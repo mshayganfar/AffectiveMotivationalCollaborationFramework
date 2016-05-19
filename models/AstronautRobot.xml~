@@ -1,4 +1,4 @@
-<taskModel about="urn:shayganfar.wpi.edu:models:ABC" 
+<taskModel about="urn:shayganfar.wpi.edu:models:AstronautRobot" 
            xmlns="http://www.cs.wpi.edu/~rich/cetask/cea-2018-ext"
            xmlns:disco="urn:disco.wpi.edu:Disco">
 

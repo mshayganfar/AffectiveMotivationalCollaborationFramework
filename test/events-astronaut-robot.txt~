@@ -12,27 +12,27 @@ execute RemoveCover / false
 eval process()
 execute ConnectAdaptor / false
 eval process()
-task C
+task FixPanel
 eval process()
-execute g / false
+execute PlacePanel / false
 eval process()
-execute h / false
+execute WeldPanel / false
 eval process()
-task D
-eval process()
-eval $disco.isLastShift()
-task I
-eval process()
-execute l / false
-eval process()
-execute m / false
-eval process()
-task J
+task CheckPanel
 eval process()
 eval $disco.isLastShift()
-execute n / false
+task CheckHardware
 eval process()
-execute o / false
+execute CheckPanelAttachment / false
 eval process()
-execute p / false
+execute CheckWirings / false
+eval process()
+task CheckFunction
+eval process()
+eval $disco.isLastShift()
+execute CheckControlSwitch / false
+eval process()
+execute CheckCascadingCells / false
+eval process()
+execute CheckOutputCurrent / false
 eval process()

@@ -111,7 +111,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		mentalProcesses.getCollaborationMechanism().getInteraction().start(true);
 		
 //		collaboration.getInteraction().getConsole().test("test/ABC1.test");
-		mentalProcesses.getCollaborationMechanism().getInteraction().getConsole().source("test/events2.txt");
+		mentalProcesses.getCollaborationMechanism().getInteraction().getConsole().source("test/events-astronaut-robot.txt");
 		
 //		System.out.println(goalManagement.computeCostValue(eventGoal) + " and " + eventGoal.getLabel() + " and " + collaboration.getDisco().getFocus().getType());
 		
