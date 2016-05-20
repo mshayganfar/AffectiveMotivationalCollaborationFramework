@@ -520,6 +520,20 @@ public class Collaboration extends Mechanisms{
 		}
 	}
 	
+	public int getTotalEdgeCount() {
+		
+		int nodeCounter = 0;
+		
+		GoalTree goalTree = new GoalTree(mentalProcesses);
+		ArrayList<Node> treeNodes = goalTree.createTree();
+		
+		for (Node node : treeNodes) {
+			nodeCounter++;
+		}
+		
+		return (nodeCounter-1);
+	}
+	
 	public Map<String, Boolean> getPreconditionApplicabilities() {
 		return preconditionsLOT;
 	}

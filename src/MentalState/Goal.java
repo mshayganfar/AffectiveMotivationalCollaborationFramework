@@ -41,7 +41,7 @@ public class Goal {
 		this.label           = plan.getGoal().getType().toString();
 		this.currentTurn     = Turns.getInstance().getTurnNumber();
 		this.goalStatus      = GOAL_STATUS.UNKNOWN;
-		this.effort          = getOverallDifficultyValue();
+		this.effort          = getGoalDifficultyValue();
 		this.tactical        = false;
 	}
 	
@@ -66,7 +66,7 @@ public class Goal {
 		this.label           = plan.getGoal().getType().toString();
 		this.currentTurn     = Turns.getInstance().getTurnNumber();
 		this.goalStatus      = GOAL_STATUS.UNKNOWN;
-		this.effort          = getOverallDifficultyValue();
+		this.effort          = getGoalDifficultyValue();
 		this.tactical        = tactical;
 	}
 	
@@ -78,7 +78,7 @@ public class Goal {
 		this.label           = plan.getGoal().getType().toString();
 		this.currentTurn     = Turns.getInstance().getTurnNumber();
 		this.goalStatus      = goalStatus;
-		this.effort          = getOverallDifficultyValue();
+		this.effort          = getGoalDifficultyValue();
 		this.tactical        = false;
 	}
 	
@@ -304,9 +304,17 @@ public class Goal {
 		return distance;
 	}
 	
-	public int getGoalProximity() {
+	public double getGoalProximity() {
 		
-		return Math.max(getGoalsDistance(this.getPlan(), collaboration.getDisco().getFocus()), 1);
+		int totalEdgeCount = collaboration.getTotalEdgeCount();
+		
+		double minProximity = (double)1.0/totalEdgeCount;
+		double proximity    = (double)getGoalsDistance(this.getPlan(), collaboration.getDisco().getFocus())/totalEdgeCount;
+		
+		if(proximity >= minProximity)
+			return proximity;
+		else
+			return minProximity;
 	}
 	
 	private int getGoalHeight() {
@@ -419,41 +427,62 @@ public class Goal {
 		return null;
 	}
 	
-	private double getOverallDifficultyValue() {
+	private double getTotalGoalsDifficultyValue() {
 		
+		double totalDifficulty = 0.0;
+		GoalTree goalTree = new GoalTree(mentalProcesses);
+		ArrayList<Node> treeNodes = goalTree.createTree();
+		
+		for (Node node : treeNodes) {
+			switch (DIFFICULTY.valueOf(node.getNodeGoalPlan().getType().getProperty("@difficulty"))) {
+				case NORMAL:
+					totalDifficulty += 1.0;
+					break;
+				case DIFFICULT:
+					totalDifficulty += 2.0;
+					break;
+				case MOST_DIFFICULT:
+					totalDifficulty += 3.0;
+					break;
+				default:
+					throw new IllegalStateException("Illegal Difficulty Value: " + DIFFICULTY.valueOf(node.getNodeGoalPlan().getType().getProperty("@difficulty")));
+			}
+		}
+		 return totalDifficulty;
+	}
+	
+	private double getGoalDifficultyValue() {
+		
+		double totalDifficulty = getTotalGoalsDifficultyValue();
 		Plan plan = this.getPlan();
 		
 		if (plan.isPrimitive()) {
 			switch (DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty"))) {
 				case NORMAL:
-					return 0.0;
+					return (double)1.0/totalDifficulty;
 				case DIFFICULT:
-					return 0.5;
+					return (double)2.0/totalDifficulty;
 				case MOST_DIFFICULT:
-					return 1.0;
+					return (double)3.0/totalDifficulty;
 				default:
-					throw new IllegalStateException("Difficulty value: " + DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty")));
+					throw new IllegalStateException("Illegal Difficulty Value: " + DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty")));
 			}
 		}
 		else {
-			int goalDifficultyCount = 0;
 			double goalDifficultySum = 0.0;
 			
 			switch (DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty"))) {
 				case NORMAL:
-					goalDifficultySum = 0.0;
-					goalDifficultyCount++;
+					goalDifficultySum = (double)1.0/totalDifficulty;
 					break;
 				case DIFFICULT:
-					goalDifficultySum = 0.5;
-					goalDifficultyCount++;
+					goalDifficultySum = (double)2.0/totalDifficulty;
 					break;
 				case MOST_DIFFICULT:
-					goalDifficultySum = 1.0;
-					goalDifficultyCount++;
+					goalDifficultySum = (double)3.0/totalDifficulty;
 					break;
 				default:
-					throw new IllegalStateException("Difficulty value: " + DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty")));
+					throw new IllegalStateException("Illegal Difficulty Value: " + DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty")));
 			}
 			
 			List<Goal> descendents = getDescendentGoals(this);
@@ -461,22 +490,19 @@ public class Goal {
 			for (Goal descendent : descendents) {
 				switch (DIFFICULTY.valueOf(descendent.getPlan().getType().getProperty("@difficulty"))) {
 					case NORMAL:
-						goalDifficultySum += 0.0;
-						goalDifficultyCount++;
+						goalDifficultySum += (double)1.0/totalDifficulty;
 						break;
 					case DIFFICULT:
-						goalDifficultySum += 0.5;
-						goalDifficultyCount++;
+						goalDifficultySum += (double)2.0/totalDifficulty;
 						break;
 					case MOST_DIFFICULT:
-						goalDifficultySum += 1.0;
-						goalDifficultyCount++;
+						goalDifficultySum += (double)3.0/totalDifficulty;
 						break;
 					default:
-						throw new IllegalStateException("Difficulty value: " + DIFFICULTY.valueOf(descendent.getPlan().getType().getProperty("@difficulty")));
+						throw new IllegalStateException("Illegal Difficulty Value: " + DIFFICULTY.valueOf(descendent.getPlan().getType().getProperty("@difficulty")));
 				}
 			}
-			return ((double)goalDifficultySum/goalDifficultyCount);
+			return goalDifficultySum;
 		}
 	}
 	
