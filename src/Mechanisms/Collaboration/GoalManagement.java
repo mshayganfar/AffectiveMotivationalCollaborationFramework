@@ -24,7 +24,7 @@ public class GoalManagement {
 		
 		double costValue = 0.0;
 		
-		int goalPoximity       = eventGoal.getGoalProximity();
+		double goalPoximity    = eventGoal.getGoalProximity();
 		double goalDifficulty  = eventGoal.getGoalDifficulty();
 		double goalSpecificity = eventGoal.getGoalSpecificity();
 		
