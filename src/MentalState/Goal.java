@@ -583,7 +583,6 @@ public class Goal {
 		Integer goalDepth  = getGoalDepth();
 		int maxBranchDepth = getMaxBranchDepth();
 		
-		System.out.println("Branch ========> " + maxBranchDepth);
 		if (goalDepth == null) 
 			throw new IllegalArgumentException("Goal Management: Goal was not found in the tree!");
 		

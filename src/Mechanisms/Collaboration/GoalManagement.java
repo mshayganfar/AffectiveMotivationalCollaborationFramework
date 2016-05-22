@@ -30,10 +30,9 @@ public class GoalManagement {
 		
 		Map<String, Double> weights = getGoalAttributesWeights(eventGoal);
 		
-		System.out.println("P--------------> " + goalProximity);
-		System.out.println("D--------------> " + goalDifficulty);
-		System.out.println("S--------------> " + goalSpecificity);
 		double base = ((goalProximity * weights.get("proximity")) + (goalDifficulty * weights.get("difficulty")) + (((double)1/(goalSpecificity + 1)) * weights.get("specificity")));
+		
+		System.out.println("Base --------------> " + base);
 		
 		double exponent = getGammaValue(eventGoal, 3, 2);
 		
