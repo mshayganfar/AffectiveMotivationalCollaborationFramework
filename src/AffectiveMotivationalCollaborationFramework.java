@@ -2,6 +2,7 @@ import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
 import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
 import Mechanisms.Appraisal.Relevance.RELEVANCE;
+import Mechanisms.Collaboration.GoalManagement;
 import MentalState.Belief;
 import MentalState.Goal;
 import MentalState.Motive;
@@ -18,6 +19,7 @@ public class AffectiveMotivationalCollaborationFramework {
 	private static Goal goal = null;
 	
 	private static MentalProcesses mentalProcesses;
+	private static GoalManagement goalManagement;
 //	private static SatisfactionDrive satisfactionDrive = new SatisfactionDrive();
 	
 	private static Goal updateGoal(Plan plan) {
@@ -98,6 +100,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		runMotivations(recognizedGoal);
 		
+		goalManagement.computeCostValue(recognizedGoal);
 		// This needs to be done after running all the mechanisms.
 		turn.updateTurn();
 	}
@@ -106,8 +109,8 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		mentalProcesses = new MentalProcesses(args);
 		
-//		GoalManagement goalManagement = new GoalManagement(collaboration, relevance, desirability);
-		
+		goalManagement = new GoalManagement(mentalProcesses);
+				
 		mentalProcesses.getCollaborationMechanism().getInteraction().start(true);
 		
 //		collaboration.getInteraction().getConsole().test("test/ABC1.test");

@@ -24,13 +24,16 @@ public class GoalManagement {
 		
 		double costValue = 0.0;
 		
-		double goalPoximity    = eventGoal.getGoalProximity();
+		double goalProximity   = eventGoal.getGoalProximity();
 		double goalDifficulty  = eventGoal.getGoalDifficulty();
 		double goalSpecificity = eventGoal.getGoalSpecificity();
 		
 		Map<String, Double> weights = getGoalAttributesWeights(eventGoal);
 		
-		double base = ((goalPoximity * weights.get("proximity")) + (goalDifficulty * weights.get("difficulty")) + (((double)1/(goalSpecificity + 1)) * weights.get("specificity")));
+		System.out.println("P--------------> " + goalProximity);
+		System.out.println("D--------------> " + goalDifficulty);
+		System.out.println("S--------------> " + goalSpecificity);
+		double base = ((goalProximity * weights.get("proximity")) + (goalDifficulty * weights.get("difficulty")) + (((double)1/(goalSpecificity + 1)) * weights.get("specificity")));
 		
 		double exponent = getGammaValue(eventGoal, 3, 2);
 		

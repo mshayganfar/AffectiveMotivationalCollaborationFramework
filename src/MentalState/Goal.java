@@ -41,7 +41,7 @@ public class Goal {
 		this.label           = plan.getGoal().getType().toString();
 		this.currentTurn     = Turns.getInstance().getTurnNumber();
 		this.goalStatus      = GOAL_STATUS.UNKNOWN;
-		this.effort          = getGoalDifficultyValue();
+		this.effort          = getGoalDifficultyValue(this);
 		this.tactical        = false;
 	}
 	
@@ -66,7 +66,7 @@ public class Goal {
 		this.label           = plan.getGoal().getType().toString();
 		this.currentTurn     = Turns.getInstance().getTurnNumber();
 		this.goalStatus      = GOAL_STATUS.UNKNOWN;
-		this.effort          = getGoalDifficultyValue();
+		this.effort          = getGoalDifficultyValue(this);
 		this.tactical        = tactical;
 	}
 	
@@ -78,7 +78,7 @@ public class Goal {
 		this.label           = plan.getGoal().getType().toString();
 		this.currentTurn     = Turns.getInstance().getTurnNumber();
 		this.goalStatus      = goalStatus;
-		this.effort          = getGoalDifficultyValue();
+		this.effort          = getGoalDifficultyValue(this);
 		this.tactical        = false;
 	}
 	
@@ -317,22 +317,51 @@ public class Goal {
 			return minProximity;
 	}
 	
-	private int getGoalHeight() {
+	private int getMaxGoalHeight() {
+		
+		int maxHeight = -1;
+		
+		GoalTree goalTree = new GoalTree(mentalProcesses);
+		ArrayList<Node> treeNodes = goalTree.createTree();
+		
+		for (Node node : treeNodes)
+			if (maxHeight < node.getNodeDepthValue())
+				maxHeight = node.getNodeDepthValue();
+		
+		return maxHeight;
+	}
+	
+	private double getGoalHeightRatio() {
 		
 		int maxDepth = -1, goalDepth = 0;
 		
 		GoalTree goalTree = new GoalTree(mentalProcesses);
-		
 		ArrayList<Node> treeNodes = goalTree.createTree();
 		
-		for (Node node : treeNodes) {
-			if (node.getNodeDepthValue() > maxDepth)
-				maxDepth = node.getNodeDepthValue();
-			if (node.getNodeGoalPlan().getType().equals(this.getPlan().getType()))
-				goalDepth = node.getNodeDepthValue();
+		for (int i = 0 ; i < treeNodes.size() ; i++) {
+			Node node = treeNodes.get(i);
+			if (node.getNodeGoalPlan().getType().equals(this.getPlan().getType())) {
+				if (node.getNodeGoalPlan().getChildren().size() != 0) {
+					while ((node.getNodeDepthValue() >= maxDepth) && (i < treeNodes.size())) {
+						maxDepth = node.getNodeDepthValue();
+						node = treeNodes.get(i++);
+					}
+					break;
+				}
+				else {
+					maxDepth = node.getNodeDepthValue();
+					break;
+				}
+			}
 		}
 		
-		return (maxDepth - goalDepth);
+		for (Node node : treeNodes) {
+			if (node.getNodeGoalPlan().getType().equals(this.getPlan().getType())) {
+				goalDepth = node.getNodeDepthValue();
+				break;
+			}
+		}
+		return ((double)((maxDepth - goalDepth) + 1)/(getMaxGoalHeight() + 1));
 	}
 	
 	private ArrayList<Goal> findPredecessors(ArrayList<Node> treeNodes, List<Plan> planPredecessors) {
@@ -358,8 +387,7 @@ public class Goal {
 		for (int i = 0 ; i < treeNodes.size() ; i++) {
 			if (treeNodes.get(i).getNodeGoalPlan().getType().equals(this.getPlan().getType())) {
 				index = i+1;
-				while ((treeNodes.get(index).getNodeDepthValue() > treeNodes.get(i).getNodeDepthValue()) && 
-						index < treeNodes.size()) {
+				while ((index < treeNodes.size()) && (treeNodes.get(index).getNodeDepthValue() > treeNodes.get(i).getNodeDepthValue())) {
 					descendants.add(treeNodes.get(index).getNodeGoal());
 					index++;
 				}
@@ -372,19 +400,15 @@ public class Goal {
 	
 	private double getDescendentEffort() {
 		
-		double effortSum = 0.0;
+		double effortSum = getGoalDifficultyValue(this);
 		
-		GoalTree goalTree = new GoalTree(mentalProcesses);
+		ArrayList<Goal> descendants = findDescendants(new GoalTree(mentalProcesses).createTree());
 		
-		ArrayList<Node> treeNodes = goalTree.createTree();
-		
-		ArrayList<Goal> descendants = findDescendants(treeNodes);
-		
-		for (Goal goal : descendants) {
-			effortSum += goal.getGoalEffort();
+		for (Goal descendent : descendants) {
+			effortSum += getGoalDifficultyValue(descendent);
 		}
 		
-		return effortSum;
+		return ((double)effortSum/getTotalGoalsDifficultyValue());
 	}
 	
 	private double getPredecessorEffort() {
@@ -393,22 +417,22 @@ public class Goal {
 		
 		ArrayList<Goal> predecessors = findPredecessors(new GoalTree(mentalProcesses).createTree(), this.getPlan().getPredecessors());
 		
-		for (Goal goal : predecessors) {
-			effortSum += goal.getGoalEffort();
+		for (Goal predecessor : predecessors) {
+			effortSum += getPredecessorGoalDifficultyValue(predecessor);
 		}
 		
-		return effortSum;
+		return ((double)effortSum/getTotalGoalsDifficultyValue());
 	}
 	
 	public double getGoalDifficulty() {
 		
 		double goalDifficulty = 0.0;
 		
-		int goalHeight           = getGoalHeight();
+		double goalHeight        = getGoalHeightRatio();
 		double predecessorEffort = getPredecessorEffort();
 		double descendentEffort  = getDescendentEffort();
 		
-		goalDifficulty = (goalHeight + 1) * (predecessorEffort + descendentEffort);
+		goalDifficulty = ((double)(goalHeight + 1)/(getMaxGoalHeight() + 1)) * (predecessorEffort + descendentEffort);
 		
 		return goalDifficulty;
 	}
@@ -451,57 +475,33 @@ public class Goal {
 		 return totalDifficulty;
 	}
 	
-	private double getGoalDifficultyValue() {
+	private double getGoalDifficultyValue(Goal goal) {
 		
-		double totalDifficulty = getTotalGoalsDifficultyValue();
-		Plan plan = this.getPlan();
+		Plan plan = goal.getPlan();
 		
-		if (plan.isPrimitive()) {
-			switch (DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty"))) {
-				case NORMAL:
-					return (double)1.0/totalDifficulty;
-				case DIFFICULT:
-					return (double)2.0/totalDifficulty;
-				case MOST_DIFFICULT:
-					return (double)3.0/totalDifficulty;
-				default:
-					throw new IllegalStateException("Illegal Difficulty Value: " + DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty")));
-			}
+		switch (DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty"))) {
+			case NORMAL:
+				return 1.0;
+			case DIFFICULT:
+				return 2.0;
+			case MOST_DIFFICULT:
+				return 3.0;
+			default:
+				throw new IllegalStateException("Illegal Difficulty Value: " + DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty")));
 		}
+	}
+	
+	private double getPredecessorGoalDifficultyValue(Goal goal) {
+		
+		if (goal.getPlan().isPrimitive())
+			return getGoalDifficultyValue(goal);
 		else {
-			double goalDifficultySum = 0.0;
+			double goalDifficultySum = getGoalDifficultyValue(goal);
+			List<Goal> descendents   = getDescendentGoals(goal);
 			
-			switch (DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty"))) {
-				case NORMAL:
-					goalDifficultySum = (double)1.0/totalDifficulty;
-					break;
-				case DIFFICULT:
-					goalDifficultySum = (double)2.0/totalDifficulty;
-					break;
-				case MOST_DIFFICULT:
-					goalDifficultySum = (double)3.0/totalDifficulty;
-					break;
-				default:
-					throw new IllegalStateException("Illegal Difficulty Value: " + DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty")));
-			}
-			
-			List<Goal> descendents = getDescendentGoals(this);
-			
-			for (Goal descendent : descendents) {
-				switch (DIFFICULTY.valueOf(descendent.getPlan().getType().getProperty("@difficulty"))) {
-					case NORMAL:
-						goalDifficultySum += (double)1.0/totalDifficulty;
-						break;
-					case DIFFICULT:
-						goalDifficultySum += (double)2.0/totalDifficulty;
-						break;
-					case MOST_DIFFICULT:
-						goalDifficultySum += (double)3.0/totalDifficulty;
-						break;
-					default:
-						throw new IllegalStateException("Illegal Difficulty Value: " + DIFFICULTY.valueOf(descendent.getPlan().getType().getProperty("@difficulty")));
-				}
-			}
+			for (Goal descendent : descendents)
+				goalDifficultySum += getGoalDifficultyValue(descendent);
+
 			return goalDifficultySum;
 		}
 	}

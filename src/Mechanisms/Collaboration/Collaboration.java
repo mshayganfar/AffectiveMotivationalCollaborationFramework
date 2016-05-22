@@ -527,9 +527,8 @@ public class Collaboration extends Mechanisms{
 		GoalTree goalTree = new GoalTree(mentalProcesses);
 		ArrayList<Node> treeNodes = goalTree.createTree();
 		
-		for (Node node : treeNodes) {
+		for (Node node : treeNodes)
 			nodeCounter++;
-		}
 		
 		return (nodeCounter-1);
 	}
