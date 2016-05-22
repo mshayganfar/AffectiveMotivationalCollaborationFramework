@@ -331,6 +331,20 @@ public class Goal {
 		return maxHeight;
 	}
 	
+	private int getMaxGoalDepth() {
+		
+		int maxDepth = -1;
+		
+		GoalTree goalTree = new GoalTree(mentalProcesses);
+		ArrayList<Node> treeNodes = goalTree.createTree();
+		
+		for (Node node : treeNodes)
+			if (maxDepth < node.getNodeDepthValue())
+				maxDepth = node.getNodeDepthValue();
+		
+		return maxDepth;
+	}
+	
 	private double getGoalHeightRatio() {
 		
 		int maxDepth = -1, goalDepth = 0;
@@ -440,7 +454,6 @@ public class Goal {
 	private Integer getGoalDepth() {
 		
 		GoalTree goalTree = new GoalTree(mentalProcesses);
-		
 		ArrayList<Node> treeNodes = goalTree.createTree();
 		
 		for (Node node : treeNodes) {
@@ -527,15 +540,60 @@ public class Goal {
 			descendentGoals.add(treeNodes.get(i).getNodeGoal());
 	}
 	
+	private int getMaxBranchDepth() {
+		
+		int maxDepth = -1;
+		
+		GoalTree goalTree = new GoalTree(mentalProcesses);
+		ArrayList<Node> treeNodes = goalTree.createTree();
+		
+		for (int i = 0 ; i < treeNodes.size() ; i++) {
+			Node node = treeNodes.get(i);
+			if (node.getNodeGoalPlan().getType().equals(this.getPlan().getType())) {
+				if (node.getNodeGoalPlan().getChildren().size() != 0) {
+					while ((node.getNodeDepthValue() >= maxDepth) && (i < treeNodes.size())) {
+						maxDepth = node.getNodeDepthValue();
+						node = treeNodes.get(i++);
+					}
+					break;
+				}
+				else
+					return node.getNodeDepthValue();
+			}
+		}
+		return maxDepth;
+	}
+	
+	private int getMaxGoalDegree() {
+		
+		int maxDegree = -1;
+		
+		GoalTree goalTree = new GoalTree(mentalProcesses);
+		ArrayList<Node> treeNodes = goalTree.createTree();
+		
+		for (Node node : treeNodes) {
+			if (node.getNodeGoalPlan().getChildren().size() > maxDegree)
+				maxDegree = node.getNodeGoalPlan().getChildren().size();
+		}
+		return maxDegree;
+	}
+	
 	public double getGoalSpecificity() {
 		
-		Integer goalDepth = getGoalDepth();
+		Integer goalDepth  = getGoalDepth();
+		int maxBranchDepth = getMaxBranchDepth();
 		
-		if (goalDepth == null) System.out.println("Goal Management: Goal was not found in the tree!");
+		System.out.println("Branch ========> " + maxBranchDepth);
+		if (goalDepth == null) 
+			throw new IllegalArgumentException("Goal Management: Goal was not found in the tree!");
 		
-		// Later, I might need to change to number of descendents instead of children. 
-		int goalDegree = this.getPlan().getChildren().size();
+		double depthRatio = (double)goalDepth/maxBranchDepth;
 		
-		return ((double)goalDepth/(goalDegree+1));
+		int goalDegree    = this.getPlan().getChildren().size();
+		int maxGoalDegree = getMaxGoalDegree();
+		
+		double degreeRatio = (double)goalDegree/maxGoalDegree;
+		
+		return ((double)depthRatio/(degreeRatio+1));
 	}
 }
