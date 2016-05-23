@@ -3,26 +3,31 @@ package Mechanisms.Collaboration;
 import java.util.HashMap;
 import java.util.Map;
 
+import Mechanisms.Appraisal.Controllability;
 import Mechanisms.Appraisal.Desirability;
 import Mechanisms.Appraisal.Relevance;
+import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
+import Mechanisms.ToM.ToM;
 import MentalState.Goal;
 import MetaInformation.MentalProcesses;
 
 public class GoalManagement {
 	
 	private Collaboration collaboration;
+	private ToM tom;
 	private Relevance relevance;
 	private Desirability desirability;
+	private Controllability controllability;
 	
 	public GoalManagement(MentalProcesses mentalProcesses) {
-		this.collaboration = mentalProcesses.getCollaborationMechanism();
-		this.relevance 	   = mentalProcesses.getRelevanceProcess();
-		this.desirability  = mentalProcesses.getDesirabilityProcess();
+		this.collaboration   = mentalProcesses.getCollaborationMechanism();
+		this.tom             = mentalProcesses.getToMMechanism();
+		this.relevance 	     = mentalProcesses.getRelevanceProcess();
+		this.desirability    = mentalProcesses.getDesirabilityProcess();
+		this.controllability = mentalProcesses.getControllabilityProcess();
 	}
 
 	public double computeCostValue(Goal eventGoal) {
-		
-		double costValue = 0.0;
 		
 		double goalProximity   = eventGoal.getGoalProximity();
 		double goalDifficulty  = eventGoal.getGoalDifficulty();
@@ -30,26 +35,28 @@ public class GoalManagement {
 		
 		Map<String, Double> weights = getGoalAttributesWeights(eventGoal);
 		
-		double base = ((goalProximity * weights.get("proximity")) + (goalDifficulty * weights.get("difficulty")) + (((double)1/(goalSpecificity + 1)) * weights.get("specificity")));
+		double base      = ((goalProximity * weights.get("proximity")) + (goalDifficulty * weights.get("difficulty")) + (((double)1/(goalSpecificity + 1)) * weights.get("specificity")));
+		double exponent  = getGammaValue(eventGoal, base, 1.0, 1.0);
+		double costValue = Math.pow(base, exponent);
 		
-		System.out.println("Base --------------> " + base);
-		
-		double exponent = getGammaValue(eventGoal, 3, 2);
-		
-		costValue = Math.pow(base, exponent);
+//		System.out.println("Base --------------> " + base);
+//		System.out.println("Exponent ----------> " + exponent);
+//		System.out.println("Overall Cost-------> " + costValue);
 		
 		return costValue;
 	}
 	
-	private double getGammaValue(Goal eventGoal, double C, double alpha) {
+	private double getGammaValue(Goal eventGoal, double base, double alpha, double beta) {
 		
-		double relevance    = getRelevanceValue(eventGoal);
-		double desirability = getDesirabilityValue(eventGoal);
+		double relevance              = getRelevanceValue(eventGoal);
+		double controllability        = getControllabilityValue(eventGoal, false);
+		double reverseControllability = getControllabilityValue(eventGoal, true);
 		
-		double reverseRelevance    = getReverseRelevanceValue(eventGoal);
-		double reverseDesirability = getReverseDesirabilityValue(eventGoal);
-		
-		return -C*(((relevance + 1) * desirability) + (alpha * (reverseRelevance + 1) * reverseDesirability));
+		System.out.println("C_r: " + controllability + " ,C_h: " + reverseControllability);
+		if (base >= 1.0)
+			return (double)1.0/(relevance * (alpha*controllability + beta*reverseControllability + 1));
+		else
+			return (1-((double)1.0/(relevance * (alpha*controllability + beta*reverseControllability + 1))));
 	}
 	
 	private double getRelevanceValue(Goal eventGoal) {
@@ -61,6 +68,27 @@ public class GoalManagement {
 				return 0.0;
 			default:
 				throw new IllegalArgumentException("Illegal Relevance Value: " + relevance.isEventRelevant(eventGoal));
+		}
+	}
+	
+	private double getControllabilityValue(Goal eventGoal, boolean human) {
+		
+		CONTROLLABILITY controllabilitySymbol;
+		
+		if (!human)
+			controllabilitySymbol = controllability.isEventControllable(eventGoal);
+		else
+			controllabilitySymbol = tom.getReverseControllability(eventGoal);
+
+		switch(controllabilitySymbol) {
+			case HIGH_CONTROLLABLE:
+				return 1.0;
+			case LOW_CONTROLLABLE:
+				return 0.5;
+			case UNCONTROLLABLE:
+				return 0.0;
+			default:
+				throw new IllegalArgumentException("Illegal Controllability Value: " + controllability.isEventControllable(eventGoal));
 		}
 	}
 	

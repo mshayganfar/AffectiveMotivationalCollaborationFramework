@@ -110,7 +110,7 @@ public class ToM extends Mechanisms{
 			throw new IllegalStateException("Illegal Reverse Controllability State for Goal:" + plan.getType());
 	}
 	
-	private CONTROLLABILITY getReverseControllability(Goal eventGoal) {
+	public CONTROLLABILITY getReverseControllability(Goal eventGoal) {
 		
 		double controllabilityValue = 0.0;
 		
