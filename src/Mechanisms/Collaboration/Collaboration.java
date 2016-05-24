@@ -12,6 +12,7 @@ import MetaInformation.GoalTree;
 import MetaInformation.MentalProcesses;
 import MetaInformation.Node;
 import MetaInformation.Turns;
+import MetaInformation.AppraisalVector.WHOSE_APPRAISAL;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskModel;
 import edu.wpi.cetask.Plan.Status;
@@ -226,10 +227,12 @@ public class Collaboration extends Mechanisms{
 			return GOAL_STATUS.BLOCKED;
 		else if (status.equals(Status.PENDING))
 			return GOAL_STATUS.PENDING;
+		else if (status.equals(Status.FAILED)) // plan.isFailed()
+			return GOAL_STATUS.FAILED;
 		else if (preconditionApplicability != null)
 			if (!preconditionApplicability)
 				return GOAL_STATUS.INAPPLICABLE;
-		
+				
 		if (status.equals(Status.DONE)) {
 //			Boolean planAchievement = isPlanAchieved(plan);
 			Boolean planAchievement = plan.getGoal().getSuccess();
@@ -238,8 +241,6 @@ public class Collaboration extends Mechanisms{
 				return GOAL_STATUS.UNKNOWN;
 			else if (planAchievement)
 				return GOAL_STATUS.ACHIEVED;
-			else if (plan.isFailed())
-				return GOAL_STATUS.FAILED;
 			else
 				throw new IllegalStateException("Status: " + status.toString() + " , getSuccess()'s result: " + planAchievement);
 //			if (!plan.isFailed())
@@ -270,6 +271,21 @@ public class Collaboration extends Mechanisms{
 		}
 		
 		return contributerGoalList;
+	}
+	
+	public WHOSE_APPRAISAL getWhoseAppraisal(Plan plan) {
+		
+		switch (getResponsibleAgent(plan)) {
+			case SELF:
+			case BOTH:
+				return WHOSE_APPRAISAL.SELF;
+			case OTHER:
+				return WHOSE_APPRAISAL.HUMAN;
+			case UNKNOWN:
+				return WHOSE_APPRAISAL.UNKNOWN;
+			default:
+				throw new IllegalArgumentException("Illegal Agent Type: " + getResponsibleAgent(plan));
+		}
 	}
 	
 	public AGENT getResponsibleAgent(Plan plan) {

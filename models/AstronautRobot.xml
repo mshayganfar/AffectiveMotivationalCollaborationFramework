@@ -31,7 +31,7 @@
       <step name="weld" task="WeldPanel"/>
 
       <binding slot="$place.external" value="false"/>
-      <binding slot="$weld.external" value="false"/>
+      <binding slot="$weld.external" value="true"/>
     </subtasks>
   </task>
 
@@ -105,7 +105,7 @@
   <task id="WeldPanel">
 		<precondition>true</precondition>
 		<postcondition sufficient="true"> post_WeldPanel </postcondition>
-		<script> post_WeldPanel = true; </script> 
+		<script> post_WeldPanel </script> 
 	</task>
   <task id="CheckPanelAttachment">
 		<precondition>true</precondition>

@@ -9,7 +9,7 @@
 		 var post_RemoveCover;
 		 var post_ConnectAdaptor;
 		 var post_PlacePanel;
-		 var post_WeldPanel;
+		 var post_WeldPanel = true;
 		 var post_CheckPanelAttachment;
 		 var post_CheckWirings;
 		 var post_CheckControlSwitch;

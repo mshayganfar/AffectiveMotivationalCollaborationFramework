@@ -31,7 +31,7 @@
       <step name="weld" task="WeldPanel"/>
 
       <binding slot="$place.external" value="false"/>
-      <binding slot="$weld.external" value="false"/>
+      <binding slot="$weld.external" value="true"/>
     </subtasks>
   </task>
 

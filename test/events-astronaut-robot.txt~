@@ -16,11 +16,10 @@ task FixPanel
 eval process()
 execute PlacePanel / false
 eval process()
-execute WeldPanel / false
+execute WeldPanel / true / false
 eval process()
 task CheckPanel
 eval process()
-eval $disco.isLastShift()
 task CheckHardware
 eval process()
 execute CheckPanelAttachment / false
@@ -29,7 +28,6 @@ execute CheckWirings / false
 eval process()
 task CheckFunction
 eval process()
-eval $disco.isLastShift()
 execute CheckControlSwitch / false
 eval process()
 execute CheckCascadingCells / false

@@ -16,7 +16,8 @@ task FixPanel
 eval process()
 execute PlacePanel / false
 eval process()
-execute WeldPanel / false
+eval post_WeldPanel = false
+execute WeldPanel
 eval process()
 task CheckPanel
 eval process()
