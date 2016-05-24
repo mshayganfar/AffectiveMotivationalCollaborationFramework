@@ -96,7 +96,7 @@ public class Action extends Mechanisms{
 			case JOY:
 				discoActionsWrapper.saySomethingAboutTask(false, "I am happy!");
 				break;
-			case POSTIVE_SURPRISE:
+			case POSITIVE_SURPRISE:
 				discoActionsWrapper.saySomethingAboutTask(false, "Wow, I was not expecting that!");
 				break;
 			case GRATITUDE:

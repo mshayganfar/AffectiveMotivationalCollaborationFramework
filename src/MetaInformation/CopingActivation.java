@@ -2,6 +2,7 @@ package MetaInformation;
 
 import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
 import MentalState.Goal;
+import MentalState.Motive;
 import MentalState.Motive.MOTIVE_INTENSITY;
 
 public class CopingActivation {
@@ -41,64 +42,117 @@ public class CopingActivation {
 	
 	private boolean isThisStrategyNeeded() {
 		
+		Motive satisfactionMotive = motiveVector.getSatisfactionMotive();
+		Motive achievementMotive  = motiveVector.getAchievementMotive();
+		Motive externalMotive     = motiveVector.getExternalMotive();
+		
 		switch (copingStrategy) {
 			case PLANNING:
-				if (((motiveVector.getSatisfactionMotive().getMotiveIntensity() >= 0) || (motiveVector.getSatisfactionMotive().getMotiveIntensity() < 0)) &&
-					((motiveVector.getAchievementMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.HIGH_POSITIVE)) || 
-					 (motiveVector.getExternalMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.HIGH_POSITIVE))))
-					return true;
-				else
+				if ((satisfactionMotive.getMotiveIntensity() >= 0) || (satisfactionMotive.getMotiveIntensity() < 0)) {
+					if (achievementMotive != null)
+						if (achievementMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.HIGH_POSITIVE))
+							return true;
+					if (externalMotive != null) {
+						if (externalMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.HIGH_POSITIVE))
+							return true;
+						else
+							return false;
+					} else
+						return false;
+				} else
 					return false;
 			case ACTIVE_COPING:
-				if (((motiveVector.getSatisfactionMotive().getMotiveIntensity() >= 0) || (motiveVector.getSatisfactionMotive().getMotiveIntensity() > 0)) &&
-					((motiveVector.getAchievementMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.MEDIUM_POSITIVE)) || 
-					 (motiveVector.getExternalMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.MEDIUM_POSITIVE))))
-					return true;
-				else
+				if ((satisfactionMotive.getMotiveIntensity() >= 0) || (satisfactionMotive.getMotiveIntensity() > 0)) {
+					if (achievementMotive != null)
+						if (achievementMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.MEDIUM_POSITIVE))
+							return true;
+					if (externalMotive != null) {
+						if (externalMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.MEDIUM_POSITIVE))
+							return true;
+						else
+							return false;
+					} else
+						return false;
+				} else
 					return false;
 			case SEEKING_SOCIAL_SUPPORT_FOR_INSTRUMENTAL_REASONS:
-				if (((motiveVector.getSatisfactionMotive().getMotiveIntensity() >= 0) || (motiveVector.getSatisfactionMotive().getMotiveIntensity() > 0)) &&
-					((motiveVector.getAchievementMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.LOW_POSITIVE)) || 
-					 (motiveVector.getExternalMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.LOW_POSITIVE))))
-					return true;
-				else
+				if ((satisfactionMotive.getMotiveIntensity() >= 0) || (satisfactionMotive.getMotiveIntensity() > 0)) {
+					if (achievementMotive != null)
+						if (achievementMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.LOW_POSITIVE))
+							return true;
+					if (externalMotive != null) {
+						if (externalMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.LOW_POSITIVE))
+							return true;
+						else
+							return false;
+					} else
+						return false;
+				} else
 					return false;
 			case ACCEPTANCE:
-				if ((motiveVector.getSatisfactionMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.HIGH_NEGATIVE)) &&
-					((motiveVector.getAchievementMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.HIGH_NEGATIVE)) || 
-					 (motiveVector.getExternalMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.HIGH_NEGATIVE))))
-					return true;
-				else
+				if (satisfactionMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.HIGH_NEGATIVE)) {
+					if (achievementMotive != null)
+						if (achievementMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.HIGH_NEGATIVE))
+							return true;
+					if (externalMotive != null) {
+						if (externalMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.HIGH_NEGATIVE))
+							return true;
+						else
+							return false;
+					} else
+						return false;
+				} else
 					return false;
 			case MENTAL_DISENGAGEMENT:
-				if (((motiveVector.getSatisfactionMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.LOW_NEGATIVE)) || 
-					 (motiveVector.getSatisfactionMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.MEDIUM_NEGATIVE))) &&
-					 (((motiveVector.getAchievementMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.LOW_NEGATIVE)) || 
-					   (motiveVector.getAchievementMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.MEDIUM_NEGATIVE))) || 
-					   ((motiveVector.getExternalMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.LOW_NEGATIVE) || 
-						(motiveVector.getExternalMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.MEDIUM_NEGATIVE))))))
-					return true;
-				else
+				if ((satisfactionMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.LOW_NEGATIVE)) || 
+					 (satisfactionMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.MEDIUM_NEGATIVE))) {
+					if (achievementMotive != null)
+						if ((achievementMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.LOW_NEGATIVE)) || 
+							(achievementMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.MEDIUM_NEGATIVE)))
+							return true;
+					if (externalMotive != null) {
+						if ((externalMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.LOW_NEGATIVE)) ||
+							(externalMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.MEDIUM_NEGATIVE)))
+							return true;
+						else
+							return false;
+					} else
+						return false;
+				} else
 					return false;
 			case SHIFTING_RESPONSIBILITY:
-				if (motiveVector.getSatisfactionMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.HIGH_NEGATIVE) &&
-					(((motiveVector.getAchievementMotive().getMotiveIntensity() >= 0) || (motiveVector.getAchievementMotive().getMotiveIntensity() < 0)) ||
-					 ((motiveVector.getExternalMotive().getMotiveIntensity() >= 0) || (motiveVector.getExternalMotive().getMotiveIntensity() < 0))))
-					return true;
-				else
+				if (satisfactionMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.HIGH_NEGATIVE)) {
+					if (achievementMotive != null)
+						if ((achievementMotive.getMotiveIntensity() >= 0) || (achievementMotive.getMotiveIntensity() < 0))
+							return true;
+					if (externalMotive != null) {
+						if ((externalMotive.getMotiveIntensity() >= 0) || (externalMotive.getMotiveIntensity() < 0))
+							return true;
+						else
+							return false;
+					} else
+						return false;
+				} else
 					return false;
 			case WISHFUL_THINKING:
-				if ((motiveVector.getSatisfactionMotive().getMotiveIntensity() >= 0) &&
-					 (((((motiveVector.getAchievementMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.LOW_NEGATIVE)) || 
-					   (motiveVector.getAchievementMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.MEDIUM_NEGATIVE)))) ||
-					   ((motiveVector.getAchievementMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.LOW_POSITIVE)) || 
-						(motiveVector.getAchievementMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.MEDIUM_POSITIVE)))) ||
-					    ((motiveVector.getExternalMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.LOW_NEGATIVE) || 
-						 (motiveVector.getExternalMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.MEDIUM_NEGATIVE))) ||
-					     (motiveVector.getExternalMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.LOW_POSITIVE) || 
-						 (motiveVector.getExternalMotive().getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.MEDIUM_POSITIVE))))))
-					return true;
-				else
+				if (satisfactionMotive.getMotiveIntensity() >= 0) {
+					if (achievementMotive != null)
+						if ((achievementMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.LOW_NEGATIVE)) ||
+							(achievementMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.MEDIUM_NEGATIVE)) ||
+							(achievementMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.LOW_POSITIVE)) ||
+							(achievementMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.MEDIUM_POSITIVE)))
+							return true;
+					if (externalMotive != null) {
+						if ((externalMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.LOW_NEGATIVE)) ||
+							(externalMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.MEDIUM_NEGATIVE)) ||
+							(externalMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.LOW_POSITIVE)) ||
+							(externalMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.MEDIUM_POSITIVE)))
+							return true;
+						else
+							return false;
+					} else
+						return false;
+				} else
 					return false;
 			default:
 				throw new IllegalArgumentException("Illegal Coping Strategy: " + copingStrategy);
@@ -116,7 +170,9 @@ public class CopingActivation {
 				else
 					return false;
 			case ACTIVE_COPING:
-				if ((controllability.equals(CONTROLLABILITY.HIGH_CONTROLLABLE)) || (controllability.equals(CONTROLLABILITY.UNCONTROLLABLE)))
+				if ((controllability.equals(CONTROLLABILITY.HIGH_CONTROLLABLE)) || 
+					(controllability.equals(CONTROLLABILITY.UNCONTROLLABLE)) ||
+					(controllability.equals(CONTROLLABILITY.LOW_CONTROLLABLE)))
 					return true;
 				else
 					return false;
@@ -141,7 +197,7 @@ public class CopingActivation {
 				else
 					return false;
 			case WISHFUL_THINKING:
-				if (controllability.equals(CONTROLLABILITY.LOW_CONTROLLABLE))
+				if (controllability.equals(CONTROLLABILITY.UNCONTROLLABLE))
 					return true;
 				else
 					return false;

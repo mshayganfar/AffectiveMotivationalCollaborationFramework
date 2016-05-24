@@ -10,7 +10,7 @@ import MentalState.Goal;
 public class AppraisalVector {
 	
 	public enum WHOSE_APPRAISAL{SELF, HUMAN, UNKNOWN};
-	public enum EMOTION_INSTANCE{POSTIVE_SURPRISE, JOY, GRATITUDE, NEUTRAL, ANGER, WORRY, FRUSTRATION, NEGATIVE_SURPRISE, GUILT, SADNESS};
+	public enum EMOTION_INSTANCE{POSITIVE_SURPRISE, JOY, GRATITUDE, NEUTRAL, ANGER, WORRY, FRUSTRATION, NEGATIVE_SURPRISE, GUILT, SADNESS};
 	
 	private MentalProcesses mentalProcesses;
 	private WHOSE_APPRAISAL whoseAppraisal;
@@ -176,8 +176,8 @@ public class AppraisalVector {
 				(this.desirabilityValue.equals(DESIRABILITY.HIGH_UNDESIRABLE)))
 				if ((this.expectednessValue.equals(EXPECTEDNESS.EXPECTED)) ||
 					(this.expectednessValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
-					if ((this.controllabilityValue.equals(CONTROLLABILITY.UNCONTROLLABLE)) ||
-						(this.controllabilityValue.equals(CONTROLLABILITY.LOW_CONTROLLABLE)))
+					if (this.controllabilityValue.equals(CONTROLLABILITY.UNCONTROLLABLE)) /*||
+						(this.controllabilityValue.equals(CONTROLLABILITY.LOW_CONTROLLABLE)))*/
 						if (whoseAppraisal.equals(WHOSE_APPRAISAL.HUMAN)) {
 							if (mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.HUMAN_FAILED))
 								return true;
@@ -391,7 +391,7 @@ public class AppraisalVector {
 		else if (isEmotionSadness(goal, whoseAppraisal))
 			return EMOTION_INSTANCE.SADNESS;
 		else if (isEmotionPositiveSurprise(goal, whoseAppraisal))
-			return EMOTION_INSTANCE.POSTIVE_SURPRISE;
+			return EMOTION_INSTANCE.POSITIVE_SURPRISE;
 		else if (isEmotionNegativeSurprise(goal, whoseAppraisal))
 			return EMOTION_INSTANCE.NEGATIVE_SURPRISE;
 		else if (isEmotionAnger(goal, whoseAppraisal))

@@ -2,36 +2,29 @@ debug true
 verbose
 next false
 task InstallSolarPanel
-eval process()
 task PreparePanel
-eval process()
 execute PrepareControlSwitch / / true
-eval process()
+eval process("NEUTRAL")
 task PrepareConnector
-eval process()
 execute RemoveCover / / true
-eval process()
+eval process("NEUTRAL")
 execute ConnectAdaptor / / true
-eval process()
+eval process("NEUTRAL")
 task FixPanel
-eval process()
 execute PlacePanel / / true
-eval process()
+eval process("NEUTRAL")
 execute WeldPanel / / false
-eval process()
+eval process("GUILT")
 task CheckPanel
-eval process()
 task CheckHardware
-eval process()
 execute CheckPanelAttachment / / true
-eval process()
+eval process("NEUTRAL")
 execute CheckWirings / / true
-eval process()
+eval process("NEUTRAL")
 task CheckFunction
-eval process()
 execute CheckControlSwitch / / true
-eval process()
+eval process("NEUTRAL")
 execute CheckCascadingCells / / true
-eval process()
+eval process("NEUTRAL")
 execute CheckOutputCurrent / / true
-eval process()
+eval process("NEUTRAL")

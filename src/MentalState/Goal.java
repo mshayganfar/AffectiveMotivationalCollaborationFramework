@@ -595,4 +595,9 @@ public class Goal {
 		
 		return ((double)depthRatio/(degreeRatio+1));
 	}
+	
+	public void toSting() {
+		for (Intention intention : this.Intentions)
+			System.out.println(intention.getLabel() + ": " + intention.getCopingStrategy());
+	}
 }

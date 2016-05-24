@@ -9,6 +9,7 @@ import MentalState.Motive;
 import MetaInformation.AppraisalVector;
 import MetaInformation.MentalProcesses;
 import MetaInformation.Turns;
+import MetaInformation.AppraisalVector.EMOTION_INSTANCE;
 import MetaInformation.AppraisalVector.WHOSE_APPRAISAL;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskModel;
@@ -75,6 +76,14 @@ public class AffectiveMotivationalCollaborationFramework {
 		mentalProcesses.getMotivationMechanism().createMotives(goal);
 	}
 	
+	private static void runCoping(Goal goal) {
+		mentalProcesses.getCopingMechanism().formIntentions(goal);
+	}
+	
+	private static void runAction(Goal goal) {
+		mentalProcesses.getActionMechanism().act(goal);
+	}
+	
 	private static void initializeFramework(Goal recognizedGoal) {
 		
 		recognizedGoal.setGoalStatus(mentalProcesses.getCollaborationMechanism().getGoalStatus(recognizedGoal.getPlan()));
@@ -86,12 +95,14 @@ public class AffectiveMotivationalCollaborationFramework {
 		Motive motive  = new Motive(recognizedGoal);
 	}
 	
-	public static void process() {
+	public static void process(String emotionInstance) {
 		
 		Turns turn = Turns.getInstance();
 		Goal recognizedGoal = new Goal(mentalProcesses);
 		
 		initializeFramework(recognizedGoal);
+		
+		mentalProcesses.getPerceptionMechanism().setEmotionValence(EMOTION_INSTANCE.valueOf(emotionInstance));
 		
 		// This is required before doing appraisals.
 		mentalProcesses.getCollaborationMechanism().updatePreconditionApplicability();
@@ -99,7 +110,12 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		runMotivations(recognizedGoal);
 		
-		goalManagement.computeCostValue(recognizedGoal);
+		runCoping(recognizedGoal);
+		recognizedGoal.toSting();
+		
+		runAction(recognizedGoal);
+//		goalManagement.computeCostValue(recognizedGoal);
+		
 		// This needs to be done after running all the mechanisms.
 		turn.updateTurn();
 	}

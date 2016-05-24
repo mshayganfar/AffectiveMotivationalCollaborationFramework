@@ -16,8 +16,8 @@
 		 var post_CheckCascadingCells;
 		 var post_CheckOutputCurrent;
 
-		function process () {
-       return Packages.AffectiveMotivationalCollaborationFramework.process();
+		function process (emotionInstance) {
+       return Packages.AffectiveMotivationalCollaborationFramework.process(emotionInstance);
     }
 
 		function updatePreviousCollaborationStatus () {
