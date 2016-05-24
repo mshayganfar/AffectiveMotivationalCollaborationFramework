@@ -1,36 +1,37 @@
+debug false
 verbose
 next false
 task InstallSolarPanel
 eval process()
 task PreparePanel
 eval process()
-execute PrepareControlSwitch / false
+execute PrepareControlSwitch / / true
 eval process()
 task PrepareConnector
 eval process()
-execute RemoveCover / false
+execute RemoveCover / / true
 eval process()
-execute ConnectAdaptor / false
+execute ConnectAdaptor / / true
 eval process()
 task FixPanel
 eval process()
-execute PlacePanel / false
+execute PlacePanel / / true
 eval process()
-execute WeldPanel / true / false
+execute WeldPanel / / false
 eval process()
 task CheckPanel
 eval process()
 task CheckHardware
 eval process()
-execute CheckPanelAttachment / false
+execute CheckPanelAttachment / / true
 eval process()
-execute CheckWirings / false
+execute CheckWirings / / true
 eval process()
 task CheckFunction
 eval process()
-execute CheckControlSwitch / false
+execute CheckControlSwitch / / true
 eval process()
-execute CheckCascadingCells / false
+execute CheckCascadingCells / / true
 eval process()
-execute CheckOutputCurrent / false
+execute CheckOutputCurrent / / true
 eval process()

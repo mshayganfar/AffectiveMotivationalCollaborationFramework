@@ -57,7 +57,7 @@ public class Controllability extends AppraisalProcesses{
 			double dblAutonomyValue			 	 = getAutonomyValue(eventGoal);
 			Double dblPredecessorsRatio		 	 = getSucceededPredecessorsRatio(eventGoal.getPlan());
 			Double dblInputsRatio 			 	 = getAvailableInputRatio(eventGoal);
-			double dblOverallGoalDifficultyValue = eventGoal.getGoalEffort();
+			double dblOverallGoalDifficultyValue = (double)1.0/eventGoal.getGoalEffort();
 			
 			controllabilityValue = ((double)((dblAgencyValue * getAgencyWeight()) + 
 									(dblAutonomyValue * getAutonomyWeight()) + 
@@ -71,7 +71,7 @@ public class Controllability extends AppraisalProcesses{
 		}
 		
 		if (controllabilityValue >= 0) // Not sure if human emotion threshold is needed here!
-			if (controllabilityValue > 0.5)
+			if (controllabilityValue >= 0.5)
 				return CONTROLLABILITY.HIGH_CONTROLLABLE;
 			else
 				return CONTROLLABILITY.LOW_CONTROLLABLE;

@@ -85,52 +85,42 @@
   <task id="PrepareControlSwitch">
 		<precondition>true</precondition>
 		<postcondition sufficient="true"> post_PrepareControlSwitch </postcondition> 
-		<script> post_PrepareControlSwitch = true; </script>
 	</task>
   <task id="RemoveCover">
 		<precondition>true</precondition>
 		<postcondition sufficient="true"> post_RemoveCover </postcondition>
-		<script> post_RemoveCover = true; </script>
 	</task>
   <task id="ConnectAdaptor">
 		<precondition>true</precondition>
 		<postcondition sufficient="true"> post_ConnectAdaptor </postcondition>
-		<script> post_ConnectAdaptor = true; </script>
 	</task>
   <task id="PlacePanel">
 		<precondition>true</precondition> 
 		<postcondition sufficient="true"> post_PlacePanel </postcondition>
-		<script> post_PlacePanel = true; </script>
 	</task>
   <task id="WeldPanel">
 		<precondition>true</precondition>
 		<postcondition sufficient="true"> post_WeldPanel </postcondition>
-		<script> post_WeldPanel </script> 
 	</task>
   <task id="CheckPanelAttachment">
 		<precondition>true</precondition>
 		<postcondition sufficient="true"> post_CheckPanelAttachment </postcondition>
-		<script> post_CheckPanelAttachment = true; </script>
 	</task>
   <task id="CheckWirings">
 		<precondition>true</precondition>
 		<postcondition sufficient="true"> post_CheckWirings </postcondition>
-		<script> post_CheckWirings = true; </script>
 	</task>
   <task id="CheckControlSwitch">
 		<precondition>true</precondition>
 		<postcondition sufficient="true"> post_CheckControlSwitch </postcondition>
-		<script> post_CheckControlSwitch = true; </script>
 	</task>
   <task id="CheckCascadingCells">
 		<precondition>true</precondition>
 		<postcondition sufficient="true"> post_CheckCascadingCells </postcondition>
-		<script> post_CheckCascadingCells = true; </script>
 	</task>
   <task id="CheckOutputCurrent">
 		<precondition>true</precondition>
 		<postcondition sufficient="true"> post_CheckOutputCurrent </postcondition>
-		<script> post_CheckOutputCurrent = true; </script>
 	</task>
   
 </taskModel>

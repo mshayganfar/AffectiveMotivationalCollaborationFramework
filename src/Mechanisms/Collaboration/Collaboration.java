@@ -229,6 +229,8 @@ public class Collaboration extends Mechanisms{
 			return GOAL_STATUS.PENDING;
 		else if (status.equals(Status.FAILED)) // plan.isFailed()
 			return GOAL_STATUS.FAILED;
+		else if (status.equals(Status.INAPPLICABLE))
+			return GOAL_STATUS.INAPPLICABLE;
 		else if (preconditionApplicability != null)
 			if (!preconditionApplicability)
 				return GOAL_STATUS.INAPPLICABLE;
@@ -642,6 +644,6 @@ public class Collaboration extends Mechanisms{
 				throw new IllegalArgumentException("Responsible: " + getLastContributingPlan(eventPlan));
 		}
 		else
-			throw new IllegalArgumentException("Event: " + eventPlan);
+			throw new IllegalArgumentException("Illegal Event Value: " + eventPlan);
 	}
 }
