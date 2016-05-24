@@ -20,9 +20,22 @@ public class Desirability extends AppraisalProcesses{
 		Plan eventGoalPlan    = eventGoal.getPlan();
 		Plan topLevelGoalPlan = topLevelGoal.getPlan();
 		
-//		if(collaboration.getActualFocus() == null)
-//			return DESIRABILITY.NEUTRAL;
+//		if (topLevelGoalStatus.equals(GOAL_STATUS.PENDING) ||
+//				topLevelGoalStatus.equals(GOAL_STATUS.INPROGRESS)) {
+
+		GOAL_STATUS eventGoalStatus = collaboration.getGoalStatus(eventGoalPlan);
 		
+		if (eventGoalStatus.equals(GOAL_STATUS.ACHIEVED)) 
+			return DESIRABILITY.DESIRABLE;
+		else if (eventGoalStatus.equals(GOAL_STATUS.FAILED)) 
+			return DESIRABILITY.HIGH_UNDESIRABLE;
+		else if (eventGoalStatus.equals(GOAL_STATUS.BLOCKED) ||
+				eventGoalStatus.equals(GOAL_STATUS.INAPPLICABLE) ||
+				eventGoalStatus.equals(GOAL_STATUS.UNKNOWN))
+			return DESIRABILITY.UNDESIRABLE;
+		else if (eventGoalStatus.equals(GOAL_STATUS.PENDING))
+			return DESIRABILITY.NEUTRAL;
+
 		GOAL_STATUS topLevelGoalStatus = collaboration.getGoalStatus(topLevelGoalPlan);
 		
 		if (topLevelGoalStatus.equals(GOAL_STATUS.ACHIEVED)) 
@@ -33,24 +46,6 @@ public class Desirability extends AppraisalProcesses{
 				topLevelGoalStatus.equals(GOAL_STATUS.INAPPLICABLE) ||
 				topLevelGoalStatus.equals(GOAL_STATUS.UNKNOWN))
 			return DESIRABILITY.UNDESIRABLE;
-		else if (topLevelGoalStatus.equals(GOAL_STATUS.PENDING) ||
-				topLevelGoalStatus.equals(GOAL_STATUS.INPROGRESS)) {
-
-			GOAL_STATUS eventGoalStatus = collaboration.getGoalStatus(eventGoalPlan);
-			
-			if (eventGoalStatus.equals(GOAL_STATUS.ACHIEVED)) 
-				return DESIRABILITY.DESIRABLE;
-			else if (eventGoalStatus.equals(GOAL_STATUS.FAILED)) 
-				return DESIRABILITY.HIGH_UNDESIRABLE;
-			else if (eventGoalStatus.equals(GOAL_STATUS.BLOCKED) ||
-					eventGoalStatus.equals(GOAL_STATUS.INAPPLICABLE) ||
-					eventGoalStatus.equals(GOAL_STATUS.UNKNOWN))
-				return DESIRABILITY.UNDESIRABLE;
-			else if (eventGoalStatus.equals(GOAL_STATUS.PENDING)) //) || (eventGoalStatus.equals(GOAL_STATUS.INPROGRESS))) { 
-				return DESIRABILITY.NEUTRAL;
-			else
-				throw new IllegalArgumentException("Illegal Goal Status: " + eventGoalStatus);
-		}
 		else
 			throw new IllegalArgumentException("Illegal Top Level Goal Status: " + topLevelGoalStatus);
 	}
