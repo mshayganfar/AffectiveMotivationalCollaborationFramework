@@ -11,19 +11,22 @@ import MetaInformation.CopingActivation.COPING_STRATEGY;
 
 public class Action extends Mechanisms{
 
+	private MentalProcesses mentalProcesses;
 	private Coping coping;
 	private ToM tom;
 	
 	private DiscoActionsWrapper discoActionsWrapper;
 	
-	public Action() {
-		discoActionsWrapper  = new DiscoActionsWrapper(collaboration);
+	public Action(DiscoActionsWrapper discoActionsWrapper) {
+//		discoActionsWrapper  = new DiscoActionsWrapper(this.mentalProcesses);
+		this.discoActionsWrapper = discoActionsWrapper;
 	}
 	
 	public void prepareActionMechanism(MentalProcesses mentalProcesses) {
-		this.collaboration = mentalProcesses.getCollaborationMechanism();
-		this.coping 	   = mentalProcesses.getCopingMechanism();
-		this.tom    	   = mentalProcesses.getToMMechanism();
+		this.mentalProcesses = mentalProcesses;
+		this.collaboration   = mentalProcesses.getCollaborationMechanism();
+		this.coping 	     = mentalProcesses.getCopingMechanism();
+		this.tom    	     = mentalProcesses.getToMMechanism();
 	}
 	
 	public void act(Goal goal) {

@@ -1,6 +1,7 @@
 package MetaInformation;
 
 import Mechanisms.Action.Action;
+import Mechanisms.Action.DiscoActionsWrapper;
 import Mechanisms.Appraisal.Controllability;
 import Mechanisms.Appraisal.Coping;
 import Mechanisms.Appraisal.Desirability;
@@ -31,7 +32,7 @@ public class MentalProcesses {
 		this.motivation    = new Motivation();
 		this.tom           = new ToM();
 		this.coping		   = new Coping();
-		this.action        = new Action();
+		this.action        = new Action(new DiscoActionsWrapper(this));
 		
 		this.relevance       = new Relevance(this);
 		this.controllability = new Controllability(this);

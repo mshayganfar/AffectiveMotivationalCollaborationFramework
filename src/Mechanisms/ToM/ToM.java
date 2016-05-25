@@ -15,14 +15,12 @@ import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
 import Mechanisms.Appraisal.Relevance.RELEVANCE;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
-import Mechanisms.Mechanisms.AGENT;
 import Mechanisms.Motivation.Motivation;
 import MentalState.Goal;
-import MentalState.Goal.DIFFICULTY;
-import MentalState.Motive.MOTIVE_TYPE;
 import MetaInformation.AppraisalVector;
 import MetaInformation.GoalTree;
 import MetaInformation.AppraisalVector.EMOTION_INSTANCE;
+import MetaInformation.AppraisalVector.WHOSE_APPRAISAL;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskClass.Input;
 import edu.wpi.disco.lang.Accept;
@@ -31,6 +29,7 @@ import edu.wpi.disco.lang.Propose;
 import edu.wpi.disco.lang.Reject;
 import MetaInformation.MentalProcesses;
 import MetaInformation.Node;
+import MetaInformation.Turns;
 
 public class ToM extends Mechanisms{
 	
@@ -54,9 +53,10 @@ public class ToM extends Mechanisms{
 	private ArrayList<Goal> descendentGoals = new ArrayList<Goal>();
 	
 	public void prepareAppraisalsOfToM(MentalProcesses mentalProcesses) {
-		this.collaboration = mentalProcesses.getCollaborationMechanism();
-		this.motivation    = mentalProcesses.getMotivationMechanism();
-		this.coping		   = mentalProcesses.getCopingMechanism();
+		this.mentalProcesses = mentalProcesses;
+		this.collaboration   = mentalProcesses.getCollaborationMechanism();
+		this.motivation      = mentalProcesses.getMotivationMechanism();
+		this.coping		     = mentalProcesses.getCopingMechanism();
 		
 		this.relevance       = mentalProcesses.getRelevanceProcess();
 		this.controllability = mentalProcesses.getControllabilityProcess();
@@ -66,19 +66,21 @@ public class ToM extends Mechanisms{
 	
 	public AppraisalVector getReverseAppraisalValues(Goal eventGoal) {
 		
-		return doReverseAppraisal(getValenceValue(), eventGoal);
+		return doReverseAppraisal(getValenceValue(eventGoal), eventGoal);
 	}
 	
 	public EMOTION_INSTANCE getAnticipatedHumanEmotion(Goal eventGoal) {
 		
-		AppraisalVector reverseAppraisalVector = doReverseAppraisal(getValenceValue(), eventGoal);
+		AppraisalVector reverseAppraisalVector = doReverseAppraisal(getValenceValue(eventGoal), eventGoal);
+		
+		//Should I add this to the goal, just like the forward appraisal?!
 		
 		return reverseAppraisalVector.getEmotionInstance();
 	}
 	
 	private AppraisalVector doReverseAppraisal(double valenceValue, Goal eventGoal) {
 		
-		AppraisalVector estimatedAppraisalVector = new AppraisalVector(mentalProcesses, eventGoal);
+		AppraisalVector estimatedAppraisalVector = new AppraisalVector(mentalProcesses, eventGoal, WHOSE_APPRAISAL.HUMAN);
 		
 		estimatedAppraisalVector.setRelevanceValue(relevance.isEventRelevant(eventGoal));
 		estimatedAppraisalVector.setDesirabilityValue(getReverseDesirability(valenceValue));
@@ -428,7 +430,13 @@ public class ToM extends Mechanisms{
 			throw new IllegalArgumentException("Valence Value: " + valence);
 	}
 	
-	public double getValenceValue() {
+	public double getValenceValue(Goal goal) {
+		
+		for(AppraisalVector vector : Turns.getInstance().getCurrentAppraisalVectors()) {
+			if (vector.getGoal().getLabel().equals(goal.getLabel()))
+				if (vector.getWhoseAppraisalValue().equals(WHOSE_APPRAISAL.HUMAN))
+					return Turns.getInstance().getDesirabilityValue(vector.getDesirabilitySymbolicValue());
+		}
 		return valence;
 	}
 	

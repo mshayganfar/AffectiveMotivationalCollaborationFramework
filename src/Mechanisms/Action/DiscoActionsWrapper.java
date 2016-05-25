@@ -2,6 +2,7 @@ package Mechanisms.Action;
 
 import Mechanisms.Collaboration.Collaboration;
 import MentalState.Goal;
+import MetaInformation.MentalProcesses;
 import edu.wpi.cetask.DecompositionClass;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskClass.Input;
@@ -19,8 +20,8 @@ public class DiscoActionsWrapper {
 	
 	private Collaboration collaboration;
 	
-	public DiscoActionsWrapper(Collaboration collaboration) {
-		this.collaboration = collaboration;
+	public DiscoActionsWrapper(MentalProcesses mentalProcesses) {
+		this.collaboration = mentalProcesses.getCollaborationMechanism();
 	}
 	
 	public void proposeTaskWho(Goal goal, boolean speaker) {

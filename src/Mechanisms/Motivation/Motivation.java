@@ -69,14 +69,14 @@ public class Motivation extends Mechanisms {
 
 //		goal.addMotives(satisfactionMotive);
 		
-		return new Motive(goal, MOTIVE_TYPE.SATISFACTION, computeSatisfactionMotiveIntensity());
+		return new Motive(goal, MOTIVE_TYPE.SATISFACTION, computeSatisfactionMotiveIntensity(goal));
 	}
 	
-	private double computeSatisfactionMotiveIntensity() {
+	private double computeSatisfactionMotiveIntensity(Goal goal) {
 		
 		double satisfactionMotiveValue = 0.0;
 		
-		double valence  = tom.getValenceValue();
+		double valence  = tom.getValenceValue(goal);
 		double satDelta = satisfactionDrive.getSatisfactionDriveDelta();
 		
 		if (valence == 0)
@@ -84,7 +84,6 @@ public class Motivation extends Mechanisms {
 		else if (valence > 0)
 			satisfactionMotiveValue = Math.pow(3, 2*(satDelta-1));
 		else if (valence < 0) {
-			System.out.println(satDelta);
 			satisfactionMotiveValue = -Math.pow(3, -2*(satDelta+1));
 		}
 		
@@ -104,25 +103,25 @@ public class Motivation extends Mechanisms {
 		double firstSigmoidValue  = 0.0;
 		double secondSigmoidValue = 0.0;
 		
-		double valence  = tom.getValenceValue();
+		double valence  = tom.getValenceValue(goal);
 		
 		double controllabilityValue = Turns.getInstance().getControllabilityValue(controllability.isEventControllable(goal));
 		double expectednessValue    = Turns.getInstance().getExpectednessValue(expectedness.isEventExpected(goal));
 		
 		double successProbability = controllabilityValue * expectednessValue;
 		
-		if (valence >= 0) {
+//		if (valence >= 0) {
 			double firstGradient  = 2.0;
 			double secondGradient = 12.0;
-			firstSigmoidValue  = (double)2.0 / (1 + Math.exp((firstGradient - valence) * (1.05 - successProbability)));
-			secondSigmoidValue = (double)1.0 / (1 + Math.exp((secondGradient - valence) * (1.1 - successProbability)));
-		}
-		else {
-			double firstGradient  = 0.5;
-			double secondGradient = 12.0;
-			firstSigmoidValue  = (double)1.0 / (1 + Math.exp((firstGradient - valence) * (1.05 - successProbability)));
-			secondSigmoidValue = (double)1.0 / (1 + Math.exp((secondGradient - valence) * (successProbability - 1.02)));
-		}
+			firstSigmoidValue  = (double)2.0 / (1 + Math.exp((firstGradient - Math.abs(valence)) * (1.05 - successProbability)));
+			secondSigmoidValue = (double)1.0 / (1 + Math.exp((secondGradient - Math.abs(valence)) * (1.1 - successProbability)));
+//		}
+//		else {
+//			double firstGradient  = 0.5;
+//			double secondGradient = 12.0;
+//			firstSigmoidValue  = (double)1.0 / (1 + Math.exp((firstGradient - valence) * (1.05 - successProbability)));
+//			secondSigmoidValue = (double)1.0 / (1 + Math.exp((secondGradient - valence) * (successProbability - 1.02)));
+//		}
 		
 		return (firstSigmoidValue - secondSigmoidValue);
 	}
@@ -140,7 +139,7 @@ public class Motivation extends Mechanisms {
 		double firstSigmoidValue  = 0.0;
 		double secondSigmoidValue = 0.0;
 		
-		double valence  = tom.getValenceValue();
+		double valence  = tom.getValenceValue(goal);
 			
 		// I might need to read these values later using ToM mechanism.
 		double controllabilityValue = Turns.getInstance().getControllabilityValue(controllability.isEventControllable(goal));

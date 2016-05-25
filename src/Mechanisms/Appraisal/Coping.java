@@ -60,7 +60,7 @@ public class Coping {
 		this.desirability    = mentalProcesses.getDesirabilityProcess();
 		this.expectedness    = mentalProcesses.getExpectednessProcess();
 		
-		discoActionsWrapper  = new DiscoActionsWrapper(collaboration);
+		discoActionsWrapper  = new DiscoActionsWrapper(mentalProcesses);
 	}
 	
 	public void formIntentions(Goal eventGoal) {

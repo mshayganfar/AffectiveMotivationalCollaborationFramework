@@ -4,27 +4,27 @@ next false
 task InstallSolarPanel
 task PreparePanel
 execute PrepareControlSwitch / / true
-eval process()
+eval process("NEUTRAL")
 task PrepareConnector
 execute RemoveCover / / true
-eval process()
+eval process("NEUTRAL")
 execute ConnectAdaptor / / true
-eval process()
+eval process("NEUTRAL")
 task FixPanel
 execute PlacePanel / / true
-eval process()
+eval process("NEUTRAL")
 execute WeldPanel / / false
-eval process()
+eval process("GUILT")
 task CheckPanel
 task CheckHardware
 execute CheckPanelAttachment / / true
-eval process()
+eval process("NEUTRAL")
 execute CheckWirings / / true
-eval process()
+eval process("NEUTRAL")
 task CheckFunction
 execute CheckControlSwitch / / true
-eval process()
+eval process("NEUTRAL")
 execute CheckCascadingCells / / true
-eval process()
+eval process("NEUTRAL")
 execute CheckOutputCurrent / / true
-eval process()
+eval process("NEUTRAL")

@@ -47,7 +47,7 @@ public class AffectiveMotivationalCollaborationFramework {
 	
 	private static AppraisalVector doAppraisal(Turns turn, Goal recognizedGoal) {
 		
-		AppraisalVector appraisalVector = new AppraisalVector(mentalProcesses, recognizedGoal);
+		AppraisalVector appraisalVector = new AppraisalVector(mentalProcesses, recognizedGoal, WHOSE_APPRAISAL.SELF);
 		
 		RELEVANCE relevanceValue = mentalProcesses.getRelevanceProcess().isEventRelevant(recognizedGoal);
 		appraisalVector.setRelevanceValue(relevanceValue);
@@ -106,12 +106,15 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		// This is required before doing appraisals.
 		mentalProcesses.getCollaborationMechanism().updatePreconditionApplicability();
+		
 		AppraisalVector appraisalVector = doAppraisal(turn, recognizedGoal);
+		
+		System.out.println("Human's Emotion: " + mentalProcesses.getToMMechanism().getAnticipatedHumanEmotion(recognizedGoal));
 		
 		runMotivations(recognizedGoal);
 		
 		runCoping(recognizedGoal);
-		recognizedGoal.toSting();
+//		recognizedGoal.toSting();
 		
 		runAction(recognizedGoal);
 //		goalManagement.computeCostValue(recognizedGoal);

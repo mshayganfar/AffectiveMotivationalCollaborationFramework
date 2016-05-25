@@ -62,9 +62,10 @@ public class CopingActivation {
 				} else
 					return false;
 			case ACTIVE_COPING:
-				if ((satisfactionMotive.getMotiveIntensity() >= 0) || (satisfactionMotive.getMotiveIntensity() > 0)) {
+				if ((satisfactionMotive.getMotiveIntensity() >= 0) || (satisfactionMotive.getMotiveIntensity() < 0)) {
 					if (achievementMotive != null)
-						if (achievementMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.MEDIUM_POSITIVE))
+						if ((achievementMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.MEDIUM_POSITIVE)) ||
+							(achievementMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.HIGH_POSITIVE)))
 							return true;
 					if (externalMotive != null) {
 						if (externalMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.MEDIUM_POSITIVE))
@@ -76,7 +77,7 @@ public class CopingActivation {
 				} else
 					return false;
 			case SEEKING_SOCIAL_SUPPORT_FOR_INSTRUMENTAL_REASONS:
-				if ((satisfactionMotive.getMotiveIntensity() >= 0) || (satisfactionMotive.getMotiveIntensity() > 0)) {
+				if ((satisfactionMotive.getMotiveIntensity() >= 0) || (satisfactionMotive.getMotiveIntensity() < 0)) {
 					if (achievementMotive != null)
 						if (achievementMotive.getSymbolicMotiveIntensity().equals(MOTIVE_INTENSITY.LOW_POSITIVE))
 							return true;
