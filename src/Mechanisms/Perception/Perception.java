@@ -36,39 +36,9 @@ public class Perception{
 		return emotionValence;
 	}
 	
-	public void setEmotionValence(EMOTION_INSTANCE emotionInstance) { 
+	public void setEmotionValence(double valenceValue) { 
 		
-		switch (emotionInstance) {
-			case NEUTRAL:
-				this.emotionValence = 0.0;
-				break;
-			case JOY:
-				this.emotionValence = 1.0;
-				break;
-			case GRATITUDE:
-				this.emotionValence = 1.0;
-				break;
-			case POSITIVE_SURPRISE:
-				this.emotionValence = 1.0;
-				break;
-			case NEGATIVE_SURPRISE:
-				this.emotionValence = -1.0;
-				break;
-			case ANGER:
-				this.emotionValence = -1.0;
-				break;
-			case WORRY:
-				this.emotionValence = -1.0;
-				break;
-			case FRUSTRATION:
-				this.emotionValence = -1.0;
-				break;
-			case GUILT:
-				this.emotionValence = -1.0;
-				break;
-			default:
-				throw new IllegalArgumentException("Illegal Emotion Instance: " + emotionInstance);
-		}
+		this.emotionValence = valenceValue;
 	}
 	
 	public EVENT_CATEGORIES getEventCategory(Goal eventGoal) {

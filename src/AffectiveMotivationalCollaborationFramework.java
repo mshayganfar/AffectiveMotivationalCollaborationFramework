@@ -58,7 +58,8 @@ public class AffectiveMotivationalCollaborationFramework {
 		EXPECTEDNESS expectednessValue = mentalProcesses.getExpectednessProcess().isEventExpected(recognizedGoal);
 		appraisalVector.setExpectednessValue(expectednessValue);
 		
-		turn.setTurnAppraisals(mentalProcesses, recognizedGoal, mentalProcesses.getCollaborationMechanism().getWhoseAppraisal(recognizedGoal.getPlan()), 
+//		mentalProcesses.getCollaborationMechanism().getWhoseAppraisal(recognizedGoal.getPlan())
+		turn.setTurnAppraisals(mentalProcesses, recognizedGoal, WHOSE_APPRAISAL.SELF, 
 				appraisalVector.getRelevanceSymbolicValue(), appraisalVector.getDesirabilitySymbolicValue(), appraisalVector.getControllabilitySymbolicValue(), 
 				appraisalVector.getExpectednessSymbolicValue());
 		
@@ -95,14 +96,14 @@ public class AffectiveMotivationalCollaborationFramework {
 		Motive motive  = new Motive(recognizedGoal);
 	}
 	
-	public static void process(String emotionInstance) {
+	public static void process(String valenceValue) {
 		
 		Turns turn = Turns.getInstance();
 		Goal recognizedGoal = new Goal(mentalProcesses);
 		
 		initializeFramework(recognizedGoal);
 		
-		mentalProcesses.getPerceptionMechanism().setEmotionValence(EMOTION_INSTANCE.valueOf(emotionInstance));
+		mentalProcesses.getPerceptionMechanism().setEmotionValence(Double.parseDouble(valenceValue));
 		
 		// This is required before doing appraisals.
 		mentalProcesses.getCollaborationMechanism().updatePreconditionApplicability();

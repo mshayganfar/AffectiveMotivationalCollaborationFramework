@@ -509,7 +509,9 @@ public class Collaboration extends Mechanisms{
 		Plan actualPlan = this.disco.getFocus();
 		
 		for (Plan childPlan : actualPlan.getChildren()) {
-			if (childPlan.getGoal().getType().equals(this.disco.getLastOccurrence().getType()))
+			// I was using this condition originally! It was preventing primitive goals to be recognized. 
+//			if (childPlan.getGoal().getType().equals(this.disco.getLastOccurrence().getType())) 
+			if (childPlan.isLive() && childPlan.isPrimitive())
 				return childPlan;
 		}
 		

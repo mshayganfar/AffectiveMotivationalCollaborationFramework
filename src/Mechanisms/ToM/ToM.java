@@ -66,26 +66,30 @@ public class ToM extends Mechanisms{
 	
 	public AppraisalVector getReverseAppraisalValues(Goal eventGoal) {
 		
-		return doReverseAppraisal(getValenceValue(eventGoal), eventGoal);
+		return doReverseAppraisal(eventGoal);
 	}
 	
 	public EMOTION_INSTANCE getAnticipatedHumanEmotion(Goal eventGoal) {
 		
-		AppraisalVector reverseAppraisalVector = doReverseAppraisal(getValenceValue(eventGoal), eventGoal);
-		
-		//Should I add this to the goal, just like the forward appraisal?!
+		AppraisalVector reverseAppraisalVector = doReverseAppraisal(eventGoal);
 		
 		return reverseAppraisalVector.getEmotionInstance();
 	}
 	
-	private AppraisalVector doReverseAppraisal(double valenceValue, Goal eventGoal) {
-		
+	private AppraisalVector doReverseAppraisal(Goal eventGoal) {
+
 		AppraisalVector estimatedAppraisalVector = new AppraisalVector(mentalProcesses, eventGoal, WHOSE_APPRAISAL.HUMAN);
+		
+		double valenceValue = mentalProcesses.getPerceptionMechanism().getEmotionValence();
 		
 		estimatedAppraisalVector.setRelevanceValue(relevance.isEventRelevant(eventGoal));
 		estimatedAppraisalVector.setDesirabilityValue(getReverseDesirability(valenceValue));
 		estimatedAppraisalVector.setExpectednessValue(expectedness.isEventExpected(eventGoal));
 		estimatedAppraisalVector.setControllabilityValue(getReverseControllability(eventGoal));
+		
+		Turns.getInstance().setTurnAppraisals(mentalProcesses, eventGoal, WHOSE_APPRAISAL.HUMAN, 
+				estimatedAppraisalVector.getRelevanceSymbolicValue(), estimatedAppraisalVector.getDesirabilitySymbolicValue(), 
+				estimatedAppraisalVector.getControllabilitySymbolicValue(), estimatedAppraisalVector.getExpectednessSymbolicValue());
 		
 		return estimatedAppraisalVector;
 	}

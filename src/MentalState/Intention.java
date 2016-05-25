@@ -16,7 +16,6 @@ public class Intention {
 		this.goal   = goal;
 		this.label  = goal.getPlan().getGoal().getType().toString();
 		this.copingStrategy = copingStrategy;
-		this.goal.addIntentions(this);
 	}
 	
 	public Intention (Goal goal, Motive motive) {
@@ -24,7 +23,6 @@ public class Intention {
 		this.motive = motive;
 		this.label  = goal.getPlan().getGoal().getType().toString();
 		this.intentionTarget = INTENTION_TARGET.ENVIRONMENT;
-		this.goal.addIntentions(this);
 	}
 	
 	public Intention (Goal goal, Motive motive, INTENTION_TARGET intentionTarget) {
@@ -32,7 +30,6 @@ public class Intention {
 		this.motive = motive;
 		this.label  = goal.getPlan().getGoal().getType().toString();
 		this.intentionTarget = intentionTarget;
-		this.goal.addIntentions(this);
 	}
 	
 	public Goal getGoal() {

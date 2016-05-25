@@ -70,8 +70,8 @@ public class Controllability extends AppraisalProcesses{
 									getGoalDifficultyWeight());
 		}
 		
-		if (controllabilityValue > 0.34) // Not sure if human emotion threshold is needed here!
-			if (controllabilityValue >= 0.67)
+		if (controllabilityValue > 0.2) // Not sure if human emotion threshold is needed here!
+			if (controllabilityValue >= 0.5)
 				return CONTROLLABILITY.HIGH_CONTROLLABLE;
 			else
 				return CONTROLLABILITY.LOW_CONTROLLABLE;
