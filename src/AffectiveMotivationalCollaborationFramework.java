@@ -139,7 +139,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		// Input values should be manually added to this list in order!
 		ArrayList<String> inputValues = new ArrayList<String>(Arrays.asList("WeldingTool"));
 		
-		mentalProcesses.getCollaborationMechanism().initializeAllInputs(inputValues);
+//		mentalProcesses.getCollaborationMechanism().initializeAllInputs(inputValues);
 		
 //		System.out.println(goalManagement.computeCostValue(eventGoal) + " and " + eventGoal.getLabel() + " and " + collaboration.getDisco().getFocus().getType());
 		

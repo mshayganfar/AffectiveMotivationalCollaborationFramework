@@ -99,7 +99,7 @@
 		<postcondition sufficient="true"> post_PlacePanel </postcondition>
 	</task>
   <task id="WeldPanel">
-		<input name="tool" type="WeldingTool" />
+		<!-- <input name="tool" type="WeldingTool" /> -->
 		<precondition>true</precondition>
 		<postcondition sufficient="true"> post_WeldPanel </postcondition>
 	</task>

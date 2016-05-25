@@ -1,4 +1,4 @@
-debug false
+debug true
 verbose
 next false
 task InstallSolarPanel
@@ -9,8 +9,8 @@ eval process("0.0")
 eval process("0.0")
 task FixPanel
 eval process("0.0")
-execute WeldPanel / / / / false
-eval process("-1.0")
+execute WeldPanel / "WeldingTool1"
+eval process("1.0")
 task CheckPanel
 task CheckHardware
 eval process("0.0")

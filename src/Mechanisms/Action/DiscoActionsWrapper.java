@@ -142,8 +142,8 @@ public class DiscoActionsWrapper {
 		
 		if (plan.isPrimitive())
 			collaboration.getDisco().getInteraction().occurred(actor, plan.getGoal(), plan);
-//		else
-//			throw new IllegalArgumentException("Non-primitive tasks can not be executed!"); // I should do something about non-primitives here.
+		else
+			proposeTaskShould(goal, false);
 	}
 	
 	public void executeTask() {

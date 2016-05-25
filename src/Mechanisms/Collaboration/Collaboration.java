@@ -61,7 +61,7 @@ public class Collaboration extends Mechanisms{
 		interaction = new Interaction(agent, new User("user"),
 				  args.length > 0 && args[0].length() > 0 ? args[0] : null);
 		interaction.getExternal().setEval(true);
-//		interaction.start(true);
+//		interaction.start(false);
 		disco = interaction.getDisco();
 		
 		disco.load("models/Events.xml");
@@ -226,8 +226,12 @@ public class Collaboration extends Mechanisms{
 			return GOAL_STATUS.INPROGRESS;
 		else if (status.equals(Status.BLOCKED))
 			return GOAL_STATUS.BLOCKED;
-		else if (status.equals(Status.PENDING))
-			return GOAL_STATUS.PENDING;
+		else if (status.equals(Status.PENDING)) {
+			if (plan.getGoal().isDefinedInputs())
+				return GOAL_STATUS.PENDING;
+			else
+				return GOAL_STATUS.FAILED;
+		}
 		else if (status.equals(Status.FAILED)) // plan.isFailed()
 			return GOAL_STATUS.FAILED;
 		else if (status.equals(Status.INAPPLICABLE))
@@ -510,12 +514,11 @@ public class Collaboration extends Mechanisms{
 		Plan actualPlan = this.disco.getFocus();
 		
 		for (Plan childPlan : actualPlan.getChildren()) {
-			// I was using this condition originally! It was preventing primitive goals to be recognized. 
-//			if (childPlan.getGoal().getType().equals(this.disco.getLastOccurrence().getType())) 
-			if (childPlan.isLive() && childPlan.isPrimitive())
+			// I was using this condition originally! It was preventing primitive goals to be recognized.
+//			if (childPlan.getGoal().getType().equals(this.disco.getLastOccurrence().getType()))
+			if (childPlan.isLive())// && childPlan.isPrimitive())
 				return childPlan;
 		}
-		
 		return actualPlan;
 	}
 	
@@ -527,7 +530,7 @@ public class Collaboration extends Mechanisms{
 //			return true;
 //		else
 //			return false;
-//	}	
+//	}
 	
 	public void updatePreconditionApplicability() {
 		

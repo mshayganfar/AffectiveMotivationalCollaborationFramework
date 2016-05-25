@@ -190,7 +190,9 @@ public class Coping {
 		
 		System.out.println("COPING STRATEGY: Planning");
 		
-		discoActionsWrapper.executeTask(goal, human);
+		if (goal.getPlan().getGoal().getExternal() != null)
+			if (!goal.getPlan().getGoal().getExternal())
+				discoActionsWrapper.executeTask(goal, human);
 	}
 	
 	public void doPlanning() {
