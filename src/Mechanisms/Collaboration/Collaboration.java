@@ -1,6 +1,7 @@
 package Mechanisms.Collaboration;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -537,6 +538,24 @@ public class Collaboration extends Mechanisms{
 		for (Node node : treeNodes) {
 			plan = node.getNodeGoalPlan();
 			preconditionsLOT.put(getApplicabilityKeyValue(plan, plan.getType().getPrecondition().getScript()), plan.isApplicable());
+		}
+	}
+	
+	public void initializeAllInputs(ArrayList<String> inputValues) {
+		
+		int inputCounter = 0;
+		Plan plan;
+		GoalTree goalTree = new GoalTree(mentalProcesses);
+		ArrayList<Node> treeNodes = goalTree.createTree();
+		
+		for (Node node : treeNodes) {
+			plan = node.getNodeGoalPlan();
+			for (Input input : plan.getType().getDeclaredInputs()) {
+				if (inputCounter < inputValues.size()) {
+					setInputValue(getKeyValue(plan, input.getName()), inputValues.get(inputCounter));
+					System.out.println("Goal: " + plan.getGoal().getType() + " , Input Name: " + input.getName() + " , Input Value: " + inputValues.get(inputCounter++));
+				}
+			}
 		}
 	}
 	

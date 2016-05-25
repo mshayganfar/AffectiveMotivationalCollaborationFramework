@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
 import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
@@ -128,12 +131,15 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		mentalProcesses = new MentalProcesses(args);
 		
-		goalManagement = new GoalManagement(mentalProcesses);
-				
 		mentalProcesses.getCollaborationMechanism().getInteraction().start(true);
 		
 //		collaboration.getInteraction().getConsole().test("test/ABC1.test");
 		mentalProcesses.getCollaborationMechanism().getInteraction().getConsole().source("test/events-astronaut-robot.txt");
+		
+		// Input values should be manually added to this list in order!
+		ArrayList<String> inputValues = new ArrayList<String>(Arrays.asList("WeldingTool"));
+		
+		mentalProcesses.getCollaborationMechanism().initializeAllInputs(inputValues);
 		
 //		System.out.println(goalManagement.computeCostValue(eventGoal) + " and " + eventGoal.getLabel() + " and " + collaboration.getDisco().getFocus().getType());
 		

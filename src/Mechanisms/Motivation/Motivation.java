@@ -153,7 +153,7 @@ public class Motivation extends Mechanisms {
 		double expectednessValue    = Turns.getInstance().getExpectednessValue(expectedness.isEventExpected(goal));
 			
 		double successProbability = controllabilityValue * expectednessValue;
-			
+		
 		if (valence <= 0) {
 			double firstGradient  = 2.0;
 			double secondGradient = 12.0;
