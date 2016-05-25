@@ -7,6 +7,7 @@ import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
 import Mechanisms.Appraisal.Relevance.RELEVANCE;
 import MentalState.Goal;
+import MetaInformation.AppraisalVector.EMOTION_INSTANCE;
 import MetaInformation.AppraisalVector.WHOSE_APPRAISAL;
 
 public class Turns {
@@ -56,13 +57,22 @@ public class Turns {
 		}
 	}
 	
+	public EMOTION_INSTANCE getTurnHumanEmotion(Goal goal) {
+		
+		for(AppraisalVector vector : appraisalVectors) {
+			if (vector.getGoal().getLabel().equals(goal.getLabel()))
+				if (vector.getWhoseAppraisalValue().equals(WHOSE_APPRAISAL.HUMAN))
+					return vector.getEmotionInstance();
+		}
+		return null;
+	}
+	
 	public AppraisalVector getAppraisalVector(Goal goal) {
 		
 		for(AppraisalVector vector : appraisalVectors) {
 			if (vector.getGoal().getLabel().equals(goal.getLabel()))
 				return vector;
 		}
-		
 		return null;
 	}
 	

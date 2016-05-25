@@ -9,6 +9,7 @@ import MentalState.Motive;
 import MentalState.Motive.MOTIVE_TYPE;
 import MetaInformation.MentalProcesses;
 import MetaInformation.Turns;
+import MetaInformation.AppraisalVector.EMOTION_INSTANCE;
 import edu.wpi.disco.lang.Propose;
 
 public class Motivation extends Mechanisms {
@@ -110,19 +111,25 @@ public class Motivation extends Mechanisms {
 		
 		double successProbability = controllabilityValue * expectednessValue;
 		
-//		if (valence >= 0) {
+		EMOTION_INSTANCE humanEmotion = Turns.getInstance().getTurnHumanEmotion(goal);
+		
+		if (humanEmotion == null)
+			throw new IllegalArgumentException("Illegal Human Emotion Instance: " + humanEmotion);
+		
+		if (humanEmotion.equals(EMOTION_INSTANCE.ANGER) || 
+				humanEmotion.equals(EMOTION_INSTANCE.WORRY) ||
+				humanEmotion.equals(EMOTION_INSTANCE.FRUSTRATION)) {
+			double firstGradient  = 0.5;
+			double secondGradient = 12.0;
+			firstSigmoidValue  = (double)1.0 / (1 + Math.exp((firstGradient - valence) * (1.05 - successProbability)));
+			secondSigmoidValue = (double)1.0 / (1 + Math.exp((secondGradient - valence) * (successProbability - 1.02)));
+		}
+		else {
 			double firstGradient  = 2.0;
 			double secondGradient = 12.0;
 			firstSigmoidValue  = (double)2.0 / (1 + Math.exp((firstGradient - Math.abs(valence)) * (1.05 - successProbability)));
 			secondSigmoidValue = (double)1.0 / (1 + Math.exp((secondGradient - Math.abs(valence)) * (1.1 - successProbability)));
-//		}
-//		else {
-//			double firstGradient  = 0.5;
-//			double secondGradient = 12.0;
-//			firstSigmoidValue  = (double)1.0 / (1 + Math.exp((firstGradient - valence) * (1.05 - successProbability)));
-//			secondSigmoidValue = (double)1.0 / (1 + Math.exp((secondGradient - valence) * (successProbability - 1.02)));
-//		}
-		
+		}
 		return (firstSigmoidValue - secondSigmoidValue);
 	}
 	
