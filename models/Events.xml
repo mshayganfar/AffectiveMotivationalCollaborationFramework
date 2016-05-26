@@ -5,19 +5,20 @@
 
   <script init="true">
 
-		 var post_PrepareControlSwitch;
-		 var post_RemoveCover;
-		 var post_ConnectAdaptor;
-		 var post_PlacePanel;
-		 var post_WeldPanel;
-		 var post_CheckPanelAttachment;
-		 var post_CheckWirings;
-		 var post_CheckControlSwitch;
-		 var post_CheckCascadingCells;
-		 var post_CheckOutputCurrent;
+		 var post_PrepareControlSwitch = true;
+		 var post_RemoveCover = true;
+		 var post_ConnectAdaptor = true;
+		 var post_PlacePanel = true;
+		 var post_WeldPanel = true;
+		 var post_CheckPanelAttachment = true;
+		 var post_CheckWirings = true;
+		 var post_CheckControlSwitch = true;
+		 var post_CheckCascadingCells = true;
+		 var post_CheckOutputCurrent = true;
 
 		function process (emotionInstance) {
-       return Packages.AffectiveMotivationalCollaborationFramework.process(emotionInstance);
+       //return Packages.AffectiveMotivationalCollaborationFramework.process(emotionInstance);
+			 //return Packages.AffectiveMotivationalCollaborationFramework.World.post_WeldPanel;
     }
 
 		function updatePreviousCollaborationStatus () {

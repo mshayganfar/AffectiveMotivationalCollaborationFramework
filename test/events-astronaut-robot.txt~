@@ -9,8 +9,8 @@ eval process("0.0")
 eval process("0.0")
 task FixPanel
 eval process("0.0")
-eval var MyWeldingTool = new WeldingTool("MyWeldingTool");
-execute WeldPanel
+execute WeldPanel / MyWeldingTool
+history
 eval process("1.0")
 task CheckPanel
 task CheckHardware

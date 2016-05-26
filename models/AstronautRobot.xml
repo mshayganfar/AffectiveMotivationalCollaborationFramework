@@ -4,7 +4,7 @@
 
   <task id="InstallSolarPanel">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_PrepareControlSwitch &amp;&amp; post_RemoveCover &amp;&amp; post_ConnectAdaptor &amp;&amp; post_PlacePanel &amp;&amp; post_WeldPanel &amp;&amp; post_CheckPanelAttachment &amp;&amp; post_CheckWirings &amp;&amp; post_CheckControlSwitch &amp;&amp; post_CheckCascadingCells &amp;&amp; post_CheckOutputCurrent </postcondition>
+		<postcondition> post_PrepareControlSwitch &amp;&amp; post_RemoveCover &amp;&amp; post_ConnectAdaptor &amp;&amp; post_PlacePanel &amp;&amp; post_WeldPanel &amp;&amp; post_CheckPanelAttachment &amp;&amp; post_CheckWirings &amp;&amp; post_CheckControlSwitch &amp;&amp; post_CheckCascadingCells &amp;&amp; post_CheckOutputCurrent </postcondition>
     <subtasks id="recipeA" ordered="false">
       <step name="prepare" task ="PreparePanel"/>
       <step name="fix" task="FixPanel"/>
@@ -14,7 +14,7 @@
 
   <task id="PreparePanel">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_PrepareControlSwitch &amp;&amp; post_RemoveCover &amp;&amp; post_ConnectAdaptor</postcondition>
+		<postcondition> post_PrepareControlSwitch &amp;&amp; post_RemoveCover &amp;&amp; post_ConnectAdaptor</postcondition>
     <subtasks id="recipeB" ordered="false">
       <step name="switch" task ="PrepareControlSwitch"/>
       <step name="connector" task="PrepareConnector"/>
@@ -25,19 +25,19 @@
 
   <task id="FixPanel">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_PlacePanel &amp;&amp; post_WeldPanel </postcondition>
+		<postcondition> post_PlacePanel &amp;&amp; post_WeldPanel </postcondition>
     <subtasks id="recipeC" ordered="false">
       <step name="place" task ="PlacePanel"/>
       <step name="weld" task="WeldPanel"/>
 
       <binding slot="$place.external" value="false"/>
-      <binding slot="$weld.external" value="true"/>
+      <binding slot="$weld.external" value="false"/>
     </subtasks>
   </task>
 
   <task id="CheckPanel">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_CheckPanelAttachment &amp;&amp; post_CheckWirings &amp;&amp; post_CheckControlSwitch &amp;&amp; post_CheckCascadingCells &amp;&amp; post_CheckOutputCurrent </postcondition>
+		<postcondition> post_CheckPanelAttachment &amp;&amp; post_CheckWirings &amp;&amp; post_CheckControlSwitch &amp;&amp; post_CheckCascadingCells &amp;&amp; post_CheckOutputCurrent </postcondition>
     <subtasks id="recipeD" ordered="false">
       <step name="hardware" task ="CheckHardware"/>
       <step name="function" task="CheckFunction"/>
@@ -46,7 +46,7 @@
 
   <task id="PrepareConnector">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_RemoveCover &amp;&amp; post_ConnectAdaptor </postcondition>
+		<postcondition> post_RemoveCover &amp;&amp; post_ConnectAdaptor </postcondition>
     <subtasks id="recipeF" ordered="false">
       <step name="cover" task ="RemoveCover"/>
       <step name="adaptor" task ="ConnectAdaptor"/>
@@ -58,7 +58,7 @@
 
   <task id="CheckHardware">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_CheckPanelAttachment &amp;&amp; post_CheckWirings </postcondition>
+		<postcondition> post_CheckPanelAttachment &amp;&amp; post_CheckWirings </postcondition>
     <subtasks id="recipeI" ordered="false">
       <step name="panelattachment" task ="CheckPanelAttachment"/>
       <step name="wirings" task ="CheckWirings"/>
@@ -70,7 +70,7 @@
 
   <task id="CheckFunction">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_CheckControlSwitch &amp;&amp; post_CheckCascadingCells &amp;&amp; post_CheckOutputCurrent </postcondition>
+		<postcondition> post_CheckControlSwitch &amp;&amp; post_CheckCascadingCells &amp;&amp; post_CheckOutputCurrent </postcondition>
     <subtasks id="recipeJ" ordered="false">
       <step name="controlswitch" task ="CheckControlSwitch"/>
       <step name="cascadingcells" task ="CheckCascadingCells"/>
@@ -84,44 +84,44 @@
 
   <task id="PrepareControlSwitch">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_PrepareControlSwitch </postcondition> 
+		<postcondition> Packages.AffectiveMotivationalCollaborationFramework.World.post_WeldPanel </postcondition> 
 	</task>
   <task id="RemoveCover">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_RemoveCover </postcondition>
+		<postcondition> post_RemoveCover </postcondition>
 	</task>
   <task id="ConnectAdaptor">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_ConnectAdaptor </postcondition>
+		<postcondition> post_ConnectAdaptor </postcondition>
 	</task>
   <task id="PlacePanel">
 		<precondition>true</precondition> 
-		<postcondition sufficient="true"> post_PlacePanel </postcondition>
+		<postcondition> post_PlacePanel </postcondition>
 	</task>
   <task id="WeldPanel">
 		<input name="tool" type="WeldingTool" />
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_WeldPanel </postcondition>
+		<postcondition> post_WeldPanel </postcondition>
 	</task>
   <task id="CheckPanelAttachment">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_CheckPanelAttachment </postcondition>
+		<postcondition> post_CheckPanelAttachment </postcondition>
 	</task>
   <task id="CheckWirings">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_CheckWirings </postcondition>
+		<postcondition> post_CheckWirings </postcondition>
 	</task>
   <task id="CheckControlSwitch">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_CheckControlSwitch </postcondition>
+		<postcondition> post_CheckControlSwitch </postcondition>
 	</task>
   <task id="CheckCascadingCells">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_CheckCascadingCells </postcondition>
+		<postcondition> post_CheckCascadingCells </postcondition>
 	</task>
   <task id="CheckOutputCurrent">
 		<precondition>true</precondition>
-		<postcondition sufficient="true"> post_CheckOutputCurrent </postcondition>
+		<postcondition> post_CheckOutputCurrent </postcondition>
 	</task>
   
 	<script init="true">

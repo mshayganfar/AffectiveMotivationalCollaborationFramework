@@ -1,23 +1,27 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
 import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
 import Mechanisms.Appraisal.Relevance.RELEVANCE;
+import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.GoalManagement;
 import MentalState.Belief;
 import MentalState.Goal;
 import MentalState.Motive;
 import MetaInformation.AppraisalVector;
-import MetaInformation.GoalTree;
 import MetaInformation.MentalProcesses;
-import MetaInformation.Node;
 import MetaInformation.Turns;
-import MetaInformation.AppraisalVector.EMOTION_INSTANCE;
 import MetaInformation.AppraisalVector.WHOSE_APPRAISAL;
 import edu.wpi.cetask.Plan;
+import edu.wpi.cetask.Plan.Status;
+import edu.wpi.cetask.Task;
 import edu.wpi.cetask.TaskModel;
+import edu.wpi.disco.Agenda.Plugin.Item;
+import edu.wpi.disco.Agent;
+import edu.wpi.disco.Interaction;
 
 public class AffectiveMotivationalCollaborationFramework {
 	
@@ -101,14 +105,14 @@ public class AffectiveMotivationalCollaborationFramework {
 		Motive motive  = new Motive(recognizedGoal);
 	}
 	
-	public static void process(String valenceValue) {
+	public static void process(Plan eventPlan, double valenceValue) {
 		
 		Turns turn = Turns.getInstance();
-		Goal recognizedGoal = new Goal(mentalProcesses);
+		Goal recognizedGoal = new Goal(mentalProcesses, eventPlan);
 		
 		initializeFramework(recognizedGoal);
 		
-		mentalProcesses.getPerceptionMechanism().setEmotionValence(Double.parseDouble(valenceValue));
+		mentalProcesses.getPerceptionMechanism().setEmotionValence(valenceValue); //Double.parseDouble(valenceValue)
 		
 		// This is required before doing appraisals.
 		mentalProcesses.getCollaborationMechanism().updatePreconditionApplicability();
@@ -129,23 +133,38 @@ public class AffectiveMotivationalCollaborationFramework {
 		turn.updateTurn();
 	}
 	
-//	private static void runPlan() {
-//		
-//		Plan plan;
-//		GoalTree goalTree = new GoalTree(mentalProcesses);
-//		ArrayList<Node> treeNodes = goalTree.createTree();
-//		
-//		for (Node node : treeNodes) {
-//			plan = node.getNodeGoalPlan();
-//			process(valenceValue);
-//		}
-//	}
+	private static void runPlan() {
+		
+		Item eventItem;
+		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
+		Interaction interaction 	= collaboration.getInteraction();
+		Agent agent 				= collaboration.getAgent();
+//		Plan top 					= collaboration.getDisco().addTop("InstallSolarPanel");
+		Task topTask 				= collaboration.getDisco().getTaskClass("InstallSolarPanel").newInstance();
+		Plan topPlan                = new Plan(topTask);
+		collaboration.getDisco().push(topPlan);
+//		topPlan.getGoal().setShould(true);
+		
+//		List<Plan> liveDescendants = top.getLiveDescendants();
+//		Plan top = liveDescendants.get(0);
+		
+		System.out.println(agent.generateBest(interaction));
+		
+		while (!topPlan.getStatus().equals(Status.DONE)) {
+			eventItem = agent.generateBest(interaction);
+			System.out.println(eventItem.contributes.getGoal().getType());
+			if (eventItem.contributes.getGoal().equals(eventItem.task))
+				process(eventItem.contributes, 1.0);
+		}
+	}
 	
 	public static void main(String[] args) {
 		
 		mentalProcesses = new MentalProcesses(args);
 		
 		mentalProcesses.getCollaborationMechanism().getInteraction().start(true);
+		
+		runPlan();
 		
 //		collaboration.getInteraction().getConsole().test("test/ABC1.test");
 		mentalProcesses.getCollaborationMechanism().getInteraction().getConsole().source("test/events-astronaut-robot.txt");

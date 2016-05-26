@@ -53,9 +53,11 @@ public class Collaboration extends Mechanisms{
 	
 	private Interaction interaction;
 	
+	private Agent agent;
+	
 	public Collaboration(String[] args) {
 		
-		Agent agent = new Agent("agent");
+		agent = new Agent("agent");
 		agent.setMax(1);
 		
 		interaction = new Interaction(agent, new User("user"),
@@ -72,6 +74,10 @@ public class Collaboration extends Mechanisms{
 		childrenResponsibinity = new ArrayList<AGENT>();
 		
 		this.collaboration = this;
+	}
+	
+	public Agent getAgent() {
+		return this.agent;
 	}
 	
 	public void prepareCollaborationMechanism(MentalProcesses mentalProcesses) {
@@ -132,6 +138,7 @@ public class Collaboration extends Mechanisms{
 		String keyString = "";
 
 		while (!plan.getGoal().getType().equals(getDisco().getTop(plan).getType())) {
+//		while (plan.getParent() != null) {
 			keyString += plan.getParent().getDecomposition().getType().getId();
 			keyString += plan.getParent().getDecomposition().findStep(plan);
 			plan = plan.getParent();
@@ -516,7 +523,7 @@ public class Collaboration extends Mechanisms{
 		for (Plan childPlan : actualPlan.getChildren()) {
 			// I was using this condition originally! It was preventing primitive goals to be recognized.
 //			if (childPlan.getGoal().getType().equals(this.disco.getLastOccurrence().getType()))
-			if (childPlan.isLive() && childPlan.isPrimitive())
+			if (childPlan.isPrimitive()) //childPlan.isLive() && 
 				return childPlan;
 			else if (childPlan.getGoal().getExternal() != null) {
 				if (!childPlan.isLive() && childPlan.isPrimitive() && childPlan.getGoal().getExternal())
