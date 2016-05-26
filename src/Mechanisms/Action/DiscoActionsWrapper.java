@@ -86,7 +86,7 @@ public class DiscoActionsWrapper {
 		
 		Plan plan = goal.getPlan();
 		
-		Utterance taskToMention = new Mention(collaboration.getDisco(), speaker, plan.getGoal());
+		Utterance taskToMention = new Mention(collaboration.getDisco(), speaker, plan.getGoal(), "Just to mention!");
 		collaboration.getDisco().getInteraction().occurred(speaker, taskToMention, plan);
 	}
 	

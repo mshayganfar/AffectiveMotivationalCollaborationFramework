@@ -124,4 +124,11 @@
 		<postcondition sufficient="true"> post_CheckOutputCurrent </postcondition>
 	</task>
   
+	<script init="true">
+		function WeldingTool (name) { this.name = name; }
+
+		WeldingTool.prototype.toString = function () { return this.name; }
+
+		var MyWeldingTool = new WeldingTool("MyWeldingTool");
+	</script>
 </taskModel>

@@ -10,7 +10,9 @@ import MentalState.Belief;
 import MentalState.Goal;
 import MentalState.Motive;
 import MetaInformation.AppraisalVector;
+import MetaInformation.GoalTree;
 import MetaInformation.MentalProcesses;
+import MetaInformation.Node;
 import MetaInformation.Turns;
 import MetaInformation.AppraisalVector.EMOTION_INSTANCE;
 import MetaInformation.AppraisalVector.WHOSE_APPRAISAL;
@@ -126,6 +128,18 @@ public class AffectiveMotivationalCollaborationFramework {
 		// This needs to be done after running all the mechanisms.
 		turn.updateTurn();
 	}
+	
+//	private static void runPlan() {
+//		
+//		Plan plan;
+//		GoalTree goalTree = new GoalTree(mentalProcesses);
+//		ArrayList<Node> treeNodes = goalTree.createTree();
+//		
+//		for (Node node : treeNodes) {
+//			plan = node.getNodeGoalPlan();
+//			process(valenceValue);
+//		}
+//	}
 	
 	public static void main(String[] args) {
 		

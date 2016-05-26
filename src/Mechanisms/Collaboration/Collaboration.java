@@ -1,7 +1,6 @@
 package Mechanisms.Collaboration;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -516,8 +515,12 @@ public class Collaboration extends Mechanisms{
 		for (Plan childPlan : actualPlan.getChildren()) {
 			// I was using this condition originally! It was preventing primitive goals to be recognized.
 //			if (childPlan.getGoal().getType().equals(this.disco.getLastOccurrence().getType()))
-			if (childPlan.isLive())// && childPlan.isPrimitive())
+			if (childPlan.isLive() && childPlan.isPrimitive())
 				return childPlan;
+			else if (childPlan.getGoal().getExternal() != null) {
+				if (!childPlan.isLive() && childPlan.isPrimitive() && childPlan.getGoal().getExternal())
+					return childPlan;
+			}
 		}
 		return actualPlan;
 	}

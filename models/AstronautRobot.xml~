@@ -99,7 +99,7 @@
 		<postcondition sufficient="true"> post_PlacePanel </postcondition>
 	</task>
   <task id="WeldPanel">
-		<!-- <input name="tool" type="WeldingTool" /> -->
+		<input name="tool" type="WeldingTool" />
 		<precondition>true</precondition>
 		<postcondition sufficient="true"> post_WeldPanel </postcondition>
 	</task>
@@ -124,4 +124,11 @@
 		<postcondition sufficient="true"> post_CheckOutputCurrent </postcondition>
 	</task>
   
+	<script init="true">
+		function WeldingTool (name) { this.name = name; }
+
+		WeldingTool.prototype.toString = function () { return this.name; }
+
+		// var MyWeldingTool = new WeldingTool("MyWeldingTool");
+	</script>
 </taskModel>
