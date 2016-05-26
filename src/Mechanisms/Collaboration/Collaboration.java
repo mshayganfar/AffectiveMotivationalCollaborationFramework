@@ -16,6 +16,7 @@ import MetaInformation.AppraisalVector.WHOSE_APPRAISAL;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskModel;
 import edu.wpi.cetask.Plan.Status;
+import edu.wpi.cetask.Task;
 import edu.wpi.cetask.TaskClass.Input;
 import edu.wpi.disco.Agent;
 import edu.wpi.disco.Disco;
@@ -608,12 +609,16 @@ public class Collaboration extends Mechanisms{
 	public INFERRED_CONTEXT getInferredContext(Goal eventGoal) {
 		
 		Plan eventPlan = eventGoal.getPlan();
+		Task eventTask = eventPlan.getGoal();
 		
-		if ((eventPlan.getGoal() instanceof Propose.Should) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.SELF))
+		AGENT responsibleAgent = this.collaboration.getResponsibleAgent(eventPlan);
+		GOAL_STATUS eventGoalStatus = this.collaboration.getGoalStatus(eventPlan);
+		
+		if ((eventTask instanceof Propose.Should) && (responsibleAgent.equals(AGENT.SELF)))
 			return INFERRED_CONTEXT.AGENT_PROPOSED;
-		else if ((eventPlan.getGoal() instanceof Propose.Should) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.OTHER))
+		else if ((eventTask instanceof Propose.Should) && (responsibleAgent.equals(AGENT.OTHER)))
 			return INFERRED_CONTEXT.HUMAN_PROPOSED;
-		else if ((eventPlan.getGoal() instanceof Propose.Should) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.BOTH)) {
+		else if ((eventTask instanceof Propose.Should) && (responsibleAgent.equals(AGENT.BOTH))) {
 			if (this.collaboration.getResponsibleAgent(getLastContributingPlan(eventPlan)).equals(AGENT.SELF))
 				return INFERRED_CONTEXT.AGENT_PROPOSED;
 			else if (this.collaboration.getResponsibleAgent(getLastContributingPlan(eventPlan)).equals(AGENT.OTHER))
@@ -621,12 +626,12 @@ public class Collaboration extends Mechanisms{
 			else
 				throw new IllegalArgumentException("Responsible: " + getLastContributingPlan(eventPlan));
 		}
-		else if ((eventPlan.getGoal() instanceof Reject) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/).equals(AGENT.SELF)))
+		else if ((eventTask instanceof Reject) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/).equals(AGENT.SELF)))
 //			((Reject)eventPlan.getGoal()).getProposal();
 			return INFERRED_CONTEXT.AGENT_REJECTED;
-		else if ((eventPlan.getGoal() instanceof Reject) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/).equals(AGENT.OTHER)))
+		else if ((eventTask instanceof Reject) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/).equals(AGENT.OTHER)))
 			return INFERRED_CONTEXT.HUMAN_REJECTED;
-		else if ((eventPlan.getGoal() instanceof Reject) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/)).equals(AGENT.BOTH)) {
+		else if ((eventTask instanceof Reject) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/)).equals(AGENT.BOTH)) {
 			if (this.collaboration.getResponsibleAgent(getLastContributingPlan(eventPlan)).equals(AGENT.SELF))
 				return INFERRED_CONTEXT.AGENT_REJECTED;
 			else if (this.collaboration.getResponsibleAgent(getLastContributingPlan(eventPlan)).equals(AGENT.OTHER))
@@ -634,11 +639,11 @@ public class Collaboration extends Mechanisms{
 			else
 				throw new IllegalArgumentException("Responsible: " + getLastContributingPlan(eventPlan));
 		}
-		else if ((eventPlan.getGoal() instanceof Accept) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/).equals(AGENT.SELF)))
+		else if ((eventTask instanceof Accept) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/).equals(AGENT.SELF)))
 			return INFERRED_CONTEXT.AGENT_ACCEPTED;
-		else if ((eventPlan.getGoal() instanceof Accept) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/).equals(AGENT.OTHER)))
+		else if ((eventTask instanceof Accept) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/).equals(AGENT.OTHER)))
 			return INFERRED_CONTEXT.HUMAN_ACCEPTED;
-		else if ((eventPlan.getGoal() instanceof Reject) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/)).equals(AGENT.BOTH)) {
+		else if ((eventTask instanceof Reject) && (this.collaboration.getResponsibleAgent(eventPlan /*This should be changed!*/)).equals(AGENT.BOTH)) {
 			if (this.collaboration.getResponsibleAgent(getLastContributingPlan(eventPlan)).equals(AGENT.SELF))
 				return INFERRED_CONTEXT.AGENT_ACCEPTED;
 			else if (this.collaboration.getResponsibleAgent(getLastContributingPlan(eventPlan)).equals(AGENT.OTHER))
@@ -646,11 +651,11 @@ public class Collaboration extends Mechanisms{
 			else
 				throw new IllegalArgumentException("Responsible: " + getLastContributingPlan(eventPlan));
 		}
-		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.FAILED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.OTHER))
+		else if ((eventGoalStatus.equals(GOAL_STATUS.FAILED)) && (responsibleAgent.equals(AGENT.OTHER)))
 			return INFERRED_CONTEXT.HUMAN_FAILED;
-		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.FAILED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.SELF))
+		else if ((eventGoalStatus.equals(GOAL_STATUS.FAILED)) && (responsibleAgent.equals(AGENT.SELF)))
 			return INFERRED_CONTEXT.AGENT_FAILED;
-		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.FAILED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.BOTH)) {
+		else if ((eventGoalStatus.equals(GOAL_STATUS.FAILED)) && (responsibleAgent.equals(AGENT.BOTH))) {
 			if (this.collaboration.getResponsibleAgent(getLastContributingPlan(eventPlan)).equals(AGENT.SELF))
 				return INFERRED_CONTEXT.AGENT_FAILED;
 			else if (this.collaboration.getResponsibleAgent(getLastContributingPlan(eventPlan)).equals(AGENT.OTHER))
@@ -658,11 +663,11 @@ public class Collaboration extends Mechanisms{
 			else
 				throw new IllegalArgumentException("Responsible: " + getLastContributingPlan(eventPlan));
 		}
-		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.ACHIEVED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.OTHER))
+		else if ((eventGoalStatus.equals(GOAL_STATUS.ACHIEVED)) && (responsibleAgent.equals(AGENT.OTHER)))
 			return INFERRED_CONTEXT.HUMAN_ACHIEVED;
-		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.ACHIEVED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.SELF))
+		else if ((eventGoalStatus.equals(GOAL_STATUS.ACHIEVED)) && (responsibleAgent.equals(AGENT.SELF)))
 			return INFERRED_CONTEXT.AGENT_ACHIEVED;
-		else if ((this.collaboration.getGoalStatus(eventPlan).equals(GOAL_STATUS.ACHIEVED)) && (this.collaboration.getResponsibleAgent(eventPlan)).equals(AGENT.BOTH)) {
+		else if ((eventGoalStatus.equals(GOAL_STATUS.ACHIEVED)) && (responsibleAgent.equals(AGENT.BOTH))) {
 			if (this.collaboration.getResponsibleAgent(getLastContributingPlan(eventPlan)).equals(AGENT.SELF))
 				return INFERRED_CONTEXT.AGENT_ACHIEVED;
 			else if (this.collaboration.getResponsibleAgent(getLastContributingPlan(eventPlan)).equals(AGENT.OTHER))
