@@ -114,8 +114,6 @@ public class AffectiveMotivationalCollaborationFramework {
 		Goal recognizedGoal = new Goal(mentalProcesses, eventPlan);
 //		Goal recognizedGoal = new Goal(mentalProcesses);
 		
-		recognizedGoal.addGoalToMentalState();
-		
 		initializeFramework(recognizedGoal);
 		
 		mentalProcesses.getPerceptionMechanism().setEmotionValence(valenceValue);
@@ -123,6 +121,8 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		// This is required before doing appraisals.
 		mentalProcesses.getCollaborationMechanism().updatePreconditionApplicability();
+		
+		mentalProcesses.getCollaborationMechanism().provideInputValues(recognizedGoal.getPlan());
 		
 		AppraisalVector appraisalVector = doAppraisal(turn, recognizedGoal);
 		
@@ -153,7 +153,8 @@ public class AffectiveMotivationalCollaborationFramework {
 			for (Plan plan : collaboration.getPathToTop(eventItem.contributes)) {
 //				if (eventItem.contributes.getGoal().equals(eventItem.task))
 				System.out.println(plan.getGoal().getType());
-				process(plan, 1.0);
+				collaboration.setActualFocus(plan);
+				process(plan, 0.0);
 			}
 		}
 	}
@@ -167,6 +168,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
 		Task topTask = collaboration.getDisco().getTaskClass("InstallSolarPanel").newInstance();
 		Plan topPlan = new Plan(topTask);
+		topPlan.getGoal().setShould(true);
 		collaboration.getDisco().push(topPlan);
 		
 		// Input values should be manually added to this list in order!

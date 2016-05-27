@@ -110,7 +110,8 @@ public class AppraisalVector {
 	}
 	
 	public boolean isEmotionNeutral(Goal eventGoal, WHOSE_APPRAISAL whoseAppraisal) {
-		if (this.desirabilityValue.equals(DESIRABILITY.NEUTRAL))		
+		if ((this.desirabilityValue.equals(DESIRABILITY.NEUTRAL)) &&
+				(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.INPROGRESS)))
 			return true;
 		else
 			return false;

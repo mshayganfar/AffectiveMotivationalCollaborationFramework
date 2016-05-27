@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import MentalState.Goal;
 import edu.wpi.cetask.Plan;
 import edu.wpi.disco.Disco;
+import edu.wpi.disco.lang.Accept;
 
 public class GoalTree {
 
@@ -40,8 +41,9 @@ public class GoalTree {
 		preorderTree.add(node);
 		
 		for (int i = 0 ; i < node.getNodeGoalPlan().getChildren().size() ; i++) {
-			
-			preorderTraverse(createNode(node.getNodeGoalPlan().getChildren().get(i), getDistanceFromTop(node.getNodeGoalPlan())));
+			if (!(node.getNodeGoalPlan().getChildren().get(i).getGoal() instanceof Accept)) {
+				preorderTraverse(createNode(node.getNodeGoalPlan().getChildren().get(i), getDistanceFromTop(node.getNodeGoalPlan())));
+			}
 		}
 	}
 	

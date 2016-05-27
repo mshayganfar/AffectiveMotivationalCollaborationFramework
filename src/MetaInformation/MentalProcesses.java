@@ -45,6 +45,7 @@ public class MentalProcesses {
 		this.tom.prepareAppraisalsOfToM(this);
 		this.coping.prepareCopingMechanism(this);
 		this.action.prepareActionMechanism(this);
+		this.collaboration.getAgent().prepareAgent(this);
 	}
 	
 	public Perception getPerceptionMechanism() {

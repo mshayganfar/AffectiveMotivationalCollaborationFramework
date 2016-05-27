@@ -56,11 +56,11 @@ public class Collaboration extends Mechanisms{
 	private Interaction interaction;
 	
 	private AMCAgent agent;
+	private Plan actualFocus;
 	
 	public Collaboration(String[] args) {
 		
 		agent = new AMCAgent("agent");
-		agent.prepareAgent(mentalProcesses);
 		agent.setMax(1);
 		
 		interaction = new Interaction(agent, new User("user"),
@@ -79,7 +79,7 @@ public class Collaboration extends Mechanisms{
 		this.collaboration = this;
 	}
 	
-	public Agent getAgent() {
+	public AMCAgent getAgent() {
 		return this.agent;
 	}
 	
@@ -98,6 +98,12 @@ public class Collaboration extends Mechanisms{
 	public Collaboration(String strAgent, String strUser) {
 		disco = new Interaction(new Agent(strAgent),new User(strUser),null).getDisco();
 		System.out.println("Collaboration started! Disco = " + disco);
+	}
+	
+	public void provideInputValues(Plan plan) {
+		for (Input input : plan.getGoal().getType().getDeclaredInputs())
+			if (collaboration.isInputAvailable(plan, input))
+				plan.getGoal().setSlotValue(input.getName(), collaboration.getInputValue(plan, input.getName()));
 	}
 	
 //	public Boolean isPlanAchieved(Plan plan) {
@@ -538,23 +544,25 @@ public class Collaboration extends Mechanisms{
 		return pathToTop;
 	}
 	
-	
+	public void setActualFocus(Plan plan) {
+		this.actualFocus = plan;
+	}
 	
 	public Plan getActualFocus() {
 		
-		Plan actualPlan = this.disco.getFocus();
-		
-		for (Plan childPlan : actualPlan.getChildren()) {
-			// I was using this condition originally! It was preventing primitive goals to be recognized.
-//			if (childPlan.getGoal().getType().equals(this.disco.getLastOccurrence().getType()))
-			if (childPlan.isLive() && childPlan.isPrimitive()) 
-				return childPlan;
-			else if (childPlan.getGoal().getExternal() != null) {
-				if (!childPlan.isLive() && childPlan.isPrimitive() && childPlan.getGoal().getExternal())
-					return childPlan;
-			}
-		}
-		return actualPlan;
+//		Plan actualPlan = this.disco.getFocus();
+//		
+//		for (Plan childPlan : actualPlan.getChildren()) {
+//			// I was using this condition originally! It was preventing primitive goals to be recognized.
+////			if (childPlan.getGoal().getType().equals(this.disco.getLastOccurrence().getType()))
+//			if (childPlan.isLive() && childPlan.isPrimitive()) 
+//				return childPlan;
+//			else if (childPlan.getGoal().getExternal() != null) {
+//				if (!childPlan.isLive() && childPlan.isPrimitive() && childPlan.getGoal().getExternal())
+//					return childPlan;
+//			}
+//		}
+		return this.actualFocus;
 	}
 	
 //	private boolean isGoalApplicable(Goal eventGoal) {
@@ -704,6 +712,7 @@ public class Collaboration extends Mechanisms{
 				throw new IllegalArgumentException("Responsible: " + getLastContributingPlan(eventPlan));
 		}
 		else
-			throw new IllegalArgumentException("Illegal Event Value: " + eventPlan);
+			return INFERRED_CONTEXT.INPROGRESS;
+//			throw new IllegalArgumentException("Illegal Event Value: " + eventPlan);
 	}
 }

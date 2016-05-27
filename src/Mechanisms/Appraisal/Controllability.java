@@ -63,13 +63,24 @@ public class Controllability extends AppraisalProcesses{
 									getGoalDifficultyWeight());
 		}
 		
-		if (controllabilityValue > 0.2) // Not sure if human emotion threshold is needed here!
-			if (controllabilityValue >= 0.5)
-				return CONTROLLABILITY.HIGH_CONTROLLABLE;
+		if (eventGoal.getPlan().isPrimitive()) {
+			if (controllabilityValue >= 0.2)
+				if (controllabilityValue >= 0.30)
+					return CONTROLLABILITY.HIGH_CONTROLLABLE;
+				else
+					return CONTROLLABILITY.LOW_CONTROLLABLE;
 			else
-				return CONTROLLABILITY.LOW_CONTROLLABLE;
-		else
-			return CONTROLLABILITY.UNCONTROLLABLE;
+				return CONTROLLABILITY.UNCONTROLLABLE;
+		}
+		else {
+			if (controllabilityValue > 0.0)
+				if (controllabilityValue >= 0.15)
+					return CONTROLLABILITY.HIGH_CONTROLLABLE;
+				else
+					return CONTROLLABILITY.LOW_CONTROLLABLE;
+			else
+				return CONTROLLABILITY.UNCONTROLLABLE;
+		}
 	}
 	
 	// Agency: The capacity, condition, or state of acting or of exerting power.

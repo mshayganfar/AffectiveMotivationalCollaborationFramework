@@ -90,9 +90,9 @@ public class Relevance extends AppraisalProcesses {
 			return 2.0;
 		
 		int firstGoalDistance  = getDistanceFromTop(goal.getPlan());
-		int secondGoalDistance = getDistanceFromTop(collaboration.getDisco().getFocus());
+		int secondGoalDistance = getDistanceFromTop(collaboration.getActualFocus());
 		
-		Node lcaNode = getLowestCommonAncestor(goal.getPlan(), collaboration.getDisco().getFocus());
+		Node lcaNode = getLowestCommonAncestor(goal.getPlan(), collaboration.getActualFocus());
 		
 		if (lcaNode != null) {
 			int lcaGoalDistance  = getDistanceFromTop(lcaNode.getNodeGoalPlan());

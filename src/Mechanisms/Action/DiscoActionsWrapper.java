@@ -141,17 +141,10 @@ public class DiscoActionsWrapper {
 		Plan plan = goal.getPlan();
 		
 		if (plan.isPrimitive()) {
-			provideInputValues(plan);
 			collaboration.getDisco().getInteraction().occurred(actor, plan.getGoal(), plan);
 		} 
 		else
 			proposeTaskShould(goal, false);
-	}
-	
-	private void provideInputValues(Plan plan) {
-		for (Input input : plan.getGoal().getType().getDeclaredInputs())
-			if (collaboration.isInputAvailable(plan, input))
-				plan.getGoal().setSlotValue(input.getName(), collaboration.getInputValue(plan, input.getName()));
 	}
 	
 	public void executeTask() {
