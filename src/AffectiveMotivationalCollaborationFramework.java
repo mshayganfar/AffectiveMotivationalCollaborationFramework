@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
 import Mechanisms.Appraisal.Desirability.DESIRABILITY;
@@ -105,14 +104,18 @@ public class AffectiveMotivationalCollaborationFramework {
 		Motive motive  = new Motive(recognizedGoal);
 	}
 	
-	public static void process(Plan eventPlan, double valenceValue) {
-		
+//	public static void process(Plan eventPlan, double valenceValue) {
+	public static void process(String valenceValue) {
 		Turns turn = Turns.getInstance();
-		Goal recognizedGoal = new Goal(mentalProcesses, eventPlan);
+//		Goal recognizedGoal = new Goal(mentalProcesses, eventPlan);
+		Goal recognizedGoal = new Goal(mentalProcesses);
+		
+		recognizedGoal.addGoalToMentalState();
 		
 		initializeFramework(recognizedGoal);
 		
-		mentalProcesses.getPerceptionMechanism().setEmotionValence(valenceValue); //Double.parseDouble(valenceValue)
+//		mentalProcesses.getPerceptionMechanism().setEmotionValence(valenceValue); //Double.parseDouble(valenceValue)
+		mentalProcesses.getPerceptionMechanism().setEmotionValence(Double.parseDouble(valenceValue));
 		
 		// This is required before doing appraisals.
 		mentalProcesses.getCollaborationMechanism().updatePreconditionApplicability();
@@ -139,22 +142,18 @@ public class AffectiveMotivationalCollaborationFramework {
 		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
 		Interaction interaction 	= collaboration.getInteraction();
 		Agent agent 				= collaboration.getAgent();
-//		Plan top 					= collaboration.getDisco().addTop("InstallSolarPanel");
 		Task topTask 				= collaboration.getDisco().getTaskClass("InstallSolarPanel").newInstance();
 		Plan topPlan                = new Plan(topTask);
+		
 		collaboration.getDisco().push(topPlan);
-//		topPlan.getGoal().setShould(true);
-		
-//		List<Plan> liveDescendants = top.getLiveDescendants();
-//		Plan top = liveDescendants.get(0);
-		
-		System.out.println(agent.generateBest(interaction));
 		
 		while (!topPlan.getStatus().equals(Status.DONE)) {
 			eventItem = agent.generateBest(interaction);
 			System.out.println(eventItem.contributes.getGoal().getType());
-			if (eventItem.contributes.getGoal().equals(eventItem.task))
-				process(eventItem.contributes, 1.0);
+			for (Plan plan : collaboration.getPathToTop(eventItem.contributes))
+				if (eventItem.contributes.getGoal().equals(eventItem.task))
+					System.out.println(eventItem.contributes.getGoal().getType());
+//					process(eventItem.contributes, 1.0);
 		}
 	}
 	
@@ -164,7 +163,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		mentalProcesses.getCollaborationMechanism().getInteraction().start(true);
 		
-		runPlan();
+//		runPlan();
 		
 //		collaboration.getInteraction().getConsole().test("test/ABC1.test");
 		mentalProcesses.getCollaborationMechanism().getInteraction().getConsole().source("test/events-astronaut-robot.txt");

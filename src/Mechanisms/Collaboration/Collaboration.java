@@ -1,6 +1,7 @@
 package Mechanisms.Collaboration;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -516,6 +517,27 @@ public class Collaboration extends Mechanisms{
 		return this.interaction;
 	}
 	
+	public ArrayList<Plan> getPathToTop(Plan plan) {
+		
+		ArrayList<Plan> pathToTop = new ArrayList<Plan>();
+		
+		while (!plan.equals(disco.getTop(plan))) {
+//		while (plan.getParent() != null) {
+			if (!MentalState.getInstance().isGoalInMentalState(plan))
+				pathToTop.add(plan);
+			plan = plan.getParent();
+		}
+		
+		if (!MentalState.getInstance().isGoalInMentalState(disco.getTop(plan)))
+			pathToTop.add(plan);
+		
+		Collections.reverse(pathToTop);
+		
+		return pathToTop;
+	}
+	
+	
+	
 	public Plan getActualFocus() {
 		
 		Plan actualPlan = this.disco.getFocus();
@@ -523,7 +545,7 @@ public class Collaboration extends Mechanisms{
 		for (Plan childPlan : actualPlan.getChildren()) {
 			// I was using this condition originally! It was preventing primitive goals to be recognized.
 //			if (childPlan.getGoal().getType().equals(this.disco.getLastOccurrence().getType()))
-			if (childPlan.isPrimitive()) //childPlan.isLive() && 
+			if (childPlan.isLive() && childPlan.isPrimitive()) 
 				return childPlan;
 			else if (childPlan.getGoal().getExternal() != null) {
 				if (!childPlan.isLive() && childPlan.isPrimitive() && childPlan.getGoal().getExternal())

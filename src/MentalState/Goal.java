@@ -32,7 +32,7 @@ public class Goal {
 	private Collaboration collaboration;
 	private MentalProcesses mentalProcesses;
 //	private Motive activeMotive = null;
-	
+
 	public Goal (MentalProcesses mentalProcesses) {
 		this.mentalProcesses = mentalProcesses;
 		this.collaboration   = mentalProcesses.getCollaborationMechanism();

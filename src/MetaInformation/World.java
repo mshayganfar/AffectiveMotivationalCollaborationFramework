@@ -2,6 +2,8 @@ package MetaInformation;
 
 public class World {
 	
+	public enum WeldingTool { MY_WELDING_TOOL }
+	
 	public static final boolean post_PrepareControlSwitch = true;
 	public static final boolean post_RemoveCover = true;
 	public static final boolean post_ConnectAdaptor = true;

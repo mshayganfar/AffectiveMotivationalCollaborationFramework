@@ -2,21 +2,14 @@ package Mechanisms.Appraisal;
 
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskClass.Input;
-import edu.wpi.disco.lang.Accept;
-import edu.wpi.disco.lang.Ask;
-import edu.wpi.disco.lang.Reject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import MentalState.Goal;
-import MentalState.Goal.DIFFICULTY;
 import MentalState.Motive.MOTIVE_TYPE;
-import MetaInformation.GoalTree;
 import MetaInformation.MentalProcesses;
-import MetaInformation.Node;
 
 public class Controllability extends AppraisalProcesses{
 

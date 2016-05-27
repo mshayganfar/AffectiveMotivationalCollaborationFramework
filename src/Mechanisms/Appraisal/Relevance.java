@@ -3,8 +3,6 @@ package Mechanisms.Appraisal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.omg.CORBA.UNKNOWN;
-
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import MentalState.Belief;
 import MentalState.Goal;

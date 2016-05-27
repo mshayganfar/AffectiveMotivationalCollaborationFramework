@@ -18,7 +18,7 @@
 
 		function process (emotionInstance) {
        //return Packages.AffectiveMotivationalCollaborationFramework.process(emotionInstance);
-				return Packages.AffectiveMotivationalCollaborationFramework.World.post_WeldPanel;
+			 return Packages.MetaInformation.World.post_WeldPanel;
     }
 
 		function updatePreviousCollaborationStatus () {

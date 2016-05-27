@@ -84,51 +84,52 @@
 
   <task id="PrepareControlSwitch">
 		<precondition>true</precondition>
-		<postcondition> Packages.AffectiveMotivationalCollaborationFramework.World.post_WeldPanel </postcondition> 
+		<postcondition> Packages.MetaInformation.World.post_PrepareControlSwitch </postcondition> 
 	</task>
   <task id="RemoveCover">
 		<precondition>true</precondition>
-		<postcondition> post_RemoveCover </postcondition>
+		<postcondition> Packages.MetaInformation.World.post_RemoveCover </postcondition>
 	</task>
   <task id="ConnectAdaptor">
 		<precondition>true</precondition>
-		<postcondition> post_ConnectAdaptor </postcondition>
+		<postcondition> Packages.MetaInformation.World.post_ConnectAdaptor </postcondition>
 	</task>
   <task id="PlacePanel">
 		<precondition>true</precondition> 
-		<postcondition> post_PlacePanel </postcondition>
+		<postcondition> Packages.MetaInformation.World.post_PlacePanel </postcondition>
 	</task>
   <task id="WeldPanel">
-		<input name="tool" type="WeldingTool" />
+		<input name="tool" type="Packages.MetaInformation.World.WeldingTool" />
 		<precondition>true</precondition>
-		<postcondition> post_WeldPanel </postcondition>
+		<postcondition> Packages.MetaInformation.World.post_WeldPanel </postcondition>
 	</task>
   <task id="CheckPanelAttachment">
 		<precondition>true</precondition>
-		<postcondition> post_CheckPanelAttachment </postcondition>
+		<postcondition> Packages.MetaInformation.World.post_CheckPanelAttachment </postcondition>
 	</task>
   <task id="CheckWirings">
 		<precondition>true</precondition>
-		<postcondition> post_CheckWirings </postcondition>
+		<postcondition> Packages.MetaInformation.World.post_CheckWirings </postcondition>
 	</task>
   <task id="CheckControlSwitch">
 		<precondition>true</precondition>
-		<postcondition> post_CheckControlSwitch </postcondition>
+		<postcondition> Packages.MetaInformation.World.post_CheckControlSwitch </postcondition>
 	</task>
   <task id="CheckCascadingCells">
 		<precondition>true</precondition>
-		<postcondition> post_CheckCascadingCells </postcondition>
+		<postcondition> Packages.MetaInformation.World.post_CheckCascadingCells </postcondition>
 	</task>
   <task id="CheckOutputCurrent">
 		<precondition>true</precondition>
-		<postcondition> post_CheckOutputCurrent </postcondition>
+		<postcondition> Packages.MetaInformation.World.post_CheckOutputCurrent </postcondition>
 	</task>
   
 	<script init="true">
-		function WeldingTool (name) { this.name = name; }
+		// function WeldingTool (name) { this.name = name; }
 
-		WeldingTool.prototype.toString = function () { return this.name; }
+		// WeldingTool.prototype.toString = function () { return this.name; }
 
-		var MyWeldingTool = new WeldingTool("MyWeldingTool");
+		// var MyWeldingTool = new WeldingTool("MyWeldingTool");
+		// var MyWeldingTool = Packages.MetaInformation.World.WeldingTool.MY_WELDING_TOOL; // Based on the Java code.
 	</script>
 </taskModel>

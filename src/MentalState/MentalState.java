@@ -70,6 +70,15 @@ public class MentalState {
 		return null;
 	}
 	
+	public static boolean isGoalInMentalState(Plan plan) {
+		
+		for (Goal goal : goals)
+			if (goal.getPlan().getGoal().getType().equals(plan.getGoal().getType()))
+				return true;
+		
+		return false;
+	}
+	
 //	public static void updateTurn(Turns turn) {
 //		this.currentTurn = turn;
 //	}
