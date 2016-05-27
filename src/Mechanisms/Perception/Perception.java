@@ -27,6 +27,11 @@ public class Perception{
 //		return perception;
 //	}
 	
+	public boolean perceiveExecutionOutcome() {
+//		return (plan.getStatus().equals(GOAL_STATUS.ACHIEVED)) ? true : false;
+		return true;
+	}
+	
 	public double perceiveEmotion(EMOTION_INSTANCE emotion, double intensity) {
 
 		return (emotion.equals(EMOTION_INSTANCE.JOY)) ? intensity : (emotion.equals(EMOTION_INSTANCE.NEUTRAL)) ? 0 : (-1)*intensity;

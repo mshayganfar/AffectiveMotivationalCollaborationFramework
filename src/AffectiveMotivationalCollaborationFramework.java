@@ -162,6 +162,7 @@ public class AffectiveMotivationalCollaborationFramework {
 	public static void main(String[] args) {
 		
 		mentalProcesses = new MentalProcesses(args);
+		World world = new World(mentalProcesses);
 		
 		mentalProcesses.getCollaborationMechanism().getInteraction().start(true);
 		

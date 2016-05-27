@@ -2,7 +2,13 @@ package MetaInformation;
 
 public class World {
 	
-	public enum WeldingTool { MY_WELDING_TOOL }
+	public static enum WeldingTool { MY_WELDING_TOOL }
+	
+	private static MentalProcesses mentalProcesses;
+	
+	public World(MentalProcesses mentalProcesses) {
+		this.mentalProcesses = mentalProcesses;
+	}
 	
 	public static final boolean post_PrepareControlSwitch = true;
 	public static final boolean post_RemoveCover = true;
@@ -14,4 +20,8 @@ public class World {
 	public static final boolean post_CheckControlSwitch = true;
 	public static final boolean post_CheckCascadingCells = true;
 	public static final boolean post_CheckOutputCurrent = true;
+	
+	public static boolean getExecutionOutcome() {
+		return mentalProcesses.getPerceptionMechanism().perceiveExecutionOutcome();
+	}
 }

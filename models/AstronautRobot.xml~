@@ -84,7 +84,8 @@
 
   <task id="PrepareControlSwitch">
 		<precondition>true</precondition>
-		<postcondition> Packages.MetaInformation.World.post_PrepareControlSwitch </postcondition> 
+		<postcondition> Packages.MetaInformation.World.post_PrepareControlSwitch </postcondition>
+		<script>Packages.MetaInformation.World.getExecutionOutcome();</script>
 	</task>
   <task id="RemoveCover">
 		<precondition>true</precondition>
