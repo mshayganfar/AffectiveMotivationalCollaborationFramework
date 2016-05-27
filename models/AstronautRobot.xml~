@@ -84,45 +84,54 @@
 
   <task id="PrepareControlSwitch">
 		<precondition>true</precondition>
-		<postcondition> Packages.MetaInformation.World.post_PrepareControlSwitch </postcondition>
-		<script>Packages.MetaInformation.World.getExecutionOutcome();</script>
+		<!-- <postcondition> Packages.MetaInformation.World.post_PrepareControlSwitch </postcondition> -->
+		<!-- <script>Packages.MetaInformation.World.getExecutionOutcome();</script> -->
 	</task>
   <task id="RemoveCover">
 		<precondition>true</precondition>
 		<postcondition> Packages.MetaInformation.World.post_RemoveCover </postcondition>
+		<script>Packages.MetaInformation.World.getExecutionOutcome();</script>
 	</task>
   <task id="ConnectAdaptor">
 		<precondition>true</precondition>
 		<postcondition> Packages.MetaInformation.World.post_ConnectAdaptor </postcondition>
+		<script>Packages.MetaInformation.World.getExecutionOutcome();</script>
 	</task>
   <task id="PlacePanel">
-		<precondition>true</precondition> 
+		<precondition>true</precondition>
 		<postcondition> Packages.MetaInformation.World.post_PlacePanel </postcondition>
+		<script>Packages.MetaInformation.World.getExecutionOutcome();</script>
 	</task>
   <task id="WeldPanel">
 		<input name="tool" type="Packages.MetaInformation.World.WeldingTool" />
 		<precondition>true</precondition>
 		<postcondition> Packages.MetaInformation.World.post_WeldPanel </postcondition>
+		<script>Packages.MetaInformation.World.getExecutionOutcome();</script>
 	</task>
   <task id="CheckPanelAttachment">
 		<precondition>true</precondition>
 		<postcondition> Packages.MetaInformation.World.post_CheckPanelAttachment </postcondition>
+		<script>Packages.MetaInformation.World.getExecutionOutcome();</script>
 	</task>
   <task id="CheckWirings">
 		<precondition>true</precondition>
 		<postcondition> Packages.MetaInformation.World.post_CheckWirings </postcondition>
+		<script>Packages.MetaInformation.World.getExecutionOutcome();</script>
 	</task>
   <task id="CheckControlSwitch">
 		<precondition>true</precondition>
 		<postcondition> Packages.MetaInformation.World.post_CheckControlSwitch </postcondition>
+		<script>Packages.MetaInformation.World.getExecutionOutcome();</script>
 	</task>
   <task id="CheckCascadingCells">
 		<precondition>true</precondition>
 		<postcondition> Packages.MetaInformation.World.post_CheckCascadingCells </postcondition>
+		<script>Packages.MetaInformation.World.getExecutionOutcome();</script>
 	</task>
   <task id="CheckOutputCurrent">
 		<precondition>true</precondition>
 		<postcondition> Packages.MetaInformation.World.post_CheckOutputCurrent </postcondition>
+		<script>Packages.MetaInformation.World.getExecutionOutcome();</script>
 	</task>
   
 	<script init="true">

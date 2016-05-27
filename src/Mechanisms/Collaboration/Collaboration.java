@@ -63,7 +63,10 @@ public class Collaboration extends Mechanisms{
 		agent = new AMCAgent("agent");
 		agent.setMax(1);
 		
-		interaction = new Interaction(agent, new User("user"),
+		User user = new User("user");
+		user.setEval(true); // Guarantees that grounding script will be evaluated.
+		
+		interaction = new Interaction(agent, user,
 				  args.length > 0 && args[0].length() > 0 ? args[0] : null);
 		interaction.getExternal().setEval(true);
 //		interaction.start(false);
