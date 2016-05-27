@@ -17,7 +17,7 @@
 		 var post_CheckOutputCurrent = true;
 
 		function process (emotionInstance) {
-       return Packages.AffectiveMotivationalCollaborationFramework.process(emotionInstance);
+       //return Packages.AffectiveMotivationalCollaborationFramework.process(emotionInstance);
     }
 
 		function updatePreviousCollaborationStatus () {

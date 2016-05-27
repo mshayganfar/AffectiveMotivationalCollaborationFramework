@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
 import Mechanisms.Appraisal.Desirability.DESIRABILITY;
@@ -13,7 +15,9 @@ import MentalState.Motive;
 import MetaInformation.AppraisalVector;
 import MetaInformation.MentalProcesses;
 import MetaInformation.Turns;
+import MetaInformation.World;
 import MetaInformation.AppraisalVector.WHOSE_APPRAISAL;
+import MetaInformation.World.WeldingTool;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.Plan.Status;
 import edu.wpi.cetask.Task;
@@ -104,18 +108,18 @@ public class AffectiveMotivationalCollaborationFramework {
 		Motive motive  = new Motive(recognizedGoal);
 	}
 	
-//	public static void process(Plan eventPlan, double valenceValue) {
-	public static void process(String valenceValue) {
+	public static void process(Plan eventPlan, double valenceValue) {
+//	public static void process(String valenceValue) {
 		Turns turn = Turns.getInstance();
-//		Goal recognizedGoal = new Goal(mentalProcesses, eventPlan);
-		Goal recognizedGoal = new Goal(mentalProcesses);
+		Goal recognizedGoal = new Goal(mentalProcesses, eventPlan);
+//		Goal recognizedGoal = new Goal(mentalProcesses);
 		
 		recognizedGoal.addGoalToMentalState();
 		
 		initializeFramework(recognizedGoal);
 		
-//		mentalProcesses.getPerceptionMechanism().setEmotionValence(valenceValue); //Double.parseDouble(valenceValue)
-		mentalProcesses.getPerceptionMechanism().setEmotionValence(Double.parseDouble(valenceValue));
+		mentalProcesses.getPerceptionMechanism().setEmotionValence(valenceValue);
+//		mentalProcesses.getPerceptionMechanism().setEmotionValence(Double.parseDouble(valenceValue));
 		
 		// This is required before doing appraisals.
 		mentalProcesses.getCollaborationMechanism().updatePreconditionApplicability();
@@ -136,24 +140,21 @@ public class AffectiveMotivationalCollaborationFramework {
 		turn.updateTurn();
 	}
 	
-	private static void runPlan() {
+	private static void runPlan(Plan topPlan) {
 		
 		Item eventItem;
 		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
 		Interaction interaction 	= collaboration.getInteraction();
 		Agent agent 				= collaboration.getAgent();
-		Task topTask 				= collaboration.getDisco().getTaskClass("InstallSolarPanel").newInstance();
-		Plan topPlan                = new Plan(topTask);
-		
-		collaboration.getDisco().push(topPlan);
 		
 		while (!topPlan.getStatus().equals(Status.DONE)) {
 			eventItem = agent.generateBest(interaction);
 			System.out.println(eventItem.contributes.getGoal().getType());
-			for (Plan plan : collaboration.getPathToTop(eventItem.contributes))
-				if (eventItem.contributes.getGoal().equals(eventItem.task))
-					System.out.println(eventItem.contributes.getGoal().getType());
-//					process(eventItem.contributes, 1.0);
+			for (Plan plan : collaboration.getPathToTop(eventItem.contributes)) {
+//				if (eventItem.contributes.getGoal().equals(eventItem.task))
+				System.out.println(plan.getGoal().getType());
+				process(plan, 1.0);
+			}
 		}
 	}
 	
@@ -163,15 +164,21 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		mentalProcesses.getCollaborationMechanism().getInteraction().start(true);
 		
-//		runPlan();
-		
-//		collaboration.getInteraction().getConsole().test("test/ABC1.test");
-		mentalProcesses.getCollaborationMechanism().getInteraction().getConsole().source("test/events-astronaut-robot.txt");
+		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
+		Task topTask = collaboration.getDisco().getTaskClass("InstallSolarPanel").newInstance();
+		Plan topPlan = new Plan(topTask);
+		collaboration.getDisco().push(topPlan);
 		
 		// Input values should be manually added to this list in order!
-		ArrayList<String> inputValues = new ArrayList<String>(Arrays.asList("WeldingTool"));
+		//ArrayList<Object> inputValues = new ArrayList<Object>(Arrays.asList(WeldingTool.MY_WELDING_TOOL));
+		Map<String, Object> inputValues = new HashMap<String, Object>();
+		inputValues.put("tool", WeldingTool.MY_WELDING_TOOL);
+		mentalProcesses.getCollaborationMechanism().initializeAllInputs(inputValues);
 		
-//		mentalProcesses.getCollaborationMechanism().initializeAllInputs(inputValues);
+		runPlan(topPlan);
+		
+//		collaboration.getInteraction().getConsole().test("test/ABC1.test");
+//		mentalProcesses.getCollaborationMechanism().getInteraction().getConsole().source("test/events-astronaut-robot.txt");
 		
 //		System.out.println(goalManagement.computeCostValue(eventGoal) + " and " + eventGoal.getLabel() + " and " + collaboration.getDisco().getFocus().getType());
 		

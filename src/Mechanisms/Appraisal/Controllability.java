@@ -302,7 +302,7 @@ public class Controllability extends AppraisalProcesses{
 		
 		for (Input input : collaboration.getInputs(eventGoal)) {
 			if (input != null)
-				if(collaboration.isInputAvailable(eventGoal, input))
+				if(collaboration.isInputAvailable(eventGoal.getPlan(), input))
 					dblAvailableInputCounter++;
 		}
 		return ((double)dblAvailableInputCounter/((collaboration.getInputs(eventGoal).size() == 0) ? 1.0 : collaboration.getInputs(eventGoal).size()));

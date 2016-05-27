@@ -165,7 +165,7 @@ public class Coping {
 	
 	private Object getInputValue(Goal goal, String inputName) {
 		
-		String value = null;
+		Object value = null;
 		Task askWhatGoal = ((Ask.What) goal.getPlan().getGoal()).getGoal();
 		
 		if (askWhatGoal.isDefinedSlot(inputName))

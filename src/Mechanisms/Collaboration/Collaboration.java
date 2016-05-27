@@ -13,6 +13,7 @@ import MetaInformation.GoalTree;
 import MetaInformation.MentalProcesses;
 import MetaInformation.Node;
 import MetaInformation.Turns;
+import MetaInformation.AMCAgent;
 import MetaInformation.AppraisalVector.WHOSE_APPRAISAL;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskModel;
@@ -30,7 +31,7 @@ import edu.wpi.disco.lang.Reject;
 public class Collaboration extends Mechanisms{
 
 	public enum INFERRED_CONTEXT{AGENT_PROPOSED, HUMAN_PROPOSED, AGENT_REJECTED, HUMAN_REJECTED, AGENT_ACCEPTED, HUMAN_ACCEPTED, 
-		HUMAN_FAILED, AGENT_FAILED, HUMAN_ACHIEVED, AGENT_ACHIEVED};
+		HUMAN_FAILED, AGENT_FAILED, HUMAN_ACHIEVED, AGENT_ACHIEVED, INPROGRESS};
 	public enum GOAL_STATUS{ACHIEVED, FAILED, PENDING, BLOCKED, INPROGRESS, INAPPLICABLE, DONE, UNKNOWN};
 	public enum FOCUS_TYPE{PRIMITIVE, NONPRIMITIVE};
 	
@@ -49,16 +50,17 @@ public class Collaboration extends Mechanisms{
 	private Map<String, Boolean> preconditionsLOT = new HashMap<String, Boolean>();
 	
 	// These two maps have been used in Anticipated Desirability algorithm.
-	private Map<String, String> inputValues = new HashMap<String, String>();
+	private Map<String, Object> inputValues = new HashMap<String, Object>();
 	private Map<String, Boolean> preconditionValues = new HashMap<String, Boolean>();
 	
 	private Interaction interaction;
 	
-	private Agent agent;
+	private AMCAgent agent;
 	
 	public Collaboration(String[] args) {
 		
-		agent = new Agent("agent");
+		agent = new AMCAgent("agent");
+		agent.prepareAgent(mentalProcesses);
 		agent.setMax(1);
 		
 		interaction = new Interaction(agent, new User("user"),
@@ -118,11 +120,11 @@ public class Collaboration extends Mechanisms{
 //	}
 	
 	// Use this method in initialization of the whole system.
-	public void setInputValue(String keyString, String value) {
+	public void setInputValue(String keyString, Object value) {
 		inputValues.put(keyString, value);
 	}
 	
-	private String getKeyValue(Plan plan, String inputName) {
+	private String getInputKeyValue(Plan plan, String inputName) {
 		
 		String keyString = "";
 		
@@ -147,8 +149,8 @@ public class Collaboration extends Mechanisms{
 		return (keyString+precondition);
 	}
 	
-	public String getInputValue(Plan plan, String inputName) {
-		return inputValues.get(getKeyValue(plan, inputName));
+	public Object getInputValue(Plan plan, String inputName) {
+		return inputValues.get(getInputKeyValue(plan, inputName));
 	}
 	
 	public void setPreconditionValue(Plan plan, Boolean value) {
@@ -175,9 +177,9 @@ public class Collaboration extends Mechanisms{
 			return false;
 	}
 	
-	public boolean isInputAvailable(Goal goal, Input input) {
+	public boolean isInputAvailable(Plan plan, Input input) {
 		
-		if(inputValues.get(getKeyValue(goal.getPlan(), input.getName())) == null)
+		if(inputValues.get(getInputKeyValue(plan, input.getName())) == null)
 //		if(!goal.getPlan().getGoal().isDefinedSlot(input.getName()))
 			return false;
 		
@@ -577,9 +579,8 @@ public class Collaboration extends Mechanisms{
 		}
 	}
 	
-	public void initializeAllInputs(ArrayList<String> inputValues) {
+	public void initializeAllInputs (Map<String, Object> inputValues) {
 		
-		int inputCounter = 0;
 		Plan plan;
 		GoalTree goalTree = new GoalTree(mentalProcesses);
 		ArrayList<Node> treeNodes = goalTree.createTree();
@@ -587,10 +588,8 @@ public class Collaboration extends Mechanisms{
 		for (Node node : treeNodes) {
 			plan = node.getNodeGoalPlan();
 			for (Input input : plan.getType().getDeclaredInputs()) {
-				if (inputCounter < inputValues.size()) {
-					setInputValue(getKeyValue(plan, input.getName()), inputValues.get(inputCounter));
-					System.out.println("Goal: " + plan.getGoal().getType() + " , Input Name: " + input.getName() + " , Input Value: " + inputValues.get(inputCounter++));
-				}
+				setInputValue(getInputKeyValue(plan, input.getName()), inputValues.get(input.getName()));
+				System.out.println("Goal: " + plan.getGoal().getType() + " , Input Name: " + input.getName() + " , Input Value: " + inputValues.get(input.getName()));
 			}
 		}
 	}
