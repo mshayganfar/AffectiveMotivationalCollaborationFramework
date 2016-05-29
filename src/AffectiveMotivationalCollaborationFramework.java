@@ -166,7 +166,10 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		DiscoActionsWrapper discoWrapper = new DiscoActionsWrapper(mentalProcesses);
 		
-		discoWrapper.executeTask(recognizedGoal, true, postconditionStatus);
+		if (recognizedGoal.getPlan().isPrimitive())
+			discoWrapper.executeTask(recognizedGoal, true, postconditionStatus);
+		else
+			discoWrapper.proposeTaskShould(recognizedGoal, true);
 		
 		mentalProcesses.getPerceptionMechanism().setEmotionValence(valenceValue);
 		
