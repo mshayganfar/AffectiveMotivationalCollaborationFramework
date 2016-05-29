@@ -113,8 +113,10 @@ public class Collaboration extends Mechanisms{
 	
 	public void provideInputValues(Plan plan) {
 		for (Input input : plan.getGoal().getType().getDeclaredInputs())
-			if (collaboration.isInputAvailable(plan, input))
+			if (collaboration.isInputAvailable(plan, input)) {
+				System.out.println("IIIIIIIIIIIIIIIIIIIII: " + input.getName() + " , " + collaboration.getInputValue(plan, input.getName()));
 				plan.getGoal().setSlotValue(input.getName(), collaboration.getInputValue(plan, input.getName()));
+			}
 	}
 	
 //	public Boolean isPlanAchieved(Plan plan) {
@@ -136,7 +138,6 @@ public class Collaboration extends Mechanisms{
 //			return false;
 //	}
 	
-	// Use this method in initialization of the whole system.
 	public void setInputValue(String keyString, Object value) {
 		inputValues.put(keyString, value);
 	}
@@ -610,16 +611,14 @@ public class Collaboration extends Mechanisms{
 		}
 	}
 	
-	public void initializeAllInputs (Map<String, Object> inputValues) {
+	public void initializeAllInputs (Plan topPlan, Map<String, Object> inputValues) {
 		
-		Plan plan;
-		GoalTree goalTree = new GoalTree(mentalProcesses);
-		ArrayList<Node> treeNodes = goalTree.createTree();
+		List<Plan> livePlans = topPlan.getLiveDescendants();
 		
-		for (Node node : treeNodes) {
-			plan = node.getNodeGoalPlan();
+		for (Plan plan : livePlans) {
 			for (Input input : plan.getType().getDeclaredInputs()) {
 				setInputValue(getInputKeyValue(plan, input.getName()), inputValues.get(input.getName()));
+				plan.setSlotValue(input.getName(), inputValues.get(input.getName()));
 				System.out.println("Goal: " + plan.getGoal().getType() + " , Input Name: " + input.getName() + " , Input Value: " + inputValues.get(input.getName()));
 			}
 		}

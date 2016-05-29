@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.omg.CORBA.UserException;
@@ -132,8 +133,6 @@ public class AffectiveMotivationalCollaborationFramework {
 		// This is required before doing appraisals.
 		mentalProcesses.getCollaborationMechanism().updatePreconditionApplicability();
 		
-		mentalProcesses.getCollaborationMechanism().provideInputValues(recognizedGoal.getPlan());
-		
 		AppraisalVector appraisalVector = doAppraisal(turn, recognizedGoal);
 		
 		System.out.println("Human's Emotion: " + mentalProcesses.getToMMechanism().getAnticipatedHumanEmotion(recognizedGoal));
@@ -214,13 +213,6 @@ public class AffectiveMotivationalCollaborationFramework {
 			if (agentEventItem == null) return;
 			System.out.println("IMPORTANT >>>>>>>>>>>>>>>>>>" + agentEventItem.contributes.getGoal().getType());
 			for (Plan plan : collaboration.getPathToTop(agentEventItem.contributes)) {
-//				if (userEventItem.contributes.getGoal() instanceof Accept) {
-//					userEventItem = null;
-//					System.out.println(userEventItem);
-//					consolePlan = plan;
-//					System.out.println("-------------------->" + userEventItem.contributes.getRetryOf());
-//					return;
-//				}
 				System.out.println("User: " + userEventItem);
 				System.out.println(plan.getGoal().getType());
 				System.out.println(plan.getGoal().getType() + " >>>>>>>>>>> Responsible: " + collaboration.getResponsibleAgent(plan));
@@ -250,8 +242,11 @@ public class AffectiveMotivationalCollaborationFramework {
 			System.out.println(agentPlanDepth + " , " + userPlanDepth);
 		}
 		
-		if ((userEventItem != null) && (agentPlanDepth >= userPlanDepth)) {
-			return true;
+		if (userEventItem != null) { 
+			if (agentPlanDepth > userPlanDepth)
+				return true;
+			else if ((agentPlanDepth == userPlanDepth) && (plan.getParent().equals(userEventItem.contributes.getParent())))
+				return true;
 		}
 		return false;
 	}
@@ -273,7 +268,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		//ArrayList<Object> inputValues = new ArrayList<Object>(Arrays.asList(WeldingTool.MY_WELDING_TOOL));
 		Map<String, Object> inputValues = new HashMap<String, Object>();
 		inputValues.put("tool", WeldingTool.MY_WELDING_TOOL);
-		mentalProcesses.getCollaborationMechanism().initializeAllInputs(inputValues);
+		mentalProcesses.getCollaborationMechanism().initializeAllInputs(topPlan, inputValues);
 		
 		goAgent();
 		
