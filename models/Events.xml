@@ -20,8 +20,8 @@
        //return Packages.AffectiveMotivationalCollaborationFramework.process(emotionInstance);
     }
 
-		function goUser (valenceValue) {
-       return Packages.AffectiveMotivationalCollaborationFramework.goUser(valenceValue);
+		function goUser (valenceValue, postconditionStatus) {
+       return Packages.AffectiveMotivationalCollaborationFramework.goUser(valenceValue, postconditionStatus);
     }
 
 		function updatePreviousCollaborationStatus () {

@@ -15,7 +15,7 @@ import MetaInformation.Node;
 import MetaInformation.Turns;
 import MetaInformation.AMCAgent;
 import MetaInformation.AMCUser;
-import MetaInformation.AppraisalVector.WHOSE_APPRAISAL;
+import MetaInformation.AppraisalVector.APPRAISAL_TYPE;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskModel;
 import edu.wpi.cetask.Plan.Status;
@@ -307,21 +307,35 @@ public class Collaboration extends Mechanisms{
 		
 		return contributerGoalList;
 	}
-	
-	public WHOSE_APPRAISAL getWhoseAppraisal(Plan plan) {
+
+	public APPRAISAL_TYPE getAppraisalType(Plan plan) {
 		
 		switch (getResponsibleAgent(plan)) {
 			case SELF:
 			case BOTH:
-				return WHOSE_APPRAISAL.SELF;
-			case OTHER:
-				return WHOSE_APPRAISAL.HUMAN;
 			case UNKNOWN:
-				return WHOSE_APPRAISAL.UNKNOWN;
+				return APPRAISAL_TYPE.APPRAISAL;
+			case OTHER:
+				return APPRAISAL_TYPE.REVERSE_APPRAISAL;
 			default:
 				throw new IllegalArgumentException("Illegal Agent Type: " + getResponsibleAgent(plan));
 		}
 	}
+	
+//	public WHOSE_APPRAISAL getWhoseAppraisal(Plan plan) {
+//		
+//		switch (getResponsibleAgent(plan)) {
+//			case SELF:
+//			case BOTH:
+//				return WHOSE_APPRAISAL.SELF;
+//			case OTHER:
+//				return WHOSE_APPRAISAL.HUMAN;
+//			case UNKNOWN:
+//				return WHOSE_APPRAISAL.UNKNOWN;
+//			default:
+//				throw new IllegalArgumentException("Illegal Agent Type: " + getResponsibleAgent(plan));
+//		}
+//	}
 	
 	public AGENT getResponsibleAgent(Plan plan) {
 		

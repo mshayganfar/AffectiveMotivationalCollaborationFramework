@@ -186,12 +186,12 @@ public class Coping {
 	}
 	
 	// The same Planning used in Disco.
-	public void doPlanning(Goal goal, boolean human) {
+	public void doPlanning(Goal goal, boolean human, boolean postconditionStatus) {
 		
 		System.out.println("COPING STRATEGY: Planning");
 		
 //		if ((goal.getPlan().getGoal().getExternal() == null) || (!goal.getPlan().getGoal().getExternal()))
-			discoActionsWrapper.executeTask(goal, human);
+		discoActionsWrapper.executeTask(goal, human, postconditionStatus);
 	}
 	
 	public void doPlanning() {

@@ -63,7 +63,7 @@
       <step name="panelattachment" task ="CheckPanelAttachment"/>
       <step name="wirings" task ="CheckWirings"/>
 
-      <binding slot="$panelattachment.external" value="false"/>
+      <binding slot="$panelattachment.external" value="true"/>
       <binding slot="$wirings.external" value="false"/>
     </subtasks>
   </task>
@@ -76,9 +76,9 @@
       <step name="cascadingcells" task ="CheckCascadingCells"/>
       <step name="outputcurrent" task ="CheckOutputCurrent"/>
 
-      <binding slot="$controlswitch.external" value="false"/>
+      <binding slot="$controlswitch.external" value="true"/>
       <binding slot="$cascadingcells.external" value="false"/>
-      <binding slot="$outputcurrent.external" value="false"/>
+      <binding slot="$outputcurrent.external" value="true"/>
     </subtasks>
   </task>
 

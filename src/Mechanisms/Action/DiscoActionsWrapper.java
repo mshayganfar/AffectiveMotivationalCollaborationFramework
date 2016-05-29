@@ -134,11 +134,12 @@ public class DiscoActionsWrapper {
 			throw new IllegalArgumentException("Primitives does not need recepies!");
 	}
 
-	public void executeTask(Goal goal, boolean actor) {
+	public void executeTask(Goal goal, boolean actor, boolean postconditionStatus) {
 		
 		Plan plan = goal.getPlan();
 		
 		if (plan.isPrimitive()) {
+			plan.getGoal().setSuccess(postconditionStatus);
 			collaboration.getDisco().getInteraction().occurred(actor, plan.getGoal(), plan);
 		} 
 		else

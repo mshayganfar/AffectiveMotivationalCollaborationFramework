@@ -7,6 +7,7 @@ import MentalState.Goal;
 import MentalState.Intention;
 import MetaInformation.MentalProcesses;
 import MetaInformation.Turns;
+import MetaInformation.AppraisalVector.APPRAISAL_TYPE;
 import MetaInformation.CopingActivation.COPING_STRATEGY;
 
 public class Action extends Mechanisms{
@@ -29,7 +30,7 @@ public class Action extends Mechanisms{
 		this.tom    	     = mentalProcesses.getToMMechanism();
 	}
 	
-	public void act(Goal goal) {
+	public void act(Goal goal, boolean postconditionStatus) {
 		
 		System.out.println("Agent chose the following coping strtegies in turn: " + Turns.getInstance().getTurnNumber());
 		
@@ -39,7 +40,14 @@ public class Action extends Mechanisms{
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.ACTIVE_COPING))
 				coping.doActiveCoping(goal);
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.PLANNING))
-				coping.doPlanning(goal, false);
+				if (goal.getPlan().getGoal().getSuccess() == null) {
+					if (goal.getPlan().getGoal().getExternal() == null)
+						coping.doPlanning(goal, false, postconditionStatus);
+					else if (goal.getPlan().getGoal().getExternal())
+						coping.doPlanning(goal, true, postconditionStatus);
+					else if (!goal.getPlan().getGoal().getExternal())
+						coping.doPlanning(goal, false, postconditionStatus);
+				}
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.WISHFUL_THINKING))
 				coping.doWishfulThinking(goal);
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.MENTAL_DISENGAGEMENT))
@@ -53,7 +61,7 @@ public class Action extends Mechanisms{
 	
 	public void acknowledgeEmotion(Goal eventGoal) {
 		
-		switch(tom.getAnticipatedHumanEmotion(eventGoal)) {
+		switch(tom.getAnticipatedHumanEmotion(tom.getReverseAppraisalValues(eventGoal))) {
 			case ANGER:
 				discoActionsWrapper.saySomethingAboutTask(false, "I see you are angry!");
 				break;

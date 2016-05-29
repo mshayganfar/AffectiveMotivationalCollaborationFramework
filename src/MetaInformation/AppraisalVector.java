@@ -9,11 +9,13 @@ import MentalState.Goal;
 
 public class AppraisalVector {
 	
-	public enum WHOSE_APPRAISAL{SELF, HUMAN, UNKNOWN};
+//	public enum WHOSE_APPRAISAL{SELF, HUMAN, UNKNOWN};
+	public enum APPRAISAL_TYPE{APPRAISAL, REVERSE_APPRAISAL, REAPPRAISAL};
 	public enum EMOTION_INSTANCE{POSITIVE_SURPRISE, JOY, GRATITUDE, NEUTRAL, ANGER, WORRY, FRUSTRATION, NEGATIVE_SURPRISE, GUILT, SADNESS};
 	
 	private MentalProcesses mentalProcesses;
-	private WHOSE_APPRAISAL whoseAppraisal;
+//	private WHOSE_APPRAISAL whoseAppraisal;
+	private APPRAISAL_TYPE appraisalType;
 	private int turnNumber;
 	
 	private RELEVANCE relevanceValue;
@@ -23,11 +25,12 @@ public class AppraisalVector {
 	
 	private Goal goal;
 	
-	public AppraisalVector(MentalProcesses mentalProcesses, Goal eventGoal, WHOSE_APPRAISAL whoseAppraisal) {
+	public AppraisalVector(MentalProcesses mentalProcesses, Goal eventGoal, APPRAISAL_TYPE appraisalType) {
 		
 		this.mentalProcesses = mentalProcesses;
 		
-		this.whoseAppraisal = whoseAppraisal;
+//		this.whoseAppraisal = whoseAppraisal;
+		this.appraisalType  = appraisalType;
 		this.turnNumber     = Turns.getInstance().getTurnNumber();
 		
 		this.relevanceValue       = RELEVANCE.UNKNOWN;
@@ -38,11 +41,12 @@ public class AppraisalVector {
 		this.goal = eventGoal;
 	}
 	
-	public AppraisalVector(MentalProcesses mentalProcesses, Goal eventGoal, int turnNumber, WHOSE_APPRAISAL whoseAppraisal, RELEVANCE relevance, DESIRABILITY desirability, EXPECTEDNESS expectedness, CONTROLLABILITY controllability) {
+	public AppraisalVector(MentalProcesses mentalProcesses, Goal eventGoal, int turnNumber, APPRAISAL_TYPE appraisalType, RELEVANCE relevance, DESIRABILITY desirability, EXPECTEDNESS expectedness, CONTROLLABILITY controllability) {
 		
 		this.mentalProcesses = mentalProcesses;
 		
-		this.whoseAppraisal = whoseAppraisal;
+//		this.whoseAppraisal = whoseAppraisal;
+		this.appraisalType  = appraisalType;
 		this.turnNumber     = turnNumber;
 		
 		this.relevanceValue       = relevance;
@@ -69,9 +73,13 @@ public class AppraisalVector {
 		this.controllabilityValue = controllability;
 	}
 	
-	public void setWhoseAppraisalValue(WHOSE_APPRAISAL whoseAppraisal) {
-		this.whoseAppraisal = whoseAppraisal;
+	public void setAppraisalType(APPRAISAL_TYPE appraisalType) {
+		this.appraisalType = appraisalType;
 	}
+	
+//	public void setWhoseAppraisalValue(WHOSE_APPRAISAL whoseAppraisal) {
+//		this.whoseAppraisal = whoseAppraisal;
+//	}
 	
 	public void setTurnNumber(int turnNumber) {
 		this.turnNumber = turnNumber;
@@ -93,9 +101,13 @@ public class AppraisalVector {
 		return this.controllabilityValue;
 	}
 	
-	public WHOSE_APPRAISAL getWhoseAppraisalValue() {
-		return this.whoseAppraisal;
+	public APPRAISAL_TYPE getAppraisalType() {
+		return this.appraisalType;
 	}
+	
+//	public WHOSE_APPRAISAL getWhoseAppraisalValue() {
+//		return this.whoseAppraisal;
+//	}
 	
 	public int getTurnNumber() {
 		return this.turnNumber;
@@ -109,21 +121,21 @@ public class AppraisalVector {
 		return this;
 	}
 	
-	public boolean isEmotionNeutral(Goal eventGoal, WHOSE_APPRAISAL whoseAppraisal) {
-		if ((this.desirabilityValue.equals(DESIRABILITY.NEUTRAL)) &&
-				(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.INPROGRESS)))
+	public boolean isEmotionNeutral(Goal eventGoal, APPRAISAL_TYPE appraisalType) {
+		if (this.desirabilityValue.equals(DESIRABILITY.NEUTRAL)) 
+//				&& (mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.INPROGRESS)))
 			return true;
 		else
 			return false;
 	}
 	
-	public boolean isEmotionJoy(Goal eventGoal, WHOSE_APPRAISAL whoseAppraisal) {
+	public boolean isEmotionJoy(Goal eventGoal, APPRAISAL_TYPE appraisalType) {
 		if (this.relevanceValue.equals(RELEVANCE.RELEVANT))
 			if ((this.desirabilityValue.equals(DESIRABILITY.DESIRABLE)) ||		
 				(this.desirabilityValue.equals(DESIRABILITY.HIGH_DESIRABLE)))
 				if ((this.expectednessValue.equals(EXPECTEDNESS.EXPECTED)) ||
 					(this.expectednessValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
-					if (whoseAppraisal.equals(WHOSE_APPRAISAL.HUMAN)) {
+					if (appraisalType.equals(APPRAISAL_TYPE.REVERSE_APPRAISAL)) {
 						if (mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.HUMAN_ACHIEVED))
 							return true;
 						else
@@ -143,13 +155,13 @@ public class AppraisalVector {
 			return false;
 	}
 	
-	public boolean isEmotionGratitude(Goal eventGoal, WHOSE_APPRAISAL whoseAppraisal) {
+	public boolean isEmotionGratitude(Goal eventGoal, APPRAISAL_TYPE appraisalType) {
 		if (this.relevanceValue.equals(RELEVANCE.RELEVANT))
 			if ((this.desirabilityValue.equals(DESIRABILITY.DESIRABLE)) ||		
 				(this.desirabilityValue.equals(DESIRABILITY.HIGH_DESIRABLE)))
 				if ((this.expectednessValue.equals(EXPECTEDNESS.EXPECTED)) ||
 					(this.expectednessValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
-					if (whoseAppraisal.equals(WHOSE_APPRAISAL.HUMAN)) {
+					if (appraisalType.equals(APPRAISAL_TYPE.REVERSE_APPRAISAL)) {
 						if ((mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_ACCEPTED)) ||
 								(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_ACHIEVED)))
 							return true;
@@ -171,14 +183,14 @@ public class AppraisalVector {
 			return false;
 	}
 	
-	public boolean isEmotionSadness(Goal eventGoal, WHOSE_APPRAISAL whoseAppraisal) {
+	public boolean isEmotionSadness(Goal eventGoal, APPRAISAL_TYPE appraisalType) {
 		if (this.relevanceValue.equals(RELEVANCE.RELEVANT))
 			if ((this.desirabilityValue.equals(DESIRABILITY.UNDESIRABLE)) ||
 				(this.desirabilityValue.equals(DESIRABILITY.HIGH_UNDESIRABLE)))
 				if ((this.expectednessValue.equals(EXPECTEDNESS.EXPECTED)) ||
 					(this.expectednessValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
 					if (this.controllabilityValue.equals(CONTROLLABILITY.UNCONTROLLABLE))
-						if (whoseAppraisal.equals(WHOSE_APPRAISAL.HUMAN)) {
+						if (appraisalType.equals(APPRAISAL_TYPE.REVERSE_APPRAISAL)) {
 							if (mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.HUMAN_FAILED))
 								return true;
 							else
@@ -200,12 +212,12 @@ public class AppraisalVector {
 			return false;
 	}
 	
-	public boolean isEmotionPositiveSurprise(Goal eventGoal, WHOSE_APPRAISAL whoseAppraisal) {
+	public boolean isEmotionPositiveSurprise(Goal eventGoal, APPRAISAL_TYPE appraisalType) {
 		if (this.relevanceValue.equals(RELEVANCE.RELEVANT))
 			if (this.expectednessValue.equals(EXPECTEDNESS.MOST_UNEXPECTED))
 				if ((this.desirabilityValue.equals(DESIRABILITY.DESIRABLE)) ||
 					(this.desirabilityValue.equals(DESIRABILITY.HIGH_DESIRABLE)))
-					if (whoseAppraisal.equals(WHOSE_APPRAISAL.HUMAN)) {
+					if (appraisalType.equals(APPRAISAL_TYPE.REVERSE_APPRAISAL)) {
 						if ((mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_PROPOSED)) ||
 							(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_ACCEPTED)) ||
 							(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_ACHIEVED)))
@@ -229,13 +241,13 @@ public class AppraisalVector {
 			return false;
 	}
 	
-	public boolean isEmotionAnger(Goal eventGoal, WHOSE_APPRAISAL whoseAppraisal) {
+	public boolean isEmotionAnger(Goal eventGoal, APPRAISAL_TYPE appraisalType) {
 		if (this.relevanceValue.equals(RELEVANCE.RELEVANT))
 			if (this.desirabilityValue.equals(DESIRABILITY.HIGH_UNDESIRABLE))
 				if ((this.expectednessValue.equals(EXPECTEDNESS.EXPECTED)) ||
 					(this.expectednessValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
 					if (this.controllabilityValue.equals(CONTROLLABILITY.UNCONTROLLABLE))
-						if (whoseAppraisal.equals(WHOSE_APPRAISAL.HUMAN)) {
+						if (appraisalType.equals(APPRAISAL_TYPE.REVERSE_APPRAISAL)) {
 							if ((mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_REJECTED)) ||
 								(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_FAILED)))
 								return true;
@@ -259,13 +271,13 @@ public class AppraisalVector {
 			return false;
 	}
 	
-	public boolean isEmotionWorry(Goal eventGoal, WHOSE_APPRAISAL whoseAppraisal) {
+	public boolean isEmotionWorry(Goal eventGoal, APPRAISAL_TYPE appraisalType) {
 		if (this.relevanceValue.equals(RELEVANCE.RELEVANT))
 			if ((this.desirabilityValue.equals(DESIRABILITY.UNDESIRABLE)) ||
 				(this.desirabilityValue.equals(DESIRABILITY.HIGH_UNDESIRABLE)))
 				if (this.controllabilityValue.equals(CONTROLLABILITY.UNCONTROLLABLE))
 					if (this.expectednessValue.equals(EXPECTEDNESS.UNEXPECTED))
-						if (whoseAppraisal.equals(WHOSE_APPRAISAL.HUMAN)) {
+						if (appraisalType.equals(APPRAISAL_TYPE.REVERSE_APPRAISAL)) {
 							if ((mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_PROPOSED)) ||
 								(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_REJECTED)) ||
 								(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.HUMAN_FAILED)) ||
@@ -293,13 +305,13 @@ public class AppraisalVector {
 			return false;
 	}
 	
-	public boolean isEmotionFrustration(Goal eventGoal, WHOSE_APPRAISAL whoseAppraisal) {
+	public boolean isEmotionFrustration(Goal eventGoal, APPRAISAL_TYPE appraisalType) {
 		if (this.relevanceValue.equals(RELEVANCE.RELEVANT))
 			if (this.desirabilityValue.equals(DESIRABILITY.UNDESIRABLE))
 				if (this.controllabilityValue.equals(CONTROLLABILITY.UNCONTROLLABLE))
 					if ((this.expectednessValue.equals(EXPECTEDNESS.EXPECTED)) ||
 						(this.expectednessValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
-						if (whoseAppraisal.equals(WHOSE_APPRAISAL.HUMAN)) {
+						if (appraisalType.equals(APPRAISAL_TYPE.REVERSE_APPRAISAL)) {
 							if ((mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_PROPOSED)) ||
 								(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_FAILED)))
 								return true;
@@ -323,12 +335,12 @@ public class AppraisalVector {
 			return false;
 	}
 	
-	public boolean isEmotionNegativeSurprise(Goal eventGoal, WHOSE_APPRAISAL whoseAppraisal) {
+	public boolean isEmotionNegativeSurprise(Goal eventGoal, APPRAISAL_TYPE appraisalType) {
 		if (this.relevanceValue.equals(RELEVANCE.RELEVANT))
 			if (this.expectednessValue.equals(EXPECTEDNESS.MOST_UNEXPECTED))
 				if ((this.desirabilityValue.equals(DESIRABILITY.UNDESIRABLE)) ||
 					(this.desirabilityValue.equals(DESIRABILITY.HIGH_UNDESIRABLE)))
-					if (whoseAppraisal.equals(WHOSE_APPRAISAL.HUMAN)) {
+					if (appraisalType.equals(APPRAISAL_TYPE.REVERSE_APPRAISAL)) {
 						if ((mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_PROPOSED)) ||
 							(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_REJECTED)) ||
 							(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_FAILED)))
@@ -352,7 +364,7 @@ public class AppraisalVector {
 			return false;
 	}
 	
-	public boolean isEmotionGuilt(Goal eventGoal, WHOSE_APPRAISAL whoseAppraisal) {
+	public boolean isEmotionGuilt(Goal eventGoal, APPRAISAL_TYPE appraisalType) {
 		if (this.relevanceValue.equals(RELEVANCE.RELEVANT))
 			if ((this.desirabilityValue.equals(DESIRABILITY.UNDESIRABLE)) ||
 				(this.desirabilityValue.equals(DESIRABILITY.HIGH_UNDESIRABLE)))
@@ -360,7 +372,7 @@ public class AppraisalVector {
 					(this.controllabilityValue.equals(CONTROLLABILITY.HIGH_CONTROLLABLE)))
 					if ((this.expectednessValue.equals(EXPECTEDNESS.EXPECTED)) ||
 						(this.expectednessValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
-						if (whoseAppraisal.equals(WHOSE_APPRAISAL.HUMAN)) {
+						if (appraisalType.equals(APPRAISAL_TYPE.REVERSE_APPRAISAL)) {
 							if (mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.HUMAN_FAILED))
 								return true;
 							else
@@ -384,25 +396,25 @@ public class AppraisalVector {
 	
 	public EMOTION_INSTANCE getEmotionInstance() {
 		
-		if (isEmotionJoy(goal, whoseAppraisal))
+		if (isEmotionJoy(goal, appraisalType))
 			return EMOTION_INSTANCE.JOY;
-		else if (isEmotionGratitude(goal, whoseAppraisal))
+		else if (isEmotionGratitude(goal, appraisalType))
 			return EMOTION_INSTANCE.GRATITUDE;
-		else if (isEmotionSadness(goal, whoseAppraisal))
+		else if (isEmotionSadness(goal, appraisalType))
 			return EMOTION_INSTANCE.SADNESS;
-		else if (isEmotionPositiveSurprise(goal, whoseAppraisal))
+		else if (isEmotionPositiveSurprise(goal, appraisalType))
 			return EMOTION_INSTANCE.POSITIVE_SURPRISE;
-		else if (isEmotionNegativeSurprise(goal, whoseAppraisal))
+		else if (isEmotionNegativeSurprise(goal, appraisalType))
 			return EMOTION_INSTANCE.NEGATIVE_SURPRISE;
-		else if (isEmotionAnger(goal, whoseAppraisal))
+		else if (isEmotionAnger(goal, appraisalType))
 			return EMOTION_INSTANCE.ANGER;
-		else if (isEmotionWorry(goal, whoseAppraisal))
+		else if (isEmotionWorry(goal, appraisalType))
 			return EMOTION_INSTANCE.WORRY;
-		else if (isEmotionFrustration(goal, whoseAppraisal))
+		else if (isEmotionFrustration(goal, appraisalType))
 			return EMOTION_INSTANCE.FRUSTRATION;
-		else if (isEmotionGuilt(goal, whoseAppraisal))
+		else if (isEmotionGuilt(goal, appraisalType))
 			return EMOTION_INSTANCE.GUILT;
-		else if (isEmotionNeutral(goal, whoseAppraisal))
+		else if (isEmotionNeutral(goal, appraisalType))
 			return EMOTION_INSTANCE.NEUTRAL;
 		else
 			throw new IllegalStateException("No matching emotion!");

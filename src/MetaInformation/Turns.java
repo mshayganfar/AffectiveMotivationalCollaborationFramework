@@ -7,8 +7,8 @@ import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
 import Mechanisms.Appraisal.Relevance.RELEVANCE;
 import MentalState.Goal;
+import MetaInformation.AppraisalVector.APPRAISAL_TYPE;
 import MetaInformation.AppraisalVector.EMOTION_INSTANCE;
-import MetaInformation.AppraisalVector.WHOSE_APPRAISAL;
 
 public class Turns {
 	
@@ -26,9 +26,9 @@ public class Turns {
 		return turn;
 	}
 
-	public static void setTurnAppraisals(MentalProcesses mentalProcesses, Goal eventGoal, WHOSE_APPRAISAL whoseAppraisal, RELEVANCE relevance, DESIRABILITY desirability, CONTROLLABILITY controllability, EXPECTEDNESS expectedness) {
+	public static void setTurnAppraisals(MentalProcesses mentalProcesses, Goal eventGoal, APPRAISAL_TYPE appraisalType, RELEVANCE relevance, DESIRABILITY desirability, CONTROLLABILITY controllability, EXPECTEDNESS expectedness) {
 		
-		appraisalVectors.add(new AppraisalVector(mentalProcesses, eventGoal, getTurnNumber(), whoseAppraisal, relevance, desirability, expectedness, controllability));
+		appraisalVectors.add(new AppraisalVector(mentalProcesses, eventGoal, getTurnNumber(), appraisalType, relevance, desirability, expectedness, controllability));
 	}
 	
 	public static void updateTurn() {
@@ -61,7 +61,7 @@ public class Turns {
 		
 		for(AppraisalVector vector : appraisalVectors) {
 			if (vector.getGoal().getLabel().equals(goal.getLabel()))
-				if (vector.getWhoseAppraisalValue().equals(WHOSE_APPRAISAL.HUMAN))
+				if (vector.getAppraisalType().equals(APPRAISAL_TYPE.REVERSE_APPRAISAL))
 					return vector.getEmotionInstance();
 		}
 		return null;
@@ -76,13 +76,13 @@ public class Turns {
 		return null;
 	}
 	
-	public ArrayList<AppraisalVector> getTurnAppraisalVectors(int turnNumber, WHOSE_APPRAISAL whoseAppraisal) {
+	public ArrayList<AppraisalVector> getTurnAppraisalVectors(int turnNumber) {
 		
 		ArrayList<AppraisalVector> turnAppraisalVectors = new ArrayList<AppraisalVector>();
 		
 		for(AppraisalVector vector : appraisalVectors)
 			if (vector.getTurnNumber() == turnNumber)
-				if (vector.getWhoseAppraisalValue().equals(whoseAppraisal))
+				if (!vector.getAppraisalType().equals(APPRAISAL_TYPE.REVERSE_APPRAISAL))
 					turnAppraisalVectors.add(vector);
 		
 		return (turnAppraisalVectors.size() == 0) ? null : turnAppraisalVectors;

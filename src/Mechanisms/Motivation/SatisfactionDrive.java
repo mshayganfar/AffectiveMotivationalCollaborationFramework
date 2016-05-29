@@ -3,7 +3,6 @@ package Mechanisms.Motivation;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import MetaInformation.AppraisalVector.WHOSE_APPRAISAL;
 import MetaInformation.AppraisalVector;
 import MetaInformation.Turns;
 
@@ -54,16 +53,17 @@ public class SatisfactionDrive {
 	
 	private ArrayList<Double> getDesirabilityValues() {
 		
+		ArrayList<AppraisalVector> turnAppraisalVectors;
 		ArrayList<Double> desirabilityValues = new ArrayList<Double>();
 		
 		Turns currentTurn = Turns.getInstance();
 		
 		for (int i = 1 ; i <= currentTurn.getTurnNumber() ; i++) {
-			ArrayList<AppraisalVector> turnAppraisalVectors = currentTurn.getTurnAppraisalVectors(i, WHOSE_APPRAISAL.SELF);
+			turnAppraisalVectors = currentTurn.getTurnAppraisalVectors(i);
 			if (turnAppraisalVectors != null)
 				desirabilityValues.add(currentTurn.getTurnOverallDesirabilityValue(turnAppraisalVectors));
 			else
-				return null;
+				throw new IllegalArgumentException("Illegal Absence of Appraisal Vector!");
 			
 			turnAppraisalVectors.clear();
 		}
@@ -76,17 +76,12 @@ public class SatisfactionDrive {
 		double satisfactionValue = 0.0;
 		
 		ArrayList<Double> weights = getDesirabilityWeights(Turns.getInstance().getTurnNumber());
+		ArrayList<Double> desirabilityValues = getDesirabilityValues();
 		
-		if (getDesirabilityValues() != null) {
-			ArrayList<Double> desirabilityValues = getDesirabilityValues();
-			
-			for (int i = 0 ; i < Turns.getInstance().getTurnNumber() ; i++)
-				satisfactionValue += weights.get(i) * desirabilityValues.get(i);
-			
-			return satisfactionValue;
-		}
-		else
-			return prevSatisfactionValue;
+		for (int i = 0 ; i < Turns.getInstance().getTurnNumber() ; i++)
+			satisfactionValue += weights.get(i) * desirabilityValues.get(i);
+		
+		return satisfactionValue;
 	}
 	
 	public double getSatisfactionDriveDelta() {

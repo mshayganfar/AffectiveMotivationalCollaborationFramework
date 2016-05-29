@@ -1,10 +1,5 @@
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import org.omg.CORBA.UserException;
 
 import Mechanisms.Mechanisms.AGENT;
 import Mechanisms.Action.DiscoActionsWrapper;
@@ -14,6 +9,7 @@ import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
 import Mechanisms.Appraisal.Relevance.RELEVANCE;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.GoalManagement;
+import Mechanisms.ToM.ToM;
 import MentalState.Belief;
 import MentalState.Goal;
 import MentalState.Motive;
@@ -23,17 +19,14 @@ import MetaInformation.AppraisalVector;
 import MetaInformation.MentalProcesses;
 import MetaInformation.Turns;
 import MetaInformation.World;
-import MetaInformation.AppraisalVector.WHOSE_APPRAISAL;
+import MetaInformation.AppraisalVector.APPRAISAL_TYPE;
 import MetaInformation.World.WeldingTool;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.Plan.Status;
 import edu.wpi.cetask.Task;
 import edu.wpi.cetask.TaskModel;
 import edu.wpi.disco.Agenda.Plugin.Item;
-import edu.wpi.disco.Agent;
-import edu.wpi.disco.Disco;
 import edu.wpi.disco.Interaction;
-import edu.wpi.disco.User;
 import edu.wpi.disco.lang.Accept;
 
 public class AffectiveMotivationalCollaborationFramework {
@@ -48,6 +41,8 @@ public class AffectiveMotivationalCollaborationFramework {
 	private static MentalProcesses mentalProcesses;
 	private static GoalManagement goalManagement;
 //	private static SatisfactionDrive satisfactionDrive = new SatisfactionDrive();
+	
+	private static Map<String, Object> inputValues;
 	
 	private static Goal updateGoal(Plan plan) {
 
@@ -71,9 +66,9 @@ public class AffectiveMotivationalCollaborationFramework {
 //		System.out.println("Previous Focus: " + collaboration.getPreviousFocus().getType());
 //	}
 	
-	private static AppraisalVector doAppraisal(Turns turn, Goal recognizedGoal) {
+	private static AppraisalVector doAppraisal(Turns turn, Goal recognizedGoal, APPRAISAL_TYPE appraisalType) {
 		
-		AppraisalVector appraisalVector = new AppraisalVector(mentalProcesses, recognizedGoal, WHOSE_APPRAISAL.SELF);
+		AppraisalVector appraisalVector = new AppraisalVector(mentalProcesses, recognizedGoal, appraisalType);
 		
 		RELEVANCE relevanceValue = mentalProcesses.getRelevanceProcess().isEventRelevant(recognizedGoal);
 		appraisalVector.setRelevanceValue(relevanceValue);
@@ -85,12 +80,12 @@ public class AffectiveMotivationalCollaborationFramework {
 		appraisalVector.setExpectednessValue(expectednessValue);
 		
 //		mentalProcesses.getCollaborationMechanism().getWhoseAppraisal(recognizedGoal.getPlan())
-		turn.setTurnAppraisals(mentalProcesses, recognizedGoal, WHOSE_APPRAISAL.SELF, 
+		turn.setTurnAppraisals(mentalProcesses, recognizedGoal, appraisalType,
 				appraisalVector.getRelevanceSymbolicValue(), appraisalVector.getDesirabilitySymbolicValue(), appraisalVector.getControllabilitySymbolicValue(), 
 				appraisalVector.getExpectednessSymbolicValue());
 		
 		for(AppraisalVector vector : Turns.getInstance().getCurrentAppraisalVectors()) {
-			System.out.println(vector.getTurnNumber() + ", " + vector.getWhoseAppraisalValue() + ", " + vector.getRelevanceSymbolicValue() + ", " + 
+			System.out.println(vector.getTurnNumber() + ", " + vector.getAppraisalType() + ", " + vector.getRelevanceSymbolicValue() + ", " + 
 					vector.getDesirabilitySymbolicValue() + ", " + vector.getExpectednessSymbolicValue() + ", " + 
 					vector.getControllabilitySymbolicValue());
 			System.out.println("EMOTION INSTANCE: " + vector.getEmotionInstance());
@@ -107,8 +102,8 @@ public class AffectiveMotivationalCollaborationFramework {
 		mentalProcesses.getCopingMechanism().formIntentions(goal);
 	}
 	
-	private static void runAction(Goal goal) {
-		mentalProcesses.getActionMechanism().act(goal);
+	private static void runAction(Goal goal, boolean postconditionStatus) {
+		mentalProcesses.getActionMechanism().act(goal, postconditionStatus);
 	}
 	
 	private static void initializeFramework(Goal recognizedGoal) {
@@ -122,28 +117,37 @@ public class AffectiveMotivationalCollaborationFramework {
 	}
 	
 	public static void processAgent(Plan eventPlan, double valenceValue) {
+		
 		Turns turn = Turns.getInstance();
+		
+		ToM tom = mentalProcesses.getToMMechanism();
 		Goal recognizedGoal = new Goal(mentalProcesses, eventPlan);
 		
 		initializeFramework(recognizedGoal);
 		
+		// This is required before doing reverse appraisals.
 		mentalProcesses.getPerceptionMechanism().setEmotionValence(valenceValue);
-//		mentalProcesses.getPerceptionMechanism().setEmotionValence(Double.parseDouble(valenceValue));
 		
 		// This is required before doing appraisals.
 		mentalProcesses.getCollaborationMechanism().updatePreconditionApplicability();
 		
-		AppraisalVector appraisalVector = doAppraisal(turn, recognizedGoal);
+		AppraisalVector appraisalVector = doAppraisal(turn, recognizedGoal, APPRAISAL_TYPE.APPRAISAL);
 		
-		System.out.println("Human's Emotion: " + mentalProcesses.getToMMechanism().getAnticipatedHumanEmotion(recognizedGoal));
+		tom.doReverseAppraisal(recognizedGoal);
+		System.out.println("Human's Emotion (before coping): " + tom.getAnticipatedHumanEmotion(tom.getReverseAppraisalValues(recognizedGoal)));
 		
 		runMotivations(recognizedGoal);
 		
 		runCoping(recognizedGoal);
 //		recognizedGoal.toSting();
 		
-		runAction(recognizedGoal);
+		runAction(recognizedGoal, true);
 //		goalManagement.computeCostValue(recognizedGoal);
+		
+		tom.doReverseAppraisal(recognizedGoal);
+		System.out.println("Human's Emotion (after coping): " + tom.getAnticipatedHumanEmotion(tom.getReverseAppraisalValues(recognizedGoal)));
+		
+		appraisalVector = doAppraisal(turn, recognizedGoal, APPRAISAL_TYPE.REAPPRAISAL);
 		
 		recognizedGoal.setGoalStatus(mentalProcesses.getCollaborationMechanism().getGoalStatus(recognizedGoal.getPlan()));
 		
@@ -151,41 +155,52 @@ public class AffectiveMotivationalCollaborationFramework {
 		turn.updateTurn();
 	}
 	
-	public static void processUser(Plan eventPlan, double valenceValue) {
+	public static void processUser(Plan eventPlan, double valenceValue, Boolean postconditionStatus) {
+		
 		Turns turn = Turns.getInstance();
+		
+		ToM tom = mentalProcesses.getToMMechanism();
 		Goal recognizedGoal = new Goal(mentalProcesses, eventPlan);
 		
 		initializeFramework(recognizedGoal);
 		
 		DiscoActionsWrapper discoWrapper = new DiscoActionsWrapper(mentalProcesses);
 		
-		discoWrapper.executeTask(recognizedGoal, true);
+		discoWrapper.executeTask(recognizedGoal, true, postconditionStatus);
 		
-//		mentalProcesses.getPerceptionMechanism().setEmotionValence(valenceValue);
-//		
-//		mentalProcesses.getCollaborationMechanism().updatePreconditionApplicability();
-//		
-//		mentalProcesses.getCollaborationMechanism().provideInputValues(recognizedGoal.getPlan());
-//		
-//		AppraisalVector appraisalVector = doAppraisal(turn, recognizedGoal);
-//		
-//		System.out.println("Human's Emotion: " + mentalProcesses.getToMMechanism().getAnticipatedHumanEmotion(recognizedGoal));
-//		
-//		runMotivations(recognizedGoal);
-//		
-//		runCoping(recognizedGoal);
-//		
-//		runAction(recognizedGoal);
-//		
-//		recognizedGoal.setGoalStatus(mentalProcesses.getCollaborationMechanism().getGoalStatus(recognizedGoal.getPlan()));
+		mentalProcesses.getPerceptionMechanism().setEmotionValence(valenceValue);
+		
+		mentalProcesses.getCollaborationMechanism().updatePreconditionApplicability();
+		
+		AppraisalVector appraisalVector = doAppraisal(turn, recognizedGoal, APPRAISAL_TYPE.APPRAISAL);
+		
+		if (postconditionStatus == null)
+			mentalProcesses.getPerceptionMechanism().setEmotionValence(0.0);
+		else if (postconditionStatus)
+			mentalProcesses.getPerceptionMechanism().setEmotionValence(0.4);
+		else
+			mentalProcesses.getPerceptionMechanism().setEmotionValence(-0.4);
+		tom.doReverseAppraisal(recognizedGoal);
+		System.out.println("Human's Emotion (before coping): " + tom.getAnticipatedHumanEmotion(tom.getReverseAppraisalValues(recognizedGoal)));
+		
+		runMotivations(recognizedGoal);
+		
+		runCoping(recognizedGoal);
+		
+		runAction(recognizedGoal, postconditionStatus);
+		
+		tom.doReverseAppraisal(recognizedGoal);
+		System.out.println("Human's Emotion (after coping): " + tom.getAnticipatedHumanEmotion(tom.getReverseAppraisalValues(recognizedGoal)));
 		
 		turn.updateTurn();
 	}
 	
-	public static void goUser(String valenceValue) {
+	public static void goUser(String valenceValue, String postconditionStatus) {
 		
-		mentalProcesses.getCollaborationMechanism().setActualFocus(userEventItem.contributes);
-		processUser(userEventItem.contributes, Double.parseDouble(valenceValue));
+		if (userEventItem != null) {
+			mentalProcesses.getCollaborationMechanism().setActualFocus(userEventItem.contributes);
+			processUser(userEventItem.contributes, Double.parseDouble(valenceValue), Boolean.parseBoolean(postconditionStatus));
+		}
 		goAgent();
 	}
 	
@@ -206,19 +221,24 @@ public class AffectiveMotivationalCollaborationFramework {
 				discoWrapper.acceptProposedTask(userEventItem.contributes, true);
 				userEventItem = user.generateBest(interaction);
 			}
+			else
+				collaboration.initializeAllInputs(userEventItem.contributes, inputValues);
 		}
-			
+		
 		while (!topPlan.getStatus().equals(Status.DONE)) {
 			agentEventItem = agent.generateBest(interaction);
 			if (agentEventItem == null) return;
+			collaboration.initializeAllInputs(agentEventItem.contributes, inputValues);
 			System.out.println("IMPORTANT >>>>>>>>>>>>>>>>>>" + agentEventItem.contributes.getGoal().getType());
 			for (Plan plan : collaboration.getPathToTop(agentEventItem.contributes)) {
 				System.out.println("User: " + userEventItem);
 				System.out.println(plan.getGoal().getType());
 				System.out.println(plan.getGoal().getType() + " >>>>>>>>>>> Responsible: " + collaboration.getResponsibleAgent(plan));
 				
-				if (isUsersTurn(plan))
+				if (isUsersTurn(plan)) {
+					System.out.println("Waiting for you: ");
 					return;
+				}
 				
 				collaboration.setActualFocus(plan);
 				processAgent(plan, 0.0);
@@ -266,7 +286,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		// Input values should be manually added to this list in order!
 		//ArrayList<Object> inputValues = new ArrayList<Object>(Arrays.asList(WeldingTool.MY_WELDING_TOOL));
-		Map<String, Object> inputValues = new HashMap<String, Object>();
+		inputValues = new HashMap<String, Object>();
 		inputValues.put("tool", WeldingTool.MY_WELDING_TOOL);
 		mentalProcesses.getCollaborationMechanism().initializeAllInputs(topPlan, inputValues);
 		

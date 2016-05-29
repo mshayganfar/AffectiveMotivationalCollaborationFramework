@@ -19,8 +19,8 @@ import Mechanisms.Motivation.Motivation;
 import MentalState.Goal;
 import MetaInformation.AppraisalVector;
 import MetaInformation.GoalTree;
+import MetaInformation.AppraisalVector.APPRAISAL_TYPE;
 import MetaInformation.AppraisalVector.EMOTION_INSTANCE;
-import MetaInformation.AppraisalVector.WHOSE_APPRAISAL;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskClass.Input;
 import edu.wpi.disco.lang.Accept;
@@ -33,6 +33,7 @@ import MetaInformation.Turns;
 
 public class ToM extends Mechanisms{
 	
+	private AppraisalVector reverseAppraisalVector;
 	private MentalProcesses mentalProcesses;
 	
 	private Collaboration collaboration;
@@ -66,32 +67,33 @@ public class ToM extends Mechanisms{
 	
 	public AppraisalVector getReverseAppraisalValues(Goal eventGoal) {
 		
-		return doReverseAppraisal(eventGoal);
+		if (this.reverseAppraisalVector.getGoal().getPlan().getGoal().getType().equals(eventGoal.getPlan().getGoal().getType()))
+			return this.reverseAppraisalVector;
+		else
+			throw new IllegalArgumentException("Illegal Absence of Reverse Appraisal Vector!");
 	}
 	
-	public EMOTION_INSTANCE getAnticipatedHumanEmotion(Goal eventGoal) {
-		
-		AppraisalVector reverseAppraisalVector = doReverseAppraisal(eventGoal);
+	public EMOTION_INSTANCE getAnticipatedHumanEmotion(AppraisalVector reverseAppraisalVector) {
 		
 		return reverseAppraisalVector.getEmotionInstance();
 	}
 	
-	private AppraisalVector doReverseAppraisal(Goal eventGoal) {
+	public AppraisalVector doReverseAppraisal(Goal eventGoal) {
 
-		AppraisalVector estimatedAppraisalVector = new AppraisalVector(mentalProcesses, eventGoal, WHOSE_APPRAISAL.HUMAN);
+		this.reverseAppraisalVector = new AppraisalVector(mentalProcesses, eventGoal, APPRAISAL_TYPE.REVERSE_APPRAISAL);
 		
 		double valenceValue = mentalProcesses.getPerceptionMechanism().getEmotionValence();
 		
-		estimatedAppraisalVector.setRelevanceValue(relevance.isEventRelevant(eventGoal));
-		estimatedAppraisalVector.setDesirabilityValue(getReverseDesirability(valenceValue));
-		estimatedAppraisalVector.setExpectednessValue(expectedness.isEventExpected(eventGoal));
-		estimatedAppraisalVector.setControllabilityValue(getReverseControllability(eventGoal));
+		this.reverseAppraisalVector.setRelevanceValue(relevance.isEventRelevant(eventGoal));
+		this.reverseAppraisalVector.setDesirabilityValue(getReverseDesirability(valenceValue));
+		this.reverseAppraisalVector.setExpectednessValue(expectedness.isEventExpected(eventGoal));
+		this.reverseAppraisalVector.setControllabilityValue(getReverseControllability(eventGoal));
 		
-		Turns.getInstance().setTurnAppraisals(mentalProcesses, eventGoal, WHOSE_APPRAISAL.HUMAN, 
-				estimatedAppraisalVector.getRelevanceSymbolicValue(), estimatedAppraisalVector.getDesirabilitySymbolicValue(), 
-				estimatedAppraisalVector.getControllabilitySymbolicValue(), estimatedAppraisalVector.getExpectednessSymbolicValue());
+		Turns.getInstance().setTurnAppraisals(mentalProcesses, eventGoal, APPRAISAL_TYPE.REVERSE_APPRAISAL,
+				this.reverseAppraisalVector.getRelevanceSymbolicValue(), this.reverseAppraisalVector.getDesirabilitySymbolicValue(), 
+				this.reverseAppraisalVector.getControllabilitySymbolicValue(), this.reverseAppraisalVector.getExpectednessSymbolicValue());
 		
-		return estimatedAppraisalVector;
+		return this.reverseAppraisalVector;
 	}
 	
 	public CONTROLLABILITY getAlternativeReverseControllability(Goal eventGoal) {
@@ -438,7 +440,7 @@ public class ToM extends Mechanisms{
 		
 		for(AppraisalVector vector : Turns.getInstance().getCurrentAppraisalVectors()) {
 			if (vector.getGoal().getLabel().equals(goal.getLabel()))
-				if (vector.getWhoseAppraisalValue().equals(WHOSE_APPRAISAL.HUMAN))
+				if (vector.getAppraisalType().equals(APPRAISAL_TYPE.REVERSE_APPRAISAL))
 					return Turns.getInstance().getDesirabilityValue(vector.getDesirabilitySymbolicValue());
 		}
 		return valence;
