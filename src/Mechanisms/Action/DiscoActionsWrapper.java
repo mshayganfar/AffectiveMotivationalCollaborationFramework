@@ -66,9 +66,7 @@ public class DiscoActionsWrapper {
 			throw new IllegalArgumentException("Primitives does not need recepies!");
 	}
 	
-	public void acceptProposedTask(Goal goal, boolean speaker) {
-		
-		Plan plan = goal.getPlan();
+	public void acceptProposedTask(Plan plan, boolean speaker) {
 		
 		Utterance acceptance = new Accept(collaboration.getDisco(), speaker, Propose.Should.newInstance(collaboration.getDisco(), speaker, plan.getGoal()));
 		collaboration.getDisco().getInteraction().occurred(speaker, acceptance, null);

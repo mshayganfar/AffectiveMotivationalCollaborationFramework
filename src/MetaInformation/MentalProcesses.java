@@ -46,6 +46,7 @@ public class MentalProcesses {
 		this.coping.prepareCopingMechanism(this);
 		this.action.prepareActionMechanism(this);
 		this.collaboration.getAgent().prepareAgent(this);
+		this.collaboration.getUser().prepareUser(this);
 	}
 	
 	public Perception getPerceptionMechanism() {

@@ -14,6 +14,7 @@ import MetaInformation.MentalProcesses;
 import MetaInformation.Node;
 import MetaInformation.Turns;
 import MetaInformation.AMCAgent;
+import MetaInformation.AMCUser;
 import MetaInformation.AppraisalVector.WHOSE_APPRAISAL;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskModel;
@@ -56,15 +57,18 @@ public class Collaboration extends Mechanisms{
 	private Interaction interaction;
 	
 	private AMCAgent agent;
+	private AMCUser user;
 	private Plan actualFocus;
 	
 	public Collaboration(String[] args) {
 		
 		agent = new AMCAgent("agent");
 		agent.setMax(1);
+		agent.init();
 		
-		User user = new User("user");
+		user = new AMCUser("user");
 		user.setEval(true); // Guarantees that grounding script will be evaluated.
+		user.init();
 		
 		interaction = new Interaction(agent, user,
 				  args.length > 0 && args[0].length() > 0 ? args[0] : null);
@@ -84,6 +88,10 @@ public class Collaboration extends Mechanisms{
 	
 	public AMCAgent getAgent() {
 		return this.agent;
+	}
+	
+	public AMCUser getUser() {
+		return this.user;
 	}
 	
 	public void prepareCollaborationMechanism(MentalProcesses mentalProcesses) {
@@ -577,6 +585,18 @@ public class Collaboration extends Mechanisms{
 //		else
 //			return false;
 //	}
+	
+	public int getDistanceFromTop(Plan goalPlan) {
+		
+		int count = 1;
+		
+		while (!goalPlan.equals(disco.getTop(goalPlan))) { 
+			goalPlan = goalPlan.getParent();
+			count++;
+		}
+		
+		return count;
+	}
 	
 	public void updatePreconditionApplicability() {
 		

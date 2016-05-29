@@ -124,7 +124,7 @@ public class Coping {
 		
 		if (didHumanAskAboutTaskShould(goal)) {
 			if (controllability.isEventControllable(goal).equals(CONTROLLABILITY.HIGH_CONTROLLABLE))
-				discoActionsWrapper.acceptProposedTask(goal, false);
+				discoActionsWrapper.acceptProposedTask(goal.getPlan(), false);
 			else if (controllability.isEventControllable(goal).equals(CONTROLLABILITY.UNCONTROLLABLE))
 				discoActionsWrapper.rejectProposedTask(goal, false);
 			else
@@ -190,7 +190,7 @@ public class Coping {
 		
 		System.out.println("COPING STRATEGY: Planning");
 		
-		if ((goal.getPlan().getGoal().getExternal() == null) || (!goal.getPlan().getGoal().getExternal()))
+//		if ((goal.getPlan().getGoal().getExternal() == null) || (!goal.getPlan().getGoal().getExternal()))
 			discoActionsWrapper.executeTask(goal, human);
 	}
 	

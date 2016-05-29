@@ -11,13 +11,16 @@ public class AMCAgent extends Agent{
 	
 	public AMCAgent(String name) {
 		super(name);
-		new AuthorizedPlugin(agenda, 225);
 	}
 	
 	public void prepareAgent(MentalProcesses mentalProcesses) {
 		this.mentalProcesses = mentalProcesses;
 	}
 	
+	@Override
+	public void init () {
+		new AuthorizedPlugin(agenda, 225);
+	}
 	@Override
 	public boolean isDefinedSlot(Plan plan, Input input) {
 		return mentalProcesses.getCollaborationMechanism().isInputAvailable(plan, input);

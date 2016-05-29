@@ -3,6 +3,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.omg.CORBA.UserException;
+
+import Mechanisms.Mechanisms.AGENT;
+import Mechanisms.Action.DiscoActionsWrapper;
 import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
 import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
@@ -12,6 +16,8 @@ import Mechanisms.Collaboration.GoalManagement;
 import MentalState.Belief;
 import MentalState.Goal;
 import MentalState.Motive;
+import MetaInformation.AMCAgent;
+import MetaInformation.AMCUser;
 import MetaInformation.AppraisalVector;
 import MetaInformation.MentalProcesses;
 import MetaInformation.Turns;
@@ -24,9 +30,16 @@ import edu.wpi.cetask.Task;
 import edu.wpi.cetask.TaskModel;
 import edu.wpi.disco.Agenda.Plugin.Item;
 import edu.wpi.disco.Agent;
+import edu.wpi.disco.Disco;
 import edu.wpi.disco.Interaction;
+import edu.wpi.disco.User;
+import edu.wpi.disco.lang.Accept;
 
 public class AffectiveMotivationalCollaborationFramework {
+	
+	public static Plan consolePlan;
+	private static Item userEventItem;
+	private static Plan topPlan;
 	
 	private static TaskModel taskModel;
 	private static Goal goal = null;
@@ -99,7 +112,6 @@ public class AffectiveMotivationalCollaborationFramework {
 	
 	private static void initializeFramework(Goal recognizedGoal) {
 		
-		recognizedGoal.setGoalStatus(mentalProcesses.getCollaborationMechanism().getGoalStatus(recognizedGoal.getPlan()));
 		recognizedGoal.addGoalToMentalState();
 		
 		Belief belief1 = new Belief(recognizedGoal);
@@ -108,11 +120,9 @@ public class AffectiveMotivationalCollaborationFramework {
 		Motive motive  = new Motive(recognizedGoal);
 	}
 	
-	public static void process(Plan eventPlan, double valenceValue) {
-//	public static void process(String valenceValue) {
+	public static void processAgent(Plan eventPlan, double valenceValue) {
 		Turns turn = Turns.getInstance();
 		Goal recognizedGoal = new Goal(mentalProcesses, eventPlan);
-//		Goal recognizedGoal = new Goal(mentalProcesses);
 		
 		initializeFramework(recognizedGoal);
 		
@@ -136,27 +146,114 @@ public class AffectiveMotivationalCollaborationFramework {
 		runAction(recognizedGoal);
 //		goalManagement.computeCostValue(recognizedGoal);
 		
+		recognizedGoal.setGoalStatus(mentalProcesses.getCollaborationMechanism().getGoalStatus(recognizedGoal.getPlan()));
+		
 		// This needs to be done after running all the mechanisms.
 		turn.updateTurn();
 	}
 	
-	private static void runPlan(Plan topPlan) {
+	public static void processUser(Plan eventPlan, double valenceValue) {
+		Turns turn = Turns.getInstance();
+		Goal recognizedGoal = new Goal(mentalProcesses, eventPlan);
 		
-		Item eventItem;
+		initializeFramework(recognizedGoal);
+		
+		DiscoActionsWrapper discoWrapper = new DiscoActionsWrapper(mentalProcesses);
+		
+		discoWrapper.executeTask(recognizedGoal, true);
+		
+//		mentalProcesses.getPerceptionMechanism().setEmotionValence(valenceValue);
+//		
+//		mentalProcesses.getCollaborationMechanism().updatePreconditionApplicability();
+//		
+//		mentalProcesses.getCollaborationMechanism().provideInputValues(recognizedGoal.getPlan());
+//		
+//		AppraisalVector appraisalVector = doAppraisal(turn, recognizedGoal);
+//		
+//		System.out.println("Human's Emotion: " + mentalProcesses.getToMMechanism().getAnticipatedHumanEmotion(recognizedGoal));
+//		
+//		runMotivations(recognizedGoal);
+//		
+//		runCoping(recognizedGoal);
+//		
+//		runAction(recognizedGoal);
+//		
+//		recognizedGoal.setGoalStatus(mentalProcesses.getCollaborationMechanism().getGoalStatus(recognizedGoal.getPlan()));
+		
+		turn.updateTurn();
+	}
+	
+	public static void goUser(String valenceValue) {
+		
+		mentalProcesses.getCollaborationMechanism().setActualFocus(userEventItem.contributes);
+		processUser(userEventItem.contributes, Double.parseDouble(valenceValue));
+		goAgent();
+	}
+	
+	private static void goAgent() {
+		
+		Item agentEventItem;
+		DiscoActionsWrapper discoWrapper;
 		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
 		Interaction interaction 	= collaboration.getInteraction();
-		Agent agent 				= collaboration.getAgent();
+		AMCAgent agent 				= collaboration.getAgent();
+		AMCUser user 				= collaboration.getUser();
 		
-		while (!topPlan.getStatus().equals(Status.DONE)) {
-			eventItem = agent.generateBest(interaction);
-			System.out.println(eventItem.contributes.getGoal().getType());
-			for (Plan plan : collaboration.getPathToTop(eventItem.contributes)) {
-//				if (eventItem.contributes.getGoal().equals(eventItem.task))
-				System.out.println(plan.getGoal().getType());
-				collaboration.setActualFocus(plan);
-				process(plan, 0.0);
+		userEventItem = user.generateBest(interaction);
+		
+		if (userEventItem != null) {
+			if (userEventItem.contributes.getGoal() instanceof Accept) {
+				discoWrapper = new DiscoActionsWrapper(mentalProcesses);
+				discoWrapper.acceptProposedTask(userEventItem.contributes, true);
+				userEventItem = user.generateBest(interaction);
 			}
 		}
+			
+		while (!topPlan.getStatus().equals(Status.DONE)) {
+			agentEventItem = agent.generateBest(interaction);
+			if (agentEventItem == null) return;
+			System.out.println("IMPORTANT >>>>>>>>>>>>>>>>>>" + agentEventItem.contributes.getGoal().getType());
+			for (Plan plan : collaboration.getPathToTop(agentEventItem.contributes)) {
+//				if (userEventItem.contributes.getGoal() instanceof Accept) {
+//					userEventItem = null;
+//					System.out.println(userEventItem);
+//					consolePlan = plan;
+//					System.out.println("-------------------->" + userEventItem.contributes.getRetryOf());
+//					return;
+//				}
+				System.out.println("User: " + userEventItem);
+				System.out.println(plan.getGoal().getType());
+				System.out.println(plan.getGoal().getType() + " >>>>>>>>>>> Responsible: " + collaboration.getResponsibleAgent(plan));
+				
+				if (isUsersTurn(plan))
+					return;
+				
+				collaboration.setActualFocus(plan);
+				processAgent(plan, 0.0);
+			}
+		}
+	}
+	
+	private static boolean isUsersTurn(Plan plan) {
+		
+		int agentPlanDepth = 0, userPlanDepth = 0;
+		
+		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
+		
+		if (collaboration.getResponsibleAgent(plan).equals(AGENT.OTHER))
+			return true;
+		
+		agentPlanDepth = userPlanDepth = 0;
+		if (!plan.isPrimitive() && (userEventItem != null)) {// && (!(userEventItem.contributes.getGoal() instanceof Accept))) {
+			agentPlanDepth = collaboration.getDistanceFromTop(plan);
+			userPlanDepth  = collaboration.getDistanceFromTop(userEventItem.contributes);
+			System.out.println(agentPlanDepth + " , " + userPlanDepth);
+		}
+		
+		if ((userEventItem != null) && (agentPlanDepth >= userPlanDepth)) {
+			return true;
+		}
+		return false;
 	}
 	
 	public static void main(String[] args) {
@@ -168,7 +265,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
 		Task topTask = collaboration.getDisco().getTaskClass("InstallSolarPanel").newInstance();
-		Plan topPlan = new Plan(topTask);
+		topPlan = new Plan(topTask);
 		topPlan.getGoal().setShould(true);
 		collaboration.getDisco().push(topPlan);
 		
@@ -178,7 +275,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		inputValues.put("tool", WeldingTool.MY_WELDING_TOOL);
 		mentalProcesses.getCollaborationMechanism().initializeAllInputs(inputValues);
 		
-		runPlan(topPlan);
+		goAgent();
 		
 //		collaboration.getInteraction().getConsole().test("test/ABC1.test");
 //		mentalProcesses.getCollaborationMechanism().getInteraction().getConsole().source("test/events-astronaut-robot.txt");

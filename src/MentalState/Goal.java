@@ -41,7 +41,7 @@ public class Goal {
 		this.label           = plan.getGoal().getType().toString();
 		this.currentTurn     = Turns.getInstance().getTurnNumber();
 		this.goalStatus      = GOAL_STATUS.UNKNOWN;
-		this.effort          = getGoalDifficultyValue(this);
+		this.effort          = getGoalDifficultyValue();
 		this.tactical        = false;
 	}
 	
@@ -54,7 +54,7 @@ public class Goal {
 		this.label           = plan.getGoal().getType().toString();
 		this.currentTurn     = Turns.getInstance().getTurnNumber();
 		this.goalStatus      = GOAL_STATUS.UNKNOWN;
-		this.effort          = -1;
+		this.effort          = getGoalDifficultyValue();
 		this.tactical        = false;
 	}
 	
@@ -66,7 +66,7 @@ public class Goal {
 		this.label           = plan.getGoal().getType().toString();
 		this.currentTurn     = Turns.getInstance().getTurnNumber();
 		this.goalStatus      = GOAL_STATUS.UNKNOWN;
-		this.effort          = getGoalDifficultyValue(this);
+		this.effort          = getGoalDifficultyValue();
 		this.tactical        = tactical;
 	}
 	
@@ -78,7 +78,7 @@ public class Goal {
 		this.label           = plan.getGoal().getType().toString();
 		this.currentTurn     = Turns.getInstance().getTurnNumber();
 		this.goalStatus      = goalStatus;
-		this.effort          = getGoalDifficultyValue(this);
+		this.effort          = getGoalDifficultyValue();
 		this.tactical        = false;
 	}
 	
@@ -486,6 +486,22 @@ public class Goal {
 			}
 		}
 		 return totalDifficulty;
+	}
+
+	private double getGoalDifficultyValue() {
+		
+		Plan plan = this.getPlan();
+		
+		switch (DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty"))) {
+			case NORMAL:
+				return 1.0;
+			case DIFFICULT:
+				return 2.0;
+			case MOST_DIFFICULT:
+				return 3.0;
+			default:
+				throw new IllegalStateException("Illegal Difficulty Value: " + DIFFICULTY.valueOf(plan.getType().getProperty("@difficulty")));
+		}
 	}
 	
 	private double getGoalDifficultyValue(Goal goal) {

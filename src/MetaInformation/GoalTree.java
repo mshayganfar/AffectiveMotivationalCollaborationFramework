@@ -42,21 +42,10 @@ public class GoalTree {
 		
 		for (int i = 0 ; i < node.getNodeGoalPlan().getChildren().size() ; i++) {
 			if (!(node.getNodeGoalPlan().getChildren().get(i).getGoal() instanceof Accept)) {
-				preorderTraverse(createNode(node.getNodeGoalPlan().getChildren().get(i), getDistanceFromTop(node.getNodeGoalPlan())));
+				preorderTraverse(createNode(node.getNodeGoalPlan().getChildren().get(i), 
+						mentalProcesses.getCollaborationMechanism().getDistanceFromTop(node.getNodeGoalPlan())));
 			}
 		}
-	}
-	
-	private int getDistanceFromTop(Plan goalPlan) {
-		
-		int count = 1;
-		
-		while (!goalPlan.equals(disco.getTop(goalPlan))) { 
-			goalPlan = goalPlan.getParent();
-			count++;
-		}
-		
-		return count;
 	}
 	
 	public ArrayList<Node> levelUpNodes(ArrayList<Node> treeNodes, Plan firstGoalPlan, Plan secondGoalPlan) {
