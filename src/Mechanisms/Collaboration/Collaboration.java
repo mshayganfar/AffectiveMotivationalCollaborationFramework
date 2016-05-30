@@ -627,13 +627,18 @@ public class Collaboration extends Mechanisms{
 	
 	public void initializeAllInputs (Plan topPlan, Map<String, Object> inputValues) {
 		
+		if ((topPlan.getParent() != null) && (!topPlan.getParent().getGoal().getType().toString().equals("**ROOT**")))
+			topPlan = topPlan.getParent();
+		
 		List<Plan> livePlans = topPlan.getLiveDescendants();
 		
 		for (Plan plan : livePlans) {
 			for (Input input : plan.getType().getDeclaredInputs()) {
-				setInputValue(getInputKeyValue(plan, input.getName()), inputValues.get(input.getName()));
-				plan.setSlotValue(input.getName(), inputValues.get(input.getName()));
-				System.out.println("Goal: " + plan.getGoal().getType() + " , Input Name: " + input.getName() + " , Input Value: " + inputValues.get(input.getName()));
+				if (!plan.getGoal().getType().toString().equals("Accept")) {
+					setInputValue(getInputKeyValue(plan, input.getName()), inputValues.get(input.getName()));
+					plan.setSlotValue(input.getName(), inputValues.get(input.getName()));
+					System.out.println("Goal: " + plan.getGoal().getType() + " , Input Name: " + input.getName() + " , Input Value: " + inputValues.get(input.getName()));
+				}
 			}
 		}
 	}

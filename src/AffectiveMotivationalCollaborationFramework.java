@@ -230,7 +230,11 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		while (!topPlan.getStatus().equals(Status.DONE)) {
 			agentEventItem = agent.generateBest(interaction);
-			if (agentEventItem == null) return;
+			if (agentEventItem == null) {
+				userEventItem = user.generateBest(interaction);
+				System.out.println("Waiting for you: ");
+				return;
+			}
 			collaboration.initializeAllInputs(agentEventItem.contributes, inputValues);
 //			System.out.println("IMPORTANT >>>>>>>>>>>>>>>>>>" + agentEventItem.contributes.getGoal().getType());
 			for (Plan plan : collaboration.getPathToTop(agentEventItem.contributes)) {
@@ -245,6 +249,7 @@ public class AffectiveMotivationalCollaborationFramework {
 				
 				collaboration.setActualFocus(plan);
 				processAgent(plan, 0.0);
+				collaboration.initializeAllInputs(plan, inputValues);
 			}
 		}
 	}
