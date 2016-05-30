@@ -47,7 +47,7 @@
   <task id="PrepareConnector">
 		<precondition>true</precondition>
 		<postcondition> post_RemoveCover &amp;&amp; post_ConnectAdaptor </postcondition>
-    <subtasks id="recipeF" ordered="false">
+    <subtasks id="recipeF" ordered="true">
       <step name="cover" task ="RemoveCover"/>
       <step name="adaptor" task ="ConnectAdaptor"/>
 

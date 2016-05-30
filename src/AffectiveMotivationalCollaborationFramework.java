@@ -84,12 +84,12 @@ public class AffectiveMotivationalCollaborationFramework {
 				appraisalVector.getRelevanceSymbolicValue(), appraisalVector.getDesirabilitySymbolicValue(), appraisalVector.getControllabilitySymbolicValue(), 
 				appraisalVector.getExpectednessSymbolicValue());
 		
-		for(AppraisalVector vector : Turns.getInstance().getCurrentAppraisalVectors()) {
-			System.out.println(vector.getTurnNumber() + ", " + vector.getAppraisalType() + ", " + vector.getRelevanceSymbolicValue() + ", " + 
-					vector.getDesirabilitySymbolicValue() + ", " + vector.getExpectednessSymbolicValue() + ", " + 
-					vector.getControllabilitySymbolicValue());
-			System.out.println("EMOTION INSTANCE: " + vector.getEmotionInstance());
-		}
+//		for(AppraisalVector vector : Turns.getInstance().getCurrentAppraisalVectors()) {
+//			System.out.println(vector.getTurnNumber() + ", " + vector.getAppraisalType() + ", " + vector.getRelevanceSymbolicValue() + ", " + 
+//					vector.getDesirabilitySymbolicValue() + ", " + vector.getExpectednessSymbolicValue() + ", " + 
+//					vector.getControllabilitySymbolicValue());
+//			System.out.println("EMOTION INSTANCE: " + vector.getEmotionInstance());
+//		}
 		
 		return appraisalVector;
 	}
@@ -232,11 +232,11 @@ public class AffectiveMotivationalCollaborationFramework {
 			agentEventItem = agent.generateBest(interaction);
 			if (agentEventItem == null) return;
 			collaboration.initializeAllInputs(agentEventItem.contributes, inputValues);
-			System.out.println("IMPORTANT >>>>>>>>>>>>>>>>>>" + agentEventItem.contributes.getGoal().getType());
+//			System.out.println("IMPORTANT >>>>>>>>>>>>>>>>>>" + agentEventItem.contributes.getGoal().getType());
 			for (Plan plan : collaboration.getPathToTop(agentEventItem.contributes)) {
-				System.out.println("User: " + userEventItem);
-				System.out.println(plan.getGoal().getType());
-				System.out.println(plan.getGoal().getType() + " >>>>>>>>>>> Responsible: " + collaboration.getResponsibleAgent(plan));
+//				System.out.println("User: " + userEventItem);
+//				System.out.println(plan.getGoal().getType());
+//				System.out.println(plan.getGoal().getType() + " >>>>>>>>>>> Responsible: " + collaboration.getResponsibleAgent(plan));
 				
 				if (isUsersTurn(plan)) {
 					System.out.println("Waiting for you: ");
@@ -262,7 +262,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		if (!plan.isPrimitive() && (userEventItem != null)) {// && (!(userEventItem.contributes.getGoal() instanceof Accept))) {
 			agentPlanDepth = collaboration.getDistanceFromTop(plan);
 			userPlanDepth  = collaboration.getDistanceFromTop(userEventItem.contributes);
-			System.out.println(agentPlanDepth + " , " + userPlanDepth);
+//			System.out.println(agentPlanDepth + " , " + userPlanDepth);
 		}
 		
 		if (userEventItem != null) { 

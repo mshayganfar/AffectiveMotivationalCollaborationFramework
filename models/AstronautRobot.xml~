@@ -38,7 +38,7 @@
   <task id="CheckPanel">
 		<precondition>true</precondition>
 		<postcondition> post_CheckPanelAttachment &amp;&amp; post_CheckWirings &amp;&amp; post_CheckControlSwitch &amp;&amp; post_CheckCascadingCells &amp;&amp; post_CheckOutputCurrent </postcondition>
-    <subtasks id="recipeD" ordered="false">
+    <subtasks id="recipeD" ordered="true">
       <step name="hardware" task ="CheckHardware"/>
       <step name="function" task="CheckFunction"/>
     </subtasks>
@@ -47,7 +47,7 @@
   <task id="PrepareConnector">
 		<precondition>true</precondition>
 		<postcondition> post_RemoveCover &amp;&amp; post_ConnectAdaptor </postcondition>
-    <subtasks id="recipeF" ordered="false">
+    <subtasks id="recipeF" ordered="true">
       <step name="cover" task ="RemoveCover"/>
       <step name="adaptor" task ="ConnectAdaptor"/>
 
@@ -59,7 +59,7 @@
   <task id="CheckHardware">
 		<precondition>true</precondition>
 		<postcondition> post_CheckPanelAttachment &amp;&amp; post_CheckWirings </postcondition>
-    <subtasks id="recipeI" ordered="false">
+    <subtasks id="recipeI" ordered="true">
       <step name="panelattachment" task ="CheckPanelAttachment"/>
       <step name="wirings" task ="CheckWirings"/>
 
