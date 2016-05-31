@@ -59,7 +59,7 @@
   <task id="CheckHardware">
 		<precondition>true</precondition>
 		<postcondition> post_CheckPanelAttachment &amp;&amp; post_CheckWirings </postcondition>
-    <subtasks id="recipeI" ordered="false">
+    <subtasks id="recipeI" ordered="true">
       <step name="panelattachment" task ="CheckPanelAttachment"/>
       <step name="wirings" task ="CheckWirings"/>
 

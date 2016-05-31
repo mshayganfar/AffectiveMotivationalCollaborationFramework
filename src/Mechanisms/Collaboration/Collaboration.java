@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import Mechanisms.Mechanisms;
+import Mechanisms.Mechanisms.AGENT;
 import MentalState.Goal;
 import MentalState.MentalState;
 import MetaInformation.GoalTree;
@@ -21,6 +22,7 @@ import edu.wpi.cetask.TaskModel;
 import edu.wpi.cetask.Plan.Status;
 import edu.wpi.cetask.Task;
 import edu.wpi.cetask.TaskClass.Input;
+import edu.wpi.disco.Agenda.Plugin.Item;
 import edu.wpi.disco.Agent;
 import edu.wpi.disco.Disco;
 import edu.wpi.disco.Interaction;
@@ -572,6 +574,37 @@ public class Collaboration extends Mechanisms{
 	
 	public void setActualFocus(Plan plan) {
 		this.actualFocus = plan;
+	}
+	
+	public boolean isUsersTurn(Item userEventItem, Plan plan) {
+		
+		int agentPlanDepth = 0, userPlanDepth = 0;
+		
+		if (getResponsibleAgent(plan).equals(AGENT.OTHER))
+			return true;
+		
+		if (!plan.isPrimitive() && (userEventItem != null)) {
+			agentPlanDepth = getDistanceFromTop(plan);
+			userPlanDepth  = getDistanceFromTop(userEventItem.contributes);
+		}
+		
+		if (userEventItem != null) { 
+			if (agentPlanDepth > userPlanDepth)
+				return true;
+			else if ((agentPlanDepth == userPlanDepth) && (plan.getParent().equals(userEventItem.contributes.getParent())))
+				return true;
+		}
+		return false;
+	}
+	
+	public boolean isAgentsTurn(Plan plan) {
+		
+		AGENT responsible = getResponsibleAgent(plan); 
+		
+		if (responsible.equals(AGENT.SELF) || responsible.equals(AGENT.BOTH))
+			return true;
+		else
+			return false;
 	}
 	
 	public Plan getActualFocus() {

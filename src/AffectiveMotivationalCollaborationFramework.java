@@ -9,9 +9,11 @@ import Mechanisms.Appraisal.Expectedness.EXPECTEDNESS;
 import Mechanisms.Appraisal.Relevance.RELEVANCE;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.GoalManagement;
+import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import Mechanisms.ToM.ToM;
 import MentalState.Belief;
 import MentalState.Goal;
+import MentalState.MentalState;
 import MentalState.Motive;
 import MetaInformation.AMCAgent;
 import MetaInformation.AMCUser;
@@ -26,6 +28,7 @@ import edu.wpi.cetask.Plan.Status;
 import edu.wpi.cetask.Task;
 import edu.wpi.cetask.TaskModel;
 import edu.wpi.disco.Agenda.Plugin.Item;
+import edu.wpi.disco.Agent;
 import edu.wpi.disco.Interaction;
 import edu.wpi.disco.lang.Accept;
 
@@ -230,8 +233,16 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		while (!topPlan.getStatus().equals(Status.DONE)) {
 			agentEventItem = agent.generateBest(interaction);
+			userEventItem  = user.generateBest(interaction);
 			if (agentEventItem == null) {
-				userEventItem = user.generateBest(interaction);
+				collaboration.initializeAllInputs(userEventItem.contributes, inputValues);
+				for (Plan plan : collaboration.getPathToTop(userEventItem.contributes)) {
+					if (collaboration.isAgentsTurn(plan)) {
+						collaboration.setActualFocus(plan);
+						processAgent(plan, 0.0);
+						collaboration.initializeAllInputs(plan, inputValues);
+					}
+				}				
 				System.out.println("Waiting for you: ");
 				return;
 			}
@@ -242,7 +253,7 @@ public class AffectiveMotivationalCollaborationFramework {
 //				System.out.println(plan.getGoal().getType());
 //				System.out.println(plan.getGoal().getType() + " >>>>>>>>>>> Responsible: " + collaboration.getResponsibleAgent(plan));
 				
-				if (isUsersTurn(plan)) {
+				if (collaboration.isUsersTurn(userEventItem, plan)) {
 					System.out.println("Waiting for you: ");
 					return;
 				}
@@ -252,31 +263,6 @@ public class AffectiveMotivationalCollaborationFramework {
 				collaboration.initializeAllInputs(plan, inputValues);
 			}
 		}
-	}
-	
-	private static boolean isUsersTurn(Plan plan) {
-		
-		int agentPlanDepth = 0, userPlanDepth = 0;
-		
-		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
-		
-		if (collaboration.getResponsibleAgent(plan).equals(AGENT.OTHER))
-			return true;
-		
-		agentPlanDepth = userPlanDepth = 0;
-		if (!plan.isPrimitive() && (userEventItem != null)) {// && (!(userEventItem.contributes.getGoal() instanceof Accept))) {
-			agentPlanDepth = collaboration.getDistanceFromTop(plan);
-			userPlanDepth  = collaboration.getDistanceFromTop(userEventItem.contributes);
-//			System.out.println(agentPlanDepth + " , " + userPlanDepth);
-		}
-		
-		if (userEventItem != null) { 
-			if (agentPlanDepth > userPlanDepth)
-				return true;
-			else if ((agentPlanDepth == userPlanDepth) && (plan.getParent().equals(userEventItem.contributes.getParent())))
-				return true;
-		}
-		return false;
 	}
 	
 	public static void main(String[] args) {
