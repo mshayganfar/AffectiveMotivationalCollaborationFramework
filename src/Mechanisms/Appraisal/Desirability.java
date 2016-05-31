@@ -1,11 +1,12 @@
 package Mechanisms.Appraisal;
 
+import Mechanisms.Mechanisms;
 import Mechanisms.Collaboration.Collaboration.*;
 import MentalState.*;
 import MetaInformation.MentalProcesses;
 import edu.wpi.cetask.Plan;
 
-public class Desirability extends AppraisalProcesses{
+public class Desirability extends Mechanisms{
 	
 	public enum DESIRABILITY {HIGH_DESIRABLE, DESIRABLE, NEUTRAL, HIGH_UNDESIRABLE, UNDESIRABLE, UNKNOWN};
 	

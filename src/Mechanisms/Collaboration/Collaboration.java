@@ -7,15 +7,20 @@ import java.util.List;
 import java.util.Map;
 
 import Mechanisms.Mechanisms;
+import Mechanisms.Action.DiscoActionsWrapper;
 import Mechanisms.Mechanisms.AGENT;
+import Mechanisms.ToM.ToM;
+import MentalState.Belief;
 import MentalState.Goal;
 import MentalState.MentalState;
+import MentalState.Motive;
 import MetaInformation.GoalTree;
 import MetaInformation.MentalProcesses;
 import MetaInformation.Node;
 import MetaInformation.Turns;
 import MetaInformation.AMCAgent;
 import MetaInformation.AMCUser;
+import MetaInformation.AppraisalVector;
 import MetaInformation.AppraisalVector.APPRAISAL_TYPE;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskModel;
@@ -605,6 +610,104 @@ public class Collaboration extends Mechanisms{
 			return true;
 		else
 			return false;
+	}
+	
+	private void initializeFramework(Goal recognizedGoal) {
+		
+		recognizedGoal.addGoalToMentalState();
+		
+		Belief belief1 = new Belief(recognizedGoal);
+		Belief belief2 = new Belief(recognizedGoal);
+		Belief belief3 = new Belief(recognizedGoal);
+		Motive motive  = new Motive(recognizedGoal);
+	}
+	
+	public void processUser(Plan eventPlan, double valenceValue, Boolean postconditionStatus) {
+		
+		Turns turn = Turns.getInstance();
+		
+		ToM tom = mentalProcesses.getToMMechanism();
+		Goal recognizedGoal = new Goal(mentalProcesses, eventPlan);
+		
+		initializeFramework(recognizedGoal);
+		
+		DiscoActionsWrapper discoWrapper = new DiscoActionsWrapper(mentalProcesses);
+		
+		if (recognizedGoal.getPlan().isPrimitive())
+			discoWrapper.executeTask(recognizedGoal, true, postconditionStatus);
+		else
+			discoWrapper.proposeTaskShould(recognizedGoal, true);
+		
+		mentalProcesses.getPerceptionMechanism().setEmotionValence(valenceValue);
+		
+		mentalProcesses.getCollaborationMechanism().updatePreconditionApplicability();
+		
+		AppraisalVector appraisalVector = mentalProcesses.getAppraisalProcess().doAppraisal(turn, recognizedGoal, APPRAISAL_TYPE.APPRAISAL);
+		
+		if (postconditionStatus == null)
+			mentalProcesses.getPerceptionMechanism().setEmotionValence(0.0);
+		else if (postconditionStatus)
+			mentalProcesses.getPerceptionMechanism().setEmotionValence(0.4);
+		else
+			mentalProcesses.getPerceptionMechanism().setEmotionValence(-0.4);
+		tom.doReverseAppraisal(recognizedGoal);
+		System.out.println("Human's Emotion (before coping): " + tom.getAnticipatedHumanEmotion(tom.getReverseAppraisalValues(recognizedGoal)));
+		
+		//Run Motivation
+		mentalProcesses.getMotivationMechanism().createMotives(recognizedGoal);
+		
+		//Run Coping 
+		mentalProcesses.getCopingMechanism().formIntentions(recognizedGoal);
+		
+		//Run Action
+		mentalProcesses.getActionMechanism().act(recognizedGoal, postconditionStatus);
+		
+		tom.doReverseAppraisal(recognizedGoal);
+		System.out.println("Human's Emotion (after coping): " + tom.getAnticipatedHumanEmotion(tom.getReverseAppraisalValues(recognizedGoal)));
+		
+		turn.updateTurn();
+	}
+	
+	public void processAgent(Plan eventPlan, double valenceValue) {
+		
+		Turns turn = Turns.getInstance();
+		
+		ToM tom = mentalProcesses.getToMMechanism();
+		Goal recognizedGoal = new Goal(mentalProcesses, eventPlan);
+		
+		initializeFramework(recognizedGoal);
+		
+		// This is required before doing reverse appraisals.
+		mentalProcesses.getPerceptionMechanism().setEmotionValence(valenceValue);
+		
+		// This is required before doing appraisals.
+		mentalProcesses.getCollaborationMechanism().updatePreconditionApplicability();
+		
+		AppraisalVector appraisalVector = mentalProcesses.getAppraisalProcess().doAppraisal(turn, recognizedGoal, APPRAISAL_TYPE.APPRAISAL);
+		
+		tom.doReverseAppraisal(recognizedGoal);
+		System.out.println("Human's Emotion (before coping): " + tom.getAnticipatedHumanEmotion(tom.getReverseAppraisalValues(recognizedGoal)));
+		
+		//Run Motivation
+		mentalProcesses.getMotivationMechanism().createMotives(recognizedGoal);
+		
+		//Run Coping 
+		mentalProcesses.getCopingMechanism().formIntentions(recognizedGoal);
+		
+		//Run Action
+		boolean postconditionStatus = true;
+		mentalProcesses.getActionMechanism().act(recognizedGoal, postconditionStatus);
+//		goalManagement.computeCostValue(recognizedGoal);
+		
+		tom.doReverseAppraisal(recognizedGoal);
+		System.out.println("Human's Emotion (after coping): " + tom.getAnticipatedHumanEmotion(tom.getReverseAppraisalValues(recognizedGoal)));
+		
+		appraisalVector = mentalProcesses.getAppraisalProcess().doAppraisal(turn, recognizedGoal, APPRAISAL_TYPE.REAPPRAISAL);
+		
+		recognizedGoal.setGoalStatus(mentalProcesses.getCollaborationMechanism().getGoalStatus(recognizedGoal.getPlan()));
+		
+		// This needs to be done after running all the mechanisms.
+		turn.updateTurn();
 	}
 	
 	public Plan getActualFocus() {

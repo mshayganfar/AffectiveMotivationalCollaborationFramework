@@ -3,6 +3,7 @@ package Mechanisms.Appraisal;
 import java.util.ArrayList;
 import java.util.List;
 
+import Mechanisms.Mechanisms;
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import MentalState.Belief;
 import MentalState.Goal;
@@ -11,7 +12,7 @@ import MetaInformation.MentalProcesses;
 import MetaInformation.Node;
 import edu.wpi.cetask.Plan;
 
-public class Relevance extends AppraisalProcesses {
+public class Relevance extends Mechanisms {
 	
 	public enum RELEVANCE {RELEVANT, IRRELEVANT, UNKNOWN};
 	

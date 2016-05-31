@@ -6,12 +6,13 @@ import edu.wpi.cetask.TaskClass.Input;
 import java.util.ArrayList;
 import java.util.List;
 
+import Mechanisms.Mechanisms;
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import MentalState.Goal;
 import MentalState.Motive.MOTIVE_TYPE;
 import MetaInformation.MentalProcesses;
 
-public class Controllability extends AppraisalProcesses{
+public class Controllability extends Mechanisms{
 
 	public enum CONTROLLABILITY {HIGH_CONTROLLABLE, LOW_CONTROLLABLE, UNCONTROLLABLE, UNKNOWN};
 	

@@ -1,10 +1,11 @@
 package Mechanisms.Appraisal;
 
+import Mechanisms.Mechanisms;
 import MentalState.Goal;
 import MetaInformation.MentalProcesses;
 import edu.wpi.disco.Disco;
 
-public class Expectedness extends AppraisalProcesses{
+public class Expectedness extends Mechanisms{
 	
 	public enum EXPECTEDNESS {MOST_EXPECTED, EXPECTED, LESS_EXPECTED, LESS_UNEXPECTED, UNEXPECTED, MOST_UNEXPECTED, UNKNOWN};
 	

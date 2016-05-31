@@ -5,7 +5,7 @@
   <task id="InstallSolarPanel">
 		<precondition>true</precondition>
 		<postcondition> post_PrepareControlSwitch &amp;&amp; post_RemoveCover &amp;&amp; post_ConnectAdaptor &amp;&amp; post_PlacePanel &amp;&amp; post_WeldPanel &amp;&amp; post_CheckPanelAttachment &amp;&amp; post_CheckWirings &amp;&amp; post_CheckControlSwitch &amp;&amp; post_CheckCascadingCells &amp;&amp; post_CheckOutputCurrent </postcondition>
-    <subtasks id="recipeA" ordered="true">
+    <subtasks id="recipeA" ordered="false">
       <step name="prepare" task ="PreparePanel"/>
       <step name="fix" task="FixPanel"/>
       <step name="check" task="CheckPanel"/>
@@ -19,14 +19,14 @@
       <step name="switch" task ="PrepareControlSwitch"/>
       <step name="connector" task="PrepareConnector"/>
 
-      <binding slot="$switch.external" value="true"/>
+      <binding slot="$switch.external" value="false"/>
     </subtasks>
   </task>
 
   <task id="FixPanel">
 		<precondition>true</precondition>
 		<postcondition> post_PlacePanel &amp;&amp; post_WeldPanel </postcondition>
-    <subtasks id="recipeC" ordered="true">
+    <subtasks id="recipeC" ordered="false">
       <step name="place" task ="PlacePanel"/>
       <step name="weld" task="WeldPanel"/>
 
@@ -47,7 +47,7 @@
   <task id="PrepareConnector">
 		<precondition>true</precondition>
 		<postcondition> post_RemoveCover &amp;&amp; post_ConnectAdaptor </postcondition>
-    <subtasks id="recipeF" ordered="true">
+    <subtasks id="recipeF" ordered="false">
       <step name="cover" task ="RemoveCover"/>
       <step name="adaptor" task ="ConnectAdaptor"/>
 
@@ -63,7 +63,7 @@
       <step name="panelattachment" task ="CheckPanelAttachment"/>
       <step name="wirings" task ="CheckWirings"/>
 
-      <binding slot="$panelattachment.external" value="true"/>
+      <binding slot="$panelattachment.external" value="false"/>
       <binding slot="$wirings.external" value="false"/>
     </subtasks>
   </task>
@@ -77,7 +77,7 @@
       <step name="outputcurrent" task ="CheckOutputCurrent"/>
 
       <binding slot="$controlswitch.external" value="false"/>
-      <binding slot="$cascadingcells.external" value="true"/>
+      <binding slot="$cascadingcells.external" value="false"/>
       <binding slot="$outputcurrent.external" value="false"/>
     </subtasks>
   </task>

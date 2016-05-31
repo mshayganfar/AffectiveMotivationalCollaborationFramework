@@ -2,6 +2,7 @@ package MetaInformation;
 
 import Mechanisms.Action.Action;
 import Mechanisms.Action.DiscoActionsWrapper;
+import Mechanisms.Appraisal.Appraisal;
 import Mechanisms.Appraisal.Controllability;
 import Mechanisms.Appraisal.Coping;
 import Mechanisms.Appraisal.Desirability;
@@ -17,6 +18,7 @@ public class MentalProcesses {
 	private Collaboration collaboration;
 	private Motivation motivation;
 	private ToM tom;
+	private Appraisal appraisal;
 	private Coping coping;
 	private Action action;
 	
@@ -28,6 +30,7 @@ public class MentalProcesses {
 	public MentalProcesses(String[] args) {
 		
 		this.collaboration = new Collaboration(args);
+		this.appraisal	   = new Appraisal();
 		this.perception    = new Perception();
 		this.motivation    = new Motivation();
 		this.tom           = new ToM();
@@ -47,6 +50,7 @@ public class MentalProcesses {
 		this.action.prepareActionMechanism(this);
 		this.collaboration.getAgent().prepareAgent(this);
 		this.collaboration.getUser().prepareUser(this);
+		this.appraisal.prepareAppraisal(this);
 	}
 	
 	public Perception getPerceptionMechanism() {
@@ -87,5 +91,9 @@ public class MentalProcesses {
 	
 	public Expectedness getExpectednessProcess() {
 		return this.expectedness;
+	}
+	
+	public Appraisal getAppraisalProcess() {
+		return this.appraisal;
 	}
 }
