@@ -5,7 +5,7 @@
   <task id="InstallSolarPanel">
 		<precondition>true</precondition>
 		<postcondition> post_PrepareControlSwitch &amp;&amp; post_RemoveCover &amp;&amp; post_ConnectAdaptor &amp;&amp; post_PlacePanel &amp;&amp; post_WeldPanel &amp;&amp; post_CheckPanelAttachment &amp;&amp; post_CheckWirings &amp;&amp; post_CheckControlSwitch &amp;&amp; post_CheckCascadingCells &amp;&amp; post_CheckOutputCurrent </postcondition>
-    <subtasks id="recipeA" ordered="false">
+    <subtasks id="recipeA" ordered="true">
       <step name="prepare" task ="PreparePanel"/>
       <step name="fix" task="FixPanel"/>
       <step name="check" task="CheckPanel"/>
@@ -19,14 +19,14 @@
       <step name="switch" task ="PrepareControlSwitch"/>
       <step name="connector" task="PrepareConnector"/>
 
-      <binding slot="$switch.external" value="false"/>
+      <binding slot="$switch.external" value="true"/>
     </subtasks>
   </task>
 
   <task id="FixPanel">
 		<precondition>true</precondition>
 		<postcondition> post_PlacePanel &amp;&amp; post_WeldPanel </postcondition>
-    <subtasks id="recipeC" ordered="false">
+    <subtasks id="recipeC" ordered="true">
       <step name="place" task ="PlacePanel"/>
       <step name="weld" task="WeldPanel"/>
 
@@ -38,7 +38,7 @@
   <task id="CheckPanel">
 		<precondition>true</precondition>
 		<postcondition> post_CheckPanelAttachment &amp;&amp; post_CheckWirings &amp;&amp; post_CheckControlSwitch &amp;&amp; post_CheckCascadingCells &amp;&amp; post_CheckOutputCurrent </postcondition>
-    <subtasks id="recipeD" ordered="false">
+    <subtasks id="recipeD" ordered="true">
       <step name="hardware" task ="CheckHardware"/>
       <step name="function" task="CheckFunction"/>
     </subtasks>
@@ -47,7 +47,7 @@
   <task id="PrepareConnector">
 		<precondition>true</precondition>
 		<postcondition> post_RemoveCover &amp;&amp; post_ConnectAdaptor </postcondition>
-    <subtasks id="recipeF" ordered="false">
+    <subtasks id="recipeF" ordered="true">
       <step name="cover" task ="RemoveCover"/>
       <step name="adaptor" task ="ConnectAdaptor"/>
 
@@ -59,11 +59,11 @@
   <task id="CheckHardware">
 		<precondition>true</precondition>
 		<postcondition> post_CheckPanelAttachment &amp;&amp; post_CheckWirings </postcondition>
-    <subtasks id="recipeI" ordered="false">
+    <subtasks id="recipeI" ordered="true">
       <step name="panelattachment" task ="CheckPanelAttachment"/>
       <step name="wirings" task ="CheckWirings"/>
 
-      <binding slot="$panelattachment.external" value="false"/>
+      <binding slot="$panelattachment.external" value="true"/>
       <binding slot="$wirings.external" value="false"/>
     </subtasks>
   </task>
@@ -71,13 +71,13 @@
   <task id="CheckFunction">
 		<precondition>true</precondition>
 		<postcondition> post_CheckControlSwitch &amp;&amp; post_CheckCascadingCells &amp;&amp; post_CheckOutputCurrent </postcondition>
-    <subtasks id="recipeJ" ordered="false">
+    <subtasks id="recipeJ" ordered="true">
       <step name="controlswitch" task ="CheckControlSwitch"/>
       <step name="cascadingcells" task ="CheckCascadingCells"/>
       <step name="outputcurrent" task ="CheckOutputCurrent"/>
 
       <binding slot="$controlswitch.external" value="false"/>
-      <binding slot="$cascadingcells.external" value="false"/>
+      <binding slot="$cascadingcells.external" value="true"/>
       <binding slot="$outputcurrent.external" value="false"/>
     </subtasks>
   </task>
@@ -85,53 +85,43 @@
   <task id="PrepareControlSwitch">
 		<precondition>true</precondition>
 		<postcondition> Packages.MetaInformation.World.post_PrepareControlSwitch </postcondition>
-		<script>Packages.MetaInformation.World.getExecutionOutcome();</script>
 	</task>
   <task id="RemoveCover">
 		<precondition>true</precondition>
 		<postcondition> Packages.MetaInformation.World.post_RemoveCover </postcondition>
-		<script>Packages.MetaInformation.World.getExecutionOutcome();</script>
 	</task>
   <task id="ConnectAdaptor">
 		<precondition>true</precondition>
 		<postcondition> Packages.MetaInformation.World.post_ConnectAdaptor </postcondition>
-		<script>Packages.MetaInformation.World.getExecutionOutcome();</script>
 	</task>
   <task id="PlacePanel">
 		<precondition>true</precondition>
 		<postcondition> Packages.MetaInformation.World.post_PlacePanel </postcondition>
-		<script>Packages.MetaInformation.World.getExecutionOutcome();</script>
 	</task>
   <task id="WeldPanel">
 		<input name="tool" type="Packages.MetaInformation.World.WeldingTool" />
 		<precondition>true</precondition>
 		<postcondition> Packages.MetaInformation.World.post_WeldPanel </postcondition>
-		<script>Packages.MetaInformation.World.getExecutionOutcome();</script>
 	</task>
   <task id="CheckPanelAttachment">
 		<precondition>true</precondition>
 		<postcondition> Packages.MetaInformation.World.post_CheckPanelAttachment </postcondition>
-		<script>Packages.MetaInformation.World.getExecutionOutcome();</script>
 	</task>
   <task id="CheckWirings">
 		<precondition>true</precondition>
 		<postcondition> Packages.MetaInformation.World.post_CheckWirings </postcondition>
-		<script>Packages.MetaInformation.World.getExecutionOutcome();</script>
 	</task>
   <task id="CheckControlSwitch">
 		<precondition>true</precondition>
 		<postcondition> Packages.MetaInformation.World.post_CheckControlSwitch </postcondition>
-		<script>Packages.MetaInformation.World.getExecutionOutcome();</script>
 	</task>
   <task id="CheckCascadingCells">
 		<precondition>true</precondition>
 		<postcondition> Packages.MetaInformation.World.post_CheckCascadingCells </postcondition>
-		<script>Packages.MetaInformation.World.getExecutionOutcome();</script>
 	</task>
   <task id="CheckOutputCurrent">
 		<precondition>true</precondition>
 		<postcondition> Packages.MetaInformation.World.post_CheckOutputCurrent </postcondition>
-		<script>Packages.MetaInformation.World.getExecutionOutcome();</script>
 	</task>
   
 	<script init="true">

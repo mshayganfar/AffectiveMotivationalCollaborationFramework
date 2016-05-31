@@ -4,7 +4,6 @@
 
   <task id="InstallSolarPanel">
 		<precondition>true</precondition>
-		<postcondition> post_PrepareControlSwitch &amp;&amp; post_RemoveCover &amp;&amp; post_ConnectAdaptor &amp;&amp; post_PlacePanel &amp;&amp; post_WeldPanel &amp;&amp; post_CheckPanelAttachment &amp;&amp; post_CheckWirings &amp;&amp; post_CheckControlSwitch &amp;&amp; post_CheckCascadingCells &amp;&amp; post_CheckOutputCurrent </postcondition>
     <subtasks id="recipeA" ordered="true">
       <step name="prepare" task ="PreparePanel"/>
       <step name="fix" task="FixPanel"/>
@@ -14,7 +13,6 @@
 
   <task id="PreparePanel">
 		<precondition>true</precondition>
-		<postcondition> post_PrepareControlSwitch &amp;&amp; post_RemoveCover &amp;&amp; post_ConnectAdaptor</postcondition>
     <subtasks id="recipeB" ordered="false">
       <step name="switch" task ="PrepareControlSwitch"/>
       <step name="connector" task="PrepareConnector"/>
@@ -25,7 +23,6 @@
 
   <task id="FixPanel">
 		<precondition>true</precondition>
-		<postcondition> post_PlacePanel &amp;&amp; post_WeldPanel </postcondition>
     <subtasks id="recipeC" ordered="true">
       <step name="place" task ="PlacePanel"/>
       <step name="weld" task="WeldPanel"/>
@@ -37,7 +34,6 @@
 
   <task id="CheckPanel">
 		<precondition>true</precondition>
-		<postcondition> post_CheckPanelAttachment &amp;&amp; post_CheckWirings &amp;&amp; post_CheckControlSwitch &amp;&amp; post_CheckCascadingCells &amp;&amp; post_CheckOutputCurrent </postcondition>
     <subtasks id="recipeD" ordered="true">
       <step name="hardware" task ="CheckHardware"/>
       <step name="function" task="CheckFunction"/>
@@ -46,7 +42,6 @@
 
   <task id="PrepareConnector">
 		<precondition>true</precondition>
-		<postcondition> post_RemoveCover &amp;&amp; post_ConnectAdaptor </postcondition>
     <subtasks id="recipeF" ordered="true">
       <step name="cover" task ="RemoveCover"/>
       <step name="adaptor" task ="ConnectAdaptor"/>
@@ -58,7 +53,6 @@
 
   <task id="CheckHardware">
 		<precondition>true</precondition>
-		<postcondition> post_CheckPanelAttachment &amp;&amp; post_CheckWirings </postcondition>
     <subtasks id="recipeI" ordered="true">
       <step name="panelattachment" task ="CheckPanelAttachment"/>
       <step name="wirings" task ="CheckWirings"/>
@@ -70,7 +64,6 @@
 
   <task id="CheckFunction">
 		<precondition>true</precondition>
-		<postcondition> post_CheckControlSwitch &amp;&amp; post_CheckCascadingCells &amp;&amp; post_CheckOutputCurrent </postcondition>
     <subtasks id="recipeJ" ordered="true">
       <step name="controlswitch" task ="CheckControlSwitch"/>
       <step name="cascadingcells" task ="CheckCascadingCells"/>
@@ -84,44 +77,34 @@
 
   <task id="PrepareControlSwitch">
 		<precondition>true</precondition>
-		<postcondition> Packages.MetaInformation.World.post_PrepareControlSwitch </postcondition>
 	</task>
   <task id="RemoveCover">
 		<precondition>true</precondition>
-		<postcondition> Packages.MetaInformation.World.post_RemoveCover </postcondition>
 	</task>
   <task id="ConnectAdaptor">
 		<precondition>true</precondition>
-		<postcondition> Packages.MetaInformation.World.post_ConnectAdaptor </postcondition>
 	</task>
   <task id="PlacePanel">
 		<precondition>true</precondition>
-		<postcondition> Packages.MetaInformation.World.post_PlacePanel </postcondition>
 	</task>
   <task id="WeldPanel">
 		<input name="tool" type="Packages.MetaInformation.World.WeldingTool" />
 		<precondition>true</precondition>
-		<postcondition> Packages.MetaInformation.World.post_WeldPanel </postcondition>
 	</task>
   <task id="CheckPanelAttachment">
 		<precondition>true</precondition>
-		<postcondition> Packages.MetaInformation.World.post_CheckPanelAttachment </postcondition>
 	</task>
   <task id="CheckWirings">
 		<precondition>true</precondition>
-		<postcondition> Packages.MetaInformation.World.post_CheckWirings </postcondition>
 	</task>
   <task id="CheckControlSwitch">
 		<precondition>true</precondition>
-		<postcondition> Packages.MetaInformation.World.post_CheckControlSwitch </postcondition>
 	</task>
   <task id="CheckCascadingCells">
 		<precondition>true</precondition>
-		<postcondition> Packages.MetaInformation.World.post_CheckCascadingCells </postcondition>
 	</task>
   <task id="CheckOutputCurrent">
 		<precondition>true</precondition>
-		<postcondition> Packages.MetaInformation.World.post_CheckOutputCurrent </postcondition>
 	</task>
   
 	<script init="true">
