@@ -63,23 +63,27 @@ public class Collaboration extends Mechanisms{
 	
 	private Interaction interaction;
 	
-	private AMCAgent agent;
-	private AMCUser user;
+	private AMCAgent amc_agent;
+	private AMCUser amc_user;
+	private User user;
 	private Plan actualFocus;
 	
 	public Collaboration(String[] args) {
 		
-		agent = new AMCAgent("agent");
-		agent.setMax(1);
-		agent.init();
+		amc_agent = new AMCAgent("agent");
+		amc_agent.setMax(1);
+		amc_agent.init();
 		
-		user = new AMCUser("user");
+		user = new User("astronaut");
 		user.setEval(true); // Guarantees that grounding script will be evaluated.
-		user.init();
+		amc_user = new AMCUser("astronaut", user);
+		amc_user.setEval(true);
+		amc_user.init();
 		
-		interaction = new Interaction(agent, user,
+		interaction = new Interaction(amc_agent, user,
 				  args.length > 0 && args[0].length() > 0 ? args[0] : null);
 		interaction.getExternal().setEval(true);
+//		interaction.setOk(false); //This is to prevent saying OK before "Your turn."
 //		interaction.start(false);
 		disco = interaction.getDisco();
 		
@@ -94,11 +98,11 @@ public class Collaboration extends Mechanisms{
 	}
 	
 	public AMCAgent getAgent() {
-		return this.agent;
+		return this.amc_agent;
 	}
 	
 	public AMCUser getUser() {
-		return this.user;
+		return this.amc_user;
 	}
 	
 	public void prepareCollaborationMechanism(MentalProcesses mentalProcesses) {

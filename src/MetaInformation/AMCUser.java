@@ -1,14 +1,16 @@
 package MetaInformation;
 
-import edu.wpi.disco.User;
+import edu.wpi.disco.Actor;
+import edu.wpi.disco.Agenda;
+import edu.wpi.disco.Interaction;
 import edu.wpi.disco.plugin.AuthorizedPlugin;
 
-public class AMCUser extends User{
+public class AMCUser extends Actor{
 
 	MentalProcesses mentalProcesses;
 	
-	public AMCUser(String name) {
-		super(name);
+	public AMCUser(String name, Actor who) {
+		super(name, new Agenda(who));
 	}
 	
 	@Override
@@ -18,5 +20,11 @@ public class AMCUser extends User{
 	
 	public void prepareUser(MentalProcesses mentalProcesses) {
 		this.mentalProcesses = mentalProcesses;
+	}
+
+	@Override
+	protected boolean synchronizedRespond(Interaction interaction, boolean ok, boolean guess, boolean retry) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
