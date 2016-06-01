@@ -2,17 +2,16 @@ package MetaInformation;
 
 import edu.wpi.disco.Actor;
 import edu.wpi.disco.Agenda;
-import edu.wpi.disco.Agent;
 import edu.wpi.disco.Interaction;
 import edu.wpi.disco.plugin.AuthorizedPlugin;
 
-public class AMCAgent extends Agent{
+public class AMCAgent extends Actor{
 
 	MentalProcesses mentalProcesses;
 	
 	public AMCAgent(String name, Actor who) {
-//		super(name, new Agenda(who));
-		super(name);
+		super(name, new Agenda(who));
+//		super(name);
 	}
 	
 	public void prepareAgent(MentalProcesses mentalProcesses) {

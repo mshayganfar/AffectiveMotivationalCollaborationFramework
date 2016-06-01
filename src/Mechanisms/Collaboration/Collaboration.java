@@ -70,18 +70,18 @@ public class Collaboration extends Mechanisms{
 	
 	public Collaboration(String[] args) {
 		
-		agent     = new Agent("agent1");
-		amc_agent = new AMCAgent("agent2", agent);
+		agent     = new Agent("agent");
+		amc_agent = new AMCAgent("amc_agent", agent);
 //		amc_agent.setMax(1);
 		amc_agent.init();
 		
-		user = new User("astronaut1");
+		user = new User("astronaut");
 		user.setEval(true); // Guarantees that grounding script will be evaluated.
-		amc_user = new AMCUser("astronaut2", user);
+		amc_user = new AMCUser("amc_astronaut", user);
 		amc_user.setEval(true);
 		amc_user.init();
 		
-		interaction = new Interaction(amc_agent, user,
+		interaction = new Interaction(agent, user,
 				  args.length > 0 && args[0].length() > 0 ? args[0] : null);
 		interaction.getExternal().setEval(true);
 //		interaction.setOk(false); //This is to prevent saying OK before "Your turn."
