@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import Mechanisms.Action.DiscoActionsWrapper;
@@ -70,8 +71,8 @@ public class AffectiveMotivationalCollaborationFramework {
 		DiscoActionsWrapper discoWrapper;
 		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
 		Interaction interaction 	= collaboration.getInteraction();
-		AMCAgent agent 				= collaboration.getAgent();
-		AMCUser user 				= collaboration.getUser();
+		AMCAgent agent 				= collaboration.getAMCAgent();
+		AMCUser user 				= collaboration.getAMCUser();
 		
 		userEventItem = user.generateBest(interaction);
 		
@@ -86,6 +87,8 @@ public class AffectiveMotivationalCollaborationFramework {
 		}
 		
 		while (!topPlan.getStatus().equals(Status.DONE)) {
+//			List<Plan> mmm = topPlan.getLiveDescendants();
+//			System.out.println(topPlan.getLiveDescendants());
 			agentEventItem = agent.generateBest(interaction);
 			userEventItem  = user.generateBest(interaction);
 			if (agentEventItem == null) {
@@ -141,7 +144,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		goAgent();
 		
 //		collaboration.getInteraction().getConsole().test("test/ABC1.test");
-//		mentalProcesses.getCollaborationMechanism().getInteraction().getConsole().source("test/events-astronaut-robot.txt");
+		mentalProcesses.getCollaborationMechanism().getInteraction().getConsole().source("test/events-astronaut-robot.txt");
 		
 //		System.out.println(goalManagement.computeCostValue(eventGoal) + " and " + eventGoal.getLabel() + " and " + collaboration.getDisco().getFocus().getType());
 		

@@ -1,15 +1,17 @@
 package MetaInformation;
 
-import edu.wpi.cetask.Plan;
-import edu.wpi.cetask.TaskClass.Input;
+import edu.wpi.disco.Actor;
+import edu.wpi.disco.Agenda;
 import edu.wpi.disco.Agent;
+import edu.wpi.disco.Interaction;
 import edu.wpi.disco.plugin.AuthorizedPlugin;
 
 public class AMCAgent extends Agent{
 
 	MentalProcesses mentalProcesses;
 	
-	public AMCAgent(String name) {
+	public AMCAgent(String name, Actor who) {
+//		super(name, new Agenda(who));
 		super(name);
 	}
 	
@@ -21,13 +23,9 @@ public class AMCAgent extends Agent{
 	public void init () {
 		new AuthorizedPlugin(agenda, 225);
 	}
-	@Override
-	public boolean isDefinedSlot(Plan plan, Input input) {
-		return mentalProcesses.getCollaborationMechanism().isInputAvailable(plan, input);
-	}
 	
 	@Override
-	public Object getSlotValue(Plan plan, Input input) {
-		return mentalProcesses.getCollaborationMechanism().getInputValue(plan, input.getName());
+	protected boolean synchronizedRespond(Interaction interaction, boolean ok, boolean guess, boolean retry) {
+		throw new IllegalStateException();
 	}
 }

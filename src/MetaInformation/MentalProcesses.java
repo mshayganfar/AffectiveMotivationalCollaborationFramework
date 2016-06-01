@@ -48,8 +48,8 @@ public class MentalProcesses {
 		this.tom.prepareAppraisalsOfToM(this);
 		this.coping.prepareCopingMechanism(this);
 		this.action.prepareActionMechanism(this);
-		this.collaboration.getAgent().prepareAgent(this);
-		this.collaboration.getUser().prepareUser(this);
+		this.collaboration.getAMCAgent().prepareAgent(this);
+		this.collaboration.getAMCUser().prepareUser(this);
 		this.appraisal.prepareAppraisal(this);
 	}
 	

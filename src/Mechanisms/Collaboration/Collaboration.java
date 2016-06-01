@@ -8,7 +8,6 @@ import java.util.Map;
 
 import Mechanisms.Mechanisms;
 import Mechanisms.Action.DiscoActionsWrapper;
-import Mechanisms.Mechanisms.AGENT;
 import Mechanisms.ToM.ToM;
 import MentalState.Belief;
 import MentalState.Goal;
@@ -65,18 +64,20 @@ public class Collaboration extends Mechanisms{
 	
 	private AMCAgent amc_agent;
 	private AMCUser amc_user;
+	private Agent agent;
 	private User user;
 	private Plan actualFocus;
 	
 	public Collaboration(String[] args) {
 		
-		amc_agent = new AMCAgent("agent");
-		amc_agent.setMax(1);
+		agent     = new Agent("agent1");
+		amc_agent = new AMCAgent("agent2", agent);
+//		amc_agent.setMax(1);
 		amc_agent.init();
 		
-		user = new User("astronaut");
+		user = new User("astronaut1");
 		user.setEval(true); // Guarantees that grounding script will be evaluated.
-		amc_user = new AMCUser("astronaut", user);
+		amc_user = new AMCUser("astronaut2", user);
 		amc_user.setEval(true);
 		amc_user.init();
 		
@@ -97,11 +98,11 @@ public class Collaboration extends Mechanisms{
 		this.collaboration = this;
 	}
 	
-	public AMCAgent getAgent() {
+	public AMCAgent getAMCAgent() {
 		return this.amc_agent;
 	}
 	
-	public AMCUser getUser() {
+	public AMCUser getAMCUser() {
 		return this.amc_user;
 	}
 	

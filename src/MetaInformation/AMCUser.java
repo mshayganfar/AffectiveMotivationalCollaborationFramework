@@ -13,18 +13,17 @@ public class AMCUser extends Actor{
 		super(name, new Agenda(who));
 	}
 	
+	public void prepareUser(MentalProcesses mentalProcesses) {
+		this.mentalProcesses = mentalProcesses;
+	}
+	
 	@Override
 	public void init () {
 		new AuthorizedPlugin(agenda, 225);
 	}
 	
-	public void prepareUser(MentalProcesses mentalProcesses) {
-		this.mentalProcesses = mentalProcesses;
-	}
-
 	@Override
 	protected boolean synchronizedRespond(Interaction interaction, boolean ok, boolean guess, boolean retry) {
-		// TODO Auto-generated method stub
-		return false;
+		throw new IllegalStateException();
 	}
 }
