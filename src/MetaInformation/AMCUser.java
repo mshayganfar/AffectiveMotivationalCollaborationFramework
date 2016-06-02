@@ -21,9 +21,9 @@ public class AMCUser extends Actor{
 	public void init () {
 		new AuthorizedPlugin(agenda, 225);
 	}
-	
+
 	@Override
-	protected boolean synchronizedRespond(Interaction interaction, boolean ok, boolean guess, boolean retry) {
+	protected boolean synchronizedRespond(Interaction interaction, boolean ok, boolean guess) {
 		throw new IllegalStateException();
 	}
 }

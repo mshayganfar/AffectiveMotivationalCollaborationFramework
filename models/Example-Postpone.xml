@@ -1,0 +1,56 @@
+<taskModel about="urn:shayganfar.wpi.edu:models:Example-Postpone" 
+           xmlns="http://www.cs.wpi.edu/~rich/cetask/cea-2018-ext"
+           xmlns:disco="urn:disco.wpi.edu:Disco">
+
+  <task id="InstallSolarPanel">
+		<precondition>true</precondition>
+    <subtasks id="installSolarPanelRecipe" ordered="false">
+      <step name="prepare_panel" task ="PreparePanel"/>
+    </subtasks>
+  </task>
+
+  <task id="PreparePanel">
+		<precondition>true</precondition>
+    <subtasks id="preparePanelRecipe" ordered="true">
+      <step name="prepare_switch" task ="PrepareControlSwitch"/>
+      <step name="prepare_connector" task="PrepareConnector"/>
+
+      <binding slot="$prepare_switch.external" value="false"/>
+    </subtasks>
+  </task>
+
+  <task id="PrepareConnector">
+		<precondition>true</precondition>
+    <subtasks id="prepareConnectorRecipe" ordered="false">
+      <step name="remove_left" task ="RemoveLeftCover"/>
+      <step name="remove_right" task ="RemoveRightCover"/>
+      <step name="connect_adaptor" task ="ConnectAdaptor" requires ="remove_left remove_right"/>
+
+      <binding slot="$remove_left.external" value="true"/>
+      <binding slot="$remove_right.external" value="false"/>
+      <binding slot="$connect_adaptor.external" value="false"/>
+    </subtasks>
+  </task>
+
+  <task id="PrepareControlSwitch">
+		<precondition>true</precondition>
+	</task>
+  <task id="RemoveLeftCover">
+		<precondition>true</precondition>
+	</task>
+  <task id="RemoveRightCover">
+		<precondition>true</precondition>
+	</task>
+  <task id="ConnectAdaptor">
+		<precondition>true</precondition>
+	</task>
+  
+	<script init="true">
+		// function WeldingTool (name) { this.name = name; }
+
+		// WeldingTool.prototype.toString = function () { return this.name; }
+
+		// var MyWeldingTool = new WeldingTool("MyWeldingTool");
+		// var MyWeldingTool = Packages.MetaInformation.World.WeldingTool.MY_WELDING_TOOL; // Based on the Java code.
+	</script>
+</taskModel>
