@@ -84,8 +84,8 @@ public class GoalTree {
 		secondNodeAncestor = leveledUpNodes.get(1);
 		
 		while (!firstNodeAncestor.getNodeTaskClass().equals(secondNodeAncestor.getNodeTaskClass())) {
-			firstNodeAncestor  = getParentNode(treeNodes, leveledUpNodes.get(0));
-			secondNodeAncestor = getParentNode(treeNodes, leveledUpNodes.get(1));
+			firstNodeAncestor  = getParentNode(treeNodes, firstNodeAncestor);
+			secondNodeAncestor = getParentNode(treeNodes, secondNodeAncestor);
 			if ((firstNodeAncestor == null) || (secondNodeAncestor == null)) {
 				return null;
 			}

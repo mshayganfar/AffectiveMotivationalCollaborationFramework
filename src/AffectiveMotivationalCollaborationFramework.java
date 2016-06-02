@@ -88,7 +88,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		while (!topPlan.getStatus().equals(Status.DONE)) {
 //			List<Plan> mmm = topPlan.getLiveDescendants();
-//			System.out.println(topPlan.getLiveDescendants());
+			System.out.println(topPlan.getLiveDescendants());
 			agentEventItem = agent.generateBest(interaction);
 			userEventItem  = user.generateBest(interaction);
 			if ((agentEventItem == null) || (userEventItem != null)) {

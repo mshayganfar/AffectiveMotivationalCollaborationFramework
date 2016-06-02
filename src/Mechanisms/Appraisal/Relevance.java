@@ -7,6 +7,7 @@ import Mechanisms.Mechanisms;
 import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import MentalState.Belief;
 import MentalState.Goal;
+import MentalState.Motive;
 import MetaInformation.GoalTree;
 import MetaInformation.MentalProcesses;
 import MetaInformation.Node;
@@ -154,7 +155,7 @@ public class Relevance extends Mechanisms {
 	private double getSaliencyMagnitude(Goal goal) {
 		
 		int knownPreconditionValue  = (collaboration.getPreconditionApplicability(goal.getPlan()) != null) ? 1 : 0;		
-		int knownPostconditionValue = (!collaboration.getPostConditionStatus(goal.getPlan()).equals(GOAL_STATUS.UNKNOWN)) ? 1 : 0;
+		int knownPostconditionValue = (collaboration.getPostConditionStatus(goal.getPlan()).equals(GOAL_STATUS.DONE)) ? 1 : 0;
 		int knownPredecessorGoalsCount  = 0;
 		int knownContributingGoalsCount = 0;
 		
@@ -179,8 +180,9 @@ public class Relevance extends Mechanisms {
 		int n = knownPreconditionValue + knownPostconditionValue + knownPredecessorGoalsCount + knownContributingGoalsCount;
 		int d = totalPreconditionValue + totalPostconditionValue + totalPredecessorGoalsCount + totalContributingGoalsCount;
 		
-		double urgency    = goal.getActiveMotive().getMotiveUrgency();
-		double importance = goal.getActiveMotive().getMotiveImportance();
+		Motive tempMotive = new Motive(goal, false);
+		double urgency    = tempMotive.getMotiveIntensity();
+		double importance = tempMotive.getMotiveImportance();
 		
 		return (((double)n/d) + urgency + importance);
 	}

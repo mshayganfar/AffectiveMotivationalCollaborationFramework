@@ -323,8 +323,10 @@ public class Coping {
 		Disco disco = collaboration.getDisco();
 		
 		for(Plan alternativePlan : disco.getTop(disco.getFocus()).getLiveDescendants()) {
-			Goal alternativeGoal = new Goal(mentalProcesses, alternativePlan, true);
-			costValues.put(alternativeGoal, goalManagement.computeCostValue(alternativeGoal));
+			if (alternativePlan.isPrimitive()) {
+				Goal alternativeGoal = new Goal(mentalProcesses, alternativePlan, true);
+				costValues.put(alternativeGoal, goalManagement.computeCostValue(alternativeGoal));
+			}
 		}
 		
 		double min = 10.0;

@@ -90,6 +90,7 @@ public class Collaboration extends Mechanisms{
 		
 		disco.load("models/Events.xml");
 //		taskModel = disco.load("models/AstronautRobot.xml");
+//		taskModel = disco.load("models/Example-Postponement.xml");
 		taskModel = disco.load("models/Example-GoalManagement.xml");
 		
 		prevFocus = disco.getFocus();
@@ -474,7 +475,7 @@ public class Collaboration extends Mechanisms{
 	
 	public List<Plan> getContributingPlans(Goal goal) {
 		
-		Plan plan = goal.getParentPlan();
+		Plan plan = goal.getPlan();
 		clearContributingPlans();
 		extractContributingPlans(plan);
 		return this.contributingPlans;
@@ -622,10 +623,10 @@ public class Collaboration extends Mechanisms{
 		
 		recognizedGoal.addGoalToMentalState();
 		
-		Belief belief1 = new Belief(recognizedGoal);
-		Belief belief2 = new Belief(recognizedGoal);
-		Belief belief3 = new Belief(recognizedGoal);
-		Motive motive  = new Motive(recognizedGoal);
+//		Belief belief1 = new Belief(recognizedGoal);
+//		Belief belief2 = new Belief(recognizedGoal);
+//		Belief belief3 = new Belief(recognizedGoal);
+		Motive motive  = new Motive(recognizedGoal, true);
 	}
 	
 	public void processUser(Plan eventPlan, double valenceValue, Boolean postconditionStatus) {

@@ -20,7 +20,7 @@ public class Motive {
 	private double motiveUrgency;
 	private double motiveInsistence;
 	
-	public Motive (Goal goal) {
+	public Motive (Goal goal, boolean addedToMentalState) {
 		this.goal  = goal;
 		this.label = goal.getPlan().getGoal().getType().toString();
 		this.motiveType   = MOTIVE_TYPE.INTERNAL_DEFAULT;
@@ -30,7 +30,8 @@ public class Motive {
 		this.motiveUrgency    = computeMotiveUrgency();
 //		this.motiveInsistence = computeMotiveInsistence();
 		this.goal.addMotives(this);
-		MentalState.getInstance().addMotive(this);
+		if (addedToMentalState)
+			MentalState.getInstance().addMotive(this);
 	}
 	
 	public Motive (Goal goal, MOTIVE_TYPE motiveType, double motiveIntensity) {
@@ -95,17 +96,17 @@ public class Motive {
 	
 	public MOTIVE_INTENSITY getSymbolicMotiveIntensity() {
 		
-		if ((motiveIntensity >= 0.67) && (motiveIntensity <= 1.0))
+		if ((motiveIntensity >= 0.80) && (motiveIntensity <= 1.0))
 			return MOTIVE_INTENSITY.HIGH_POSITIVE;
-		else if ((motiveIntensity < 0.67) && (motiveIntensity >= 0.34))
+		else if ((motiveIntensity < 0.80) && (motiveIntensity >= 0.34))
 			return MOTIVE_INTENSITY.MEDIUM_POSITIVE;
 		else if ((motiveIntensity >= 0.0) && (motiveIntensity < 0.34))
 			return MOTIVE_INTENSITY.LOW_POSITIVE;
 		else if ((motiveIntensity < 0.0) && (motiveIntensity > -0.34))
 			return MOTIVE_INTENSITY.LOW_NEGATIVE;
-		else if ((motiveIntensity > -0.67) && (motiveIntensity <= -0.34))
+		else if ((motiveIntensity > -0.80) && (motiveIntensity <= -0.34))
 			return MOTIVE_INTENSITY.MEDIUM_NEGATIVE;
-		if ((motiveIntensity <= -0.67) && (motiveIntensity >= -1.0))
+		if ((motiveIntensity <= -0.80) && (motiveIntensity >= -1.0))
 			return MOTIVE_INTENSITY.HIGH_NEGATIVE;
 		else
 			throw new IllegalArgumentException("Illegal motive intensity value:" + motiveIntensity);

@@ -118,7 +118,8 @@ public class Motivation extends Mechanisms {
 		
 		if (humanEmotion.equals(EMOTION_INSTANCE.ANGER) || 
 				humanEmotion.equals(EMOTION_INSTANCE.WORRY) ||
-				humanEmotion.equals(EMOTION_INSTANCE.FRUSTRATION)) {
+				humanEmotion.equals(EMOTION_INSTANCE.FRUSTRATION) ||
+				humanEmotion.equals(EMOTION_INSTANCE.GUILT)) {
 			double firstGradient  = 0.5;
 			double secondGradient = 12.0;
 			firstSigmoidValue  = (double)1.0 / (1 + Math.exp((firstGradient - valence) * (1.05 - successProbability)));
