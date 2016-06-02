@@ -1,5 +1,4 @@
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import Mechanisms.Action.DiscoActionsWrapper;
@@ -88,11 +87,11 @@ public class AffectiveMotivationalCollaborationFramework {
 		}
 		
 		while (!topPlan.getStatus().equals(Status.DONE)) {
-			List<Plan> mmm = topPlan.getLiveDescendants();
-			System.out.println(topPlan.getLiveDescendants());
+//			List<Plan> mmm = topPlan.getLiveDescendants();
+//			System.out.println(topPlan.getLiveDescendants());
 			agentEventItem = agent.generateBest(interaction);
 			userEventItem  = user.generateBest(interaction);
-			if (agentEventItem == null) {
+			if ((agentEventItem == null) || (userEventItem != null)) {
 				collaboration.initializeAllInputs(userEventItem.contributes, inputValues);
 				for (Plan plan : collaboration.getPathToTop(userEventItem.contributes)) {
 					if (collaboration.isAgentsTurn(plan)) {
@@ -105,17 +104,11 @@ public class AffectiveMotivationalCollaborationFramework {
 				return;
 			}
 			collaboration.initializeAllInputs(agentEventItem.contributes, inputValues);
-//			System.out.println("IMPORTANT >>>>>>>>>>>>>>>>>>" + agentEventItem.contributes.getGoal().getType());
 			for (Plan plan : collaboration.getPathToTop(agentEventItem.contributes)) {
-//				System.out.println("User: " + userEventItem);
-//				System.out.println(plan.getGoal().getType());
-//				System.out.println(plan.getGoal().getType() + " >>>>>>>>>>> Responsible: " + collaboration.getResponsibleAgent(plan));
-				
 				if (collaboration.isUsersTurn(userEventItem, plan)) {
 					System.out.println("Waiting for you: ");
 					return;
 				}
-				
 				collaboration.setActualFocus(plan);
 				collaboration.processAgent(plan, 0.0);
 				collaboration.initializeAllInputs(plan, inputValues);
@@ -139,7 +132,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		// Input values should be manually added to this list in order!
 		//ArrayList<Object> inputValues = new ArrayList<Object>(Arrays.asList(WeldingTool.MY_WELDING_TOOL));
 		inputValues = new HashMap<String, Object>();
-//		inputValues.put("tool", WeldingTool.MY_WELDING_TOOL);
+		inputValues.put("WeldPaneltool", WeldingTool.MY_WELDING_TOOL);
 		inputValues.put("PickUpTooltool", RemovingCoverTool.USER_TOOL);
 		inputValues.put("RemoveLeftCovertool", RemovingCoverTool.USER_TOOL);
 		inputValues.put("RemoveRightCovertool", RemovingCoverTool.AGENT_TOOL);
