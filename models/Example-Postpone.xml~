@@ -34,7 +34,7 @@
   <task id="RemoveLeftCover">
 		<precondition>true</precondition>
     <subtasks id="removeLeftCoverRecipe">
-    	<step name="pickup_tool" task="_PickUpTool"/>
+    	<step name="pickup_tool" task="PickUpTool"/>
     	<step name="remove_left_prim" task="RemoveLeftCoverPrimitive"/>
 
     	<binding slot="$remove_left_prim.tool" value="$pickup_tool.tool"/>
@@ -42,20 +42,19 @@
     </subtasks>
   </task>
 
-  <task id="_PickUpTool">
+  <task id="PickUpTool">
     <input name="tool" type="Packages.MetaInformation.World.RemovingCoverTool"/>
 		<precondition>true</precondition>
     
-    <subtasks id="pickUpToolRecipe">
+    <subtasks id="_pickUpToolRecipe">
       <step name="pickup_tool_prim" task="PickUpToolPrimitive"/>
 
-      <!-- <binding slot="$pickup_tool_prim.tool" value="userTool"/> -->
       <binding slot="$pickup_tool_prim.tool" value="Packages.MetaInformation.World.RemovingCoverTool.USER_TOOL"/>
       <binding slot="$this.tool" value="$pickup_tool_prim.tool"/>
       <binding slot="$pickup_tool_prim.external" value="true"/>
     </subtasks>
 
-    <subtasks id="retryPickUpToolRecipe">
+    <subtasks id="_retryPickUpToolRecipe">
       <step name="hand_off_tool" task="HandOffTool"/>
       <step name="pickup_tool_prim" task="PickUpToolPrimitive"/>
 

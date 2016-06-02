@@ -1,4 +1,4 @@
-<taskModel about="urn:shayganfar.wpi.edu:models:Example-Postpone" 
+<taskModel about="urn:shayganfar.wpi.edu:models:Example-Postponement" 
            xmlns="http://www.cs.wpi.edu/~rich/cetask/cea-2018-ext"
            xmlns:disco="urn:disco.wpi.edu:Disco">
 
@@ -34,7 +34,7 @@
   <task id="RemoveLeftCover">
 		<precondition>true</precondition>
     <subtasks id="removeLeftCoverRecipe">
-    	<step name="pickup_tool" task="_PickUpTool"/>
+    	<step name="pickup_tool" task="PickUpTool"/>
     	<step name="remove_left_prim" task="RemoveLeftCoverPrimitive"/>
 
     	<binding slot="$remove_left_prim.tool" value="$pickup_tool.tool"/>
@@ -42,11 +42,11 @@
     </subtasks>
   </task>
 
-  <task id="_PickUpTool">
+  <task id="PickUpTool">
     <input name="tool" type="Packages.MetaInformation.World.RemovingCoverTool"/>
 		<precondition>true</precondition>
     
-    <subtasks id="pickUpToolRecipe">
+    <subtasks id="_pickUpToolRecipe">
       <step name="pickup_tool_prim" task="PickUpToolPrimitive"/>
 
       <binding slot="$pickup_tool_prim.tool" value="Packages.MetaInformation.World.RemovingCoverTool.USER_TOOL"/>
@@ -54,7 +54,7 @@
       <binding slot="$pickup_tool_prim.external" value="true"/>
     </subtasks>
 
-    <subtasks id="retryPickUpToolRecipe">
+    <subtasks id="_retryPickUpToolRecipe">
       <step name="hand_off_tool" task="HandOffTool"/>
       <step name="pickup_tool_prim" task="PickUpToolPrimitive"/>
 

@@ -90,7 +90,7 @@ public class Collaboration extends Mechanisms{
 		
 		disco.load("models/Events.xml");
 //		taskModel = disco.load("models/AstronautRobot.xml");
-		taskModel = disco.load("models/Example-Postpone.xml");
+		taskModel = disco.load("models/Example-GoalManagement.xml");
 		
 		prevFocus = disco.getFocus();
 		

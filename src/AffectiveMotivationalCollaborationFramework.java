@@ -88,8 +88,8 @@ public class AffectiveMotivationalCollaborationFramework {
 		}
 		
 		while (!topPlan.getStatus().equals(Status.DONE)) {
-//			List<Plan> mmm = topPlan.getLiveDescendants();
-//			System.out.println(topPlan.getLiveDescendants());
+			List<Plan> mmm = topPlan.getLiveDescendants();
+			System.out.println(topPlan.getLiveDescendants());
 			agentEventItem = agent.generateBest(interaction);
 			userEventItem  = user.generateBest(interaction);
 			if (agentEventItem == null) {
@@ -140,7 +140,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		//ArrayList<Object> inputValues = new ArrayList<Object>(Arrays.asList(WeldingTool.MY_WELDING_TOOL));
 		inputValues = new HashMap<String, Object>();
 //		inputValues.put("tool", WeldingTool.MY_WELDING_TOOL);
-		inputValues.put("_PickUpTooltool", RemovingCoverTool.USER_TOOL);
+		inputValues.put("PickUpTooltool", RemovingCoverTool.USER_TOOL);
 		inputValues.put("RemoveLeftCovertool", RemovingCoverTool.USER_TOOL);
 		inputValues.put("RemoveRightCovertool", RemovingCoverTool.AGENT_TOOL);
 		inputValues.put("PickUpToolPrimitivetool", RemovingCoverTool.USER_TOOL);
