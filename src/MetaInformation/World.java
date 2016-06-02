@@ -3,6 +3,7 @@ package MetaInformation;
 public class World {
 	
 	public static enum WeldingTool { MY_WELDING_TOOL }
+	public static enum RemovingCoverTool { USER_TOOL, AGENT_TOOL }
 	
 	private static MentalProcesses mentalProcesses;
 	

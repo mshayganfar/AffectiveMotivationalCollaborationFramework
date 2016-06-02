@@ -777,9 +777,11 @@ public class Collaboration extends Mechanisms{
 		for (Plan plan : livePlans) {
 			for (Input input : plan.getType().getDeclaredInputs()) {
 				if (!plan.getGoal().getType().toString().equals("Accept")) {
-					setInputValue(getInputKeyValue(plan, input.getName()), inputValues.get(input.getName()));
-					plan.setSlotValue(input.getName(), inputValues.get(input.getName()));
-					System.out.println("Goal: " + plan.getGoal().getType() + " , Input Name: " + input.getName() + " , Input Value: " + inputValues.get(input.getName()));
+					System.out.println(plan.getGoal().getType() + input.getName() + " , " + inputValues.get(plan.getGoal().getType() + input.getName()));
+					setInputValue(getInputKeyValue(plan, input.getName()), inputValues.get(plan.getGoal().getType() + input.getName()));
+//					setInputValue(getInputKeyValue(plan, input.getName()), inputValues.get(input.getName()));
+					plan.setSlotValue(input.getName(), inputValues.get(plan.getGoal().getType() + input.getName()));
+					System.out.println("Goal: " + plan.getGoal().getType() + " , Input Name: " + input.getName() + " , Input Value: " + inputValues.get(plan.getGoal().getType() + input.getName()));
 				}
 			}
 		}

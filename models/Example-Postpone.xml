@@ -26,21 +26,72 @@
       <step name="remove_right" task ="RemoveRightCover"/>
       <step name="connect_adaptor" task ="ConnectAdaptor" requires ="remove_left remove_right"/>
 
-      <binding slot="$remove_left.external" value="true"/>
+      <!-- <binding slot="$remove_left.external" value="true"/> -->
       <binding slot="$remove_right.external" value="false"/>
       <binding slot="$connect_adaptor.external" value="false"/>
     </subtasks>
   </task>
 
+  <task id="RemoveLeftCover">
+		<input name="tool" type="Packages.MetaInformation.World.RemovingCoverTool"/>
+		<precondition>true</precondition>
+    <subtasks id="removeLeftCoverRecipe">
+    	<step name="pickup_tool" task="PickUpTool"/>
+    	<step name="remove_left_prim" task="RemoveLeftCoverPrimitive"/>
+
+    	<binding slot="$remove_left_prim.tool" value="$pickup_tool.tool"/>
+    	<binding slot="$remove_left_prim.external" value="true"/>
+    </subtasks>
+  </task>
+
+  <task id="PickUpTool">
+    <input name="tool" type="Packages.MetaInformation.World.RemovingCoverTool"/>
+		<precondition>true</precondition>
+    
+    <subtasks id="pickUpToolRecipe">
+      <step name="pickup_tool_prim" task="PickUpToolPrimitive"/>
+
+      <binding slot="$pickup_tool_prim.tool" value="userTool"/>
+      <binding slot="$this.tool" value="$pickup_tool_prim.tool"/>
+      <binding slot="$pickup_tool_prim.external" value="true"/>
+    </subtasks>
+
+    <subtasks id="retryPickUpToolRecipe">
+      <step name="hand_off_tool" task="HandOffTool"/>
+      <step name="pickup_tool_prim" task="PickUpToolPrimitive"/>
+
+      <binding slot="$hand_off_tool.tool" value="$this.tool"/>
+      <binding slot="$hand_off_tool.external" value="false"/>
+      <binding slot="$pickup_tool_prim.tool" value="$this.tool"/>
+      <binding slot="$pickup_tool_prim.external" value="true"/>
+    </subtasks>
+
+  </task>
+
+  <task id="PickUpToolPrimitive">
+    <input name="tool" type="Packages.MetaInformation.World.RemovingCoverTool"/>
+		<precondition>true</precondition>
+  </task>
+
+  <task id="RemoveLeftCoverPrimitive">
+    <input name="tool" type="Packages.MetaInformation.World.RemovingCoverTool"/>
+		<precondition>true</precondition>
+  </task>
+
+  <task id="HandOffTool">
+    <input name="tool" type="Packages.MetaInformation.World.RemovingCoverTool"/>
+		<precondition>true</precondition>
+  </task>
+
   <task id="PrepareControlSwitch">
 		<precondition>true</precondition>
 	</task>
-  <task id="RemoveLeftCover">
-		<precondition>true</precondition>
-	</task>
+
   <task id="RemoveRightCover">
+		<input name="tool" type="Packages.MetaInformation.World.RemovingCoverTool"/>
 		<precondition>true</precondition>
 	</task>
+
   <task id="ConnectAdaptor">
 		<precondition>true</precondition>
 	</task>
@@ -52,5 +103,13 @@
 
 		// var MyWeldingTool = new WeldingTool("MyWeldingTool");
 		// var MyWeldingTool = Packages.MetaInformation.World.WeldingTool.MY_WELDING_TOOL; // Based on the Java code.
+
+
+    // function Tool (name) { this.name = name; }
+
+    // Tool.prototype.toString = function () { return this.name; }
+
+    // var userTool = new Tool("userTool");
+    // var agentTool = new Tool("agentTool");
 	</script>
 </taskModel>

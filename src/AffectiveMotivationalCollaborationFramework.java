@@ -10,6 +10,7 @@ import MetaInformation.AMCAgent;
 import MetaInformation.AMCUser;
 import MetaInformation.MentalProcesses;
 import MetaInformation.World;
+import MetaInformation.World.RemovingCoverTool;
 import MetaInformation.World.WeldingTool;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.Plan.Status;
@@ -99,7 +100,7 @@ public class AffectiveMotivationalCollaborationFramework {
 						collaboration.processAgent(plan, 0.0);
 						collaboration.initializeAllInputs(plan, inputValues);
 					}
-				}				
+				}
 				System.out.println("Waiting for you: ");
 				return;
 			}
@@ -138,7 +139,10 @@ public class AffectiveMotivationalCollaborationFramework {
 		// Input values should be manually added to this list in order!
 		//ArrayList<Object> inputValues = new ArrayList<Object>(Arrays.asList(WeldingTool.MY_WELDING_TOOL));
 		inputValues = new HashMap<String, Object>();
-		inputValues.put("tool", WeldingTool.MY_WELDING_TOOL);
+//		inputValues.put("tool", WeldingTool.MY_WELDING_TOOL);
+		inputValues.put("PickUpTooltool", RemovingCoverTool.USER_TOOL);
+		inputValues.put("RemoveLeftCovertool", RemovingCoverTool.USER_TOOL);
+		inputValues.put("RemoveRightCovertool", RemovingCoverTool.AGENT_TOOL);
 		mentalProcesses.getCollaborationMechanism().initializeAllInputs(topPlan, inputValues);
 		
 		goAgent();
