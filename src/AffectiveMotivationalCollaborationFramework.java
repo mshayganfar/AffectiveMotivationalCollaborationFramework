@@ -140,9 +140,12 @@ public class AffectiveMotivationalCollaborationFramework {
 		//ArrayList<Object> inputValues = new ArrayList<Object>(Arrays.asList(WeldingTool.MY_WELDING_TOOL));
 		inputValues = new HashMap<String, Object>();
 //		inputValues.put("tool", WeldingTool.MY_WELDING_TOOL);
-		inputValues.put("PickUpTooltool", RemovingCoverTool.USER_TOOL);
+		inputValues.put("_PickUpTooltool", RemovingCoverTool.USER_TOOL);
 		inputValues.put("RemoveLeftCovertool", RemovingCoverTool.USER_TOOL);
 		inputValues.put("RemoveRightCovertool", RemovingCoverTool.AGENT_TOOL);
+		inputValues.put("PickUpToolPrimitivetool", RemovingCoverTool.USER_TOOL);
+		inputValues.put("RemoveLeftCoverPrimitivetool", RemovingCoverTool.USER_TOOL);
+		inputValues.put("HandOffTooltool", RemovingCoverTool.AGENT_TOOL);
 		mentalProcesses.getCollaborationMechanism().initializeAllInputs(topPlan, inputValues);
 		
 		goAgent();

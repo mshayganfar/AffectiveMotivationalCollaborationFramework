@@ -26,15 +26,17 @@
       <step name="remove_right" task ="RemoveRightCover"/>
       <step name="connect_adaptor" task ="ConnectAdaptor" requires ="remove_left remove_right"/>
 
+      <!-- <binding slot="$remove_left.external" value="true"/> -->
       <binding slot="$remove_right.external" value="false"/>
       <binding slot="$connect_adaptor.external" value="false"/>
     </subtasks>
   </task>
 
-  <task id="RemoveLeftCover">
+  <task id="_RemoveLeftCover">
+		<input name="tool" type="Packages.MetaInformation.World.RemovingCoverTool"/>
 		<precondition>true</precondition>
     <subtasks id="removeLeftCoverRecipe">
-    	<step name="pickup_tool" task="_PickUpTool"/>
+    	<step name="pickup_tool" task="PickUpTool"/>
     	<step name="remove_left_prim" task="RemoveLeftCoverPrimitive"/>
 
     	<binding slot="$remove_left_prim.tool" value="$pickup_tool.tool"/>
@@ -42,7 +44,7 @@
     </subtasks>
   </task>
 
-  <task id="_PickUpTool">
+  <task id="PickUpTool">
     <input name="tool" type="Packages.MetaInformation.World.RemovingCoverTool"/>
 		<precondition>true</precondition>
     
@@ -82,12 +84,12 @@
 		<precondition>true</precondition>
   </task>
 
-  <task id="RemoveRightCover">
-		<input name="tool" type="Packages.MetaInformation.World.RemovingCoverTool"/>
+  <task id="PrepareControlSwitch">
 		<precondition>true</precondition>
 	</task>
 
-  <task id="PrepareControlSwitch">
+  <task id="RemoveRightCover">
+		<input name="tool" type="Packages.MetaInformation.World.RemovingCoverTool"/>
 		<precondition>true</precondition>
 	</task>
 
@@ -96,6 +98,14 @@
 	</task>
   
 	<script init="true">
+		// function WeldingTool (name) { this.name = name; }
+
+		// WeldingTool.prototype.toString = function () { return this.name; }
+
+		// var MyWeldingTool = new WeldingTool("MyWeldingTool");
+		// var MyWeldingTool = Packages.MetaInformation.World.WeldingTool.MY_WELDING_TOOL; // Based on the Java code.
+
+
     // function Tool (name) { this.name = name; }
 
     // Tool.prototype.toString = function () { return this.name; }
