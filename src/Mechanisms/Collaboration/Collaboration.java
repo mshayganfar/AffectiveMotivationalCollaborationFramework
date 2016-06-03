@@ -83,7 +83,7 @@ public class Collaboration extends Mechanisms{
 		amc_user.setEval(true);
 		amc_user.init();
 		
-		interaction = new Interaction(agent, user,
+		interaction = new Interaction(amc_agent, user,
 				  args.length > 0 && args[0].length() > 0 ? args[0] : null);
 		interaction.getExternal().setEval(true);
 //		interaction.setOk(false); //This is to prevent saying OK before "Your turn."
@@ -92,8 +92,8 @@ public class Collaboration extends Mechanisms{
 		
 		disco.load("models/Events.xml");
 //		taskModel = disco.load("models/AstronautRobot.xml");
-//		taskModel = disco.load("models/Example-Postponement.xml");
-		taskModel = disco.load("models/Example-GoalManagement.xml");
+		taskModel = disco.load("models/Example-Postponement.xml");
+//		taskModel = disco.load("models/Example-GoalManagement.xml");
 		
 		prevFocus = disco.getFocus();
 		

@@ -12,4 +12,4 @@ RemoveLeftCoverPrimitive@difficulty = DIFFICULT
 RemoveRightCover@difficulty = NORMAL
 ConnectAdaptor@difficulty = DIFFICULT
 
-TakeOutCable@retry = true
+# removeLeftCoverRecipe1@authorized = true

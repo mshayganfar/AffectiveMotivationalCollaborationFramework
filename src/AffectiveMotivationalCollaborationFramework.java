@@ -96,7 +96,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		}
 		
 		while (!topPlan.getStatus().equals(Status.DONE)) {
-			agentEventItem = agent.generateBest(interaction);
+			agentEventItem = agent.generateBest(interaction, true);
 			userEventItem  = user.generateBest(interaction);
 			if ((agentEventItem == null) || (userEventItem != null)) {
 				if ((agentEventItem != null) && (collaboration.getActualFocus() != null)) {
@@ -115,12 +115,14 @@ public class AffectiveMotivationalCollaborationFramework {
 						}
 					}
 				}
-				collaboration.initializeAllInputs(userEventItem.contributes, inputValues);
-				for (Plan plan : collaboration.getPathToTop(userEventItem.contributes)) {
-					if (collaboration.isAgentsTurn(plan)) {
-						collaboration.setActualFocus(plan);
-						collaboration.processAgent(plan, 0.0);
-						collaboration.initializeAllInputs(plan, inputValues);
+				if (userEventItem != null) {
+					collaboration.initializeAllInputs(userEventItem.contributes, inputValues);
+					for (Plan plan : collaboration.getPathToTop(userEventItem.contributes)) {
+						if (collaboration.isAgentsTurn(plan)) {
+							collaboration.setActualFocus(plan);
+							collaboration.processAgent(plan, 0.0);
+							collaboration.initializeAllInputs(plan, inputValues);
+						}
 					}
 				}
 				System.out.println("Waiting for you: ");
