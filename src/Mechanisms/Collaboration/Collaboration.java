@@ -686,6 +686,7 @@ public class Collaboration extends Mechanisms{
 			mentalProcesses.getPerceptionMechanism().setEmotionValence(0.4);
 		else
 			mentalProcesses.getPerceptionMechanism().setEmotionValence(-0.4);
+		
 		tom.doReverseAppraisal(recognizedGoal);
 		System.out.println("Human's Emotion (before coping): " + tom.getAnticipatedHumanEmotion(tom.getReverseAppraisalValues(recognizedGoal)));
 		

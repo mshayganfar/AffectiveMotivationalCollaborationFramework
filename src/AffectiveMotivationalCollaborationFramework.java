@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 
+import Mechanisms.Mechanisms.AGENT;
 import Mechanisms.Action.DiscoActionsWrapper;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.GoalManagement;
@@ -95,18 +96,22 @@ public class AffectiveMotivationalCollaborationFramework {
 		}
 		
 		while (!topPlan.getStatus().equals(Status.DONE)) {
-//			List<Plan> mmm = topPlan.getLiveDescendants();
-//			System.out.println(topPlan.getLiveDescendants());
 			agentEventItem = agent.generateBest(interaction);
 			userEventItem  = user.generateBest(interaction);
 			if ((agentEventItem == null) || (userEventItem != null)) {
-				System.out.println(collaboration.getActualFocus());
 				if ((agentEventItem != null) && (collaboration.getActualFocus() != null)) {
 					while (collaboration.hasLiveChild(collaboration.getActualFocus().getParent())) {
 						for (Plan plan : collaboration.getPathToTop(collaboration.getLiveChild(collaboration.getActualFocus().getParent()))) {
 								collaboration.setActualFocus(plan);
-								collaboration.processAgent(plan, 0.0);
-								collaboration.initializeAllInputs(plan, inputValues);
+								if (collaboration.getResponsibleAgent(plan).equals(AGENT.SELF)) {
+									collaboration.processAgent(plan, 0.0);
+									collaboration.initializeAllInputs(plan, inputValues);
+								}
+								else {
+									collaboration.initializeAllInputs(plan, inputValues);
+									System.out.println("Waiting for you: ");
+									return;
+								}
 						}
 					}
 				}
