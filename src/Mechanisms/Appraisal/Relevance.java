@@ -35,6 +35,10 @@ public class Relevance extends Mechanisms {
 			return RELEVANCE.IRRELEVANT;
 	}
 	
+	public double getEventRelevanceValue(Goal eventGoal) {
+		return getEventUtility(eventGoal);
+	}
+	
 	private double getEventUtility(Goal eventGoal) { 
 		
 		int goalStatus           = getGoalStatusImpact(eventGoal);
@@ -47,7 +51,8 @@ public class Relevance extends Mechanisms {
 		else if(saliencyMagnitude == 0)
 			return 0.0;
 
-		return -2.0; // Should never happen!
+		// Since saliency value should be zero or positive.
+		throw new IllegalStateException();
 	}
 	
 	private double getEmotionalThreshold() { 

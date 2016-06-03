@@ -46,6 +46,12 @@ public class DiscoActionsWrapper {
 		collaboration.getDisco().getInteraction().occurred(speaker, taskToPropose, plan);
 	}
 
+	public void proposeTaskShould(Plan plan, boolean speaker) {
+		
+		Utterance taskToPropose = Propose.Should.newInstance(collaboration.getDisco(), speaker, plan.getGoal());
+		collaboration.getDisco().getInteraction().occurred(speaker, taskToPropose, plan);
+	}
+	
 	public void proposeTaskWhat(Goal goal, boolean speaker, String slot, Object value) {
 		
 		Plan plan = goal.getPlan();
@@ -144,6 +150,16 @@ public class DiscoActionsWrapper {
 		} 
 		else
 			proposeTaskShould(goal, false);
+	}
+	
+	public void executeTask(Plan plan, boolean actor, boolean postconditionStatus) {
+		
+		if (plan.isPrimitive()) {
+			plan.getGoal().setSuccess(postconditionStatus);
+			collaboration.getDisco().getInteraction().occurred(actor, plan.getGoal(), plan);
+		} 
+		else
+			proposeTaskShould(plan, false);
 	}
 	
 	public void executeTask() {

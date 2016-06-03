@@ -12,6 +12,8 @@ import MetaInformation.AppraisalVector.EMOTION_INSTANCE;
 
 public class Turns {
 	
+	public enum WHOSE_TURN {USER, AGENT, AUTO};
+	
 	private static ArrayList<AppraisalVector> appraisalVectors = new ArrayList<AppraisalVector>();
 	
 	private static Turns turn = new Turns();

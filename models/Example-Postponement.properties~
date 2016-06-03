@@ -1,0 +1,15 @@
+# Task difficulty levels: NORMAL, DIFFICULT, MOST_DIFFICULT
+
+InstallSolarPanel@difficulty = MOST_DIFFICULT
+PreparePanel@difficulty = DIFFICULT
+PrepareControlSwitch@difficulty = NORMAL
+PrepareConnector@difficulty = DIFFICULT
+RemoveLeftCover@difficulty = NORMAL
+PickUpTool@difficulty = NORMAL
+PickUpToolPrimitive@difficulty = NORMAL
+HandOffTool@difficulty = NORMAL
+RemoveLeftCoverPrimitive@difficulty = DIFFICULT
+RemoveRightCover@difficulty = NORMAL
+ConnectAdaptor@difficulty = DIFFICULT
+
+TakeOutCable@retry = true

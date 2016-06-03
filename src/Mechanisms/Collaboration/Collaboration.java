@@ -17,6 +17,7 @@ import MetaInformation.GoalTree;
 import MetaInformation.MentalProcesses;
 import MetaInformation.Node;
 import MetaInformation.Turns;
+import MetaInformation.Turns.WHOSE_TURN;
 import MetaInformation.AMCAgent;
 import MetaInformation.AMCUser;
 import MetaInformation.AppraisalVector;
@@ -47,6 +48,7 @@ public class Collaboration extends Mechanisms{
 	private Plan prevFocus;
 	private Goal topLevelGoal = null;
 	private MentalProcesses mentalProcesses;
+	private Goal disengagedGoal = null;
 	
 	private boolean collaborationStatus = true;
 	
@@ -269,10 +271,14 @@ public class Collaboration extends Mechanisms{
 		else if (status.equals(Status.BLOCKED))
 			return GOAL_STATUS.BLOCKED;
 		else if (status.equals(Status.PENDING)) {
-			if (plan.getGoal().isDefinedInputs())
-				return GOAL_STATUS.PENDING;
-			else
+			if (plan.isPrimitive())
 				return GOAL_STATUS.FAILED;
+			else
+				return GOAL_STATUS.PENDING;
+//			if (plan.getGoal().isDefinedInputs())
+//				return GOAL_STATUS.PENDING;
+//			else
+//				return GOAL_STATUS.FAILED;
 		}
 		else if (status.equals(Status.FAILED)) // plan.isFailed()
 			return GOAL_STATUS.FAILED;
@@ -629,7 +635,9 @@ public class Collaboration extends Mechanisms{
 		Motive motive  = new Motive(recognizedGoal, true);
 	}
 	
-	public void processUser(Plan eventPlan, double valenceValue, Boolean postconditionStatus) {
+	public WHOSE_TURN processUser(Plan eventPlan, double valenceValue, Boolean postconditionStatus) {
+		
+		boolean keepTurn = false;
 		
 		Turns turn = Turns.getInstance();
 		
@@ -666,13 +674,26 @@ public class Collaboration extends Mechanisms{
 		//Run Coping 
 		mentalProcesses.getCopingMechanism().formIntentions(recognizedGoal);
 		
+		if (collaboration.getDisengagedGoal() != null) {
+			discoWrapper.proposeTaskShould(collaboration.getDisengagedGoal(), false);
+			collaboration.setDisengagedGoal(null);
+			return WHOSE_TURN.USER;
+		}
+		
 		//Run Action
-		mentalProcesses.getActionMechanism().act(recognizedGoal, postconditionStatus);
+//		mentalProcesses.getActionMechanism().act(recognizedGoal, postconditionStatus);
+		if (mentalProcesses.getActionMechanism().act(recognizedGoal, postconditionStatus).equals(WHOSE_TURN.USER))
+			keepTurn = true;
 		
 		tom.doReverseAppraisal(recognizedGoal);
 		System.out.println("Human's Emotion (after coping): " + tom.getAnticipatedHumanEmotion(tom.getReverseAppraisalValues(recognizedGoal)));
 		
 		turn.updateTurn();
+		
+		if (keepTurn)
+			return WHOSE_TURN.USER;
+		
+		return WHOSE_TURN.AUTO;
 	}
 	
 	public void processAgent(Plan eventPlan, double valenceValue) {
@@ -703,8 +724,7 @@ public class Collaboration extends Mechanisms{
 		
 		//Run Action
 		boolean postconditionStatus = true;
-		mentalProcesses.getActionMechanism().act(recognizedGoal, postconditionStatus);
-//		goalManagement.computeCostValue(recognizedGoal);
+		mentalProcesses.getActionMechanism().act(recognizedGoal, postconditionStatus).equals(WHOSE_TURN.USER);
 		
 		tom.doReverseAppraisal(recognizedGoal);
 		System.out.println("Human's Emotion (after coping): " + tom.getAnticipatedHumanEmotion(tom.getReverseAppraisalValues(recognizedGoal)));
@@ -743,6 +763,14 @@ public class Collaboration extends Mechanisms{
 //		else
 //			return false;
 //	}
+	
+	public void setDisengagedGoal(Goal disengagedGoal) {
+		this.disengagedGoal = disengagedGoal;
+	}
+	
+	public Goal getDisengagedGoal() {
+		return this.disengagedGoal;
+	}
 	
 	public int getDistanceFromTop(Plan goalPlan) {
 		

@@ -9,6 +9,7 @@ import MetaInformation.AMCAgent;
 import MetaInformation.AMCUser;
 import MetaInformation.MentalProcesses;
 import MetaInformation.World;
+import MetaInformation.Turns.WHOSE_TURN;
 import MetaInformation.World.RemovingCoverTool;
 import MetaInformation.World.WeldingTool;
 import edu.wpi.cetask.Plan;
@@ -24,6 +25,9 @@ public class AffectiveMotivationalCollaborationFramework {
 	public static Plan consolePlan;
 	private static Item userEventItem;
 	private static Plan topPlan;
+	private static Interaction interaction;
+	private static AMCUser user;
+	private static AMCAgent agent;
 	
 	private static TaskModel taskModel;
 	private static Goal goal = null;
@@ -59,8 +63,14 @@ public class AffectiveMotivationalCollaborationFramework {
 	public static void goUser(String valenceValue, String postconditionStatus) {
 		
 		if (userEventItem != null) {
-			mentalProcesses.getCollaborationMechanism().setActualFocus(userEventItem.contributes);
-			mentalProcesses.getCollaborationMechanism().processUser(userEventItem.contributes, Double.parseDouble(valenceValue), Boolean.parseBoolean(postconditionStatus));
+			Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
+			collaboration.setActualFocus(userEventItem.contributes);
+			if (collaboration.processUser(userEventItem.contributes, Double.parseDouble(valenceValue), Boolean.parseBoolean(postconditionStatus)).equals(WHOSE_TURN.USER)) {
+				collaboration.initializeAllInputs(userEventItem.contributes, inputValues);
+				userEventItem = user.generateBest(interaction);
+				System.out.println("Waiting for you: ");
+				return;
+			}
 		}
 		goAgent();
 	}
@@ -70,9 +80,6 @@ public class AffectiveMotivationalCollaborationFramework {
 		Item agentEventItem;
 		DiscoActionsWrapper discoWrapper;
 		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
-		Interaction interaction 	= collaboration.getInteraction();
-		AMCAgent agent 				= collaboration.getAMCAgent();
-		AMCUser user 				= collaboration.getAMCUser();
 		
 		userEventItem = user.generateBest(interaction);
 		
@@ -119,7 +126,7 @@ public class AffectiveMotivationalCollaborationFramework {
 	public static void main(String[] args) {
 		
 		mentalProcesses = new MentalProcesses(args);
-		World world = new World(mentalProcesses);
+		World world 	= new World(mentalProcesses);
 		
 		mentalProcesses.getCollaborationMechanism().getInteraction().start(true);
 		
@@ -128,6 +135,9 @@ public class AffectiveMotivationalCollaborationFramework {
 		topPlan = new Plan(topTask);
 		topPlan.getGoal().setShould(true);
 		collaboration.getDisco().push(topPlan);
+		interaction = collaboration.getInteraction();
+		agent		= collaboration.getAMCAgent();
+		user 		= collaboration.getAMCUser();
 		
 		// Input values should be manually added to this list in order!
 		//ArrayList<Object> inputValues = new ArrayList<Object>(Arrays.asList(WeldingTool.MY_WELDING_TOOL));

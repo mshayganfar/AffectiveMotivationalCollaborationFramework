@@ -314,7 +314,7 @@ public class Coping {
 			throw new IllegalArgumentException("Illegal Shifting Responsibility Operation on a Non-Primitive Goal.");
 	}
 	
-	private Goal getMinCostGoal() {
+	private Goal getMinCostGoal(Goal disengagedGoal) {
 		
 		Map<Goal, Double> costValues = new HashMap<Goal, Double>();
 		
@@ -323,9 +323,9 @@ public class Coping {
 		Disco disco = collaboration.getDisco();
 		
 		for(Plan alternativePlan : disco.getTop(disco.getFocus()).getLiveDescendants()) {
-			if (alternativePlan.isPrimitive()) {
+			if (alternativePlan.isPrimitive() && (!alternativePlan.getGoal().getType().equals(disengagedGoal.getPlan().getGoal().getType()))) {
 				Goal alternativeGoal = new Goal(mentalProcesses, alternativePlan, true);
-				costValues.put(alternativeGoal, goalManagement.computeCostValue(alternativeGoal));
+				costValues.put(alternativeGoal, goalManagement.computeCostValue(disengagedGoal, alternativeGoal));
 			}
 		}
 		
@@ -344,22 +344,53 @@ public class Coping {
 	
 	// Distracting the self from thinking about behavioral dimension or goal with which the stressor is interferring. 
 	// Goal management: Coming up with best action strategies to handle the problem, aka, action selection.
-	public boolean doMentalDisengagement(Goal goal) {
+	public Boolean doMentalDisengagement(Goal goal, boolean postconditionStatus) {
 		
 		System.out.println("COPING STRATEGY: Mental Disengagement");
 		
-		Goal minCostGoal = getMinCostGoal();
+		Goal minCostGoal = getMinCostGoal(goal);
 		
 		if (minCostGoal != null) {
 			discoActionsWrapper.proposeTaskShould(minCostGoal, false);
+			discoActionsWrapper.executeTask(minCostGoal, false, postconditionStatus);
+			collaboration.setDisengagedGoal(goal);
+			Plan parentPlan = minCostGoal.getPlan().getParent();
+			while (isAnotherGoal(parentPlan)) {
+				Plan plan = getAnotherGoal(parentPlan);
+				if (collaboration.getResponsibleAgent(plan).equals(AGENT.SELF))
+					collaboration.processAgent(plan, perception.getEmotionValence());
+				else {
+					discoActionsWrapper.proposeTaskShould(plan, false);
+					return null;
+				}
+			}
+			discoActionsWrapper.mentionTask(goal, false);
 			return true;
 		}
 		else {
-			discoActionsWrapper.saySomethingAboutTask(false, "GOAL MANAGEMENT: I do not know what to do!");
+			discoActionsWrapper.saySomethingAboutTask(false, "GOAL MANAGEMENT: I do not know what else I can do!");
 			return false;
 		}
 	}
 	
+	private boolean isAnotherGoal(Plan parentPlan) {
+		
+		for (Plan plan : parentPlan.getChildren()) {
+			if (plan.isLive())
+				return true;
+		}
+		return false;
+	}
+	
+	private Plan getAnotherGoal(Plan parentPlan) {
+		
+		for (Plan plan : parentPlan.getChildren()) {
+			if (plan.isLive())
+				return plan;
+		}
+		return null;
+	}
+
 	// Assume some intervening act or actor will improve desirability.
 	public void doWishfulThinking(Goal goal) {
 		

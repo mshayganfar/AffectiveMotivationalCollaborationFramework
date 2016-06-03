@@ -27,7 +27,7 @@ public class GoalManagement {
 		this.controllability = mentalProcesses.getControllabilityProcess();
 	}
 
-	public double computeCostValue(Goal eventGoal) {
+	public double computeCostValue(Goal disengagedGoal, Goal eventGoal) {
 		
 		double goalProximity   = eventGoal.getGoalProximity();
 		double goalDifficulty  = eventGoal.getGoalDifficulty();
@@ -36,7 +36,7 @@ public class GoalManagement {
 		Map<String, Double> weights = getGoalAttributesWeights(eventGoal);
 		
 		double base      = ((goalProximity * weights.get("proximity")) + (goalDifficulty * weights.get("difficulty")) + (((double)1/(goalSpecificity + 1)) * weights.get("specificity")));
-		double exponent  = getGammaValue(eventGoal, base, 1.0, 1.0);
+		double exponent  = getGammaValue(disengagedGoal, eventGoal, base, 1.0, 1.0);
 		double costValue = Math.pow(base, exponent);
 		
 //		System.out.println("Base --------------> " + base);
@@ -46,29 +46,36 @@ public class GoalManagement {
 		return costValue;
 	}
 	
-	private double getGammaValue(Goal eventGoal, double base, double alpha, double beta) {
+	private double getGammaValue(Goal disengagedGoal, Goal eventGoal, double base, double alpha, double beta) {
 		
 		double relevance              = getRelevanceValue(eventGoal);
 		double controllability        = getControllabilityValue(eventGoal, false);
 		double reverseControllability = getControllabilityValue(eventGoal, true);
 		
-		System.out.println("C_r: " + controllability + " ,C_h: " + reverseControllability);
-		if (base >= 1.0)
-			return (double)1.0/(relevance * (alpha*controllability + beta*reverseControllability + 1));
+		if (disengagedGoal.getPlan().getParent().getGoal().getType().equals(eventGoal.getPlan().getParent().getGoal().getType()))
+			return (1-((double)1.0/((relevance * (alpha*controllability + beta*reverseControllability)) + 1)));
 		else
-			return (1-((double)1.0/(relevance * (alpha*controllability + beta*reverseControllability + 1))));
+			return (double)1.0/((relevance * (alpha*controllability + beta*reverseControllability)) + 1);
+		
+//		System.out.println("C_r: " + controllability + " ,C_h: " + reverseControllability);
+		
+//		if (base >= 1.0)
+//			return (double)1.0/((relevance * (alpha*controllability + beta*reverseControllability)) + 1);
+//		else
+//			return (1-((double)1.0/((relevance * (alpha*controllability + beta*reverseControllability)) + 1)));
 	}
 	
 	private double getRelevanceValue(Goal eventGoal) {
 		
-		switch(relevance.isEventRelevant(eventGoal)) {
-			case RELEVANT:
-				return 1.0;
-			case IRRELEVANT:
-				return 0.0;
-			default:
-				throw new IllegalArgumentException("Illegal Relevance Value: " + relevance.isEventRelevant(eventGoal));
-		}
+		return relevance.getEventRelevanceValue(eventGoal);
+//		switch(relevance.isEventRelevant(eventGoal)) {
+//			case RELEVANT:
+//				return 1.0;
+//			case IRRELEVANT:
+//				return 0.0;
+//			default:
+//				throw new IllegalArgumentException("Illegal Relevance Value: " + relevance.isEventRelevant(eventGoal));
+//		}
 	}
 	
 	private double getControllabilityValue(Goal eventGoal, boolean human) {

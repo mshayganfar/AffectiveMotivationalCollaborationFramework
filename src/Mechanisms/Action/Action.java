@@ -7,6 +7,7 @@ import MentalState.Goal;
 import MentalState.Intention;
 import MetaInformation.MentalProcesses;
 import MetaInformation.Turns;
+import MetaInformation.Turns.WHOSE_TURN;
 import MetaInformation.AppraisalVector.APPRAISAL_TYPE;
 import MetaInformation.CopingActivation.COPING_STRATEGY;
 
@@ -30,7 +31,7 @@ public class Action extends Mechanisms{
 		this.tom    	     = mentalProcesses.getToMMechanism();
 	}
 	
-	public void act(Goal goal, boolean postconditionStatus) {
+	public WHOSE_TURN act(Goal goal, boolean postconditionStatus) {
 		
 		System.out.println("Agent chose the following coping strtegies in turn: " + Turns.getInstance().getTurnNumber());
 		
@@ -51,12 +52,14 @@ public class Action extends Mechanisms{
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.WISHFUL_THINKING))
 				coping.doWishfulThinking(goal);
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.MENTAL_DISENGAGEMENT))
-				coping.doMentalDisengagement(goal);
+				if (coping.doMentalDisengagement(goal, true) == null)
+					return WHOSE_TURN.USER;
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.SHIFTING_RESPONSIBILITY))
 				coping.doShiftingResponsibility(goal);
 			if (intention.getCopingStrategy().equals(COPING_STRATEGY.ACCEPTANCE))
 				coping.doAcceptance(goal, false);
 		}
+		return WHOSE_TURN.AUTO;
 	}
 	
 	public void acknowledgeEmotion(Goal eventGoal) {
