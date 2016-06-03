@@ -52,10 +52,12 @@ public class GoalManagement {
 		double controllability        = getControllabilityValue(eventGoal, false);
 		double reverseControllability = getControllabilityValue(eventGoal, true);
 		
-		if (disengagedGoal.getPlan().getParent().getGoal().getType().equals(eventGoal.getPlan().getParent().getGoal().getType()))
-			return (1-((double)1.0/((relevance * (alpha*controllability + beta*reverseControllability)) + 1)));
-		else
-			return (double)1.0/((relevance * (alpha*controllability + beta*reverseControllability)) + 1);
+		return (double)1.0/((relevance * (alpha*controllability + beta*reverseControllability)) + 1);
+		
+//		if (disengagedGoal.getPlan().getParent().getGoal().getType().equals(eventGoal.getPlan().getParent().getGoal().getType()))
+//			return (double)1.0/((relevance * (alpha*controllability + beta*reverseControllability)) + 1);
+//		else
+//			return (1-((double)1.0/((relevance * (alpha*controllability + beta*reverseControllability)) + 1)));
 		
 //		System.out.println("C_r: " + controllability + " ,C_h: " + reverseControllability);
 		

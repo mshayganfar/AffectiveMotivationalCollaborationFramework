@@ -64,7 +64,8 @@ public class Turns {
 		for(AppraisalVector vector : appraisalVectors) {
 			if (vector.getGoal().getLabel().equals(goal.getLabel()))
 				if (vector.getAppraisalType().equals(APPRAISAL_TYPE.REVERSE_APPRAISAL))
-					return vector.getEmotionInstance();
+					if (vector.getTurnNumber() == Turns.getInstance().getTurnNumber())
+						return vector.getEmotionInstance();
 		}
 		return null;
 	}
@@ -73,7 +74,9 @@ public class Turns {
 		
 		for(AppraisalVector vector : appraisalVectors) {
 			if (vector.getGoal().getLabel().equals(goal.getLabel()))
-				return vector;
+				if (!vector.getAppraisalType().equals(APPRAISAL_TYPE.REVERSE_APPRAISAL))
+					if (vector.getTurnNumber() == Turns.getInstance().getTurnNumber())
+						return vector;
 		}
 		return null;
 	}

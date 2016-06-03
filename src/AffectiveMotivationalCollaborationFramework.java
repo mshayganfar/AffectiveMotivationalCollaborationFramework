@@ -8,6 +8,7 @@ import MentalState.Goal;
 import MetaInformation.AMCAgent;
 import MetaInformation.AMCUser;
 import MetaInformation.MentalProcesses;
+import MetaInformation.Turns;
 import MetaInformation.World;
 import MetaInformation.Turns.WHOSE_TURN;
 import MetaInformation.World.RemovingCoverTool;
@@ -95,10 +96,20 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		while (!topPlan.getStatus().equals(Status.DONE)) {
 //			List<Plan> mmm = topPlan.getLiveDescendants();
-			System.out.println(topPlan.getLiveDescendants());
+//			System.out.println(topPlan.getLiveDescendants());
 			agentEventItem = agent.generateBest(interaction);
 			userEventItem  = user.generateBest(interaction);
 			if ((agentEventItem == null) || (userEventItem != null)) {
+				System.out.println(collaboration.getActualFocus());
+				if ((agentEventItem != null) && (collaboration.getActualFocus() != null)) {
+					while (collaboration.hasLiveChild(collaboration.getActualFocus().getParent())) {
+						for (Plan plan : collaboration.getPathToTop(collaboration.getLiveChild(collaboration.getActualFocus().getParent()))) {
+								collaboration.setActualFocus(plan);
+								collaboration.processAgent(plan, 0.0);
+								collaboration.initializeAllInputs(plan, inputValues);
+						}
+					}
+				}
 				collaboration.initializeAllInputs(userEventItem.contributes, inputValues);
 				for (Plan plan : collaboration.getPathToTop(userEventItem.contributes)) {
 					if (collaboration.isAgentsTurn(plan)) {

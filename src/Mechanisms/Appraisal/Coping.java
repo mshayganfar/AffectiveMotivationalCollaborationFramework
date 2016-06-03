@@ -353,7 +353,7 @@ public class Coping {
 		if (minCostGoal != null) {
 			discoActionsWrapper.proposeTaskShould(minCostGoal, false);
 			discoActionsWrapper.executeTask(minCostGoal, false, postconditionStatus);
-			collaboration.setDisengagedGoal(goal);
+			collaboration.setDisengagedPlan(goal.getPlan().getRetry());
 			Plan parentPlan = minCostGoal.getPlan().getParent();
 			while (isAnotherGoal(parentPlan)) {
 				Plan plan = getAnotherGoal(parentPlan);

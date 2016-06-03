@@ -48,7 +48,7 @@ public class Collaboration extends Mechanisms{
 	private Plan prevFocus;
 	private Goal topLevelGoal = null;
 	private MentalProcesses mentalProcesses;
-	private Goal disengagedGoal = null;
+	private Plan disengagedPlan = null;
 	
 	private boolean collaborationStatus = true;
 	
@@ -271,14 +271,14 @@ public class Collaboration extends Mechanisms{
 		else if (status.equals(Status.BLOCKED))
 			return GOAL_STATUS.BLOCKED;
 		else if (status.equals(Status.PENDING)) {
-			if (plan.isPrimitive())
-				return GOAL_STATUS.FAILED;
-			else
-				return GOAL_STATUS.PENDING;
-//			if (plan.getGoal().isDefinedInputs())
-//				return GOAL_STATUS.PENDING;
-//			else
+//			if (plan.isPrimitive())
 //				return GOAL_STATUS.FAILED;
+//			else
+//				return GOAL_STATUS.PENDING;
+			if (plan.getGoal().isDefinedInputs())
+				return GOAL_STATUS.PENDING;
+			else
+				return GOAL_STATUS.FAILED;
 		}
 		else if (status.equals(Status.FAILED)) // plan.isFailed()
 			return GOAL_STATUS.FAILED;
@@ -594,6 +594,24 @@ public class Collaboration extends Mechanisms{
 		this.actualFocus = plan;
 	}
 	
+	public boolean hasLiveChild(Plan parentPlan) {
+		
+		for (Plan plan : parentPlan.getChildren()) {
+			if (plan.isLive())
+				return true;
+		}
+		return false;
+	}
+	
+	public Plan getLiveChild(Plan parentPlan) {
+		
+		for (Plan plan : parentPlan.getChildren()) {
+			if (plan.isLive())
+				return plan;
+		}
+		return null;
+	}
+	
 	public boolean isUsersTurn(Item userEventItem, Plan plan) {
 		
 		int agentPlanDepth = 0, userPlanDepth = 0;
@@ -644,12 +662,15 @@ public class Collaboration extends Mechanisms{
 		ToM tom = mentalProcesses.getToMMechanism();
 		Goal recognizedGoal = new Goal(mentalProcesses, eventPlan);
 		
-		initializeFramework(recognizedGoal);
-		
 		DiscoActionsWrapper discoWrapper = new DiscoActionsWrapper(mentalProcesses);
 		
-		if (recognizedGoal.getPlan().isPrimitive())
+		if (recognizedGoal.getPlan().isPrimitive()) {
 			discoWrapper.executeTask(recognizedGoal, true, postconditionStatus);
+			if (!postconditionStatus) {
+				recognizedGoal = new Goal(mentalProcesses, eventPlan.getRetryOf());
+				initializeFramework(recognizedGoal);
+			}
+		}
 		else
 			discoWrapper.proposeTaskShould(recognizedGoal, true);
 		
@@ -674,9 +695,10 @@ public class Collaboration extends Mechanisms{
 		//Run Coping 
 		mentalProcesses.getCopingMechanism().formIntentions(recognizedGoal);
 		
-		if (collaboration.getDisengagedGoal() != null) {
-			discoWrapper.proposeTaskShould(collaboration.getDisengagedGoal(), false);
-			collaboration.setDisengagedGoal(null);
+		if (collaboration.getDisengagedPlan() != null) {
+			discoWrapper.proposeTaskShould(collaboration.getDisengagedPlan(), false);
+			collaboration.setDisengagedPlan(null);
+			turn.updateTurn(); // Not sure about this line.
 			return WHOSE_TURN.USER;
 		}
 		
@@ -724,7 +746,7 @@ public class Collaboration extends Mechanisms{
 		
 		//Run Action
 		boolean postconditionStatus = true;
-		mentalProcesses.getActionMechanism().act(recognizedGoal, postconditionStatus).equals(WHOSE_TURN.USER);
+		mentalProcesses.getActionMechanism().act(recognizedGoal, postconditionStatus);
 		
 		tom.doReverseAppraisal(recognizedGoal);
 		System.out.println("Human's Emotion (after coping): " + tom.getAnticipatedHumanEmotion(tom.getReverseAppraisalValues(recognizedGoal)));
@@ -764,12 +786,12 @@ public class Collaboration extends Mechanisms{
 //			return false;
 //	}
 	
-	public void setDisengagedGoal(Goal disengagedGoal) {
-		this.disengagedGoal = disengagedGoal;
+	public void setDisengagedPlan(Plan disengagedPlan) {
+		this.disengagedPlan = disengagedPlan;
 	}
 	
-	public Goal getDisengagedGoal() {
-		return this.disengagedGoal;
+	public Plan getDisengagedPlan() {
+		return this.disengagedPlan;
 	}
 	
 	public int getDistanceFromTop(Plan goalPlan) {
