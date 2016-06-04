@@ -33,13 +33,13 @@
 
   <task id="RemoveLeftCover">
 		<precondition>true</precondition>
-    <subtasks id="removeLeftCoverRecipe1">
+    <subtasks id="_removeLeftCoverRecipe1">
     	<step name="remove_left_prim" task="RemoveLeftCoverPrimitive"/>
 
 			<binding slot="$remove_left_prim.external" value="true"/>
     </subtasks>
 
-    <subtasks id="removeLeftCoverRecipe2">
+    <subtasks id="_removeLeftCoverRecipe2">
     	<step name="handoff_remove_left" task="HandOffRemoveLeftCover"/>
     	<step name="remove_left_prim" task="RemoveLeftCoverPrimitive"/>
 
