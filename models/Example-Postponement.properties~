@@ -11,5 +11,3 @@ HandOffTool@difficulty = NORMAL
 RemoveLeftCoverPrimitive@difficulty = DIFFICULT
 RemoveRightCover@difficulty = NORMAL
 ConnectAdaptor@difficulty = DIFFICULT
-
-# removeLeftCoverRecipe1@authorized = true

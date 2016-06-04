@@ -667,7 +667,10 @@ public class Collaboration extends Mechanisms{
 		if (recognizedGoal.getPlan().isPrimitive()) {
 			discoWrapper.executeTask(recognizedGoal, true, postconditionStatus);
 			if (!postconditionStatus) {
-				recognizedGoal = new Goal(mentalProcesses, eventPlan.getRetryOf());
+				if (eventPlan.getRetryOf() != null)
+					recognizedGoal = new Goal(mentalProcesses, eventPlan.getRetryOf());
+				else
+					recognizedGoal = new Goal(mentalProcesses, eventPlan);
 				initializeFramework(recognizedGoal);
 			}
 		}
