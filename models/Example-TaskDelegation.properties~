@@ -2,7 +2,7 @@
 
 InstallSolarPanel@difficulty = MOST_DIFFICULT
 CheckHardware@difficulty = NORMAL
-_CheckPanelAttachment@difficulty = DIFFICULT
+CheckPanelAttachment@difficulty = DIFFICULT
 CheckWirings@difficulty = NORMAL
 CallSupervisor@difficulty = MOST_DIFFICULT
 CheckPanelAttachmentPrimitive@difficulty = DIFFICULT

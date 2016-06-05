@@ -64,7 +64,16 @@ public class AffectiveMotivationalCollaborationFramework {
 	
 	public static void goUser(String valenceValue, String postconditionStatus) {
 		
+		Plan planTest = null;
 		if (userEventItem != null) {
+//			if (userEventItem.contributes.getParent().getDecomposition() != null)
+//				planTest = userEventItem.contributes.getParent().getDecomposition().getStep("check_wirings");
+//				if (planTest != null) {
+//					System.out.println(planTest.getGoal());
+//					System.out.println(planTest.getGoal().getSlotValue("external"));
+//					planTest.getGoal().setSlotValue("external", true);
+//					System.out.println(planTest.getGoal().getSlotValue("external"));
+//				}
 			Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
 			collaboration.setActualFocus(userEventItem.contributes);
 			if (collaboration.processUser(userEventItem.contributes, Double.parseDouble(valenceValue), Boolean.parseBoolean(postconditionStatus)).equals(WHOSE_TURN.USER)) {

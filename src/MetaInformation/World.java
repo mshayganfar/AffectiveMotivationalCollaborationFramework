@@ -4,6 +4,9 @@ public class World {
 	
 	public static enum WeldingTool { MY_WELDING_TOOL }
 	public static enum RemovingCoverTool { USER_TOOL, AGENT_TOOL }
+	public static enum USER_VALENCE { POSITIVE, NEGATIVE, NEUTRAL }
+	
+	private static USER_VALENCE userValence;
 	
 	private static MentalProcesses mentalProcesses;
 	
