@@ -114,12 +114,13 @@ public class Coping {
 	
 	private boolean isTaskDelegationPossible(Goal goal) {
 		
-		Plan plan = goal.getPlan();
-		if (collaboration.getGoalStatus(plan).equals(GOAL_STATUS.FAILED))
-			if (collaboration.getResponsibleAgent(plan).equals(AGENT.SELF))
-				if (getDelegationSuccessor(plan) != null)
-					return true;
-		
+		Plan plan = goal.getPlan().getRetryOf();
+		if (plan != null) {
+			if (collaboration.getGoalStatus(plan).equals(GOAL_STATUS.FAILED))
+				if (collaboration.getResponsibleAgent(plan).equals(AGENT.SELF))
+					if (getDelegationSuccessor(plan) != null)
+						return true;
+		}
 		return false;
 	}
 	
@@ -130,6 +131,8 @@ public class Coping {
 	
 	private Plan getDelegationSuccessor(Plan plan) {
 		
+		System.out.println(plan.getParent().getSuccessors());
+		System.out.println(plan.getRetry().getParent().getSuccessors());
 		for (Plan successor : plan.getParent().getSuccessors())
 			if (collaboration.getResponsibleAgent(successor).equals(AGENT.UNKNOWN))
 				if (!successor.isDone())

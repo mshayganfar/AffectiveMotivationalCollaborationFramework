@@ -6,3 +6,5 @@ CheckPanelAttachment@difficulty = DIFFICULT
 CheckWirings@difficulty = NORMAL
 CallSupervisor@difficulty = MOST_DIFFICULT
 CheckPanelAttachmentPrimitive@difficulty = DIFFICULT
+
+CheckPanelAttachmentPrimitive@retry = true

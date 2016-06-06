@@ -35,7 +35,7 @@ public class MentalState {
 		
 		return goals;
 	}
-
+	
 	public static MentalState getInstance() {
 		return mentalStates;
 	}
@@ -75,7 +75,6 @@ public class MentalState {
 		for (Goal goal : goals)
 			if (goal.getPlan().getGoal().getType().equals(plan.getGoal().getType()))
 				return true;
-		
 		return false;
 	}
 	

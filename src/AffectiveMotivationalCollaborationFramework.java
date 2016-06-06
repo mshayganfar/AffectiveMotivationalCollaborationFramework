@@ -144,9 +144,6 @@ public class AffectiveMotivationalCollaborationFramework {
 					System.out.println("Waiting for you: ");
 					return;
 				}
-				// To fail the robot's task uncomment the next two lines.
-				if (plan.getGoal().getType().toString().equals("CheckPanelAttachmentPrimitive"))
-					plan.getGoal().setSuccess(false);
 				collaboration.setActualFocus(plan);
 				collaboration.processAgent(plan, 0.0);
 				collaboration.initializeAllInputs(plan, inputValues);

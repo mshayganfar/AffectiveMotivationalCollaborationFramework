@@ -581,6 +581,8 @@ public class Collaboration extends Mechanisms{
 //		while (plan.getParent() != null) {
 			if (!MentalState.getInstance().isGoalInMentalState(plan))
 				pathToTop.add(plan);
+			else if (plan.getRetryOf() != null)
+				pathToTop.add(plan);
 			plan = plan.getParent();
 		}
 		
@@ -752,6 +754,9 @@ public class Collaboration extends Mechanisms{
 		
 		//Run Action
 		boolean postconditionStatus = true;
+		// To fail the robot's task uncomment the next two lines.
+		if ((recognizedGoal.getPlan().getGoal().getType().toString().equals("CheckPanelAttachmentPrimitive")) && (recognizedGoal.getPlan().getRetryOf() == null))
+			postconditionStatus = false;
 		mentalProcesses.getActionMechanism().act(recognizedGoal, postconditionStatus);
 		
 		tom.doReverseAppraisal(recognizedGoal);

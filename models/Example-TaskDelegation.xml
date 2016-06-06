@@ -12,14 +12,14 @@
   <task id="CheckHardware">
 		<precondition>true</precondition>
     <subtasks id="checkHardwareRecipe" ordered="true">
-      <step name="check_panel_attachment" task ="_CheckPanelAttachment"/>
+      <step name="check_panel_attachment" task ="CheckPanelAttachment"/>
       <step name="check_wirings" task ="CheckWirings"/>
 
       <binding slot="$check_wirings.external" value="undefined"/>
     </subtasks>
   </task>
 
-  <task id="_CheckPanelAttachment">
+  <task id="CheckPanelAttachment">
 		<precondition>true</precondition>
     <subtasks id="checkPanelAttachmentRecipe1">
       <step name="check_panel_attachment_prim" task ="CheckPanelAttachmentPrimitive"/>
