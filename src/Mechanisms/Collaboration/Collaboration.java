@@ -878,6 +878,9 @@ public class Collaboration extends Mechanisms{
 		
 		Plan plan = eventGoal.getPlan(); 
 		
+		if (plan.isPrimitive())
+			plan = plan.getParent();
+		
 		double alternativePlansCount = plan.getDecompositions().size();
 		double failedPlansCount      = plan.getFailed().size();
 		

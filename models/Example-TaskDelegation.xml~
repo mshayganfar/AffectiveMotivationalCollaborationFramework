@@ -12,14 +12,14 @@
   <task id="CheckHardware">
 		<precondition>true</precondition>
     <subtasks id="checkHardwareRecipe" ordered="true">
-      <step name="check_panel_attachment" task ="_CheckPanelAttachment"/>
+      <step name="check_panel_attachment" task ="CheckPanelAttachment"/>
       <step name="check_wirings" task ="CheckWirings"/>
 
       <binding slot="$check_wirings.external" value="undefined"/>
     </subtasks>
   </task>
 
-  <task id="_CheckPanelAttachment">
+  <task id="CheckPanelAttachment">
 		<precondition>true</precondition>
     <subtasks id="checkPanelAttachmentRecipe1">
       <step name="check_panel_attachment_prim" task ="CheckPanelAttachmentPrimitive"/>
@@ -34,14 +34,6 @@
 									(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.NEUTRAL)</applicable>
 
       <binding slot="$call_supervisor.external" value="false"/>
-    </subtasks>
-
-    <subtasks id="checkPanelAttachmentRecipe3" ordered="true">
-      <step name="check_panel_attachment_prim" task ="CheckPanelAttachmentPrimitive"/>
-
-			<applicable>Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.NEGATIVE</applicable>
-
-      <binding slot="$check_panel_attachment_prim.external" value="true"/>
     </subtasks>
 	</task>
 

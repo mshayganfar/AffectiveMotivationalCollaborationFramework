@@ -10,6 +10,7 @@ import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
 import Mechanisms.Appraisal.Desirability.DESIRABILITY;
 import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.Collaboration.GoalManagement;
+import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import Mechanisms.Motivation.Motivation;
 import Mechanisms.Perception.Perception;
 import Mechanisms.ToM.ToM;
@@ -26,6 +27,7 @@ import edu.wpi.cetask.TaskClass.Input;
 import edu.wpi.disco.Disco;
 import edu.wpi.disco.Interaction;
 import edu.wpi.disco.lang.Ask;
+import edu.wpi.disco.lang.Propose.Success;
 import edu.wpi.disco.lang.Say;
 
 public class Coping {
@@ -102,11 +104,42 @@ public class Coping {
 		
 		if (didHumanAsk(goal))
 			respondToHuman(goal);
+		
+		if (isTaskDelegationPossible(goal)) {
+			Plan successorPlan = getDelegationSuccessor(goal.getPlan());
+			discoActionsWrapper.proposeTaskWho(successorPlan, false, false);
+			delegateTask(goal, false, true);
+		}
+	}
+	
+	private boolean isTaskDelegationPossible(Goal goal) {
+		
+		Plan plan = goal.getPlan();
+		if (collaboration.getGoalStatus(plan).equals(GOAL_STATUS.FAILED))
+			if (collaboration.getResponsibleAgent(plan).equals(AGENT.SELF))
+				if (getDelegationSuccessor(plan) != null)
+					return true;
+		
+		return false;
+	}
+	
+	private void delegateTask(Goal goal, boolean delegatee, boolean delegator) {
+		
+		discoActionsWrapper.proposeTaskWho(goal.getPlan(), delegatee, delegator);
+	}
+	
+	private Plan getDelegationSuccessor(Plan plan) {
+		
+		for (Plan successor : plan.getParent().getSuccessors())
+			if (collaboration.getResponsibleAgent(successor).equals(AGENT.UNKNOWN))
+				if (!successor.isDone())
+					return successor;
+		return null;
 	}
 	
 	private void respondToHuman(Goal goal) {
 		
-		// This needs to be fixed. --> I do not know why!
+		// This needs to be fixed. --> I do not know why!!!
 		if (didHumanAskAboutTaskWhat(goal)) {
 			String inputName = ((Ask.What)goal.getPlan().getGoal()).getSlot();
 			if (knowInputValue(goal, inputName))

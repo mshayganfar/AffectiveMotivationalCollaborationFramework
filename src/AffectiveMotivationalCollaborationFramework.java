@@ -64,9 +64,9 @@ public class AffectiveMotivationalCollaborationFramework {
 	
 	public static void goUser(String valenceValue, String postconditionStatus) {
 		
-		Plan planTest = null;
 		if (userEventItem != null) {
-//			if (userEventItem.contributes.getParent().getDecomposition() != null)
+//			Plan planTest = null;
+//			if (userEventItem.contributes.getParent().getDecomposition() != null) {
 //				planTest = userEventItem.contributes.getParent().getDecomposition().getStep("check_wirings");
 //				if (planTest != null) {
 //					System.out.println(planTest.getGoal());
@@ -74,6 +74,7 @@ public class AffectiveMotivationalCollaborationFramework {
 //					planTest.getGoal().setSlotValue("external", true);
 //					System.out.println(planTest.getGoal().getSlotValue("external"));
 //				}
+//			}
 			Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
 			collaboration.setActualFocus(userEventItem.contributes);
 			if (collaboration.processUser(userEventItem.contributes, Double.parseDouble(valenceValue), Boolean.parseBoolean(postconditionStatus)).equals(WHOSE_TURN.USER)) {
@@ -143,6 +144,9 @@ public class AffectiveMotivationalCollaborationFramework {
 					System.out.println("Waiting for you: ");
 					return;
 				}
+				// To fail the robot's task uncomment the next two lines.
+				if (plan.getGoal().getType().toString().equals("CheckPanelAttachmentPrimitive"))
+					plan.getGoal().setSuccess(false);
 				collaboration.setActualFocus(plan);
 				collaboration.processAgent(plan, 0.0);
 				collaboration.initializeAllInputs(plan, inputValues);

@@ -35,7 +35,17 @@ public class DiscoActionsWrapper {
 			collaboration.getDisco().getInteraction().occurred(speaker, taskToPropose, plan);
 		}
 		else
-			throw new IllegalArgumentException("Both of the collaborators are responsible for non-primitives");
+			throw new IllegalArgumentException("Both of the collaborators are responsible for non-primitives!");
+	}
+
+	public void proposeTaskWho(Plan plan, boolean speaker, boolean listener) {
+		
+		if (plan.isPrimitive()) {
+			Utterance taskToPropose = new Propose.Who(collaboration.getDisco(), speaker, plan.getGoal(), listener);
+			collaboration.getDisco().getInteraction().occurred(speaker, taskToPropose, plan);
+		}
+		else
+			throw new IllegalArgumentException("Both of the collaborators are responsible for non-primitives!");
 	}
 	
 	public void proposeTaskShould(Goal goal, boolean speaker) {

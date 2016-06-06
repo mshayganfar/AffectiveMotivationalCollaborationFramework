@@ -2,6 +2,7 @@ package Mechanisms.Appraisal;
 
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskClass.Input;
+import edu.wpi.disco.lang.Accept;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -343,8 +344,9 @@ public class Controllability extends Mechanisms{
 	private boolean hasUnachievedChild(Plan eventPlan) {
 		
 		for (Plan child : eventPlan.getChildren())
-			if (!collaboration.getGoalStatus(child).equals(GOAL_STATUS.ACHIEVED))
-				return true;
+			if (!(child.getGoal() instanceof Accept))
+				if (!collaboration.getGoalStatus(child).equals(GOAL_STATUS.ACHIEVED))
+					return true;
 
 		return false;
 	}

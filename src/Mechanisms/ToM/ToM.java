@@ -305,8 +305,9 @@ public class ToM extends Mechanisms{
 	private boolean hasUnachievedChild(Plan eventPlan) {
 		
 		for (Plan child : eventPlan.getChildren())
-			if (!collaboration.getGoalStatus(child).equals(GOAL_STATUS.ACHIEVED))
-				return true;
+			if (!(child.getGoal() instanceof Accept))
+				if (!collaboration.getGoalStatus(child).equals(GOAL_STATUS.ACHIEVED))
+					return true;
 
 		return false;
 	}

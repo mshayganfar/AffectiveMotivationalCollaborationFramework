@@ -35,6 +35,14 @@
 
       <binding slot="$call_supervisor.external" value="false"/>
     </subtasks>
+
+    <subtasks id="checkPanelAttachmentRecipe3" ordered="true">
+      <step name="check_panel_attachment_prim" task ="CheckPanelAttachmentPrimitive"/>
+
+			<applicable>Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.NEGATIVE</applicable>
+
+      <binding slot="$check_panel_attachment_prim.external" value="true"/>
+    </subtasks>
 	</task>
 
   <task id="CheckWirings">
