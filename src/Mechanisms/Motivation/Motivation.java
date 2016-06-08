@@ -3,6 +3,7 @@ package Mechanisms.Motivation;
 import Mechanisms.Mechanisms;
 import Mechanisms.Appraisal.Controllability;
 import Mechanisms.Appraisal.Expectedness;
+import Mechanisms.Collaboration.Collaboration;
 import Mechanisms.ToM.ToM;
 import MentalState.Goal;
 import MentalState.Motive;
@@ -18,6 +19,7 @@ public class Motivation extends Mechanisms {
 	
 	private Controllability controllability;
 	private Expectedness expectedness;
+	private Collaboration collaboration;
 	
 	private SatisfactionDrive satisfactionDrive;
 	
@@ -29,6 +31,7 @@ public class Motivation extends Mechanisms {
 		this.tom  			 = mentalProcesses.getToMMechanism();
 		this.controllability = mentalProcesses.getControllabilityProcess();
 		this.expectedness    = mentalProcesses.getExpectednessProcess();
+		this.collaboration   = mentalProcesses.getCollaborationMechanism();
 	}
 	
 	private Motive createSatisfactionMotive(Goal goal) {
@@ -103,7 +106,7 @@ public class Motivation extends Mechanisms {
 		
 		double firstSigmoidValue  = 0.0;
 		double secondSigmoidValue = 0.0;
-		
+
 		double valence  = tom.getValenceValue(goal);
 		
 		double controllabilityValue = Turns.getInstance().getControllabilityValue(controllability.isEventControllable(goal));

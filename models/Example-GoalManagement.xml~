@@ -4,7 +4,7 @@
 
   <task id="InstallSolarPanel">
 		<precondition>true</precondition>
-    <subtasks id="installSolarPanelRecipe" ordered="true">
+    <subtasks id="installSolarPanelRecipe" ordered="false">
       <step name="prepare_cable" task ="PrepareCable"/>
       <step name="fix_panel" task="FixPanel"/>
       <step name="check_hardware" task="CheckHardware" requires ="fix_panel"/>
@@ -38,7 +38,7 @@
 
   <task id="CheckHardware">
 		<precondition>true</precondition>
-    <subtasks id="checkHardwareRecipe" ordered="false">
+    <subtasks id="checkHardwareRecipe" ordered="true">
       <step name="check_panel_attachment" task ="CheckPanelAttachment"/>
       <step name="check_wirings" task ="CheckWirings"/>
 

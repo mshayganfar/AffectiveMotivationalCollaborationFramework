@@ -38,7 +38,7 @@
 
   <task id="CheckHardware">
 		<precondition>true</precondition>
-    <subtasks id="checkHardwareRecipe" ordered="false">
+    <subtasks id="checkHardwareRecipe" ordered="true">
       <step name="check_panel_attachment" task ="CheckPanelAttachment"/>
       <step name="check_wirings" task ="CheckWirings"/>
 

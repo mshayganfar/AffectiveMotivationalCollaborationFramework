@@ -9,7 +9,6 @@ import java.util.Map;
 import Mechanisms.Mechanisms;
 import Mechanisms.Action.DiscoActionsWrapper;
 import Mechanisms.ToM.ToM;
-import MentalState.Belief;
 import MentalState.Goal;
 import MentalState.MentalState;
 import MentalState.Motive;
@@ -22,6 +21,8 @@ import MetaInformation.AMCAgent;
 import MetaInformation.AMCUser;
 import MetaInformation.AppraisalVector;
 import MetaInformation.AppraisalVector.APPRAISAL_TYPE;
+import edu.wpi.cetask.Decomposition;
+import edu.wpi.cetask.DecompositionClass;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskModel;
 import edu.wpi.cetask.Plan.Status;
@@ -92,10 +93,10 @@ public class Collaboration extends Mechanisms{
 		
 		disco.load("models/Events.xml");
 //		taskModel = disco.load("models/AstronautRobot.xml");
-//		taskModel = disco.load("models/Example-GoalManagement.xml");
+		taskModel = disco.load("models/Example-GoalManagement.xml");
 //		taskModel = disco.load("models/Example-Postponement-InputFailure.xml");
 //		taskModel = disco.load("models/Example-Postponement.xml");
-		taskModel = disco.load("models/Example-TaskDelegation.xml");
+//		taskModel = disco.load("models/Example-TaskDelegation.xml");
 		
 		prevFocus = disco.getFocus();
 		
@@ -755,8 +756,8 @@ public class Collaboration extends Mechanisms{
 		//Run Action
 		boolean postconditionStatus = true;
 		// To fail the robot's task uncomment the next two lines.
-		if ((recognizedGoal.getPlan().getGoal().getType().toString().equals("CheckPanelAttachmentPrimitive")) && (recognizedGoal.getPlan().getRetryOf() == null))
-			postconditionStatus = false;
+//		if ((recognizedGoal.getPlan().getGoal().getType().toString().equals("CheckPanelAttachmentPrimitive")) && (recognizedGoal.getPlan().getRetryOf() == null))
+//			postconditionStatus = false;
 		mentalProcesses.getActionMechanism().act(recognizedGoal, postconditionStatus);
 		
 		tom.doReverseAppraisal(recognizedGoal);
@@ -881,12 +882,25 @@ public class Collaboration extends Mechanisms{
 	
 	public double getAlternativeRecipeRatio(Goal eventGoal) {
 		
+		int recipeCounter = 0;
 		Plan plan = eventGoal.getPlan(); 
 		
 		if (plan.isPrimitive())
 			plan = plan.getParent();
 		
-		double alternativePlansCount = plan.getDecompositions().size();
+		int alternativePlansCount = plan.getDecompositions().size();
+		recipeCounter = alternativePlansCount;
+		if (alternativePlansCount > 0) {
+			for (DecompositionClass decomposition : plan.getDecompositions()) {
+				System.out.println(decomposition.getGoal().getSlot("external").getSlotValue(eventGoal.getPlan().getGoal()));
+				System.out.println(eventGoal.getPlan().getGoal().getExternal());
+				if (!decomposition.getGoal().getSlot("external").getSlotValue(eventGoal.getPlan().getGoal()).equals(eventGoal.getPlan().getGoal().getExternal()))
+					break;
+				recipeCounter--;
+			}
+			if (recipeCounter == 0)
+				alternativePlansCount = 0;
+		}
 		double failedPlansCount      = plan.getFailed().size();
 		
 		return ((alternativePlansCount + failedPlansCount) != 0) ? (double)alternativePlansCount/(alternativePlansCount + failedPlansCount) : alternativePlansCount;
