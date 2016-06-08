@@ -890,18 +890,20 @@ public class Collaboration extends Mechanisms{
 		
 		int alternativePlansCount = plan.getDecompositions().size();
 		recipeCounter = alternativePlansCount;
-		if (alternativePlansCount > 0) {
-			for (DecompositionClass decomposition : plan.getDecompositions()) {
-				System.out.println(decomposition.getGoal().getSlot("external").getSlotValue(eventGoal.getPlan().getGoal()));
-				System.out.println(eventGoal.getPlan().getGoal().getExternal());
-				if (!decomposition.getGoal().getSlot("external").getSlotValue(eventGoal.getPlan().getGoal()).equals(eventGoal.getPlan().getGoal().getExternal()))
-					break;
-				recipeCounter--;
-			}
-			if (recipeCounter == 0)
-				alternativePlansCount = 0;
+		for (DecompositionClass decomposition : plan.getDecompositions()) {
+			// Either of the following conditions is enough to consider existence of an alternative recipe:
+			// 1. This condition is to check whether failure caused trying of another recipe.
+			if (!decomposition.getId().equals(plan.getDecomposition().getType().getId()))
+				break;
+			// 2. This condition is to check whether failure occurred but a coping strategy changed the responsibility of the task in the same recipe.
+			else if (!decomposition.getGoal().getSlot("external").getSlotValue(eventGoal.getPlan().getGoal()).equals(eventGoal.getPlan().getGoal().getExternal()))
+				break;
+			recipeCounter--;
 		}
-		double failedPlansCount      = plan.getFailed().size();
+		if (recipeCounter == 0)
+			alternativePlansCount = 0;
+		
+		double failedPlansCount = plan.getFailed().size();
 		
 		return ((alternativePlansCount + failedPlansCount) != 0) ? (double)alternativePlansCount/(alternativePlansCount + failedPlansCount) : alternativePlansCount;
 	}
