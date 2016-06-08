@@ -1,4 +1,5 @@
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -7,10 +8,13 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+
 import java.awt.Font;
-import java.awt.SystemColor;
+import java.awt.Image;
+
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 public class AMCPanel extends JPanel {
 	
@@ -28,23 +32,27 @@ public class AMCPanel extends JPanel {
 	private JRadioButton humanNeutralEmotion;
 	private JRadioButton humanNegativeEmotion;
 	private SpringLayout currentLayout;
+	private ImageIcon robotEmotionImage;
+	private JLabel robotEmotionImageHolder;
 	
 	public AMCPanel() {
 		
-		userDoneButton 		   = new JButton("Done");
-		robotEmotionTextField  = new JTextField();
-		robotUtteranceTextArea = new JTextArea(10, 30);
-		robotUtteranceLabel    = new JLabel("Robot Says:");
-		robotEmotionLabel 	   = new JLabel("Robot feels:");
-		currentLayout 		   = new SpringLayout();
-		separator 			   = new JSeparator();
-		humanUtteranceLabel    = new JLabel("You Say:");
-		humanEmotionLabel 	   = new JLabel("You feel:");
-		humanPositiveEmotion   = new JRadioButton("Positive");
-		humanNeutralEmotion    = new JRadioButton("Neutral");
-		humanNegativeEmotion   = new JRadioButton("Negative");
-		humanUttrancesComboBox = new JComboBox<String>();
-		humanEmotionGroup 	   = new ButtonGroup();
+		userDoneButton 		    = new JButton("Done");
+		robotEmotionTextField   = new JTextField();
+		robotUtteranceTextArea  = new JTextArea(10, 30);
+		robotUtteranceLabel     = new JLabel("Robot Says:");
+		robotEmotionLabel 	    = new JLabel("Robot feels:");
+		currentLayout 		    = new SpringLayout();
+		separator 			    = new JSeparator();
+		humanUtteranceLabel     = new JLabel("You Say:");
+		humanEmotionLabel 	    = new JLabel("You feel:");
+		humanPositiveEmotion    = new JRadioButton("Positive");
+		humanNeutralEmotion     = new JRadioButton("Neutral");
+		humanNegativeEmotion    = new JRadioButton("Negative");
+		humanUttrancesComboBox  = new JComboBox<String>();
+		humanEmotionGroup 	    = new ButtonGroup();
+		robotEmotionImage       = new ImageIcon(new ImageIcon("faces/neutral.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+		robotEmotionImageHolder = new JLabel(robotEmotionImage);
 		
 		setupPanel();
 	}
@@ -56,7 +64,7 @@ public class AMCPanel extends JPanel {
 		userDoneButton.setFont(new Font("Verdana", Font.BOLD, 22));
 		robotUtteranceTextArea.setFont(new Font("Verdana", Font.BOLD, 22));
 		robotEmotionTextField.setFont(new Font("Verdana", Font.BOLD, 22));
-		robotEmotionTextField.setColumns(30);
+		robotEmotionTextField.setColumns(20);
 		robotUtteranceLabel.setFont(new Font("Verdana", Font.BOLD, 32));
 		robotEmotionLabel.setFont(new Font("Verdana", Font.BOLD, 32));
 		separator.setOrientation(SwingConstants.VERTICAL);
@@ -73,7 +81,7 @@ public class AMCPanel extends JPanel {
 		humanEmotionGroup.add(humanNeutralEmotion);
 		humanEmotionGroup.add(humanNegativeEmotion);
 		
-		setBackground(SystemColor.window);
+		setBackground(UIManager.getColor("Label.background"));
 		
 		this.add(userDoneButton);
 		this.add(robotEmotionTextField);
@@ -88,13 +96,10 @@ public class AMCPanel extends JPanel {
 		this.add(humanNeutralEmotion);
 		this.add(humanNegativeEmotion);
 		this.setLayout(currentLayout);
+		this.add(robotEmotionImageHolder);
 		
 		currentLayout.putConstraint(SpringLayout.SOUTH, userDoneButton, -27, SpringLayout.SOUTH, this);
 		currentLayout.putConstraint(SpringLayout.EAST, userDoneButton, -26, SpringLayout.EAST, this);
-		
-		currentLayout.putConstraint(SpringLayout.NORTH, separator, 28, SpringLayout.NORTH, this);
-		currentLayout.putConstraint(SpringLayout.WEST, separator, 21, SpringLayout.EAST, robotEmotionTextField);
-		currentLayout.putConstraint(SpringLayout.SOUTH, separator, -6, SpringLayout.NORTH, userDoneButton);
 		
 		currentLayout.putConstraint(SpringLayout.WEST, robotEmotionTextField, 0, SpringLayout.WEST, robotUtteranceTextArea);
 		currentLayout.putConstraint(SpringLayout.SOUTH, robotEmotionTextField, -93, SpringLayout.SOUTH, this);
@@ -129,5 +134,11 @@ public class AMCPanel extends JPanel {
 		currentLayout.putConstraint(SpringLayout.WEST, humanPositiveEmotion, 0, SpringLayout.WEST, humanUttrancesComboBox);
 		
 		currentLayout.putConstraint(SpringLayout.EAST, separator, 744, SpringLayout.WEST, this);
+		currentLayout.putConstraint(SpringLayout.NORTH, separator, 28, SpringLayout.NORTH, this);
+		currentLayout.putConstraint(SpringLayout.WEST, separator, 21, SpringLayout.EAST, robotUtteranceTextArea);
+		currentLayout.putConstraint(SpringLayout.SOUTH, separator, -6, SpringLayout.NORTH, userDoneButton);
+		
+		currentLayout.putConstraint(SpringLayout.NORTH, robotEmotionImageHolder, 30, SpringLayout.SOUTH, robotUtteranceTextArea);
+		currentLayout.putConstraint(SpringLayout.EAST, robotEmotionImageHolder, -50, SpringLayout.EAST, robotUtteranceTextArea);
 	}
 }
