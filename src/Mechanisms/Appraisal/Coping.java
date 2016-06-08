@@ -106,8 +106,9 @@ public class Coping {
 			respondToHuman(goal);
 		
 		if (isTaskDelegationPossible(goal)) {
-			Plan successorPlan = getDelegationSuccessor(goal.getPlan());
-			discoActionsWrapper.proposeTaskWho(successorPlan, false, false);
+//			Plan successorPlan = getDelegationSuccessor(goal.getPlan().getRetryOf());
+//			successorPlan.getGoal().setExternal(false);
+//			discoActionsWrapper.proposeTaskWho(successorPlan, false, false, null);
 			delegateTask(goal, false, true);
 		}
 	}
@@ -118,7 +119,8 @@ public class Coping {
 		if (plan != null) {
 			if (collaboration.getGoalStatus(plan).equals(GOAL_STATUS.FAILED))
 				if (collaboration.getResponsibleAgent(plan).equals(AGENT.SELF))
-					if (getDelegationSuccessor(plan) != null)
+					if (!plan.getRetry().isDone())
+//					if (getDelegationSuccessor(plan) != null)
 						return true;
 		}
 		return false;
@@ -126,17 +128,18 @@ public class Coping {
 	
 	private void delegateTask(Goal goal, boolean delegatee, boolean delegator) {
 		
-		discoActionsWrapper.proposeTaskWho(goal.getPlan(), delegatee, delegator);
+		Plan plan = goal.getPlan();
+		plan.getGoal().setExternal(true);
+		discoActionsWrapper.proposeTaskWho(plan, delegatee, delegator, null);
 	}
 	
 	private Plan getDelegationSuccessor(Plan plan) {
 		
-		System.out.println(plan.getParent().getSuccessors());
-		System.out.println(plan.getRetry().getParent().getSuccessors());
-		for (Plan successor : plan.getParent().getSuccessors())
-			if (collaboration.getResponsibleAgent(successor).equals(AGENT.UNKNOWN))
+		for (Plan successor : plan.getRetry().getParent().getSuccessors()) {
+			if (collaboration.getResponsibleAgent(successor).equals(AGENT.OTHER))
 				if (!successor.isDone())
 					return successor;
+		}
 		return null;
 	}
 	

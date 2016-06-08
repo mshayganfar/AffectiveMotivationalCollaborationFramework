@@ -5,8 +5,10 @@ import MentalState.Goal;
 import MetaInformation.MentalProcesses;
 import edu.wpi.cetask.DecompositionClass;
 import edu.wpi.cetask.Plan;
+import edu.wpi.cetask.Task;
 import edu.wpi.cetask.TaskClass.Input;
 import edu.wpi.disco.Agenda.Plugin;
+import edu.wpi.disco.Agenda.Plugin.Item;
 import edu.wpi.disco.Interaction;
 import edu.wpi.disco.lang.Accept;
 import edu.wpi.disco.lang.Ask;
@@ -43,6 +45,16 @@ public class DiscoActionsWrapper {
 		if (plan.isPrimitive()) {
 			Utterance taskToPropose = new Propose.Who(collaboration.getDisco(), speaker, plan.getGoal(), listener);
 			collaboration.getDisco().getInteraction().occurred(speaker, taskToPropose, plan);
+		}
+		else
+			throw new IllegalArgumentException("Both of the collaborators are responsible for non-primitives!");
+	}
+	
+	public void proposeTaskWho(Plan plan, boolean speaker, boolean listener, Plan contributes) {
+		
+		if (plan.isPrimitive()) {
+			Utterance taskToPropose = new Propose.Who(collaboration.getDisco(), speaker, plan.getGoal(), listener);
+			collaboration.getDisco().getInteraction().occurred(speaker, taskToPropose, contributes);
 		}
 		else
 			throw new IllegalArgumentException("Both of the collaborators are responsible for non-primitives!");
@@ -86,6 +98,11 @@ public class DiscoActionsWrapper {
 		
 		Utterance acceptance = new Accept(collaboration.getDisco(), speaker, Propose.Should.newInstance(collaboration.getDisco(), speaker, plan.getGoal()));
 		collaboration.getDisco().getInteraction().occurred(speaker, acceptance, null);
+	}
+	
+	public void acceptProposedTask(Task task, boolean speaker) {
+		
+		collaboration.getDisco().getInteraction().occurred(speaker, task, null);
 	}
 	
 	public void rejectProposedTask(Goal goal, boolean speaker) {
