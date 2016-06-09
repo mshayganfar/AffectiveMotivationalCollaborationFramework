@@ -32,6 +32,7 @@ public class AffectiveMotivationalCollaborationFramework {
 	
 	private static TaskModel taskModel;
 	private static Goal goal = null;
+	private static World world;
 	
 	private static MentalProcesses mentalProcesses;
 	private static GoalManagement goalManagement;
@@ -154,7 +155,8 @@ public class AffectiveMotivationalCollaborationFramework {
 	public static void main(String[] args) {
 		
 		mentalProcesses = new MentalProcesses(args);
-		World world 	= new World(mentalProcesses);
+		world = new World(mentalProcesses);
+		mentalProcesses.getCollaborationMechanism().setCollaborationWorld(world);
 		
 		mentalProcesses.getCollaborationMechanism().getInteraction().start(true);
 		

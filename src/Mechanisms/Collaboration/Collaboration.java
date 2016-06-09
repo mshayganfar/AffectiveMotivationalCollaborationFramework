@@ -17,6 +17,7 @@ import MetaInformation.MentalProcesses;
 import MetaInformation.Node;
 import MetaInformation.Turns;
 import MetaInformation.Turns.WHOSE_TURN;
+import MetaInformation.World;
 import MetaInformation.AMCAgent;
 import MetaInformation.AMCUser;
 import MetaInformation.AppraisalVector;
@@ -63,6 +64,7 @@ public class Collaboration extends Mechanisms{
 	private Map<String, Boolean> preconditionValues = new HashMap<String, Boolean>();
 	
 	private Interaction interaction;
+	private World world;
 	
 	private AMCAgent amc_agent;
 	private AMCUser amc_user;
@@ -92,15 +94,19 @@ public class Collaboration extends Mechanisms{
 		
 		disco.load("models/Events.xml");
 //		taskModel = disco.load("models/AstronautRobot.xml");
+		taskModel = disco.load("models/Example-Postponement.xml");
 //		taskModel = disco.load("models/Example-GoalManagement.xml");
-//		taskModel = disco.load("models/Example-Postponement.xml");
-		taskModel = disco.load("models/Example-TaskDelegation.xml");
+//		taskModel = disco.load("models/Example-TaskDelegation.xml");
 		
 		prevFocus = disco.getFocus();
 		
 		childrenResponsibinity = new ArrayList<AGENT>();
 		
 		this.collaboration = this;
+	}
+	
+	public void setCollaborationWorld(World world) {
+		this.world = world;
 	}
 	
 	public AMCAgent getAMCAgent() {
@@ -574,6 +580,8 @@ public class Collaboration extends Mechanisms{
 	
 	public ArrayList<Plan> getPathToTop(Plan plan) {
 		
+		Plan originalPlan = plan;
+		
 		ArrayList<Plan> pathToTop = new ArrayList<Plan>();
 		
 		while (!plan.equals(disco.getTop(plan))) {
@@ -583,8 +591,21 @@ public class Collaboration extends Mechanisms{
 					if (!getGoalStatus(plan.getRetryOf()).equals(GOAL_STATUS.FAILED))
 						pathToTop.add(plan);
 				}
-				else
-					pathToTop.add(plan);
+				else {
+					if ((plan.isPrimitive()) && (getResponsibleAgent(originalPlan).equals(AGENT.OTHER)))
+						pathToTop.add(plan);
+					else if (!getResponsibleAgent(originalPlan).equals(AGENT.OTHER))
+						if (originalPlan.isPrimitive()) {
+							if (!plan.isPrimitive()) {
+								if (!hasPreviiouslyMet(plan))
+									pathToTop.add(plan);
+							}
+							else
+								pathToTop.add(plan);
+						}
+						else
+							pathToTop.add(plan);
+				}
 			}
 			else if (plan.getRetryOf() != null)
 				pathToTop.add(plan);
@@ -597,6 +618,14 @@ public class Collaboration extends Mechanisms{
 		Collections.reverse(pathToTop);
 		
 		return pathToTop;
+	}
+	
+	private boolean hasPreviiouslyMet(Plan plan) {
+		
+		for (Plan child : plan.getChildren())
+			if (child.isDone())
+				return true;
+		return false;
 	}
 	
 	public void setActualFocus(Plan plan) {
@@ -692,12 +721,18 @@ public class Collaboration extends Mechanisms{
 		
 		AppraisalVector appraisalVector = mentalProcesses.getAppraisalProcess().doAppraisal(turn, recognizedGoal, APPRAISAL_TYPE.APPRAISAL);
 		
-		if (postconditionStatus == null)
+		if (postconditionStatus == null) {
+			world.setUserValence(0);
 			mentalProcesses.getPerceptionMechanism().setEmotionValence(0.0);
-		else if (postconditionStatus)
+		}
+		else if (postconditionStatus) {
+			world.setUserValence(0.4);
 			mentalProcesses.getPerceptionMechanism().setEmotionValence(0.4);
-		else
+		}
+		else {
+			world.setUserValence(-0.4);
 			mentalProcesses.getPerceptionMechanism().setEmotionValence(-0.4);
+		}
 		
 		tom.doReverseAppraisal(recognizedGoal);
 		System.out.println("Human's Emotion (before coping): " + tom.getAnticipatedHumanEmotion(tom.getReverseAppraisalValues(recognizedGoal)));

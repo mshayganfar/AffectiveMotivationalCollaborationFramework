@@ -33,15 +33,17 @@
 
   <task id="RemoveLeftCover">
 		<precondition>true</precondition>
-    <subtasks id="_removeLeftCoverRecipe1">
+    <subtasks id="removeLeftCoverRecipe1">
     	<step name="remove_left_prim" task="RemoveLeftCoverPrimitive"/>
 
 			<binding slot="$remove_left_prim.external" value="true"/>
     </subtasks>
 
-    <subtasks id="_removeLeftCoverRecipe2">
+    <subtasks id="removeLeftCoverRecipe2">
     	<step name="handoff_remove_left" task="HandOffRemoveLeftCover"/>
     	<step name="remove_left_prim" task="RemoveLeftCoverPrimitive"/>
+
+			<applicable>(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.NEGATIVE)</applicable>
 
 			<binding slot="$handoff_remove_left.external" value="false"/>
 			<binding slot="$remove_left_prim.external" value="true"/>

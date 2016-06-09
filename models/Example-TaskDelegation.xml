@@ -15,7 +15,7 @@
       <step name="check_panel_attachment" task ="CheckPanelAttachment"/>
       <step name="check_wirings" task ="CheckWirings"/>
 
-      <binding slot="$check_wirings.external" value="$check_wirings.external === undefined ? true : undefined"/>
+      <binding slot="$check_wirings.external" value="true"/>
     </subtasks>
   </task>
 

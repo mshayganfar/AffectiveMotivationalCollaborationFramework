@@ -10,10 +10,6 @@ public class World {
 	
 	private static MentalProcesses mentalProcesses;
 	
-	public World(MentalProcesses mentalProcesses) {
-		this.mentalProcesses = mentalProcesses;
-	}
-	
 	public static final boolean post_PrepareControlSwitch = true;
 	public static final boolean post_RemoveCover = true;
 	public static final boolean post_ConnectAdaptor = true;
@@ -25,7 +21,21 @@ public class World {
 	public static final boolean post_CheckCascadingCells = true;
 	public static final boolean post_CheckOutputCurrent = true;
 	
+	public World(MentalProcesses mentalProcesses) {
+		this.mentalProcesses = mentalProcesses;
+	}
+	
 	public static boolean getExecutionOutcome() {
 		return mentalProcesses.getPerceptionMechanism().perceiveExecutionOutcome();
+	}
+	
+	public void setUserValence(double valenceValue) {
+		
+		if (valenceValue == 0)
+			userValence = USER_VALENCE.NEUTRAL;
+		else if (valenceValue > 0)
+			userValence = USER_VALENCE.POSITIVE;
+		else if (valenceValue < 0)
+			userValence = USER_VALENCE.NEGATIVE;
 	}
 }
