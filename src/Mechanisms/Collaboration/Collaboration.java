@@ -21,7 +21,6 @@ import MetaInformation.AMCAgent;
 import MetaInformation.AMCUser;
 import MetaInformation.AppraisalVector;
 import MetaInformation.AppraisalVector.APPRAISAL_TYPE;
-import edu.wpi.cetask.Decomposition;
 import edu.wpi.cetask.DecompositionClass;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskModel;
@@ -94,9 +93,8 @@ public class Collaboration extends Mechanisms{
 		disco.load("models/Events.xml");
 //		taskModel = disco.load("models/AstronautRobot.xml");
 //		taskModel = disco.load("models/Example-GoalManagement.xml");
-//		taskModel = disco.load("models/Example-Postponement-InputFailure.xml");
-		taskModel = disco.load("models/Example-Postponement.xml");
-//		taskModel = disco.load("models/Example-TaskDelegation.xml");
+//		taskModel = disco.load("models/Example-Postponement.xml");
+		taskModel = disco.load("models/Example-TaskDelegation.xml");
 		
 		prevFocus = disco.getFocus();
 		
@@ -590,7 +588,6 @@ public class Collaboration extends Mechanisms{
 			}
 			else if (plan.getRetryOf() != null)
 				pathToTop.add(plan);
-			System.out.println(pathToTop);
 			plan = plan.getParent();
 		}
 		
@@ -763,8 +760,8 @@ public class Collaboration extends Mechanisms{
 		//Run Action
 		boolean postconditionStatus = true;
 		// To fail the robot's task uncomment the next two lines.
-//		if ((recognizedGoal.getPlan().getGoal().getType().toString().equals("CheckPanelAttachmentPrimitive")) && (recognizedGoal.getPlan().getRetryOf() == null))
-//			postconditionStatus = false;
+		if ((recognizedGoal.getPlan().getGoal().getType().toString().equals("CheckPanelAttachmentPrimitive")) && (recognizedGoal.getPlan().getRetryOf() == null))
+			postconditionStatus = false;
 		mentalProcesses.getActionMechanism().act(recognizedGoal, postconditionStatus);
 		
 		tom.doReverseAppraisal(recognizedGoal);

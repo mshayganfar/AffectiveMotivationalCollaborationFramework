@@ -99,13 +99,6 @@ public class AffectiveMotivationalCollaborationFramework {
 		while (!topPlan.getStatus().equals(Status.DONE)) {
 			agentEventItem = agent.generateBest(interaction, true);
 			userEventItem  = user.generateBest(interaction);
-//			if ((agentEventItem != null) && (userEventItem != null)) { 
-//				if ((agentEventItem.contributes.getGoal().getType().toString().equals("CheckPanelAttachmentPrimitive")) && (userEventItem.contributes.getGoal() instanceof Accept)) {
-//					System.out.println(userEventItem.contributes.getParent());
-//					if (agentEventItem.contributes.getRetryOf() != null)
-//						return;
-//				}
-//			}
 			if (userEventItem != null) {
 				if (userEventItem.contributes.getGoal() instanceof Accept) {
 					discoWrapper = new DiscoActionsWrapper(mentalProcesses);
@@ -175,7 +168,6 @@ public class AffectiveMotivationalCollaborationFramework {
 		user 		= collaboration.getAMCUser();
 		
 		// Input values should be manually added to this list in order!
-		//ArrayList<Object> inputValues = new ArrayList<Object>(Arrays.asList(WeldingTool.MY_WELDING_TOOL));
 		inputValues = new HashMap<String, Object>();
 		inputValues.put("WeldPaneltool", WeldingTool.MY_WELDING_TOOL);
 		inputValues.put("PickUpTooltool", RemovingCoverTool.USER_TOOL);
@@ -190,8 +182,6 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 //		collaboration.getInteraction().getConsole().test("test/ABC1.test");
 //		mentalProcesses.getCollaborationMechanism().getInteraction().getConsole().source("test/events-astronaut-robot.txt");
-		
-//		System.out.println(goalManagement.computeCostValue(eventGoal) + " and " + eventGoal.getLabel() + " and " + collaboration.getDisco().getFocus().getType());
 		
 //		interaction.getConsole().test("test/Console.test");
 //		interaction.getConsole().step("test/Console.test");
