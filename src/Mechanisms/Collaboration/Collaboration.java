@@ -706,6 +706,7 @@ public class Collaboration extends Mechanisms{
 			discoWrapper.executeTask(recognizedGoal, true, postconditionStatus);
 			if (!postconditionStatus)
 				world.setUserValence(-0.4);
+			System.out.println(recognizedGoal.getPlan().getParent().getDecompositions());
 			System.out.println(recognizedGoal.getPlan().getParent().getGoal().getDecompositions());
 			System.out.println(recognizedGoal.getPlan().getDecompositions());
 			System.out.println(recognizedGoal.getPlan());
@@ -713,8 +714,6 @@ public class Collaboration extends Mechanisms{
 			System.out.println(recognizedGoal.getPlan().getParent().getType().getDecompositions());
 			System.out.println(recognizedGoal.getPlan().getParent().getFailed());
 			System.out.println(recognizedGoal.getPlan().getParent().getGoal().getDecompositions());
-			System.out.println(recognizedGoal.getPlan().getRetry());
-			System.out.println(recognizedGoal.getPlan().getRetryOf());
 			if (!postconditionStatus) {
 				if (eventPlan.getRetryOf() != null)
 					recognizedGoal = new Goal(mentalProcesses, eventPlan.getRetryOf());
