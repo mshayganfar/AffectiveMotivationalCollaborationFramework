@@ -73,7 +73,8 @@ public class MentalState {
 	public static boolean isGoalInMentalState(Plan plan) {
 		
 		for (Goal goal : goals)
-			if (goal.getPlan().getGoal().getType().equals(plan.getGoal().getType()))
+//			if (goal.getPlan().getGoal().getType().equals(plan.getGoal().getType()))
+			if (goal.getPlan().getGoal().equals(plan.getGoal()))
 				return true;
 		return false;
 	}

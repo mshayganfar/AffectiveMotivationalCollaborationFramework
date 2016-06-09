@@ -580,10 +580,17 @@ public class Collaboration extends Mechanisms{
 		
 		while (!plan.equals(disco.getTop(plan))) {
 //		while (plan.getParent() != null) {
-			if (!MentalState.getInstance().isGoalInMentalState(plan))
-				pathToTop.add(plan);
+			if (!MentalState.getInstance().isGoalInMentalState(plan)) {
+				if (plan.getRetryOf() != null) {
+					if (!getGoalStatus(plan.getRetryOf()).equals(GOAL_STATUS.FAILED))
+						pathToTop.add(plan);
+				}
+				else
+					pathToTop.add(plan);
+			}
 			else if (plan.getRetryOf() != null)
 				pathToTop.add(plan);
+			System.out.println(pathToTop);
 			plan = plan.getParent();
 		}
 		
