@@ -43,10 +43,19 @@
     	<step name="handoff_remove_left" task="HandOffRemoveLeftCover"/>
     	<step name="remove_left_prim" task="RemoveLeftCoverPrimitive"/>
 
-			<applicable>(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.NEGATIVE)</applicable>
+			<applicable>true</applicable>
 
 			<binding slot="$handoff_remove_left.external" value="false"/>
 			<binding slot="$remove_left_prim.external" value="true"/>
+    </subtasks>
+
+    <subtasks id="removeLeftCoverRecipe3">
+      <step name="call_supervisor" task ="CallSupervisor"/>
+
+			<applicable>(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.POSITIVE) ||
+									(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.NEUTRAL)</applicable>
+
+      <binding slot="$call_supervisor.external" value="false"/>
     </subtasks>
   </task>
 
@@ -70,6 +79,15 @@
 		<precondition>true</precondition>
   </task>
 
+  <task id="CallSupervisor">
+		<precondition>true</precondition>
+  </task>
+
 	<script init="true">
+		function isApplicable() {
+			if (Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.NEGATIVE)
+				return true;
+			return false;
+		}
 	</script>
 </taskModel>

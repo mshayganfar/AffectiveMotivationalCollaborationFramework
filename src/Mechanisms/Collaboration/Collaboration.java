@@ -704,6 +704,17 @@ public class Collaboration extends Mechanisms{
 		
 		if (recognizedGoal.getPlan().isPrimitive()) {
 			discoWrapper.executeTask(recognizedGoal, true, postconditionStatus);
+			if (!postconditionStatus)
+				world.setUserValence(-0.4);
+			System.out.println(recognizedGoal.getPlan().getParent().getGoal().getDecompositions());
+			System.out.println(recognizedGoal.getPlan().getDecompositions());
+			System.out.println(recognizedGoal.getPlan());
+			System.out.println(recognizedGoal.getPlan().getParent());
+			System.out.println(recognizedGoal.getPlan().getParent().getType().getDecompositions());
+			System.out.println(recognizedGoal.getPlan().getParent().getFailed());
+			System.out.println(recognizedGoal.getPlan().getParent().getGoal().getDecompositions());
+			System.out.println(recognizedGoal.getPlan().getRetry());
+			System.out.println(recognizedGoal.getPlan().getRetryOf());
 			if (!postconditionStatus) {
 				if (eventPlan.getRetryOf() != null)
 					recognizedGoal = new Goal(mentalProcesses, eventPlan.getRetryOf());
@@ -719,8 +730,6 @@ public class Collaboration extends Mechanisms{
 		
 		mentalProcesses.getCollaborationMechanism().updatePreconditionApplicability();
 		
-		AppraisalVector appraisalVector = mentalProcesses.getAppraisalProcess().doAppraisal(turn, recognizedGoal, APPRAISAL_TYPE.APPRAISAL);
-		
 		if (postconditionStatus == null) {
 			world.setUserValence(0);
 			mentalProcesses.getPerceptionMechanism().setEmotionValence(0.0);
@@ -733,6 +742,10 @@ public class Collaboration extends Mechanisms{
 			world.setUserValence(-0.4);
 			mentalProcesses.getPerceptionMechanism().setEmotionValence(-0.4);
 		}
+		
+		System.out.println(world.getUserValence());
+		AppraisalVector appraisalVector = mentalProcesses.getAppraisalProcess().doAppraisal(turn, recognizedGoal, APPRAISAL_TYPE.APPRAISAL);
+		System.out.println(world.getUserValence());
 		
 		tom.doReverseAppraisal(recognizedGoal);
 		System.out.println("Human's Emotion (before coping): " + tom.getAnticipatedHumanEmotion(tom.getReverseAppraisalValues(recognizedGoal)));
@@ -752,6 +765,7 @@ public class Collaboration extends Mechanisms{
 		
 		//Run Action
 //		mentalProcesses.getActionMechanism().act(recognizedGoal, postconditionStatus);
+		
 		if (mentalProcesses.getActionMechanism().act(recognizedGoal, postconditionStatus).equals(WHOSE_TURN.USER))
 			keepTurn = true;
 		
@@ -928,6 +942,10 @@ public class Collaboration extends Mechanisms{
 			plan = plan.getParent();
 		
 		int alternativePlansCount = plan.getDecompositions().size();
+		System.out.println(plan.getDecomposition().getType().getId());
+		System.out.println(plan.getParent().getType().getDecompositions());
+		System.out.println(plan.getParent().getFailed());
+		System.out.println(plan.getParent().getGoal().getDecompositions());
 		recipeCounter = alternativePlansCount;
 		for (DecompositionClass decomposition : plan.getDecompositions()) {
 			// Either of the following conditions is enough to consider existence of an alternative recipe:

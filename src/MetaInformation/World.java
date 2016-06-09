@@ -6,7 +6,7 @@ public class World {
 	public static enum RemovingCoverTool { USER_TOOL, AGENT_TOOL }
 	public static enum USER_VALENCE { POSITIVE, NEGATIVE, NEUTRAL }
 	
-	private static USER_VALENCE userValence;
+	public static USER_VALENCE userValence;
 	
 	private static MentalProcesses mentalProcesses;
 	
@@ -27,6 +27,10 @@ public class World {
 	
 	public static boolean getExecutionOutcome() {
 		return mentalProcesses.getPerceptionMechanism().perceiveExecutionOutcome();
+	}
+	
+	public USER_VALENCE getUserValence() {
+		return userValence;
 	}
 	
 	public void setUserValence(double valenceValue) {

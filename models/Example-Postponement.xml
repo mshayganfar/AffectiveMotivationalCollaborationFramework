@@ -84,5 +84,10 @@
   </task>
 
 	<script init="true">
+		function isApplicable() {
+			if (Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.NEGATIVE)
+				return true;
+			return false;
+		}
 	</script>
 </taskModel>
