@@ -17,7 +17,6 @@ import MetaInformation.MentalProcesses;
 import MetaInformation.Node;
 import MetaInformation.Turns;
 import MetaInformation.Turns.WHOSE_TURN;
-import MetaInformation.World.USER_VALENCE;
 import MetaInformation.World;
 import MetaInformation.AMCAgent;
 import MetaInformation.AMCUser;
@@ -94,10 +93,12 @@ public class Collaboration extends Mechanisms{
 		disco = interaction.getDisco();
 		
 		disco.load("models/Events.xml");
+		// To load the whole scenario:
 //		taskModel = disco.load("models/AstronautRobot.xml");
-		taskModel = disco.load("models/Example-Postponement.xml");
+		// To load three different examples separately, uncomment one at a time:
+//		taskModel = disco.load("models/Example-Postponement.xml");
 //		taskModel = disco.load("models/Example-GoalManagement.xml");
-//		taskModel = disco.load("models/Example-TaskDelegation.xml");
+		taskModel = disco.load("models/Example-TaskDelegation.xml");
 		
 		prevFocus = disco.getFocus();
 		
@@ -801,7 +802,7 @@ public class Collaboration extends Mechanisms{
 		
 		//Run Action
 		boolean postconditionStatus = true;
-		// To fail the robot's task uncomment the next two lines.
+		// To fail the robot's task in example 3 uncomment the next two lines.
 		if ((recognizedGoal.getPlan().getGoal().getType().toString().equals("CheckPanelAttachmentPrimitive")) && (recognizedGoal.getPlan().getRetryOf() == null))
 			postconditionStatus = false;
 		mentalProcesses.getActionMechanism().act(recognizedGoal, postconditionStatus);
@@ -936,13 +937,9 @@ public class Collaboration extends Mechanisms{
 		
 		int alternativePlansCount = plan.getDecompositions().size();
 		recipeCounter = alternativePlansCount;
-//		System.out.println(plan.getDecompositions());
 		for (DecompositionClass decomposition : plan.getDecompositions()) {
 			// Either of the following conditions is enough to consider existence of an alternative recipe:
 			// 1. This condition is to check whether failure caused trying of another recipe.
-//			System.out.println(decomposition.getGoal().getSlot("external").getSlotValue(eventGoal.getPlan().getGoal()));
-//			System.out.println(eventGoal.getPlan().getGoal().getExternal());
-//			System.out.println(eventGoal.getPlan());
 			if (!decomposition.getId().equals(plan.getDecomposition().getType().getId()))
 				break;
 			// 2. This condition is to check whether failure occurred but a coping strategy changed the responsibility of the task in the same recipe.

@@ -36,7 +36,6 @@ public class AffectiveMotivationalCollaborationFramework {
 	
 	private static MentalProcesses mentalProcesses;
 	private static GoalManagement goalManagement;
-//	private static SatisfactionDrive satisfactionDrive = new SatisfactionDrive();
 	
 	private static Map<String, Object> inputValues;
 	
@@ -47,7 +46,6 @@ public class AffectiveMotivationalCollaborationFramework {
 				plan = plan.getParent();
 			
 			goal = new Goal(mentalProcesses, plan);
-//			goal = plan.getGoal().getType(); // Was TaskClass
 		}
 		else
 			System.out.println("Needs to be changed for the top level goal before execution!");
@@ -114,7 +112,7 @@ public class AffectiveMotivationalCollaborationFramework {
 					while (collaboration.hasLiveChild(collaboration.getActualFocus().getParent())) {
 						for (Plan plan : collaboration.getPathToTop(collaboration.getLiveChild(collaboration.getActualFocus().getParent()))) {
 								collaboration.setActualFocus(plan);
-								if (collaboration.getResponsibleAgent(plan).equals(AGENT.SELF)) {// || collaboration.getResponsibleAgent(plan).equals(AGENT.BOTH)) {
+								if (collaboration.getResponsibleAgent(plan).equals(AGENT.SELF)) {
 									collaboration.processAgent(plan, 0.0);
 									collaboration.initializeAllInputs(plan, inputValues);
 								}
