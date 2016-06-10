@@ -4,115 +4,199 @@
 
   <task id="InstallSolarPanel">
 		<precondition>true</precondition>
-    <subtasks id="recipeA" ordered="true">
-      <step name="prepare" task ="PreparePanel"/>
-      <step name="fix" task="FixPanel"/>
-      <step name="check" task="CheckPanel"/>
+    <subtasks id="installSolarPanelRecipe" ordered="false">
+      <step name="prepare_panel" task ="PreparePanel"/>
+      <step name="prepare_cable" task ="PrepareCable"/>
+      <step name="fix_panel" task="FixPanel"/>
+      <step name="check_hardware" task="CheckHardware" requires ="fix_panel"/>
+      <step name="check_function" task="CheckFunction"/>
     </subtasks>
   </task>
 
   <task id="PreparePanel">
 		<precondition>true</precondition>
-    <subtasks id="recipeB" ordered="false">
-      <step name="switch" task ="PrepareControlSwitch"/>
-      <step name="connector" task="PrepareConnector"/>
+    <subtasks id="preparePanelRecipe" ordered="true">
+      <step name="prepare_switch" task ="PrepareControlSwitch"/>
+      <step name="prepare_connector" task="PrepareConnector"/>
 
-      <binding slot="$switch.external" value="true"/>
-    </subtasks>
-  </task>
-
-  <task id="FixPanel">
-		<precondition>true</precondition>
-    <subtasks id="recipeC" ordered="true">
-      <step name="place" task ="PlacePanel"/>
-      <step name="weld" task="WeldPanel"/>
-
-      <binding slot="$place.external" value="false"/>
-      <binding slot="$weld.external" value="false"/>
-    </subtasks>
-  </task>
-
-  <task id="CheckPanel">
-		<precondition>true</precondition>
-    <subtasks id="recipeD" ordered="true">
-      <step name="hardware" task ="CheckHardware"/>
-      <step name="function" task="CheckFunction"/>
+			<binding slot="$prepare_switch.external" value="false"/>
     </subtasks>
   </task>
 
   <task id="PrepareConnector">
 		<precondition>true</precondition>
-    <subtasks id="recipeF" ordered="true">
-      <step name="cover" task ="RemoveCover"/>
-      <step name="adaptor" task ="ConnectAdaptor"/>
+    <subtasks id="prepareConnectorRecipe" ordered="false">
+      <step name="remove_left" task ="RemoveLeftCover"/>
+      <step name="remove_right" task ="RemoveRightCover"/>
+      <step name="connect_adaptor" task ="ConnectAdaptor" requires ="remove_left remove_right"/>
 
-      <binding slot="$cover.external" value="false"/>
-      <binding slot="$adaptor.external" value="false"/>
+			<binding slot="$remove_right.external" value="false"/>
+			<binding slot="$connect_adaptor.external" value="false"/>
+    </subtasks>
+  </task>
+
+  <task id="RemoveLeftCover">
+		<precondition>true</precondition>
+    <subtasks id="removeLeftCoverRecipe1">
+    	<step name="remove_left_prim" task="RemoveLeftCoverPrimitive"/>
+
+			<binding slot="$remove_left_prim.external" value="true"/>
+    </subtasks>
+
+    <subtasks id="removeLeftCoverRecipe2">
+    	<step name="handoff_remove_left" task="HandOffRemoveLeftCover"/>
+    	<step name="remove_left_prim" task="RemoveLeftCoverPrimitive"/>
+
+			<applicable>(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.NEGATIVE)</applicable>
+
+			<binding slot="$handoff_remove_left.external" value="false"/>
+			<binding slot="$remove_left_prim.external" value="true"/>
+    </subtasks>
+
+    <subtasks id="removeLeftCoverRecipe3">
+      <step name="call_supervisor" task ="CallSupervisor"/>
+
+			<applicable>(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.POSITIVE) ||
+									(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.NEUTRAL)</applicable>
+
+      <binding slot="$call_supervisor.external" value="false"/>
+    </subtasks>
+  </task>
+
+  <task id="PrepareCable">
+		<precondition>true</precondition>
+    <subtasks id="prepareCableRecipe" ordered="false">
+      <step name="takeout_cable" task ="TakeOutCable"/>
+      <step name="unroll_cable" task="UnrollCable" requires ="takeout_cable"/>
+      <step name="place_cable" task="PlaceCable"/>
+
+      <binding slot="$takeout_cable.external" value="true"/>
+      <binding slot="$unroll_cable.external" value="false"/>
+      <binding slot="$place_cable.external" value="false"/>
+    </subtasks>
+  </task>
+
+  <task id="FixPanel">
+		<precondition>true</precondition>
+    <subtasks id="fixPanelRecipe" ordered="true">
+      <step name="place_panel" task ="PlacePanel"/>
+      <step name="weld_panel" task="WeldPanel"/>
+
+      <binding slot="$place_panel.external" value="false"/>
+      <binding slot="$weld_panel.external" value="true"/>
     </subtasks>
   </task>
 
   <task id="CheckHardware">
 		<precondition>true</precondition>
-    <subtasks id="recipeI" ordered="true">
-      <step name="panelattachment" task ="CheckPanelAttachment"/>
-      <step name="wirings" task ="CheckWirings"/>
+    <subtasks id="checkHardwareRecipe" ordered="true">
+      <step name="check_panel_attachment" task ="CheckPanelAttachment"/>
+      <step name="check_wirings" task ="CheckWirings"/>
 
-      <binding slot="$panelattachment.external" value="true"/>
-      <binding slot="$wirings.external" value="false"/>
+      <binding slot="$check_wirings.external" value="true"/>
     </subtasks>
   </task>
 
+  <task id="CheckPanelAttachment">
+		<precondition>true</precondition>
+    <subtasks id="checkPanelAttachmentRecipe1">
+      <step name="check_panel_attachment_prim" task ="CheckPanelAttachmentPrimitive"/>
+
+      <binding slot="$check_panel_attachment_prim.external" value="$check_panel_attachment_prim.external === undefined ? false : undefined"/>
+    </subtasks>
+
+    <subtasks id="checkPanelAttachmentRecipe2">
+      <step name="call_supervisor" task ="CallSupervisor"/>
+
+			<applicable>(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.POSITIVE) ||
+									(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.NEUTRAL)</applicable>
+
+      <binding slot="$call_supervisor.external" value="false"/>
+    </subtasks>
+	</task>
+
   <task id="CheckFunction">
 		<precondition>true</precondition>
-    <subtasks id="recipeJ" ordered="true">
-      <step name="controlswitch" task ="CheckControlSwitch"/>
-      <step name="cascadingcells" task ="CheckCascadingCells"/>
-      <step name="outputcurrent" task ="CheckOutputCurrent"/>
+    <subtasks id="checkFunctionRecipe" ordered="true">
+      <step name="check_control_switch" task ="CheckControlSwitch"/>
+      <step name="check_cascading_cells" task ="CheckCascadingCells"/>
+      <step name="check_output_current" task ="CheckOutputCurrent"/>
 
-      <binding slot="$controlswitch.external" value="false"/>
-      <binding slot="$cascadingcells.external" value="true"/>
-      <binding slot="$outputcurrent.external" value="false"/>
+      <binding slot="$check_control_switch.external" value="false"/>
+      <binding slot="$check_cascading_cells.external" value="true"/>
+      <binding slot="$check_output_current.external" value="false"/>
     </subtasks>
   </task>
 
   <task id="PrepareControlSwitch">
 		<precondition>true</precondition>
 	</task>
-  <task id="RemoveCover">
+
+  <task id="RemoveRightCover">
 		<precondition>true</precondition>
 	</task>
+
   <task id="ConnectAdaptor">
 		<precondition>true</precondition>
 	</task>
+
+  <task id="RemoveLeftCoverPrimitive">
+		<precondition>true</precondition>
+  </task>
+
+  <task id="HandOffRemoveLeftCover">
+		<precondition>true</precondition>
+  </task>
+
+  <task id="CallSupervisor">
+		<precondition>true</precondition>
+  </task>
+
+  <task id="TakeOutCable">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="UnrollCable">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="PlaceCable">
+		<precondition>true</precondition>
+	</task>
+
   <task id="PlacePanel">
 		<precondition>true</precondition>
 	</task>
+
   <task id="WeldPanel">
-		<input name="tool" type="Packages.MetaInformation.World.WeldingTool" />
 		<precondition>true</precondition>
 	</task>
-  <task id="CheckPanelAttachment">
+
+  <task id="CheckPanelAttachmentPrimitive">
 		<precondition>true</precondition>
 	</task>
+
   <task id="CheckWirings">
 		<precondition>true</precondition>
 	</task>
+
   <task id="CheckControlSwitch">
 		<precondition>true</precondition>
 	</task>
+
   <task id="CheckCascadingCells">
 		<precondition>true</precondition>
 	</task>
+
   <task id="CheckOutputCurrent">
 		<precondition>true</precondition>
 	</task>
-  
+
 	<script init="true">
-		// function WeldingTool (name) { this.name = name; }
-
-		// WeldingTool.prototype.toString = function () { return this.name; }
-
-		// var MyWeldingTool = new WeldingTool("MyWeldingTool");
-		// var MyWeldingTool = Packages.MetaInformation.World.WeldingTool.MY_WELDING_TOOL; // Based on the Java code.
+		function isApplicable() {
+			if (Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.NEGATIVE)
+				return true;
+			return false;
+		}
 	</script>
 </taskModel>

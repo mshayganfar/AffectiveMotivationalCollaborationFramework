@@ -42,7 +42,6 @@
       <step name="check_panel_attachment" task ="CheckPanelAttachment"/>
       <step name="check_wirings" task ="CheckWirings"/>
 
-      <binding slot="$check_panel_attachment.external" value="false"/>
       <binding slot="$check_wirings.external" value="true"/>
     </subtasks>
   </task>

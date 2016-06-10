@@ -94,11 +94,11 @@ public class Collaboration extends Mechanisms{
 		
 		disco.load("models/Events.xml");
 		// To load the whole scenario:
-//		taskModel = disco.load("models/AstronautRobot.xml");
+		taskModel = disco.load("models/AstronautRobot.xml");
 		// To load three different examples separately, uncomment one at a time:
 //		taskModel = disco.load("models/Example-Postponement.xml");
 //		taskModel = disco.load("models/Example-GoalManagement.xml");
-		taskModel = disco.load("models/Example-TaskDelegation.xml");
+//		taskModel = disco.load("models/Example-TaskDelegation.xml");
 		
 		prevFocus = disco.getFocus();
 		
