@@ -37,8 +37,8 @@ public class Perception{
 		return (emotion.equals(EMOTION_INSTANCE.JOY)) ? intensity : (emotion.equals(EMOTION_INSTANCE.NEUTRAL)) ? 0 : (-1)*intensity;
 	}
 	
-	public double getEmotionValence() { 
-		return emotionValence;
+	public double getEmotionValence() {
+		return this.emotionValence;
 	}
 	
 	public void setEmotionValence(double valenceValue) { 

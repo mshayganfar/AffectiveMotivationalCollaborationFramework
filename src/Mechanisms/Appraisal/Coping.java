@@ -20,6 +20,7 @@ import MetaInformation.CopingActivation;
 import MetaInformation.MentalProcesses;
 import MetaInformation.Turns;
 import MetaInformation.CopingActivation.COPING_STRATEGY;
+import MetaInformation.World.USER_VALENCE;
 import edu.wpi.cetask.DecompositionClass;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.Task;

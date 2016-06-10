@@ -17,6 +17,7 @@ import MetaInformation.MentalProcesses;
 import MetaInformation.Node;
 import MetaInformation.Turns;
 import MetaInformation.Turns.WHOSE_TURN;
+import MetaInformation.World.USER_VALENCE;
 import MetaInformation.World;
 import MetaInformation.AMCAgent;
 import MetaInformation.AMCUser;
@@ -94,8 +95,8 @@ public class Collaboration extends Mechanisms{
 		
 		disco.load("models/Events.xml");
 //		taskModel = disco.load("models/AstronautRobot.xml");
-		taskModel = disco.load("models/Example-Postponement.xml");
-//		taskModel = disco.load("models/Example-GoalManagement.xml");
+//		taskModel = disco.load("models/Example-Postponement.xml");
+		taskModel = disco.load("models/Example-GoalManagement.xml");
 //		taskModel = disco.load("models/Example-TaskDelegation.xml");
 		
 		prevFocus = disco.getFocus();
@@ -517,6 +518,10 @@ public class Collaboration extends Mechanisms{
 		return this.prevFocus;
 	}
 	
+	public World getWorld() {
+		return this.world;
+	}
+	
 	private boolean getGoalOverallStatus(Plan goal) {
 		
 		GOAL_STATUS goalStatus = collaboration.getGoalStatus(goal);
@@ -645,7 +650,8 @@ public class Collaboration extends Mechanisms{
 		
 		for (Plan plan : parentPlan.getChildren()) {
 			if (plan.isLive())
-				return plan;
+				if (plan.getRetryOf() == null)
+					return plan;
 		}
 		return null;
 	}
@@ -705,7 +711,7 @@ public class Collaboration extends Mechanisms{
 		if (recognizedGoal.getPlan().isPrimitive()) {
 			discoWrapper.executeTask(recognizedGoal, true, postconditionStatus);
 			if (postconditionStatus == null) {
-				world.setUserValence(0);
+				world.setUserValence(0.0);
 				mentalProcesses.getPerceptionMechanism().setEmotionValence(0.0);
 			}
 			else if (postconditionStatus) {
@@ -716,14 +722,6 @@ public class Collaboration extends Mechanisms{
 				world.setUserValence(-0.4);
 				mentalProcesses.getPerceptionMechanism().setEmotionValence(-0.4);
 			}
-			System.out.println(recognizedGoal.getPlan().getParent().getDecompositions());
-//			System.out.println(recognizedGoal.getPlan().getParent().getGoal().getDecompositions());
-//			System.out.println(recognizedGoal.getPlan().getDecompositions());
-//			System.out.println(recognizedGoal.getPlan());
-//			System.out.println(recognizedGoal.getPlan().getParent());
-//			System.out.println(recognizedGoal.getPlan().getParent().getType().getDecompositions());
-//			System.out.println(recognizedGoal.getPlan().getParent().getFailed());
-//			System.out.println(recognizedGoal.getPlan().getParent().getGoal().getDecompositions());
 			if (!postconditionStatus) {
 				if (eventPlan.getRetryOf() != null)
 					recognizedGoal = new Goal(mentalProcesses, eventPlan.getRetryOf());
@@ -735,13 +733,12 @@ public class Collaboration extends Mechanisms{
 		else
 			discoWrapper.proposeTaskShould(recognizedGoal, true);
 		
+		// Magic Line!!! :-) Causes Example 1 to work and causes Example 2 to crash. Work on this tomorrow morning.
 		mentalProcesses.getPerceptionMechanism().setEmotionValence(valenceValue);
 		
 		mentalProcesses.getCollaborationMechanism().updatePreconditionApplicability();
 		
-		System.out.println(world.getUserValence());
 		AppraisalVector appraisalVector = mentalProcesses.getAppraisalProcess().doAppraisal(turn, recognizedGoal, APPRAISAL_TYPE.APPRAISAL);
-		System.out.println(world.getUserValence());
 		
 		tom.doReverseAppraisal(recognizedGoal);
 		System.out.println("Human's Emotion (before coping): " + tom.getAnticipatedHumanEmotion(tom.getReverseAppraisalValues(recognizedGoal)));
@@ -938,17 +935,21 @@ public class Collaboration extends Mechanisms{
 			plan = plan.getParent();
 		
 		int alternativePlansCount = plan.getDecompositions().size();
-//		System.out.println(plan.getDecompositions());
-//		System.out.println(plan.getFailed());
 		recipeCounter = alternativePlansCount;
+//		System.out.println(plan.getDecompositions());
 		for (DecompositionClass decomposition : plan.getDecompositions()) {
 			// Either of the following conditions is enough to consider existence of an alternative recipe:
 			// 1. This condition is to check whether failure caused trying of another recipe.
+//			System.out.println(decomposition.getGoal().getSlot("external").getSlotValue(eventGoal.getPlan().getGoal()));
+//			System.out.println(eventGoal.getPlan().getGoal().getExternal());
+//			System.out.println(eventGoal.getPlan());
 			if (!decomposition.getId().equals(plan.getDecomposition().getType().getId()))
 				break;
 			// 2. This condition is to check whether failure occurred but a coping strategy changed the responsibility of the task in the same recipe.
 			else if (!decomposition.getGoal().getSlot("external").getSlotValue(eventGoal.getPlan().getGoal()).equals(eventGoal.getPlan().getGoal().getExternal()))
 				break;
+//			else if (eventGoal.getPlan().getGoal().getProperty("@retry") != null)
+//				break;
 			recipeCounter--;
 		}
 		if (recipeCounter == 0)

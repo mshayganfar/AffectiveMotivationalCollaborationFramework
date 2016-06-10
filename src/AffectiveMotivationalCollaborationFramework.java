@@ -99,7 +99,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		while (!topPlan.getStatus().equals(Status.DONE)) {
 			agentEventItem = agent.generateBest(interaction, true);
-//			System.out.println(agentEventItem.contributes.getParent().getDecompositions());
+			System.out.println(agentEventItem.contributes.getParent().getDecompositions());
 			userEventItem  = user.generateBest(interaction);
 			if (userEventItem != null) {
 				if (userEventItem.contributes.getGoal() instanceof Accept) {
@@ -115,7 +115,7 @@ public class AffectiveMotivationalCollaborationFramework {
 					while (collaboration.hasLiveChild(collaboration.getActualFocus().getParent())) {
 						for (Plan plan : collaboration.getPathToTop(collaboration.getLiveChild(collaboration.getActualFocus().getParent()))) {
 								collaboration.setActualFocus(plan);
-								if (collaboration.getResponsibleAgent(plan).equals(AGENT.SELF)) {
+								if (collaboration.getResponsibleAgent(plan).equals(AGENT.SELF)) {// || collaboration.getResponsibleAgent(plan).equals(AGENT.BOTH)) {
 									collaboration.processAgent(plan, 0.0);
 									collaboration.initializeAllInputs(plan, inputValues);
 								}
