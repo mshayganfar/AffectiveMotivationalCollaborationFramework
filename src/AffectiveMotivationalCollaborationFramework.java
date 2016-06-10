@@ -99,6 +99,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		while (!topPlan.getStatus().equals(Status.DONE)) {
 			agentEventItem = agent.generateBest(interaction, true);
+//			System.out.println(agentEventItem.contributes.getParent().getDecompositions());
 			userEventItem  = user.generateBest(interaction);
 			if (userEventItem != null) {
 				if (userEventItem.contributes.getGoal() instanceof Accept) {
