@@ -119,20 +119,26 @@ public class Motivation extends Mechanisms {
 		if (humanEmotion == null)
 			throw new IllegalArgumentException("Illegal Human Emotion Instance: " + humanEmotion);
 		
+		// I have changed (reversed) the content of else and if, and added neutral emotion.
 		if (humanEmotion.equals(EMOTION_INSTANCE.ANGER) || 
 				humanEmotion.equals(EMOTION_INSTANCE.WORRY) ||
 				humanEmotion.equals(EMOTION_INSTANCE.FRUSTRATION) ||
-				humanEmotion.equals(EMOTION_INSTANCE.GUILT)) {
+				humanEmotion.equals(EMOTION_INSTANCE.GUILT) ||
+				humanEmotion.equals(EMOTION_INSTANCE.NEUTRAL)) {
+//			double firstGradient  = 2.0;
+//			double secondGradient = 12.0;
+//			firstSigmoidValue  = (double)2.0 / (1 + Math.exp((firstGradient - Math.abs(valence)) * (1.05 - successProbability)));
+//			secondSigmoidValue = (double)1.0 / (1 + Math.exp((secondGradient - Math.abs(valence)) * (1.2 - successProbability)));
+			double firstGradient  = 1.5;
+			double secondGradient = 6.0;
+			firstSigmoidValue  = (double)2.0 / (1 + Math.exp((firstGradient - Math.abs(valence)) * (1.25 - successProbability)));
+			secondSigmoidValue = (double)1.0 / (1 + Math.exp((secondGradient - Math.abs(valence)) * (-0.05 + successProbability)));
+		}
+		else {
 			double firstGradient  = 0.5;
 			double secondGradient = 12.0;
 			firstSigmoidValue  = (double)1.0 / (1 + Math.exp((firstGradient - valence) * (1.05 - successProbability)));
-			secondSigmoidValue = (double)1.0 / (1 + Math.exp((secondGradient - valence) * (successProbability - 1.02)));
-		}
-		else {
-			double firstGradient  = 2.0;
-			double secondGradient = 12.0;
-			firstSigmoidValue  = (double)2.0 / (1 + Math.exp((firstGradient - Math.abs(valence)) * (1.05 - successProbability)));
-			secondSigmoidValue = (double)1.0 / (1 + Math.exp((secondGradient - Math.abs(valence)) * (1.2 - successProbability)));
+			secondSigmoidValue = (double)1.0 / (1 + Math.exp((secondGradient - valence) * (successProbability - 1.02)));			
 		}
 		return (firstSigmoidValue - secondSigmoidValue);
 	}

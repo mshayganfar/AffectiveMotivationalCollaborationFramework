@@ -95,8 +95,8 @@ public class Collaboration extends Mechanisms{
 		
 		disco.load("models/Events.xml");
 //		taskModel = disco.load("models/AstronautRobot.xml");
-//		taskModel = disco.load("models/Example-Postponement.xml");
-		taskModel = disco.load("models/Example-GoalManagement.xml");
+		taskModel = disco.load("models/Example-Postponement.xml");
+//		taskModel = disco.load("models/Example-GoalManagement.xml");
 //		taskModel = disco.load("models/Example-TaskDelegation.xml");
 		
 		prevFocus = disco.getFocus();
@@ -734,7 +734,7 @@ public class Collaboration extends Mechanisms{
 			discoWrapper.proposeTaskShould(recognizedGoal, true);
 		
 		// Magic Line!!! :-) Causes Example 1 to work and causes Example 2 to crash. Work on this tomorrow morning.
-		mentalProcesses.getPerceptionMechanism().setEmotionValence(valenceValue);
+//		mentalProcesses.getPerceptionMechanism().setEmotionValence(valenceValue);
 		
 		mentalProcesses.getCollaborationMechanism().updatePreconditionApplicability();
 		

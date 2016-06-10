@@ -247,7 +247,8 @@ public class AppraisalVector {
 				if ((this.expectednessValue.equals(EXPECTEDNESS.EXPECTED)) ||
 					(this.expectednessValue.equals(EXPECTEDNESS.MOST_EXPECTED)))
 					if ((this.controllabilityValue.equals(CONTROLLABILITY.UNCONTROLLABLE)) ||
-						(this.controllabilityValue.equals(CONTROLLABILITY.LOW_CONTROLLABLE)))
+						(this.controllabilityValue.equals(CONTROLLABILITY.LOW_CONTROLLABLE)) ||
+						(this.controllabilityValue.equals(CONTROLLABILITY.HIGH_CONTROLLABLE)))
 						if (appraisalType.equals(APPRAISAL_TYPE.REVERSE_APPRAISAL)) {
 							if ((mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_REJECTED)) ||
 								(mentalProcesses.getCollaborationMechanism().getInferredContext(eventGoal).equals(INFERRED_CONTEXT.AGENT_FAILED)))
