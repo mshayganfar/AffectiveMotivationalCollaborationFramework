@@ -603,7 +603,7 @@ public class Collaboration extends Mechanisms{
 					else if (!getResponsibleAgent(originalPlan).equals(AGENT.OTHER))
 						if (originalPlan.isPrimitive()) {
 							if (!plan.isPrimitive()) {
-								if (!hasPreviiouslyMet(plan))
+								if (!hasPreviouslyMet(plan))
 									pathToTop.add(plan);
 							}
 							else
@@ -626,7 +626,7 @@ public class Collaboration extends Mechanisms{
 		return pathToTop;
 	}
 	
-	private boolean hasPreviiouslyMet(Plan plan) {
+	private boolean hasPreviouslyMet(Plan plan) {
 		
 		for (Plan child : plan.getChildren())
 			if (child.isDone())
@@ -651,7 +651,7 @@ public class Collaboration extends Mechanisms{
 		
 		for (Plan plan : parentPlan.getChildren()) {
 			if (plan.isLive())
-				if (plan.getRetryOf() == null)
+				if ((plan.getRetryOf() == null) || ((plan.getRetryOf() != null) && (!plan.getGoal().getExternal().equals(plan.getRetryOf().getGoal().getExternal()))))
 					return plan;
 		}
 		return null;

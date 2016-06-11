@@ -6,8 +6,8 @@
 		<precondition>true</precondition>
     <subtasks id="installSolarPanelRecipe" ordered="false">
       <step name="prepare_panel" task ="PreparePanel"/>
-      <step name="prepare_cable" task ="PrepareCable"/>
-      <step name="fix_panel" task="FixPanel"/>
+      <step name="prepare_cable" task ="PrepareCable" requires ="prepare_panel"/>
+      <step name="fix_panel" task="FixPanel" requires ="prepare_panel"/>
       <step name="check_hardware" task="CheckHardware" requires ="fix_panel"/>
       <step name="check_function" task="CheckFunction"/>
     </subtasks>
@@ -93,7 +93,6 @@
       <step name="check_panel_attachment" task ="CheckPanelAttachment"/>
       <step name="check_wirings" task ="CheckWirings"/>
 
-      <binding slot="$check_panel_attachment.external" value="false"/>
       <binding slot="$check_wirings.external" value="true"/>
     </subtasks>
   </task>
