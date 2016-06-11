@@ -1,3 +1,4 @@
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -9,6 +10,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 
@@ -18,12 +20,16 @@ import javax.swing.UIManager;
 
 public class AMCPanel extends JPanel {
 	
-	private JButton userDoneButton;
 	private JTextField robotEmotionTextField;
 	private JTextArea robotUtteranceTextArea;
 	private JLabel robotUtteranceLabel;
 	private JLabel robotEmotionLabel;
+	private ImageIcon robotEmotionImage;
+	private JLabel robotEmotionImageHolder;
+	private ImageIcon robotImage;
+	private JLabel robotImageHolder;
 	private JSeparator separator;
+	private JButton humanDoneButton;
 	private JComboBox<String> humanUttrancesComboBox;
 	private JLabel humanUtteranceLabel;
 	private JLabel humanEmotionLabel;
@@ -31,19 +37,23 @@ public class AMCPanel extends JPanel {
 	private JRadioButton humanPositiveEmotion;
 	private JRadioButton humanNeutralEmotion;
 	private JRadioButton humanNegativeEmotion;
+	private ImageIcon humanImage;
+	private JLabel humanImageHolder;
+	private JLabel turnHolder;
 	private SpringLayout currentLayout;
-	private ImageIcon robotEmotionImage;
-	private JLabel robotEmotionImageHolder;
 	
 	public AMCPanel() {
 		
-		userDoneButton 		    = new JButton("Done");
 		robotEmotionTextField   = new JTextField();
-		robotUtteranceTextArea  = new JTextArea(10, 30);
+		robotUtteranceTextArea  = new JTextArea(5, 30);
 		robotUtteranceLabel     = new JLabel("Robot Says:");
 		robotEmotionLabel 	    = new JLabel("Robot feels:");
-		currentLayout 		    = new SpringLayout();
+		robotEmotionImage       = new ImageIcon(new ImageIcon("images/neutral.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+		robotEmotionImageHolder = new JLabel(robotEmotionImage);
+		robotImage       		= new ImageIcon(new ImageIcon("images/kuka.png").getImage().getScaledInstance(400, 300, Image.SCALE_DEFAULT));
+		robotImageHolder 		= new JLabel(robotImage);
 		separator 			    = new JSeparator();
+		humanDoneButton 		= new JButton("Done");
 		humanUtteranceLabel     = new JLabel("You Say:");
 		humanEmotionLabel 	    = new JLabel("You feel:");
 		humanPositiveEmotion    = new JRadioButton("Positive");
@@ -51,8 +61,10 @@ public class AMCPanel extends JPanel {
 		humanNegativeEmotion    = new JRadioButton("Negative");
 		humanUttrancesComboBox  = new JComboBox<String>();
 		humanEmotionGroup 	    = new ButtonGroup();
-		robotEmotionImage       = new ImageIcon(new ImageIcon("faces/neutral.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
-		robotEmotionImageHolder = new JLabel(robotEmotionImage);
+		humanImage       		= new ImageIcon(new ImageIcon("images/person.png").getImage().getScaledInstance(300, 300, Image.SCALE_DEFAULT));
+		humanImageHolder 		= new JLabel(humanImage);
+		turnHolder				= new JLabel("Robot's Turn");
+		currentLayout 		    = new SpringLayout();
 		
 		setupPanel();
 	}
@@ -61,12 +73,14 @@ public class AMCPanel extends JPanel {
 		
 		robotUtteranceTextArea.setLineWrap (true);
 		robotUtteranceTextArea.setWrapStyleWord (true);
-		userDoneButton.setFont(new Font("Verdana", Font.BOLD, 22));
 		robotUtteranceTextArea.setFont(new Font("Verdana", Font.BOLD, 22));
+		robotUtteranceTextArea.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 		robotEmotionTextField.setFont(new Font("Verdana", Font.BOLD, 22));
 		robotEmotionTextField.setColumns(20);
+		robotEmotionTextField.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 		robotUtteranceLabel.setFont(new Font("Verdana", Font.BOLD, 32));
 		robotEmotionLabel.setFont(new Font("Verdana", Font.BOLD, 32));
+		robotImageHolder.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 		separator.setOrientation(SwingConstants.VERTICAL);
 		humanUtteranceLabel.setFont(new Font("Verdana", Font.BOLD, 32));
 		humanEmotionLabel.setFont(new Font("Verdana", Font.BOLD, 32));
@@ -80,65 +94,78 @@ public class AMCPanel extends JPanel {
 		humanEmotionGroup.add(humanPositiveEmotion);
 		humanEmotionGroup.add(humanNeutralEmotion);
 		humanEmotionGroup.add(humanNegativeEmotion);
+		humanDoneButton.setFont(new Font("Verdana", Font.BOLD, 22));
+		turnHolder.setFont(new Font("Verdana", Font.BOLD, 32));
+		turnHolder.setForeground(new Color(255, 0, 0));
+		turnHolder.setBorder(BorderFactory.createLineBorder(Color.black, 3));
+		humanImageHolder.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 		
 		setBackground(UIManager.getColor("Label.background"));
 		
-		this.add(userDoneButton);
 		this.add(robotEmotionTextField);
 		this.add(robotUtteranceTextArea);
 		this.add(robotUtteranceLabel);
 		this.add(robotEmotionLabel);
+		this.add(robotEmotionImageHolder);
+		this.add(robotImageHolder);
 		this.add(separator);
+		this.add(humanDoneButton);
 		this.add(humanUttrancesComboBox);
 		this.add(humanUtteranceLabel);
 		this.add(humanEmotionLabel);
 		this.add(humanPositiveEmotion);
 		this.add(humanNeutralEmotion);
 		this.add(humanNegativeEmotion);
+		this.add(humanImageHolder);
+		this.add(turnHolder);
 		this.setLayout(currentLayout);
-		this.add(robotEmotionImageHolder);
 		
-		currentLayout.putConstraint(SpringLayout.SOUTH, userDoneButton, -27, SpringLayout.SOUTH, this);
-		currentLayout.putConstraint(SpringLayout.EAST, userDoneButton, -26, SpringLayout.EAST, this);
+		currentLayout.putConstraint(SpringLayout.VERTICAL_CENTER, humanDoneButton, 350, SpringLayout.VERTICAL_CENTER, this);
+		currentLayout.putConstraint(SpringLayout.EAST, humanDoneButton, 600, SpringLayout.EAST, separator);
 		
-		currentLayout.putConstraint(SpringLayout.WEST, robotEmotionTextField, 0, SpringLayout.WEST, robotUtteranceTextArea);
-		currentLayout.putConstraint(SpringLayout.SOUTH, robotEmotionTextField, -93, SpringLayout.SOUTH, this);
-		currentLayout.putConstraint(SpringLayout.NORTH, robotEmotionTextField, 9, SpringLayout.SOUTH, robotEmotionLabel);
+		currentLayout.putConstraint(SpringLayout.WEST, robotEmotionTextField, 40, SpringLayout.WEST, this);
+		currentLayout.putConstraint(SpringLayout.NORTH, robotEmotionTextField, 10, SpringLayout.SOUTH, robotEmotionLabel);
 		
-		currentLayout.putConstraint(SpringLayout.NORTH, robotEmotionLabel, 28, SpringLayout.SOUTH, robotUtteranceTextArea);
-		currentLayout.putConstraint(SpringLayout.WEST, robotEmotionLabel, 0, SpringLayout.WEST, robotUtteranceTextArea);
-		currentLayout.putConstraint(SpringLayout.SOUTH, robotEmotionLabel, -138, SpringLayout.SOUTH, this);
+		currentLayout.putConstraint(SpringLayout.NORTH, robotEmotionLabel, 30, SpringLayout.SOUTH, robotUtteranceTextArea);
+		currentLayout.putConstraint(SpringLayout.WEST, robotEmotionLabel, 40, SpringLayout.WEST, this);
 		
-		currentLayout.putConstraint(SpringLayout.WEST, robotUtteranceLabel, 20, SpringLayout.WEST, this);
-		currentLayout.putConstraint(SpringLayout.SOUTH, robotUtteranceLabel, -6, SpringLayout.NORTH, robotUtteranceTextArea);
+		currentLayout.putConstraint(SpringLayout.WEST, robotUtteranceLabel, 40, SpringLayout.WEST, this);
+		currentLayout.putConstraint(SpringLayout.VERTICAL_CENTER, robotUtteranceLabel, 0, SpringLayout.VERTICAL_CENTER, this);
 		
-		currentLayout.putConstraint(SpringLayout.NORTH, robotUtteranceTextArea, -423, SpringLayout.SOUTH, this);
-		currentLayout.putConstraint(SpringLayout.SOUTH, robotUtteranceTextArea, -196, SpringLayout.SOUTH, this);
-		currentLayout.putConstraint(SpringLayout.WEST, robotUtteranceTextArea, 20, SpringLayout.WEST, this);
+		currentLayout.putConstraint(SpringLayout.NORTH, robotUtteranceTextArea, 60, SpringLayout.NORTH, robotUtteranceLabel);
+		currentLayout.putConstraint(SpringLayout.WEST, robotUtteranceTextArea, 40, SpringLayout.WEST, this);
 		
-		currentLayout.putConstraint(SpringLayout.NORTH, humanEmotionLabel, 187, SpringLayout.SOUTH, humanUtteranceLabel);
-		currentLayout.putConstraint(SpringLayout.WEST, humanEmotionLabel, 0, SpringLayout.WEST, humanUtteranceLabel);
+		currentLayout.putConstraint(SpringLayout.NORTH, humanEmotionLabel, 150, SpringLayout.SOUTH, humanUtteranceLabel);
+		currentLayout.putConstraint(SpringLayout.WEST, humanEmotionLabel, 40, SpringLayout.WEST, separator);
 		
-		currentLayout.putConstraint(SpringLayout.NORTH, humanUtteranceLabel, 6, SpringLayout.NORTH, robotUtteranceLabel);
-		currentLayout.putConstraint(SpringLayout.WEST, humanUtteranceLabel, 531, SpringLayout.EAST, robotUtteranceLabel);
+		currentLayout.putConstraint(SpringLayout.VERTICAL_CENTER, humanUtteranceLabel, 0, SpringLayout.VERTICAL_CENTER, this);
+		currentLayout.putConstraint(SpringLayout.WEST, humanUtteranceLabel, 40, SpringLayout.WEST, separator);
 		
-		currentLayout.putConstraint(SpringLayout.NORTH, humanUttrancesComboBox, 4, SpringLayout.NORTH, robotUtteranceTextArea);
-		currentLayout.putConstraint(SpringLayout.WEST, humanUttrancesComboBox, 0, SpringLayout.WEST, humanUtteranceLabel);
+		currentLayout.putConstraint(SpringLayout.NORTH, humanUttrancesComboBox, 60, SpringLayout.NORTH, humanUtteranceLabel);
+		currentLayout.putConstraint(SpringLayout.WEST, humanUttrancesComboBox, 40, SpringLayout.WEST, separator);
 		
-		currentLayout.putConstraint(SpringLayout.NORTH, humanPositiveEmotion, 18, SpringLayout.SOUTH, humanEmotionLabel);
-		currentLayout.putConstraint(SpringLayout.NORTH, humanNeutralEmotion, 6, SpringLayout.SOUTH, humanPositiveEmotion);
-		currentLayout.putConstraint(SpringLayout.NORTH, humanNegativeEmotion, 6, SpringLayout.SOUTH, humanNeutralEmotion);
+		currentLayout.putConstraint(SpringLayout.NORTH, humanPositiveEmotion, 20, SpringLayout.SOUTH, humanEmotionLabel);
+		currentLayout.putConstraint(SpringLayout.NORTH, humanNeutralEmotion, 5, SpringLayout.SOUTH, humanPositiveEmotion);
+		currentLayout.putConstraint(SpringLayout.NORTH, humanNegativeEmotion, 5, SpringLayout.SOUTH, humanNeutralEmotion);
 		
-		currentLayout.putConstraint(SpringLayout.WEST, humanNegativeEmotion, 0, SpringLayout.WEST, humanUttrancesComboBox);
-		currentLayout.putConstraint(SpringLayout.WEST, humanNeutralEmotion, 0, SpringLayout.WEST, humanUttrancesComboBox);
-		currentLayout.putConstraint(SpringLayout.WEST, humanPositiveEmotion, 0, SpringLayout.WEST, humanUttrancesComboBox);
+		currentLayout.putConstraint(SpringLayout.WEST, humanNegativeEmotion, 40, SpringLayout.WEST, separator);
+		currentLayout.putConstraint(SpringLayout.WEST, humanNeutralEmotion, 40, SpringLayout.WEST, separator);
+		currentLayout.putConstraint(SpringLayout.WEST, humanPositiveEmotion, 40, SpringLayout.WEST, separator);
 		
-		currentLayout.putConstraint(SpringLayout.EAST, separator, 744, SpringLayout.WEST, this);
-		currentLayout.putConstraint(SpringLayout.NORTH, separator, 28, SpringLayout.NORTH, this);
-		currentLayout.putConstraint(SpringLayout.WEST, separator, 21, SpringLayout.EAST, robotUtteranceTextArea);
-		currentLayout.putConstraint(SpringLayout.SOUTH, separator, -6, SpringLayout.NORTH, userDoneButton);
+		currentLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, separator, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		currentLayout.putConstraint(SpringLayout.NORTH, separator, 150, SpringLayout.NORTH, this);
+		currentLayout.putConstraint(SpringLayout.SOUTH, separator, -20, SpringLayout.SOUTH, this);
 		
 		currentLayout.putConstraint(SpringLayout.NORTH, robotEmotionImageHolder, 30, SpringLayout.SOUTH, robotUtteranceTextArea);
-		currentLayout.putConstraint(SpringLayout.EAST, robotEmotionImageHolder, -50, SpringLayout.EAST, robotUtteranceTextArea);
+		currentLayout.putConstraint(SpringLayout.EAST, robotEmotionImageHolder, -50, SpringLayout.WEST, separator);
+		
+		currentLayout.putConstraint(SpringLayout.NORTH, robotImageHolder, 50, SpringLayout.NORTH, this);
+		currentLayout.putConstraint(SpringLayout.WEST, robotImageHolder, 180, SpringLayout.WEST, this);
+		
+		currentLayout.putConstraint(SpringLayout.NORTH, humanImageHolder, 50, SpringLayout.NORTH, this);
+		currentLayout.putConstraint(SpringLayout.WEST, humanImageHolder, 200, SpringLayout.WEST, separator);
+		
+		currentLayout.putConstraint(SpringLayout.NORTH, turnHolder, 60, SpringLayout.NORTH, this);
+		currentLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, turnHolder, 0, SpringLayout.HORIZONTAL_CENTER, this);
 	}
 }
