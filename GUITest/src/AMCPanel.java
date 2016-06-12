@@ -13,12 +13,16 @@ import javax.swing.SpringLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
 public class AMCPanel extends JPanel {
+	
+	private boolean turn = false;
 	
 	private JTextField robotEmotionTextField;
 	private JTextArea robotUtteranceTextArea;
@@ -45,7 +49,7 @@ public class AMCPanel extends JPanel {
 	public AMCPanel() {
 		
 		robotEmotionTextField   = new JTextField();
-		robotUtteranceTextArea  = new JTextArea(5, 30);
+		robotUtteranceTextArea  = new JTextArea(5, 37);
 		robotUtteranceLabel     = new JLabel("Robot Says:");
 		robotEmotionLabel 	    = new JLabel("Robot feels:");
 		robotEmotionImage       = new ImageIcon(new ImageIcon("images/neutral.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
@@ -167,5 +171,70 @@ public class AMCPanel extends JPanel {
 		
 		currentLayout.putConstraint(SpringLayout.NORTH, turnHolder, 60, SpringLayout.NORTH, this);
 		currentLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, turnHolder, 0, SpringLayout.HORIZONTAL_CENTER, this);
+		
+		humanDoneButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				if (turn) {
+					disableRobotComponents();
+					enableHumanComponents();
+					turn = false;
+				}
+				else {
+					disableHumanComponents();
+					enableRobotComponents();
+					turn = true;
+				}
+			}
+		});
+	}
+	
+	public void disableRobotComponents() {
+		robotEmotionTextField.setEnabled(false);
+		robotEmotionTextField.setBackground(new Color(220, 220, 220));
+		robotUtteranceTextArea.setEnabled(false);
+		robotUtteranceTextArea.setBackground(new Color(220, 220, 220));
+		robotUtteranceLabel.setEnabled(false);
+		robotEmotionLabel.setEnabled(false);
+		robotEmotionImageHolder.setEnabled(false);
+		robotImageHolder.setEnabled(false);
+		turnHolder.setText("Human's Turn");
+		turnHolder.setForeground(new Color(0, 0, 255));
+	}
+	
+	public void enableRobotComponents() {
+		robotEmotionTextField.setEnabled(true);
+		robotEmotionTextField.setBackground(new Color(255, 255, 255));
+		robotUtteranceTextArea.setEnabled(true);
+		robotUtteranceTextArea.setBackground(new Color(255, 255, 255));
+		robotUtteranceLabel.setEnabled(true);
+		robotEmotionLabel.setEnabled(true);
+		robotEmotionImageHolder.setEnabled(true);
+		robotImageHolder.setEnabled(true);
+	}
+	
+	public void disableHumanComponents() {
+		humanUtteranceLabel.setEnabled(false);
+		humanEmotionLabel.setEnabled(false);
+		humanUttrancesComboBox.setEnabled(false);
+		humanPositiveEmotion.setEnabled(false);
+		humanNeutralEmotion.setEnabled(false);
+		humanNegativeEmotion.setEnabled(false);
+//		humanDoneButton.setEnabled(false);
+		humanImageHolder.setEnabled(false);
+		turnHolder.setText("Robot's Turn");
+		turnHolder.setForeground(new Color(255, 0, 0));
+	}
+	
+	public void enableHumanComponents() {
+		humanUtteranceLabel.setEnabled(true);
+		humanEmotionLabel.setEnabled(true);
+		humanUttrancesComboBox.setEnabled(true);
+		humanPositiveEmotion.setEnabled(true);
+		humanNeutralEmotion.setEnabled(true);
+		humanNegativeEmotion.setEnabled(true);
+//		humanDoneButton.setEnabled(true);
+		humanImageHolder.setEnabled(true);
 	}
 }
