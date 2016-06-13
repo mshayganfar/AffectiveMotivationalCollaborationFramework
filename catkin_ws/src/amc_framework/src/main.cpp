@@ -26,6 +26,9 @@ int main(int argc, char** argv) {
 
   ros::ServiceServer serviceGoHome  = nh.advertiseService("move", &MoveKuka::Move, &kukaObj);
   ros::ServiceServer serviceGoRight = nh.advertiseService("go_home", &MoveKuka::GoHome, &kukaObj);
+
+  ros::ServiceServer servicePrepareControlSwitch = nh.advertiseService("prepare_control_switch", &MoveKuka::prepareControlSwitch, &kukaObj);
+	ros::ServiceServer serviceRemoveLeftCover = nh.advertiseService("remove_left_cover", &MoveKuka::removeLeftCover, &kukaObj);
   
 	ros::ServiceServer serviceOpenGripper  = nh.advertiseService("open_gripper", &MoveKuka::OpenGripper, &kukaObj);
   ros::ServiceServer serviceCloseGripper = nh.advertiseService("close_gripper", &MoveKuka::CloseGripper, &kukaObj);

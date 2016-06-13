@@ -20,12 +20,14 @@ int main(int argc, char** argv) {
   ros::Subscriber subArmActionResult = nh.subscribe("arm_1/arm_controller/follow_joint_trajectory/result", 1000, &MoveKuka::ArmResultListener, &kukaObj);
   ros::Subscriber subJointStates = nh.subscribe("joint_states", 1000, &MoveKuka::UpdateRobotPose, &kukaObj);
   
-  kukaObj.armTrajectoryPublisher = nh.advertise<control_msgs::FollowJointTrajectoryActionGoal> ("arm_1/arm_controller/follow_joint_trajectory/goal",1);
+  kukaObj.armTrajectoryPublisher = nh.advertise< control_msgs::FollowJointTrajectoryActionGoal > ("arm_1/arm_controller/follow_joint_trajectory/goal",1);
 
   kukaObj.gripperPositionPublisher = nh.advertise< brics_actuator::JointPositions > ("arm_1/gripper_controller/position_command", 1);
 
   ros::ServiceServer serviceGoHome  = nh.advertiseService("move", &MoveKuka::Move, &kukaObj);
   ros::ServiceServer serviceGoRight = nh.advertiseService("go_home", &MoveKuka::GoHome, &kukaObj);
+
+  ros::ServiceServer servicePrepareControlSwitch = nh.advertiseService("prepare_control_switch", &MoveKuka::prepareControlSwitch, &kukaObj);
   
 	ros::ServiceServer serviceOpenGripper  = nh.advertiseService("open_gripper", &MoveKuka::OpenGripper, &kukaObj);
   ros::ServiceServer serviceCloseGripper = nh.advertiseService("close_gripper", &MoveKuka::CloseGripper, &kukaObj);

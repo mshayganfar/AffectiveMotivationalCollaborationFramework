@@ -37,8 +37,20 @@ class MoveKuka {
 
 		// Arm Moving Methods
 		void MoveArm(const amc_framework::configurationService::Request &req);
+		void MoveArm(const std::vector<double> &armConfig);
 
 		void MoveArmHome();
+
+		bool pickupPrepareControlSwitch();
+		bool movePrepareControlSwitch();
+		bool putDownPrepareControlSwitch();
+
+		bool pickupRemoveLeftCover();
+		bool moveRemoveLeftCover();
+		bool putDownRemoveLeftCover();
+
+		bool CloseGripper();
+		bool OpenGripper();
 
   public:
 
@@ -70,6 +82,12 @@ class MoveKuka {
 
 		bool CloseGripper(std_srvs::Empty::Request &req,
 	             std_srvs::Empty::Response &res);
+
+		bool prepareControlSwitch(std_srvs::Empty::Request &req,
+	             std_srvs::Empty::Response &res);
+
+		bool removeLeftCover(std_srvs::Empty::Request &req,
+	             std_srvs::Empty::Response &res)
 };
 
 void MoveKuka::ArmResultListener(const control_msgs::FollowJointTrajectoryActionResult::ConstPtr& msg) {
@@ -90,6 +108,106 @@ void MoveKuka::UpdateRobotPose(const sensor_msgs::JointState::ConstPtr& msg) {
   }
 }
 
+bool MoveKuka::prepareControlSwitch(std_srvs::Empty::Request &req,
+	             std_srvs::Empty::Response &res) {
+	
+	pickupPrepareControlSwitch();
+	movePrepareControlSwitch();
+	putDownPrepareControlSwitch();
+	return true;
+}
+
+bool MoveKuka::removeLeftCover(std_srvs::Empty::Request &req,
+	             std_srvs::Empty::Response &res) {
+	
+	pickupRemoveLeftCover();
+	moveRemoveLeftCover();
+	putDownRemoveLeftCover();
+	return true;
+}
+
+bool MoveKuka::movePrepareControlSwitch() {
+
+	double move[] = {1.4, 1.5, -0.8, 2.2, 2.9};
+  std::vector<double> vecMove (move, move + sizeof(move) / sizeof(double) );
+
+	MoveArm(vecMove);
+}
+
+bool MoveKuka::moveRemoveLeftCover() {
+
+	double move[] = {1.4, 1.5, -0.8, 2.2, 2.9};
+  std::vector<double> vecMove (move, move + sizeof(move) / sizeof(double) );
+
+	MoveArm(vecMove);
+}
+
+bool MoveKuka::pickupPrepareControlSwitch() {
+	
+	double top[] = {3.4, 2.0, -1.0, 1.75, 2.9};
+  std::vector<double> vecTop (top, top + sizeof(top) / sizeof(double) );
+
+	double down[] = {3.4, 2.0, -0.8, 1.75, 2.9};
+  std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
+
+	double up[] = {3.4, 1.5, -0.8, 2.2, 2.9};
+  std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
+
+	OpenGripper();
+	MoveArm(vecTop);
+	MoveArm(vecDown);
+	CloseGripper();
+	MoveArm(vecUp);
+  return true;
+}
+
+bool MoveKuka::pickupRemoveLeftCover() {
+	
+	double top[] = {3.6, 2.0, -0.7, 1.45, 2.9};
+  std::vector<double> vecTop (top, top + sizeof(top) / sizeof(double) );
+
+	double down[] = {3.6, 2.0, -0.7, 1.65, 2.9};
+  std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
+
+	double up[] = {3.6, 1.2, -0.7, 2.4, 2.9};
+  std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
+
+	OpenGripper();
+	MoveArm(vecTop);
+	MoveArm(vecDown);
+	CloseGripper();
+	MoveArm(vecUp);
+  return true;
+}
+
+bool MoveKuka::putDownPrepareControlSwitch() {
+
+	double down[] = {1.4, 1.9, -0.8, 1.9, 2.9};
+  std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
+
+	double up[] = {1.4, 1.7, -0.8, 2.1, 2.9};
+  std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
+
+	MoveArm(vecDown);
+	OpenGripper();
+	MoveArm(vecUp);
+  return true;	
+}
+
+bool MoveKuka::putDownRemoveLeftCover() {
+
+	double down[] = {1.4, 1.9, -0.8, 1.9, 2.9};
+  std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
+
+	double up[] = {1.4, 1.7, -0.8, 2.1, 2.9};
+  std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
+
+	MoveArm(vecDown);
+	OpenGripper();
+	MoveArm(vecUp);
+  return true;	
+}
+
 bool MoveKuka::Move(amc_framework::configurationService::Request &req,
             amc_framework::configurationService::Response &res)
 {
@@ -97,10 +215,18 @@ bool MoveKuka::Move(amc_framework::configurationService::Request &req,
   return true;
 }
 
-bool MoveKuka::GoHome(std_srvs::Empty::Request  &req,
+bool MoveKuka::GoHome(std_srvs::Empty::Request &req,
              std_srvs::Empty::Response &res)
 {
   MoveArmHome();
+  return true;
+}
+
+bool MoveKuka::OpenGripper() {
+  double val = 0.0115;
+  std::cout << "Opening gripper..." << std::endl;
+  PublishGripperJointCommand(val);
+  WaitForGripper(val);
   return true;
 }
 
@@ -114,8 +240,16 @@ bool MoveKuka::OpenGripper(std_srvs::Empty::Request  &req,
   return true;
 }
 
+bool MoveKuka::CloseGripper() {
+  double val = 0.0;
+  PublishGripperJointCommand(val);
+  WaitForGripper(val);
+  return true;
+}
+
 bool MoveKuka::CloseGripper(std_srvs::Empty::Request  &req,
-             std_srvs::Empty::Response &res) {
+             std_srvs::Empty::Response &res) 
+{
   double val = 0.0;
   PublishGripperJointCommand(val);
   WaitForGripper(val);
@@ -145,7 +279,7 @@ void MoveKuka::MoveArmAndWait(const std::vector< std::vector<double> >& traj, do
   jt.header.frame_id = "base_link";
   jt.joint_names.push_back("arm_joint_1"); // Limits: [0.0, 5.89921]
   jt.joint_names.push_back("arm_joint_2"); // Limits: [0.0, 2.55]
-  jt.joint_names.push_back("arm_joint_3"); // Limits: [0.0, 5.18363]
+  jt.joint_names.push_back("arm_joint_3"); // Limits: [-5.18363, 0.0]
   jt.joint_names.push_back("arm_joint_4"); // Limits: [0.0, 3.57793]
   jt.joint_names.push_back("arm_joint_5"); // Limits: [0.0, 5.84685]
     
@@ -212,6 +346,27 @@ void MoveKuka::MoveArmAndWait(const std::vector< std::vector<double> >& traj, do
   std::cout << "Waiting for the arm actionlib result..." << std::endl;
 
   WaitForArmResult();
+}
+
+void MoveKuka::MoveArm(const std::vector<double> &armConfig) {
+
+	qArmPosition[0] = armConfig.at(0);
+  qArmPosition[1] = armConfig.at(1);
+  qArmPosition[2] = armConfig.at(2);
+  qArmPosition[3] = armConfig.at(3);
+  qArmPosition[4] = armConfig.at(4);
+
+  std::cout << "Starting to move the arm. " << std::endl;
+  
+	std::vector< std::vector<double> > here2home;
+  std::vector<double> here;
+  here.assign(q.begin(),q.begin()+5);
+  std::vector<double> home = qArmPosition;
+  here2home.push_back(here);
+  here2home.push_back(home);
+  MoveArmAndWait(here2home,5.0);
+ 
+  std::cout << "Finished moving the arm." << std::endl;
 }
 
 void MoveKuka::MoveArm(const amc_framework::configurationService::Request &req) {
