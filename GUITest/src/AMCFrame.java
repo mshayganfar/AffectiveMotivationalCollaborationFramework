@@ -1,3 +1,5 @@
+import java.awt.Toolkit;
+
 import javax.swing.JFrame;
 
 public class AMCFrame extends JFrame {
@@ -18,7 +20,8 @@ public class AMCFrame extends JFrame {
 	
 	public static void main(String[] args) {
 		
-		AMCFrame test = new AMCFrame("Affective Motivational Collaboration Framework");
-		test.setVisible(true);
+		AMCFrame frame = new AMCFrame("Affective Motivational Collaboration Framework");
+		frame.pack();
+		frame.setVisible(true);
 	}
 }

@@ -4,6 +4,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
@@ -11,8 +12,10 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -20,8 +23,11 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
+import org.omg.PortableInterceptor.USER_EXCEPTION;
+
 public class AMCPanel extends JPanel {
 	
+	private enum EMOTION {POSITIVE, NEGATIVE, NEUTRAL};
 	private boolean turn = false;
 	
 	private JTextField robotEmotionTextField;
@@ -89,9 +95,11 @@ public class AMCPanel extends JPanel {
 		humanUtteranceLabel.setFont(new Font("Verdana", Font.BOLD, 32));
 		humanEmotionLabel.setFont(new Font("Verdana", Font.BOLD, 32));
 		humanUttrancesComboBox.setFont(new Font("Verdana", Font.BOLD, 22));
+		humanUttrancesComboBox.addItem("Select an option...");
 		humanUttrancesComboBox.addItem("Okay, go ahead and fix the connection.");
 		humanUttrancesComboBox.addItem("No, I don't think this is going to work.");
 		humanUttrancesComboBox.addItem("Why do you say that?");
+		humanUttrancesComboBox.setPreferredSize(new Dimension(600, 40));
 		humanPositiveEmotion.setFont(new Font("Verdana", Font.BOLD, 22));
 		humanNeutralEmotion.setFont(new Font("Verdana", Font.BOLD, 22));
 		humanNegativeEmotion.setFont(new Font("Verdana", Font.BOLD, 22));
@@ -138,6 +146,7 @@ public class AMCPanel extends JPanel {
 		
 		currentLayout.putConstraint(SpringLayout.NORTH, robotUtteranceTextArea, 60, SpringLayout.NORTH, robotUtteranceLabel);
 		currentLayout.putConstraint(SpringLayout.WEST, robotUtteranceTextArea, 40, SpringLayout.WEST, this);
+		currentLayout.putConstraint(SpringLayout.EAST, robotUtteranceTextArea, -40, SpringLayout.WEST, separator);
 		
 		currentLayout.putConstraint(SpringLayout.NORTH, humanEmotionLabel, 150, SpringLayout.SOUTH, humanUtteranceLabel);
 		currentLayout.putConstraint(SpringLayout.WEST, humanEmotionLabel, 40, SpringLayout.WEST, separator);
@@ -164,10 +173,12 @@ public class AMCPanel extends JPanel {
 		currentLayout.putConstraint(SpringLayout.EAST, robotEmotionImageHolder, -50, SpringLayout.WEST, separator);
 		
 		currentLayout.putConstraint(SpringLayout.NORTH, robotImageHolder, 50, SpringLayout.NORTH, this);
-		currentLayout.putConstraint(SpringLayout.WEST, robotImageHolder, 180, SpringLayout.WEST, this);
+//		(int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/4 - 200)
+		currentLayout.putConstraint(SpringLayout.WEST, robotImageHolder, 190, SpringLayout.WEST, this);
 		
 		currentLayout.putConstraint(SpringLayout.NORTH, humanImageHolder, 50, SpringLayout.NORTH, this);
-		currentLayout.putConstraint(SpringLayout.WEST, humanImageHolder, 200, SpringLayout.WEST, separator);
+//		(int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/4 - 150)
+		currentLayout.putConstraint(SpringLayout.WEST, humanImageHolder, 190, SpringLayout.WEST, separator);
 		
 		currentLayout.putConstraint(SpringLayout.NORTH, turnHolder, 60, SpringLayout.NORTH, this);
 		currentLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, turnHolder, 0, SpringLayout.HORIZONTAL_CENTER, this);
@@ -180,11 +191,29 @@ public class AMCPanel extends JPanel {
 					disableRobotComponents();
 					enableHumanComponents();
 					turn = false;
+					setRobotEmotionText("POSITIVE");
 				}
 				else {
 					disableHumanComponents();
 					enableRobotComponents();
 					turn = true;
+					setRobotEmotionText("NEGATIVE");
+				}
+				
+				EMOTION emotion;
+				if ((emotion = getHumanEmotion()) == null)
+					JOptionPane.showMessageDialog(null, "Please select one of the feeling options!");
+				else {
+					// Write a code here that updates human's perceived emotion in the framework.
+					// setRobotEmotionText(emotion.toString());
+				}
+				
+				int humanSelectedUtteranceIndex;
+				if ((humanSelectedUtteranceIndex = getHumanSelectedUtterance()) == 0)
+					JOptionPane.showMessageDialog(null, "Please select what do you want to say!");
+				else {
+					// Write a code here that uses human's utterance to make a decision in the framework.
+					// setRobotEmotionText(humanSelectedUtterance);
 				}
 			}
 		});
@@ -199,7 +228,7 @@ public class AMCPanel extends JPanel {
 		robotEmotionLabel.setEnabled(false);
 		robotEmotionImageHolder.setEnabled(false);
 		robotImageHolder.setEnabled(false);
-		turnHolder.setText("Human's Turn");
+		turnHolder.setText("Your Turn");
 		turnHolder.setForeground(new Color(0, 0, 255));
 	}
 	
@@ -236,5 +265,59 @@ public class AMCPanel extends JPanel {
 		humanNegativeEmotion.setEnabled(true);
 //		humanDoneButton.setEnabled(true);
 		humanImageHolder.setEnabled(true);
+	}
+	
+	public void setEmoticon(EMOTION agentEmotion) {
+		
+		switch (agentEmotion) {
+			case POSITIVE:
+				robotEmotionImage.setImage(new ImageIcon("images/happy.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+				break;
+			case NEGATIVE:
+				robotEmotionImage.setImage(new ImageIcon("images/sad.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+				break;
+			case NEUTRAL:
+				robotEmotionImage.setImage(new ImageIcon("images/neutral.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+				break;
+		}
+	}
+	
+	public void setRobotUtterance(String robotUtterance) {
+		robotUtteranceTextArea.setText(robotUtterance);
+	}
+	
+	public void setRobotEmotionText(String robotEmotionTest) {
+		robotEmotionTextField.setText(robotEmotionTest);
+	}
+	
+	public EMOTION getHumanEmotion() {
+		
+		if (humanNegativeEmotion.isSelected()) {
+			humanEmotionGroup.clearSelection();
+			return EMOTION.NEGATIVE;
+		}
+		else if (humanPositiveEmotion.isSelected()) {
+			humanEmotionGroup.clearSelection();
+			return EMOTION.POSITIVE;
+		}
+		else if (humanNeutralEmotion.isSelected()) {
+			humanEmotionGroup.clearSelection();
+			return EMOTION.NEUTRAL;
+		}
+		else
+			return null;
+	}
+	
+	public int getHumanSelectedUtterance() {
+		return humanUttrancesComboBox.getSelectedIndex();
+	}
+	
+	public void clearHumanUtterances() {
+		humanUttrancesComboBox.removeAllItems();
+		humanUttrancesComboBox.addItem("Select an option...");
+	}
+	
+	public void setHumanSelectedUtterance(String humanUtteranceOption) {
+		humanUttrancesComboBox.addItem(humanUtteranceOption);
 	}
 }
