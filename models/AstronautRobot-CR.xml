@@ -1,0 +1,205 @@
+<taskModel about="urn:shayganfar.wpi.edu:models:AstronautRobot" 
+           xmlns="http://www.cs.wpi.edu/~rich/cetask/cea-2018-ext"
+           xmlns:disco="urn:disco.wpi.edu:Disco">
+
+  <!-- CR: SEE ADDED PROPERTIES IN .PROPERTIES FILE -->
+  
+  <task id="InstallSolarPanel">
+		<precondition>true</precondition>
+    <subtasks id="installSolarPanelRecipe" ordered="false">
+      <step name="prepare_panel" task ="PreparePanel"/>
+      <step name="prepare_cable" task ="PrepareCable" requires ="prepare_panel"/>
+      <step name="fix_panel" task="FixPanel" requires ="prepare_panel"/>
+      <step name="check_hardware" task="CheckHardware"/>
+      <step name="check_function" task="CheckFunction"/>
+    </subtasks>
+  </task>
+
+  <task id="PreparePanel">
+		<precondition>true</precondition>
+    <subtasks id="preparePanelRecipe" ordered="true">
+      <step name="prepare_switch" task ="PrepareControlSwitch"/>
+      <step name="prepare_connector" task="PrepareConnector"/>
+
+			<binding slot="$prepare_switch.external" value="false"/>
+    </subtasks>
+  </task>
+
+  <task id="PrepareConnector">
+		<precondition>true</precondition>
+    <subtasks id="prepareConnectorRecipe" ordered="false">
+      <step name="remove_left" task ="RemoveLeftCover"/>
+      <step name="remove_right" task ="RemoveRightCover"/>
+      <step name="connect_adaptor" task ="ConnectAdaptor" requires ="remove_left remove_right"/>
+
+			<binding slot="$remove_right.external" value="false"/>
+			<binding slot="$connect_adaptor.external" value="false"/>
+    </subtasks>
+  </task>
+
+  <task id="RemoveLeftCover">
+		<precondition>true</precondition>
+    <subtasks id="removeLeftCoverRecipe1">
+    	<step name="remove_left_prim" task="RemoveLeftCoverPrimitive"/>
+
+			<binding slot="$remove_left_prim.external" value="true"/>
+    </subtasks>
+
+    <subtasks id="removeLeftCoverRecipe2">
+    	<step name="handoff_remove_left" task="HandOffRemoveLeftCover"/>
+    	<step name="remove_left_prim" task="RemoveLeftCoverPrimitive"/>
+
+			<applicable>(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.NEGATIVE)</applicable>
+
+			<binding slot="$handoff_remove_left.external" value="false"/>
+			<binding slot="$remove_left_prim.external" value="true"/>
+    </subtasks>
+
+    <subtasks id="removeLeftCoverRecipe3">
+      <!-- CR: CALLSUPERVISOR REPLACED BY SAY.AGENT, BECAUSE IT IS AN UTTERANCE; SEE TEXT BINDING BELOW -->
+      <step name="call_supervisor" task ="disco:Say.Agent"/>
+      <!-- CR: ADDED STEP AND BINDING BELOW -->
+      <step name="remove_left_prim" task="RemoveLeftCoverPrimitive"/>
+			<applicable>(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.POSITIVE) ||
+									(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.NEUTRAL)</applicable>
+
+                        <binding slot="$call_supervisor.text" value="'I will ask my friend to bring you a new peg!'"/>
+                        <binding slot="$remove_left_prim.external" value="true"/>
+                                                                        
+    </subtasks>
+  </task>
+
+  <task id="PrepareCable">
+		<precondition>true</precondition>
+    <subtasks id="prepareCableRecipe" ordered="false">
+      <step name="takeout_cable" task ="TakeOutCable"/>
+      <step name="unroll_cable" task="UnrollCable" requires ="takeout_cable"/>
+      <step name="place_cable" task="PlaceCable"/>
+
+      <binding slot="$takeout_cable.external" value="true"/>
+      <binding slot="$unroll_cable.external" value="false"/>
+      <binding slot="$place_cable.external" value="false"/>
+    </subtasks>
+  </task>
+
+  <task id="FixPanel">
+		<precondition>true</precondition>
+    <subtasks id="fixPanelRecipe" ordered="true">
+      <step name="place_panel" task ="PlacePanel"/>
+      <step name="weld_panel" task="WeldPanel"/>
+
+      <binding slot="$place_panel.external" value="false"/>
+      <binding slot="$weld_panel.external" value="true"/>
+    </subtasks>
+  </task>
+
+  <task id="CheckHardware">
+		<precondition>true</precondition>
+    <subtasks id="checkHardwareRecipe" ordered="true">
+      <step name="check_panel_attachment" task ="CheckPanelAttachment"/>
+      <step name="check_wirings" task ="CheckWirings"/>
+
+      <binding slot="$check_wirings.external" value="true"/>
+    </subtasks>
+  </task>
+
+  <task id="CheckPanelAttachment">
+		<precondition>true</precondition>
+    <subtasks id="checkPanelAttachmentRecipe1">
+      <step name="check_panel_attachment_prim" task ="CheckPanelAttachmentPrimitive"/>
+
+      <binding slot="$check_panel_attachment_prim.external" value="$check_panel_attachment_prim.external === undefined ? false : undefined"/>
+    </subtasks>
+
+    <subtasks id="checkPanelAttachmentRecipe2">
+      <!-- CR: SIMILARLY REPLACING CALLSUPERVISOR WITH UTTERANCE HERE -->
+      <step name="call_supervisor" task ="disco:Say.Agent"/>
+
+			<applicable>(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.POSITIVE) ||
+									(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.NEUTRAL)</applicable>
+
+      <binding slot="$call_supervisor.text" value="'I will ask my friend to do this for me!'"/>
+    </subtasks>
+	</task>
+
+  <task id="CheckFunction">
+		<precondition>true</precondition>
+    <subtasks id="checkFunctionRecipe" ordered="true">
+      <step name="check_control_switch" task ="CheckControlSwitch"/>
+      <step name="check_cascading_cells" task ="CheckCascadingCells"/>
+      <step name="check_output_current" task ="CheckOutputCurrent"/>
+
+      <binding slot="$check_control_switch.external" value="false"/>
+      <binding slot="$check_cascading_cells.external" value="true"/>
+      <binding slot="$check_output_current.external" value="false"/>
+    </subtasks>
+  </task>
+
+  <task id="PrepareControlSwitch">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="RemoveRightCover">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="ConnectAdaptor">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="RemoveLeftCoverPrimitive">
+		<precondition>true</precondition>
+  </task>
+
+  <task id="HandOffRemoveLeftCover">
+		<precondition>true</precondition>
+  </task>
+
+  <task id="TakeOutCable">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="UnrollCable">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="PlaceCable">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="PlacePanel">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="WeldPanel">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="CheckPanelAttachmentPrimitive">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="CheckWirings">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="CheckControlSwitch">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="CheckCascadingCells">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="CheckOutputCurrent">
+		<precondition>true</precondition>
+	</task>
+
+	<script init="true">
+		function isApplicable() {
+			if (Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.NEGATIVE)
+				return true;
+			return false;
+		}
+	</script>
+</taskModel>
