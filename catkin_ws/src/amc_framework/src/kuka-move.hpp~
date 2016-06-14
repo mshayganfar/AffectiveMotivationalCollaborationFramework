@@ -49,6 +49,38 @@ class MoveKuka {
 		bool moveRemoveLeftCover();
 		bool putDownRemoveLeftCover();
 
+		bool pickupRemoveRightCover();
+		bool moveRemoveRightCover();
+		bool putDownRemoveRightCover();
+
+		bool pickupConnectAdaptor();
+		bool moveConnectAdaptor();
+		bool putDownConnectAdaptor();
+
+		bool pickupUnrollCable();
+		bool moveUnrollCable();
+		bool putDownUnrollCable();
+
+		bool pickupPlaceCable();
+		bool movePlaceCable();
+		bool putDownPlaceCable();
+
+		bool pickupPlacePanel();
+		bool movePlacePanel();
+		bool putDownPlacePanel();
+
+		bool pickupCheckPanelAttachment();
+		bool moveCheckPanelAttachment();
+		bool putDownCheckPanelAttachment();
+
+		bool pickupCheckControlSwitch();
+		bool moveCheckControlSwitch();
+		bool putDownCheckControlSwitch();
+
+		bool pickupCheckOutputCurrent();
+		bool moveCheckOutputCurrent();
+		bool putDownCheckOutputCurrent();
+
 		bool CloseGripper();
 		bool OpenGripper();
 
@@ -87,7 +119,31 @@ class MoveKuka {
 	             std_srvs::Empty::Response &res);
 
 		bool removeLeftCover(std_srvs::Empty::Request &req,
-	             std_srvs::Empty::Response &res)
+	             std_srvs::Empty::Response &res);
+
+		bool removeRightCover(std_srvs::Empty::Request &req,
+	             std_srvs::Empty::Response &res);
+
+		bool connectAdaptor(std_srvs::Empty::Request &req,
+	             std_srvs::Empty::Response &res);
+
+		bool unrollCable(std_srvs::Empty::Request &req,
+	             std_srvs::Empty::Response &res);
+
+		bool placeCable(std_srvs::Empty::Request &req,
+	             std_srvs::Empty::Response &res);
+
+		bool placePanel(std_srvs::Empty::Request &req,
+	             std_srvs::Empty::Response &res);
+
+		bool checkPanelAttachment(std_srvs::Empty::Request &req,
+	             std_srvs::Empty::Response &res);
+
+		bool checkControlSwitch(std_srvs::Empty::Request &req,
+	             std_srvs::Empty::Response &res);
+
+		bool checkOutputCurrent(std_srvs::Empty::Request &req,
+	             std_srvs::Empty::Response &res);
 };
 
 void MoveKuka::ArmResultListener(const control_msgs::FollowJointTrajectoryActionResult::ConstPtr& msg) {
@@ -126,6 +182,78 @@ bool MoveKuka::removeLeftCover(std_srvs::Empty::Request &req,
 	return true;
 }
 
+bool MoveKuka::removeRightCover(std_srvs::Empty::Request &req,
+	             std_srvs::Empty::Response &res) {
+	
+	pickupRemoveRightCover();
+	moveRemoveRightCover();
+	putDownRemoveRightCover();
+	return true;
+}
+
+bool MoveKuka::connectAdaptor(std_srvs::Empty::Request &req,
+	             std_srvs::Empty::Response &res) {
+	
+	pickupConnectAdaptor();
+	moveConnectAdaptor();
+	putDownConnectAdaptor();
+	return true;
+}
+
+bool MoveKuka::unrollCable(std_srvs::Empty::Request &req,
+	             std_srvs::Empty::Response &res) {
+	
+	pickupUnrollCable();
+	moveUnrollCable();
+	putDownUnrollCable();
+	return true;
+}
+
+bool MoveKuka::placeCable(std_srvs::Empty::Request &req,
+	             std_srvs::Empty::Response &res) {
+	
+	pickupPlaceCable();
+	movePlaceCable();
+	putDownPlaceCable();
+	return true;
+}
+
+bool MoveKuka::placePanel(std_srvs::Empty::Request &req,
+	             std_srvs::Empty::Response &res) {
+	
+	pickupPlacePanel();
+	movePlacePanel();
+	putDownPlacePanel();
+	return true;
+}
+
+bool MoveKuka::checkPanelAttachment(std_srvs::Empty::Request &req,
+	             std_srvs::Empty::Response &res) {
+	
+	pickupCheckPanelAttachment();
+	moveCheckPanelAttachment();
+	putDownCheckPanelAttachment();
+	return true;
+}
+
+bool MoveKuka::checkControlSwitch(std_srvs::Empty::Request &req,
+	             std_srvs::Empty::Response &res) {
+	
+	pickupCheckControlSwitch();
+	moveCheckControlSwitch();
+	putDownCheckControlSwitch();
+	return true;
+}
+
+bool MoveKuka::checkOutputCurrent(std_srvs::Empty::Request &req,
+	             std_srvs::Empty::Response &res) {
+	
+	pickupCheckOutputCurrent();
+	moveCheckOutputCurrent();
+	putDownCheckOutputCurrent();
+	return true;
+}
+
 bool MoveKuka::movePrepareControlSwitch() {
 
 	double move[] = {1.4, 1.5, -0.8, 2.2, 2.9};
@@ -135,6 +263,70 @@ bool MoveKuka::movePrepareControlSwitch() {
 }
 
 bool MoveKuka::moveRemoveLeftCover() {
+
+	double move[] = {1.4, 1.5, -0.8, 2.2, 2.9};
+  std::vector<double> vecMove (move, move + sizeof(move) / sizeof(double) );
+
+	MoveArm(vecMove);
+}
+
+bool MoveKuka::moveRemoveRightCover() {
+
+	double move[] = {1.4, 1.5, -0.8, 2.2, 2.9};
+  std::vector<double> vecMove (move, move + sizeof(move) / sizeof(double) );
+
+	MoveArm(vecMove);
+}
+
+bool MoveKuka::moveConnectAdaptor() {
+
+	double move[] = {1.4, 1.5, -0.8, 2.2, 2.9};
+  std::vector<double> vecMove (move, move + sizeof(move) / sizeof(double) );
+
+	MoveArm(vecMove);
+}
+
+bool MoveKuka::moveUnrollCable() {
+
+	double move[] = {1.4, 1.5, -0.8, 2.2, 2.9};
+  std::vector<double> vecMove (move, move + sizeof(move) / sizeof(double) );
+
+	MoveArm(vecMove);
+}
+
+bool MoveKuka::movePlaceCable() {
+
+	double move[] = {1.4, 1.5, -0.8, 2.2, 2.9};
+  std::vector<double> vecMove (move, move + sizeof(move) / sizeof(double) );
+
+	MoveArm(vecMove);
+}
+
+bool MoveKuka::movePlacePanel() {
+
+	double move[] = {1.4, 1.5, -0.8, 2.2, 2.9};
+  std::vector<double> vecMove (move, move + sizeof(move) / sizeof(double) );
+
+	MoveArm(vecMove);
+}
+
+bool MoveKuka::moveCheckPanelAttachment() {
+
+	double move[] = {1.4, 1.5, -0.8, 2.2, 2.9};
+  std::vector<double> vecMove (move, move + sizeof(move) / sizeof(double) );
+
+	MoveArm(vecMove);
+}
+
+bool MoveKuka::moveCheckControlSwitch() {
+
+	double move[] = {1.4, 1.5, -0.8, 2.2, 2.9};
+  std::vector<double> vecMove (move, move + sizeof(move) / sizeof(double) );
+
+	MoveArm(vecMove);
+}
+
+bool MoveKuka::moveCheckOutputCurrent() {
 
 	double move[] = {1.4, 1.5, -0.8, 2.2, 2.9};
   std::vector<double> vecMove (move, move + sizeof(move) / sizeof(double) );
@@ -180,6 +372,158 @@ bool MoveKuka::pickupRemoveLeftCover() {
   return true;
 }
 
+bool MoveKuka::pickupRemoveRightCover() {
+	
+	double top[] = {3.805, 2.0, -0.7, 1.45, 2.9};
+  std::vector<double> vecTop (top, top + sizeof(top) / sizeof(double) );
+
+	double down[] = {3.805, 2.05, -0.7, 1.58, 2.9};
+  std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
+
+	double up[] = {3.805, 1.2, -0.7, 2.4, 2.9};
+  std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
+
+	OpenGripper();
+	MoveArm(vecTop);
+	MoveArm(vecDown);
+	CloseGripper();
+	MoveArm(vecUp);
+  return true;
+}
+
+bool MoveKuka::pickupConnectAdaptor() {
+	
+	double top[] = {4.0, 2.0, -0.7, 1.45, 2.9};
+  std::vector<double> vecTop (top, top + sizeof(top) / sizeof(double) );
+
+	double down[] = {4.0, 2.1, -0.7, 1.45, 2.9};
+  std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
+
+	double up[] = {4.0, 1.2, -0.7, 2.4, 2.9};
+  std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
+
+	OpenGripper();
+	MoveArm(vecTop);
+	MoveArm(vecDown);
+	CloseGripper();
+	MoveArm(vecUp);
+  return true;
+}
+
+bool MoveKuka::pickupUnrollCable() {
+	
+	double top[] = {3.45, 2.2, -1.3, 1.75, 2.9};
+  std::vector<double> vecTop (top, top + sizeof(top) / sizeof(double) );
+
+	double down[] = {3.45, 2.25, -1.2, 1.75, 2.9};
+  std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
+
+	double up[] = {3.45, 1.8, -1.6, 2.6, 2.9};
+  std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
+
+	OpenGripper();
+	MoveArm(vecTop);
+	MoveArm(vecDown);
+	CloseGripper();
+	MoveArm(vecUp);
+  return true;
+}
+
+bool MoveKuka::pickupPlaceCable() {
+	
+	double top[] = {3.62, 2.2, -1.3, 1.75, 2.9};
+  std::vector<double> vecTop (top, top + sizeof(top) / sizeof(double) );
+
+	double down[] = {3.62, 2.25, -1.17, 1.75, 2.9};
+  std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
+
+	double up[] = {3.62, 1.8, -1.6, 2.6, 2.9};
+  std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
+
+	OpenGripper();
+	MoveArm(vecTop);
+	MoveArm(vecDown);
+	CloseGripper();
+	MoveArm(vecUp);
+  return true;
+}
+
+bool MoveKuka::pickupPlacePanel() {
+	
+	double top[] = {3.79, 2.2, -1.3, 1.75, 2.9};
+  std::vector<double> vecTop (top, top + sizeof(top) / sizeof(double) );
+
+	double down[] = {3.79, 2.25, -1.17, 1.75, 2.9};
+  std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
+
+	double up[] = {3.79, 1.6, -1.6, 2.8, 2.9};
+  std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
+
+	OpenGripper();
+	MoveArm(vecTop);
+	MoveArm(vecDown);
+	CloseGripper();
+	MoveArm(vecUp);
+  return true;
+}
+
+bool MoveKuka::pickupCheckPanelAttachment() {
+	
+	double top[] = {3.96, 2.2, -1.3, 1.75, 2.9};
+  std::vector<double> vecTop (top, top + sizeof(top) / sizeof(double) );
+
+	double down[] = {3.96, 2.3, -1.28, 1.8, 2.9};
+  std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
+
+	double up[] = {3.96, 1.6, -1.6, 2.8, 2.9};
+  std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
+
+	OpenGripper();
+	MoveArm(vecTop);
+	MoveArm(vecDown);
+	CloseGripper();
+	MoveArm(vecUp);
+  return true;
+}
+
+bool MoveKuka::pickupCheckControlSwitch() {
+	
+	double top[] = {3.48, 2.5, -1.8, 1.75, 2.9};
+  std::vector<double> vecTop (top, top + sizeof(top) / sizeof(double) );
+
+	double down[] = {3.48, 2.7, -2.3, 2.4, 2.9};
+  std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
+
+	double up[] = {3.48, 1.6, -1.6, 2.8, 2.9};
+  std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
+
+	OpenGripper();
+	MoveArm(vecTop);
+	MoveArm(vecDown);
+	CloseGripper();
+	MoveArm(vecUp);
+  return true;
+}
+
+bool MoveKuka::pickupCheckOutputCurrent() {
+	
+	double top[] = {3.63, 2.5, -1.8, 1.75, 2.9};
+  std::vector<double> vecTop (top, top + sizeof(top) / sizeof(double) );
+
+	double down[] = {3.63, 2.7, -2.25, 2.4, 2.9};
+  std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
+
+	double up[] = {3.48, 1.6, -1.6, 2.8, 2.9};
+  std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
+
+	OpenGripper();
+	MoveArm(vecTop);
+	MoveArm(vecDown);
+	CloseGripper();
+	MoveArm(vecUp);
+  return true;
+}
+
 bool MoveKuka::putDownPrepareControlSwitch() {
 
 	double down[] = {1.4, 1.9, -0.8, 1.9, 2.9};
@@ -195,6 +539,118 @@ bool MoveKuka::putDownPrepareControlSwitch() {
 }
 
 bool MoveKuka::putDownRemoveLeftCover() {
+
+	double down[] = {1.4, 1.9, -0.8, 1.9, 2.9};
+  std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
+
+	double up[] = {1.4, 1.7, -0.8, 2.1, 2.9};
+  std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
+
+	MoveArm(vecDown);
+	OpenGripper();
+	MoveArm(vecUp);
+  return true;	
+}
+
+bool MoveKuka::putDownRemoveRightCover() {
+
+	double down[] = {1.4, 1.9, -0.8, 1.9, 2.9};
+  std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
+
+	double up[] = {1.4, 1.7, -0.8, 2.1, 2.9};
+  std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
+
+	MoveArm(vecDown);
+	OpenGripper();
+	MoveArm(vecUp);
+  return true;	
+}
+
+bool MoveKuka::putDownConnectAdaptor() {
+
+	double down[] = {1.4, 1.9, -0.8, 1.9, 2.9};
+  std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
+
+	double up[] = {1.4, 1.7, -0.8, 2.1, 2.9};
+  std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
+
+	MoveArm(vecDown);
+	OpenGripper();
+	MoveArm(vecUp);
+  return true;	
+}
+
+bool MoveKuka::putDownUnrollCable() {
+
+	double down[] = {1.4, 1.9, -0.8, 1.9, 2.9};
+  std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
+
+	double up[] = {1.4, 1.7, -0.8, 2.1, 2.9};
+  std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
+
+	MoveArm(vecDown);
+	OpenGripper();
+	MoveArm(vecUp);
+  return true;	
+}
+
+bool MoveKuka::putDownPlaceCable() {
+
+	double down[] = {1.4, 1.9, -0.8, 1.9, 2.9};
+  std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
+
+	double up[] = {1.4, 1.7, -0.8, 2.1, 2.9};
+  std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
+
+	MoveArm(vecDown);
+	OpenGripper();
+	MoveArm(vecUp);
+  return true;	
+}
+
+bool MoveKuka::putDownPlacePanel() {
+
+	double down[] = {1.4, 1.9, -0.8, 1.9, 2.9};
+  std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
+
+	double up[] = {1.4, 1.7, -0.8, 2.1, 2.9};
+  std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
+
+	MoveArm(vecDown);
+	OpenGripper();
+	MoveArm(vecUp);
+  return true;	
+}
+
+bool MoveKuka::putDownCheckPanelAttachment() {
+
+	double down[] = {1.4, 1.9, -0.8, 1.9, 2.9};
+  std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
+
+	double up[] = {1.4, 1.7, -0.8, 2.1, 2.9};
+  std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
+
+	MoveArm(vecDown);
+	OpenGripper();
+	MoveArm(vecUp);
+  return true;	
+}
+
+bool MoveKuka::putDownCheckControlSwitch() {
+
+	double down[] = {1.4, 1.9, -0.8, 1.9, 2.9};
+  std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
+
+	double up[] = {1.4, 1.7, -0.8, 2.1, 2.9};
+  std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
+
+	MoveArm(vecDown);
+	OpenGripper();
+	MoveArm(vecUp);
+  return true;	
+}
+
+bool MoveKuka::putDownCheckOutputCurrent() {
 
 	double down[] = {1.4, 1.9, -0.8, 1.9, 2.9};
   std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );

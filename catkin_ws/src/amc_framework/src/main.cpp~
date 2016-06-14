@@ -28,6 +28,15 @@ int main(int argc, char** argv) {
   ros::ServiceServer serviceGoRight = nh.advertiseService("go_home", &MoveKuka::GoHome, &kukaObj);
 
   ros::ServiceServer servicePrepareControlSwitch = nh.advertiseService("prepare_control_switch", &MoveKuka::prepareControlSwitch, &kukaObj);
+	ros::ServiceServer serviceRemoveLeftCover = nh.advertiseService("remove_left_cover", &MoveKuka::removeLeftCover, &kukaObj);
+	ros::ServiceServer serviceRemoveRightCover = nh.advertiseService("remove_right_cover", &MoveKuka::removeRightCover, &kukaObj);
+	ros::ServiceServer serviceConnectAdaptor = nh.advertiseService("connect_adaptor", &MoveKuka::connectAdaptor, &kukaObj);
+	ros::ServiceServer serviceUnrollCable = nh.advertiseService("unroll_cable", &MoveKuka::unrollCable, &kukaObj);
+	ros::ServiceServer servicePlaceCable = nh.advertiseService("place_cable", &MoveKuka::placeCable, &kukaObj);
+	ros::ServiceServer servicePlacePanel = nh.advertiseService("place_panel", &MoveKuka::placePanel, &kukaObj);
+	ros::ServiceServer serviceCheckPanelAttachment = nh.advertiseService("check_panel_attachment", &MoveKuka::checkPanelAttachment, &kukaObj);
+	ros::ServiceServer serviceCheckControlSwitch = nh.advertiseService("check_control_switch", &MoveKuka::checkControlSwitch, &kukaObj);
+	ros::ServiceServer serviceCheckOutputCurrent = nh.advertiseService("check_output_current", &MoveKuka::checkOutputCurrent, &kukaObj);
   
 	ros::ServiceServer serviceOpenGripper  = nh.advertiseService("open_gripper", &MoveKuka::OpenGripper, &kukaObj);
   ros::ServiceServer serviceCloseGripper = nh.advertiseService("close_gripper", &MoveKuka::CloseGripper, &kukaObj);
