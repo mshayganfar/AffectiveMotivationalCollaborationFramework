@@ -1,9 +1,0 @@
-#!/bin/bash
-#
-# Usage: amct [ <filename> ]
-#
-# Runs the given script file and compares resulting temporary log with
-# corresponding test log file <filename>.test, if it exists
-#
-dir="`dirname $0`"
-"$dir/bin/_run" AffectiveMotivationalCollaborationFramework "$1" ../bin ../lib/disco.jar 
