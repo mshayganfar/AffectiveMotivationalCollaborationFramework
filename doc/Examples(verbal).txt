@@ -1,5 +1,0 @@
-Example 1: Astronaut fails (because of the failure of a tool, i.e. input) achieving a controllable goal (e.g., Weld Panel) which he was responsible for. The agent acknowledges the astronaut's feeling of guilt. And, the agent (active coping) offers the astronaut its own tool to pursue the same goal, again.
-
-Example 2: "Prepare Control Switch" fails. The agent (goal management) evaluates the cost for all of the live goals, i.e., "Remove Cover", "Place Panel", and "Check Panel attachment". As a result "Remove Cover" will be selected respectively due to its lower cost.
-
-Example 3: The astronaut is worry, since the agent just offered pursuing an unexpected (non-live) goal (goal management on non-live goals), e.g., "Check Control Switch". The agent acknowledges the astronaut's worry. And, the agent provides some information about why such a goal is achievable (due to its available inputs) in the future (wishful thinking).
