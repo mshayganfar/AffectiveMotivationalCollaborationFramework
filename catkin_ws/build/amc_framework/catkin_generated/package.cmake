@@ -1,7 +1,0 @@
-set(_CATKIN_CURRENT_PACKAGE "amc_framework")
-set(amc_framework_MAINTAINER "mahni <mshayganfar@wpi.edu>")
-set(amc_framework_DEPRECATED "")
-set(amc_framework_VERSION "0.0.1")
-set(amc_framework_BUILD_DEPENDS "actionlib_msgs" "geometry_msgs" "nav_msgs" "roscpp" "roslib" "std_msgs" "control_msgs" "trajectory_msgs" "brics_actuator" "sensor_msgs" "std_srvs" "message_generation")
-set(amc_framework_RUN_DEPENDS "message_runtime" "actionlib_msgs" "geometry_msgs" "nav_msgs" "roscpp" "roslib" "std_msgs" "control_msgs" "trajectory_msgs" "brics_actuator" "sensor_msgs" "std_srvs")
-set(amc_framework_BUILDTOOL_DEPENDS "catkin")
