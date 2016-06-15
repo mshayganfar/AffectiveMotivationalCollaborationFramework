@@ -1,0 +1,225 @@
+    # Jun 13, 2016 3:50:01 PM - TaskEngine 1.10 / Disco 1.16
+    Welcome to Disco! (Type 'help' for command list)
+
+    # give wizard control of turn-taking
+  > next false
+
+    # inhibit 'Ok' at end of agent turn when it has nothing else to say
+  > eval $disco.getInteraction().setOk(false);
+    # Returned 'null'
+
+    # following are to remove all agent plugins except AuthorizedPlugin
+    # and ProposeShouldOtherPlugin--in study code easier to just
+    # override Agent.init()
+  > eval $agenda = $disco.getInteraction().getSystem().getAgenda(); null
+    # Returned 'null'
+  > eval $agenda.remove(Packages.edu.wpi.disco.plugin.AskShouldTopPlugin.class)
+    # Returned 'true'
+  > eval $agenda.remove(Packages.edu.wpi.disco.plugin.AskShouldPassablePlugin.class)
+    # Returned 'true'
+  > eval $agenda.remove(Packages.edu.wpi.disco.plugin.AskHowPassablePlugin.class)
+    # Returned 'true'
+  > eval $agenda.remove(Packages.edu.wpi.disco.plugin.ProposeWhatPlugin.class)
+    # Returned 'true'
+  > eval $agenda.remove(Packages.edu.wpi.disco.plugin.AskWhatNoBindingPlugin.class)
+    # Returned 'true'
+  > eval $agenda.remove(Packages.edu.wpi.disco.plugin.ProposeShouldSelfPlugin.class)
+    # Returned 'true'
+  > eval $agenda.remove(Packages.edu.wpi.disco.plugin.AskShouldPlugin.class)
+    # Returned 'true'
+  > eval $agenda.remove(Packages.edu.wpi.disco.plugin.AskWhatPlugin.class)
+    # Returned 'true'
+  > eval $agenda.remove(Packages.edu.wpi.disco.plugin.AskWhoPlugin.class)
+    # Returned 'true'
+  > eval $agenda.remove(Packages.edu.wpi.disco.plugin.ProposeHowPlugin.class)
+    # Returned 'true'
+  > eval $agenda.remove(Packages.edu.wpi.disco.plugin.AskHowPlugin.class)
+    # Returned 'true'
+
+  > load AstronautRobot-CR.xml
+
+    # make removeLeftCoverRecipe1 and checkPanelAttachmentRecipe1 applicable
+  > eval Packages.MetaInformation.World.userValence = Packages.MetaInformation.World.USER_VALENCE.NEUTRAL
+    # Returned '[object JavaPackage]'
+
+    # since default Disco does not usually "announce" non-primitive subgoals, the wizard
+    # needs to do this manually at start
+  > new InstallSolarPanel
+  > execute edu.wpi.disco.lang.Propose$Should / $new / false
+    Agent says "Let's start installing a solar panel together."
+  > new PreparePanel
+  > execute edu.wpi.disco.lang.Propose$Should / $new / false
+    Agent says "The first step is to prepare the panel."
+
+    # every time the wizard types 'next', it gives floor to agent
+    # and agent executes as many primitives as it can until it runs out
+    # or executes an utterance
+  > next
+    Agent execute PrepareControlSwitch.
+    Agent execute RemoveRightCover.
+    Agent says "Please execute RemoveLeftCoverPrimitive."
+
+    # wizard observes user failure and enters it
+  > execute RemoveLeftCoverPrimitive / true / false
+    User execute RemoveLeftCoverPrimitive.
+
+  > next
+    Agent says "I will ask my friend to bring you a new peg!"
+
+    # user waits while confederate brings a new peg and puts it on table
+    # where user can reach it; then user performs the action and wizard enters
+  > execute RemoveLeftCoverPrimitive / true / true
+    User execute RemoveLeftCoverPrimitive.
+
+  > next
+    Agent execute ConnectAdaptor.
+    Agent execute PlaceCable.
+    Agent says "Please execute TakeOutCable."
+
+    # wizard observes user failure and enters it
+  > execute TakeOutCable / true / false
+    User execute TakeOutCable.
+
+    # confederate immediately brings out new peg and puts it on table
+    # wizard waits until this happens to type 'next'
+  > next
+    Agent says "Please execute TakeOutCable."
+
+    # user performs action with new peg and wizard enters
+  > execute TakeOutCable / true / true
+    User execute TakeOutCable.
+
+  > next
+    Agent execute UnrollCable.
+    Agent execute PlacePanel.
+    Agent says "Please execute WeldPanel."
+
+  > execute WeldPanel / true / true
+    User execute WeldPanel.
+
+    # robot fails
+    # not clear whether this will be entered by wizard or
+    # automatically as part of ROS execution
+  > execute CheckPanelAttachmentPrimitive / false / false
+    Agent execute CheckPanelAttachmentPrimitive.
+
+    # if previous action executed by agent code, then it will
+    # occur *after* the wizard typed following 'next'
+  > next
+    Agent says "I will ask my friend to do this for me!"
+
+    # after confederate has appeared and performed action
+    # wizard types 'next'
+  > next
+    Agent says "Please execute CheckWirings."
+
+  > execute CheckWirings / true / true
+    User execute CheckWirings.
+
+  > next
+    Agent execute CheckControlSwitch.
+    Agent says "Please execute CheckCascadingCells."
+
+  > execute CheckCascadingCells / true / true 
+    User execute CheckCascadingCells.
+
+  > next 
+    Agent execute CheckOutputCurrent.
+
+  > history
+
+[Achieve InstallSolarPanel] -done
+   Agent says "Let's start installing a solar panel together."
+   [Achieve PreparePanel] -done
+      Agent says "The first step is to prepare the panel."
+      Agent execute PrepareControlSwitch.
+      [Achieve PrepareConnector] -done
+         Agent execute RemoveRightCover.
+         [Achieve RemoveLeftCover by removeLeftCoverRecipe1] -failed
+            [User execute RemoveLeftCoverPrimitive] -failed
+               Agent says "Please execute RemoveLeftCoverPrimitive."
+               User execute RemoveLeftCoverPrimitive. -failed
+         [Achieve RemoveLeftCover by removeLeftCoverRecipe3] -done
+            Agent says "I will ask my friend to bring you a new peg!"
+            User execute RemoveLeftCoverPrimitive. -succeeded
+         Agent execute ConnectAdaptor.
+   [Achieve PrepareCable] -done
+      Agent execute PlaceCable.
+      [User execute TakeOutCable] -failed
+         Agent says "Please execute TakeOutCable."
+         User execute TakeOutCable. -failed
+      [User execute TakeOutCable] -succeeded
+         Agent says "Please execute TakeOutCable."
+         User execute TakeOutCable. -succeeded
+      Agent execute UnrollCable.
+   [Achieve FixPanel] -done
+      Agent execute PlacePanel.
+      [User execute WeldPanel] -succeeded
+         Agent says "Please execute WeldPanel."
+         User execute WeldPanel. -succeeded
+   [Achieve CheckHardware] -done
+      [Achieve CheckPanelAttachment by checkPanelAttachmentRecipe1] -failed
+         [Agent execute CheckPanelAttachmentPrimitive] -failed
+            Agent execute CheckPanelAttachmentPrimitive. -failed
+      [Achieve CheckPanelAttachment by checkPanelAttachmentRecipe2] -done
+         Agent says "I will ask my friend to do this for me!"
+      [User execute CheckWirings] -succeeded
+         Agent says "Please execute CheckWirings."
+         User execute CheckWirings. -succeeded
+   [Achieve CheckFunction] -done <-focus
+      Agent execute CheckControlSwitch.
+      [User execute CheckCascadingCells] -succeeded
+         Agent says "Please execute CheckCascadingCells."
+         User execute CheckCascadingCells. -succeeded
+      Agent execute CheckOutputCurrent.
+
+  > debug
+  > history
+
+[InstallSolarPanel] -done
+   Propose.Should(agent,InstallSolarPanel)
+   [PreparePanel] -done
+      Propose.Should(agent,PreparePanel)
+      PrepareControlSwitch(agent)
+      [PrepareConnector] -done
+         RemoveRightCover(agent)
+         [RemoveLeftCover by removeLeftCoverRecipe1] -failed
+            [RemoveLeftCoverPrimitive(user)] -failed
+               Propose.Should(agent,RemoveLeftCoverPrimitive(user))
+               RemoveLeftCoverPrimitive(user) -failed
+         [RemoveLeftCover by removeLeftCoverRecipe3] -done
+            Say.Agent(agent,"I will ask my friend to bring you a new peg!")
+            RemoveLeftCoverPrimitive(user) -succeeded
+         ConnectAdaptor(agent)
+   [PrepareCable] -done
+      PlaceCable(agent)
+      [TakeOutCable(user)] -failed
+         Propose.Should(agent,TakeOutCable(user))
+         TakeOutCable(user) -failed
+      [TakeOutCable(user)] -succeeded
+         Propose.Should(agent,TakeOutCable(user))
+         TakeOutCable(user) -succeeded
+      UnrollCable(agent)
+   [FixPanel] -done
+      PlacePanel(agent)
+      [WeldPanel(user)] -succeeded
+         Propose.Should(agent,WeldPanel(user))
+         WeldPanel(user) -succeeded
+   [CheckHardware] -done
+      [CheckPanelAttachment by checkPanelAttachmentRecipe1] -failed
+         [CheckPanelAttachmentPrimitive(agent)] -failed
+            CheckPanelAttachmentPrimitive(agent) -failed
+      [CheckPanelAttachment by checkPanelAttachmentRecipe2] -done
+         Say.Agent(agent,"I will ask my friend to do this for me!")
+      [CheckWirings(user)] -succeeded
+         Propose.Should(agent,CheckWirings(user))
+         CheckWirings(user) -succeeded
+   [CheckFunction] -done <-focus
+      CheckControlSwitch(agent)
+      [CheckCascadingCells(user)] -succeeded
+         Propose.Should(agent,CheckCascadingCells(user))
+         CheckCascadingCells(user) -succeeded
+      CheckOutputCurrent(agent)
+
+  > quit
+    

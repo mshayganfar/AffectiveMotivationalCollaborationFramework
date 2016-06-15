@@ -1,0 +1,43 @@
+  > task PreparePicnic
+    User says "Let's achieve PreparePicnic."
+    Agent says "Please execute Spread on bread and peanut butter."
+  > task PrepareSandwich
+    User says "Let's achieve PrepareSandwich."
+    Agent says "Please execute Spread on bread and peanut butter."
+  > execute Spread
+    User execute Spread on bread and peanut butter producing bread.
+    Agent says "Please execute Spread on bread and strawberry jam."
+  > execute Spread
+    User execute Spread on bread and strawberry jam producing bread.
+    Agent says "Please execute Press on bread and bread."
+  > execute Press
+    User execute Press on bread and bread producing sandwich.
+    Agent execute CutSandwich on sandwich producing cut sandwich.
+    Agent execute BagSandwich on cut sandwich and bag producing bag.
+    Agent says "Please execute BoilWater."
+  > execute BoilWater
+    User execute BoilWater.
+    Agent says "Please execute BoilEgg on egg."
+  > execute BoilEgg
+    User execute BoilEgg on egg producing boiled egg.
+    Agent says "Please execute SliceEgg on boiled egg."
+  > execute SliceEgg
+    User execute SliceEgg on boiled egg producing boiled sliced egg.
+    Agent says "Please execute Add on bread and boiled sliced egg."
+  > execute Add
+    User execute Add on bread and boiled sliced egg producing bread.
+    Agent says "Please execute Add on bread and salt."
+  > execute Add
+    User execute Add on bread and salt producing bread.
+    Agent execute Add on bread and pickle producing bread.
+    Agent says "Please execute Press on bread and bread."
+  > execute Press
+    User execute Press on bread and bread producing sandwich.
+    Agent says "Please execute CutSandwich on sandwich."
+  > execute CutSandwich
+    User execute CutSandwich on sandwich producing cut sandwich.
+    Agent says "Please execute BagSandwich on cut sandwich and bag."
+  > execute BagSandwich
+    User execute BagSandwich on cut sandwich and bag producing bag.
+    Agent says "Ok."
+  > 

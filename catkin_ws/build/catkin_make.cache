@@ -1,0 +1,2 @@
+amc_framework
+-DCATKIN_DEVEL_PREFIX=/home/mahni/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/mahni/catkin_ws/install

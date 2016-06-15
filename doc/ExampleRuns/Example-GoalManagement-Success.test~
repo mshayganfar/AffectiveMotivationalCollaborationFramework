@@ -1,0 +1,144 @@
+    # Jun 3, 2016 1:37:51 PM - TaskEngine 1.10 / Disco 1.16
+    Welcome to Disco! (Type 'help' for command list)
+  > Agent chose the following coping strtegies in turn: 1
+COPING STRATEGY: Planning
+    Agent says "Let's achieve InstallSolarPanel."
+COPING STRATEGY: Active Coping
+    Agent says "No feeling!"
+Human's Emotion (after coping): NEUTRAL
+Agent chose the following coping strtegies in turn: 2
+COPING STRATEGY: Planning
+    Agent says "Let's achieve PrepareCable."
+COPING STRATEGY: Active Coping
+    Agent says "No feeling!"
+Human's Emotion (after coping): NEUTRAL
+Waiting for you: 
+eval goUser(0.0, true)
+    Astronaut execute TakeOutCable.
+Human's Emotion (before coping): JOY
+Agent chose the following coping strtegies in turn: 3
+COPING STRATEGY: Active Coping
+    Agent says "Thank you for doing this!"
+Human's Emotion (after coping): JOY
+Agent chose the following coping strtegies in turn: 4
+COPING STRATEGY: Planning
+    Agent execute UnrollCable.
+COPING STRATEGY: Active Coping
+    Agent says "No feeling!"
+Human's Emotion (after coping): NEUTRAL
+Agent chose the following coping strtegies in turn: 5
+COPING STRATEGY: Planning
+    Agent execute PlaceCable.
+COPING STRATEGY: Active Coping
+    Agent says "No feeling!"
+Human's Emotion (after coping): NEUTRAL
+Agent chose the following coping strtegies in turn: 6
+COPING STRATEGY: Planning
+    Agent says "Let's achieve FixPanel."
+COPING STRATEGY: Active Coping
+    Agent says "No feeling!"
+Human's Emotion (after coping): NEUTRAL
+Agent chose the following coping strtegies in turn: 7
+COPING STRATEGY: Planning
+    Agent execute PlacePanel.
+COPING STRATEGY: Active Coping
+    Agent says "No feeling!"
+Human's Emotion (after coping): NEUTRAL
+Waiting for you: 
+    # Returned 'null'
+  > eval goUser(0.0, true)
+    Astronaut execute WeldPanel.
+Human's Emotion (before coping): JOY
+Agent chose the following coping strtegies in turn: 8
+COPING STRATEGY: Active Coping
+    Agent says "Thank you for doing this!"
+Human's Emotion (after coping): JOY
+Agent chose the following coping strtegies in turn: 9
+COPING STRATEGY: Planning
+    Agent says "Let's achieve CheckHardware."
+COPING STRATEGY: Active Coping
+    Agent says "No feeling!"
+Human's Emotion (after coping): NEUTRAL
+Waiting for you: 
+    # Returned 'null'
+  > eval goUser(0.0, true)
+    Astronaut execute CheckWirings.
+Human's Emotion (before coping): JOY
+Agent chose the following coping strtegies in turn: 10
+COPING STRATEGY: Active Coping
+    Agent says "Thank you for doing this!"
+Human's Emotion (after coping): JOY
+Agent chose the following coping strtegies in turn: 11
+COPING STRATEGY: Planning
+    Agent execute CheckPanelAttachment.
+COPING STRATEGY: Active Coping
+    Agent says "No feeling!"
+Human's Emotion (after coping): NEUTRAL
+Agent chose the following coping strtegies in turn: 12
+COPING STRATEGY: Planning
+    Agent says "Let's achieve CheckFunction."
+COPING STRATEGY: Active Coping
+    Agent says "No feeling!"
+Human's Emotion (after coping): NEUTRAL
+Agent chose the following coping strtegies in turn: 13
+COPING STRATEGY: Planning
+    Agent execute CheckControlSwitch.
+COPING STRATEGY: Active Coping
+    Agent says "No feeling!"
+Human's Emotion (after coping): NEUTRAL
+Waiting for you: 
+    # Returned 'null'
+  > eval goUser(0.0, true)
+    Astronaut execute CheckCascadingCells.
+Human's Emotion (before coping): JOY
+Agent chose the following coping strtegies in turn: 14
+COPING STRATEGY: Active Coping
+    Agent says "Thank you for doing this!"
+Human's Emotion (after coping): JOY
+Human's Emotion (before coping): NEUTRAL
+Agent chose the following coping strtegies in turn: 15
+COPING STRATEGY: Planning
+    Agent execute CheckOutputCurrent.
+COPING STRATEGY: Active Coping
+    Agent says "No feeling!"
+Human's Emotion (after coping): NEUTRAL
+    # Returned 'null'
+  > history
+
+[Achieve InstallSolarPanel] -accepted -done
+   Agent says "Let's achieve InstallSolarPanel."
+   Agent says "No feeling!"
+   [Achieve PrepareCable] -done
+      Agent says "Let's achieve PrepareCable."
+      Agent says "No feeling!"
+      Astronaut execute TakeOutCable. -succeeded
+      Agent says "Thank you for doing this!"
+      Agent execute UnrollCable. -succeeded
+      Agent says "No feeling!"
+      Agent execute PlaceCable. -succeeded
+      Agent says "No feeling!"
+   [Achieve FixPanel] -done
+      Agent says "Let's achieve FixPanel."
+      Agent says "No feeling!"
+      Agent execute PlacePanel. -succeeded
+      Agent says "No feeling!"
+      Astronaut execute WeldPanel. -succeeded
+      Agent says "Thank you for doing this!"
+   [Achieve CheckHardware] -done
+      Agent says "Let's achieve CheckHardware."
+      Agent says "No feeling!"
+      Astronaut execute CheckWirings. -succeeded
+      Agent says "Thank you for doing this!"
+      Agent execute CheckPanelAttachment. -succeeded
+      Agent says "No feeling!"
+   [Achieve CheckFunction] -done <-focus
+      Agent says "Let's achieve CheckFunction."
+      Agent says "No feeling!"
+      Agent execute CheckControlSwitch. -succeeded
+      Agent says "No feeling!"
+      Astronaut execute CheckCascadingCells. -succeeded
+      Agent says "Thank you for doing this!"
+      Agent execute CheckOutputCurrent. -succeeded
+      Agent says "No feeling!"
+
+  > 

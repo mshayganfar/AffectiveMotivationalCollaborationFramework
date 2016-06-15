@@ -1,0 +1,77 @@
+# Agent's proposal:
+
+> instance A
+> execute edu.wpi.disco.lang.Propose$Should / $new / false
+
+#############################################################
+
+# Agent's explicit proposal acceptance:
+
+> instance edu.wpi.disco.lang.Propose$Should / $new
+> execute edu.wpi.disco.lang.Accept / $new
+
+# To test:
+
+> eval $disco.getLastOccurrence() instanceof edu.wpi.disco.lang.Accept
+
+# To get the domain goal:
+
+> eval $disco.getLastOccurrence().getProposal().getGoal()
+
+# To know the plan:
+
+> eval $disco.getFocus()
+
+#############################################################
+#############################################################
+
+# Agent's proposal:
+
+> instance A 
+> execute edu.wpi.disco.lang.Propose$Should / $new / false
+
+#############################################################
+
+# Agent's explicit proposal rejection:
+
+> instance edu.wpi.disco.lang.Propose$Should / $new
+> execute edu.wpi.disco.lang.Reject / $new
+
+# To test:
+
+> eval $disco.getLastOccurrence() instanceof edu.wpi.disco.lang.Reject
+
+#############################################################
+#############################################################
+
+# Agent's proposal:
+
+> instance A
+> execute edu.wpi.disco.lang.Propose$Should / $new / false
+
+#############################################################
+
+# Agent's implicit proposal acceptance:
+
+> execute B
+
+# To test:
+
+> eval $disco.isLastImplicitAccept()
+
+# To get the associated plan:
+
+> eval $disco.getLastImplicitAccepted()
+
+#############################################################
+#############################################################
+
+# User's proposal:
+
+> task A
+
+> To test:
+
+> eval $disco.isLastImplicitAccept()
+
+> eval $disco.getLastImplicitAccepted()
