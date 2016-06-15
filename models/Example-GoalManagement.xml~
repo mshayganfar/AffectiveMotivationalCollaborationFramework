@@ -1,0 +1,104 @@
+<taskModel about="urn:shayganfar.wpi.edu:models:Example-GoalManagement" 
+           xmlns="http://www.cs.wpi.edu/~rich/cetask/cea-2018-ext"
+           xmlns:disco="urn:disco.wpi.edu:Disco">
+
+  <task id="InstallSolarPanel">
+		<precondition>true</precondition>
+    <subtasks id="installSolarPanelRecipe" ordered="false">
+      <step name="prepare_cable" task ="PrepareCable"/>
+      <step name="fix_panel" task="FixPanel"/>
+      <step name="check_hardware" task="CheckHardware" requires ="fix_panel"/>
+      <step name="check_function" task="CheckFunction"/>
+    </subtasks>
+  </task>
+
+  <task id="PrepareCable">
+		<precondition>true</precondition>
+    <subtasks id="prepareCableRecipe" ordered="false">
+      <step name="takeout_cable" task ="TakeOutCable"/>
+      <step name="unroll_cable" task="UnrollCable" requires ="takeout_cable"/>
+      <step name="place_cable" task="PlaceCable"/>
+
+      <binding slot="$takeout_cable.external" value="true"/>
+      <binding slot="$unroll_cable.external" value="false"/>
+      <binding slot="$place_cable.external" value="false"/>
+    </subtasks>
+  </task>
+
+  <task id="FixPanel">
+		<precondition>true</precondition>
+    <subtasks id="fixPanelRecipe" ordered="true">
+      <step name="place_panel" task ="PlacePanel"/>
+      <step name="weld_panel" task="WeldPanel"/>
+
+      <binding slot="$place_panel.external" value="false"/>
+      <binding slot="$weld_panel.external" value="true"/>
+    </subtasks>
+  </task>
+
+  <task id="CheckHardware">
+		<precondition>true</precondition>
+    <subtasks id="checkHardwareRecipe" ordered="true">
+      <step name="check_panel_attachment" task ="CheckPanelAttachment"/>
+      <step name="check_wirings" task ="CheckWirings"/>
+
+      <binding slot="$check_wirings.external" value="true"/>
+    </subtasks>
+  </task>
+
+  <task id="CheckFunction">
+		<precondition>true</precondition>
+    <subtasks id="checkFunctionRecipe" ordered="true">
+      <step name="check_control_switch" task ="CheckControlSwitch"/>
+      <step name="check_cascading_cells" task ="CheckCascadingCells"/>
+      <step name="check_output_current" task ="CheckOutputCurrent"/>
+
+      <binding slot="$check_control_switch.external" value="false"/>
+      <binding slot="$check_cascading_cells.external" value="true"/>
+      <binding slot="$check_output_current.external" value="false"/>
+    </subtasks>
+  </task>
+
+  <task id="TakeOutCable">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="UnrollCable">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="PlaceCable">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="PlacePanel">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="WeldPanel">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="CheckPanelAttachment">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="CheckWirings">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="CheckControlSwitch">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="CheckCascadingCells">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="CheckOutputCurrent">
+		<precondition>true</precondition>
+	</task>
+  
+	<script init="true">
+	</script>
+</taskModel>

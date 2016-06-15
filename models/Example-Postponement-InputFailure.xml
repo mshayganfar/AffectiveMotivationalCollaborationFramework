@@ -1,0 +1,105 @@
+<taskModel about="urn:shayganfar.wpi.edu:models:Example-Postponement" 
+           xmlns="http://www.cs.wpi.edu/~rich/cetask/cea-2018-ext"
+           xmlns:disco="urn:disco.wpi.edu:Disco">
+
+  <task id="InstallSolarPanel">
+		<precondition>true</precondition>
+    <subtasks id="installSolarPanelRecipe" ordered="false">
+      <step name="prepare_panel" task ="PreparePanel"/>
+    </subtasks>
+  </task>
+
+  <task id="PreparePanel">
+		<precondition>true</precondition>
+    <subtasks id="preparePanelRecipe" ordered="true">
+      <step name="prepare_switch" task ="PrepareControlSwitch"/>
+      <step name="prepare_connector" task="PrepareConnector"/>
+
+      <binding slot="$prepare_switch.external" value="false"/>
+    </subtasks>
+  </task>
+
+  <task id="PrepareConnector">
+		<precondition>true</precondition>
+    <subtasks id="prepareConnectorRecipe" ordered="false">
+      <step name="remove_left" task ="RemoveLeftCover"/>
+      <step name="remove_right" task ="RemoveRightCover"/>
+      <step name="connect_adaptor" task ="ConnectAdaptor" requires ="remove_left remove_right"/>
+
+      <binding slot="$remove_right.external" value="false"/>
+      <binding slot="$connect_adaptor.external" value="false"/>
+    </subtasks>
+  </task>
+
+  <task id="RemoveLeftCover">
+		<precondition>true</precondition>
+    <subtasks id="removeLeftCoverRecipe">
+    	<step name="pickup_tool" task="PickUpTool"/>
+    	<step name="remove_left_prim" task="RemoveLeftCoverPrimitive"/>
+
+    	<binding slot="$remove_left_prim.tool" value="$pickup_tool.tool"/>
+    	<binding slot="$remove_left_prim.external" value="true"/>
+    </subtasks>
+  </task>
+
+  <task id="PickUpTool">
+    <input name="tool" type="Packages.MetaInformation.World.RemovingCoverTool"/>
+		<precondition>true</precondition>
+    
+    <subtasks id="_pickUpToolRecipe">
+      <step name="pickup_tool_prim" task="PickUpToolPrimitive"/>
+
+      <binding slot="$pickup_tool_prim.tool" value="Packages.MetaInformation.World.RemovingCoverTool.USER_TOOL"/>
+      <binding slot="$this.tool" value="$pickup_tool_prim.tool"/>
+      <binding slot="$pickup_tool_prim.external" value="true"/>
+    </subtasks>
+
+    <subtasks id="_retryPickUpToolRecipe">
+      <step name="hand_off_tool" task="HandOffTool"/>
+      <step name="pickup_tool_prim" task="PickUpToolPrimitive"/>
+
+      <binding slot="$hand_off_tool.tool" value="$this.tool"/>
+      <binding slot="$hand_off_tool.external" value="false"/>
+      <binding slot="$pickup_tool_prim.tool" value="$this.tool"/>
+      <binding slot="$pickup_tool_prim.external" value="true"/>
+    </subtasks>
+
+  </task>
+
+  <task id="PickUpToolPrimitive">
+    <input name="tool" type="Packages.MetaInformation.World.RemovingCoverTool"/>
+		<precondition>true</precondition>
+  </task>
+
+  <task id="RemoveLeftCoverPrimitive">
+    <input name="tool" type="Packages.MetaInformation.World.RemovingCoverTool"/>
+		<precondition>true</precondition>
+  </task>
+
+  <task id="HandOffTool">
+    <input name="tool" type="Packages.MetaInformation.World.RemovingCoverTool"/>
+		<precondition>true</precondition>
+  </task>
+
+  <task id="RemoveRightCover">
+		<input name="tool" type="Packages.MetaInformation.World.RemovingCoverTool"/>
+		<precondition>true</precondition>
+	</task>
+
+  <task id="PrepareControlSwitch">
+		<precondition>true</precondition>
+	</task>
+
+  <task id="ConnectAdaptor">
+		<precondition>true</precondition>
+	</task>
+  
+	<script init="true">
+    // function Tool (name) { this.name = name; }
+
+    // Tool.prototype.toString = function () { return this.name; }
+
+    // var userTool = new Tool("userTool");
+    // var agentTool = new Tool("agentTool");
+	</script>
+</taskModel>
