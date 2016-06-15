@@ -1,0 +1,37 @@
+debug true
+verbose
+next false
+task InstallSolarPanel
+eval process()
+task PreparePanel
+eval process()
+execute PrepareControlSwitch / / true
+eval process()
+task PrepareConnector
+eval process()
+execute RemoveCover / / true
+eval process()
+execute ConnectAdaptor / / true
+eval process()
+task FixPanel
+eval process()
+execute PlacePanel / / true
+eval process()
+execute WeldPanel / / false
+eval process()
+task CheckPanel
+eval process()
+task CheckHardware
+eval process()
+execute CheckPanelAttachment / / true
+eval process()
+execute CheckWirings / / true
+eval process()
+task CheckFunction
+eval process()
+execute CheckControlSwitch / / true
+eval process()
+execute CheckCascadingCells / / true
+eval process()
+execute CheckOutputCurrent / / true
+eval process()
