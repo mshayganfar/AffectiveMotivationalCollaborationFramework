@@ -1,0 +1,9 @@
+#include "kuka-move.hpp"
+
+void MoveKuka::WaitForGripper(double target) {
+  std::cout << "Waiting for gripper..." << std::endl;
+  while( q[5] >= target+0.00001 || q[5] <= target-0.00001) {
+    boost::this_thread::sleep(boost::posix_time::milliseconds(1));
+  }
+  std::cout << "Done." << std::endl;
+}

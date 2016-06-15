@@ -1,0 +1,70 @@
+    # Jun 3, 2016 8:13:36 PM - TaskEngine 1.10 / Disco 1.16
+    Welcome to Disco! (Type 'help' for command list)
+  > Agent chose the following coping strtegies in turn: 1
+COPING STRATEGY: Planning
+    Amc_agent says "Let's achieve InstallSolarPanel."
+COPING STRATEGY: Active Coping
+    Amc_agent says "No feeling!"
+Human's Emotion (after coping): NEUTRAL
+Agent chose the following coping strtegies in turn: 2
+COPING STRATEGY: Planning
+    Amc_agent says "Let's achieve PreparePanel."
+COPING STRATEGY: Active Coping
+    Amc_agent says "No feeling!"
+Human's Emotion (after coping): NEUTRAL
+Agent chose the following coping strtegies in turn: 3
+COPING STRATEGY: Planning
+    Amc_agent execute PrepareControlSwitch.
+COPING STRATEGY: Active Coping
+    Amc_agent says "No feeling!"
+Human's Emotion (after coping): NEUTRAL
+Agent chose the following coping strtegies in turn: 4
+COPING STRATEGY: Planning
+    Amc_agent says "Let's achieve PrepareConnector."
+COPING STRATEGY: Active Coping
+    Amc_agent says "No feeling!"
+Human's Emotion (after coping): NEUTRAL
+Agent chose the following coping strtegies in turn: 5
+COPING STRATEGY: Planning
+    Amc_agent execute RemoveRightCover.
+COPING STRATEGY: Active Coping
+    Amc_agent says "No feeling!"
+Human's Emotion (after coping): NEUTRAL
+Waiting for you: 
+eval goUser(0.0, true)
+    Astronaut execute RemoveLeftCoverPrimitive.
+Human's Emotion (before coping): JOY
+Agent chose the following coping strtegies in turn: 6
+COPING STRATEGY: Active Coping
+    Amc_agent says "Thank you for doing this!"
+COPING STRATEGY: Wishful Thinking
+Human's Emotion (after coping): JOY
+Agent chose the following coping strtegies in turn: 7
+COPING STRATEGY: Planning
+    Amc_agent execute ConnectAdaptor.
+COPING STRATEGY: Active Coping
+    Amc_agent says "No feeling!"
+Human's Emotion (after coping): NEUTRAL
+    # Returned 'null'
+  > history
+
+[Achieve InstallSolarPanel] -accepted -done
+   Amc_agent says "Let's achieve InstallSolarPanel."
+   Amc_agent says "No feeling!"
+   [Achieve PreparePanel] -done
+      Amc_agent says "Let's achieve PreparePanel."
+      Amc_agent says "No feeling!"
+      Amc_agent execute PrepareControlSwitch. -succeeded
+      Amc_agent says "No feeling!"
+      [Achieve PrepareConnector] -done <-focus
+         Amc_agent says "Let's achieve PrepareConnector."
+         Amc_agent says "No feeling!"
+         Amc_agent execute RemoveRightCover. -succeeded
+         Amc_agent says "No feeling!"
+         [Achieve RemoveLeftCover by removeLeftCoverRecipe1] -done
+            Astronaut execute RemoveLeftCoverPrimitive. -succeeded
+            Amc_agent says "Thank you for doing this!"
+         Amc_agent execute ConnectAdaptor. -succeeded
+         Amc_agent says "No feeling!"
+
+  > 

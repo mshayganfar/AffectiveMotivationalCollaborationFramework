@@ -1,0 +1,221 @@
+    # Apr 15, 2016 2:23:53 PM - TaskEngine 1.9 / Disco 1.15
+    # Welcome to Disco! (Type 'help' for command list)
+  > load models/ABC.xml
+  > load models/Events.xml
+  > verbose
+    # Writing new keys to /tmp/Console.translate.properties
+  > next false
+  > task A
+    User says "Let's achieve A."
+  > eval appraise()
+{A=true, B=true, C=false, D=true, e=true, F=true, g=true, h=true, I=true, J=true, k=true, l=true, m=true, n=true, o=true, p=true}
+RELEVANT
+CONTROLLABLE
+>>> Top Level Goal Status: PENDING
+true
+>>> Event Goal Status: PENDING
+NEUTRAL
+MOST_EXPECTED
+0.0
+    # Returned 'true'
+  > task B
+    User says "Let's achieve B."
+  > eval appraise()
+{A=true, B=true, C=false, D=true, e=true, F=true, g=true, h=true, I=true, J=true, k=true, l=true, m=true, n=true, o=true, p=true}
+RELEVANT
+CONTROLLABLE
+>>> Top Level Goal Status: PENDING
+true
+>>> Event Goal Status: PENDING
+NEUTRAL
+MOST_EXPECTED
+0.0
+    # Returned 'true'
+  > execute e / false
+    Agent execute e.
+  > eval appraise()
+{A=true, B=true, C=false, D=true, e=true, F=true, g=true, h=true, I=true, J=true, k=true, l=true, m=true, n=true, o=true, p=true}
+RELEVANT
+CONTROLLABLE
+>>> Top Level Goal Status: INPROGRESS
+true
+>>> Event Goal Status: ACHIEVED
+DESIRABLE
+MOST_EXPECTED
+1.0
+    # Returned 'true'
+  > task F
+    User says "Let's achieve F."
+  > eval appraise()
+{A=true, B=true, C=false, D=true, e=true, F=true, g=true, h=true, I=true, J=true, k=true, l=true, m=true, n=true, o=true, p=true}
+RELEVANT
+CONTROLLABLE
+>>> Top Level Goal Status: INPROGRESS
+true
+>>> Event Goal Status: PENDING
+NEUTRAL
+MOST_EXPECTED
+-0.36363636363636365
+    # Returned 'true'
+  > execute k / false
+    Agent execute k.
+  > eval appraise()
+{A=true, B=true, C=false, D=true, e=true, F=true, g=true, h=true, I=true, J=true, k=true, l=true, m=true, n=true, o=true, p=true}
+RELEVANT
+CONTROLLABLE
+>>> Top Level Goal Status: INPROGRESS
+true
+>>> Event Goal Status: ACHIEVED
+DESIRABLE
+MOST_EXPECTED
+0.4150943396226415
+    # Returned 'true'
+  > task C
+    User says "Let's achieve C."
+  > eval appraise()
+{A=true, B=true, C=false, D=true, e=true, F=true, g=true, h=true, I=true, J=true, k=true, l=true, m=true, n=true, o=true, p=true}
+RELEVANT
+CONTROLLABLE
+>>> Top Level Goal Status: INPROGRESS
+true
+>>> Event Goal Status: INAPPLICABLE
+UNDESIRABLE
+MOST_UNEXPECTED
+-1.8378378378378377
+    # Returned 'true'
+  > execute g / false
+    Agent execute g.
+  > eval appraise()
+{A=true, B=true, C=false, D=true, e=true, F=true, g=true, h=true, I=true, J=true, k=true, l=true, m=true, n=true, o=true, p=true}
+RELEVANT
+CONTROLLABLE
+>>> Top Level Goal Status: INPROGRESS
+true
+>>> Event Goal Status: INPROGRESS
+NEUTRAL
+MOST_EXPECTED
+-0.33684210526315783
+    # Returned 'true'
+  > execute h / false
+    Agent execute h.
+  > eval appraise()
+{A=true, B=true, C=false, D=true, e=true, F=true, g=true, h=true, I=true, J=true, k=true, l=true, m=true, n=true, o=true, p=true}
+RELEVANT
+CONTROLLABLE
+>>> Top Level Goal Status: INPROGRESS
+true
+>>> Event Goal Status: INPROGRESS
+NEUTRAL
+MOST_EXPECTED
+-0.3350785340314136
+    # Returned 'true'
+  > task D
+    User says "Let's achieve D."
+  > eval appraise()
+{A=true, B=true, C=false, D=true, e=true, F=true, g=true, h=true, I=true, J=true, k=true, l=true, m=true, n=true, o=true, p=true}
+RELEVANT
+CONTROLLABLE
+>>> Top Level Goal Status: INPROGRESS
+true
+>>> Event Goal Status: PENDING
+NEUTRAL
+MOST_EXPECTED
+-0.3342036553524805
+    # Returned 'true'
+  > eval $disco.isLastShift()
+    # Returned 'false'
+  > task I
+    User says "Let's achieve I."
+  > eval appraise()
+{A=true, B=true, C=false, D=true, e=true, F=true, g=true, h=true, I=true, J=true, k=true, l=true, m=true, n=true, o=true, p=true}
+RELEVANT
+CONTROLLABLE
+>>> Top Level Goal Status: INPROGRESS
+true
+>>> Event Goal Status: PENDING
+NEUTRAL
+MOST_EXPECTED
+-0.3337679269882659
+    # Returned 'true'
+  > execute l / false
+    Agent execute l.
+  > eval appraise()
+{A=true, B=true, C=false, D=true, e=true, F=true, g=true, h=true, I=true, J=true, k=true, l=true, m=true, n=true, o=true, p=true}
+RELEVANT
+CONTROLLABLE
+>>> Top Level Goal Status: INPROGRESS
+true
+>>> Event Goal Status: ACHIEVED
+DESIRABLE
+MOST_EXPECTED
+1.0486073184052431
+    # Returned 'true'
+  > execute m / false
+    Agent execute m.
+  > eval appraise()
+{A=true, B=true, C=false, D=true, e=true, F=true, g=true, h=true, I=true, J=true, k=true, l=true, m=true, n=true, o=true, p=true}
+RELEVANT
+CONTROLLABLE
+>>> Top Level Goal Status: INPROGRESS
+true
+>>> Event Goal Status: ACHIEVED
+DESIRABLE
+MOST_EXPECTED
+0.20365950676213213
+    # Returned 'true'
+  > task J
+    User says "Let's achieve J."
+  > eval appraise()
+{A=true, B=true, C=false, D=true, e=true, F=true, g=true, h=true, I=true, J=true, k=true, l=true, m=true, n=true, o=true, p=true}
+RELEVANT
+CONTROLLABLE
+>>> Top Level Goal Status: INPROGRESS
+true
+>>> Event Goal Status: PENDING
+NEUTRAL
+MOST_EXPECTED
+-0.3333875956373108
+    # Returned 'true'
+  > eval $disco.isLastShift()
+    # Returned 'false'
+  > execute n / false
+    Agent execute n.
+  > eval appraise()
+{A=true, B=true, C=false, D=true, e=true, F=true, g=true, h=true, I=true, J=true, k=true, l=true, m=true, n=true, o=true, p=true}
+RELEVANT
+CONTROLLABLE
+>>> Top Level Goal Status: INPROGRESS
+true
+>>> Event Goal Status: ACHIEVED
+DESIRABLE
+MOST_EXPECTED
+0.2953900568270141
+    # Returned 'true'
+  > execute o / false
+    Agent execute o.
+  > eval appraise()
+{A=true, B=true, C=false, D=true, e=true, F=true, g=true, h=true, I=true, J=true, k=true, l=true, m=true, n=true, o=true, p=true}
+RELEVANT
+CONTROLLABLE
+>>> Top Level Goal Status: INPROGRESS
+true
+>>> Event Goal Status: ACHIEVED
+DESIRABLE
+MOST_EXPECTED
+0.10233831080132672
+    # Returned 'true'
+  > execute p / false
+    Agent execute p.
+  > eval appraise()
+{A=true, B=true, C=false, D=true, e=true, F=true, g=true, h=true, I=true, J=true, k=true, l=true, m=true, n=true, o=true, p=true}
+RELEVANT
+CONTROLLABLE
+>>> Top Level Goal Status: INPROGRESS
+true
+>>> Event Goal Status: ACHIEVED
+DESIRABLE
+MOST_EXPECTED
+0.04435768161745579
+    # Returned 'true'
+
+  

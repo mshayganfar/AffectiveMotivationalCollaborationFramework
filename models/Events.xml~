@@ -1,0 +1,32 @@
+<taskModel about="urn:disco.wpi.edu:examples:Appraisal" xmlns="http://ce.org/cea-2018">
+  <!-- 
+       This file includes all the required events in the source file to test the appraisal mechanisms.
+  -->
+
+  <script init="true">
+
+		 var post_PrepareControlSwitch = true;
+		 var post_RemoveCover = true;
+		 var post_ConnectAdaptor = true;
+		 var post_PlacePanel = true;
+		 var post_WeldPanel = true;
+		 var post_CheckPanelAttachment = true;
+		 var post_CheckWirings = true;
+		 var post_CheckControlSwitch = true;
+		 var post_CheckCascadingCells = true;
+		 var post_CheckOutputCurrent = true;
+
+		function process (emotionInstance) {
+       //return Packages.AffectiveMotivationalCollaborationFramework.process(emotionInstance);
+    }
+
+		function goUser (valenceValue) {
+       return Packages.AffectiveMotivationalCollaborationFramework.goUser(valenceValue);
+    }
+
+		function updatePreviousCollaborationStatus () {
+       Packages.AffectiveMotivationalCollaborationFramework.updateCollaborationStatus();
+    }
+  </script>
+  
+</taskModel>

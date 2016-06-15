@@ -1,0 +1,101 @@
+    # Mar 4, 2016 9:56:22 AM - TaskEngine 1.9 / Disco 1.14
+    Welcome to Disco! (Type 'help' for command list)
+edu.wpi.disco.Disco@6be968ce
+  > eval appraise();
+No goal in the stack!
+    # Returned 'test appraisal'
+  > task PreparePicnic
+    User says "Let's achieve PreparePicnic."
+    Agent says "Please execute Spread on bread and peanut butter."
+  > eval appraise();
+[Accept(user,Propose.Should(agent,Spread(user,bread,peanut butter)))]
+My appraisal works!
+    # Returned 'test appraisal'
+  > task PrepareSandwich
+    User says "Let's achieve PrepareSandwich."
+    Agent says "Please execute Spread on bread and peanut butter."
+  > eval appraise();
+[Accept(user,Propose.Should(agent,Spread(user,bread,peanut butter)))]
+My appraisal works!
+    # Returned 'test appraisal'
+  > execute Spread
+    User execute Spread on bread and peanut butter producing bread.
+    Agent says "Please execute Spread on bread and strawberry jam."
+  > eval appraise();
+[Accept(user,Propose.Should(agent,Spread(user,bread,strawberry jam)))]
+My appraisal works!
+    # Returned 'test appraisal'
+  > execute Spread
+    User execute Spread on bread and strawberry jam producing bread.
+    Agent says "Please execute Press on bread and bread."
+  > eval appraise();
+[Accept(user,Propose.Should(agent,Press(user,bread,bread)))]
+My appraisal works!
+    # Returned 'test appraisal'
+  > execute Press
+    User execute Press on bread and bread producing sandwich.
+    Agent execute CutSandwich on sandwich producing cut sandwich.
+    Agent execute BagSandwich on cut sandwich and bag producing bag.
+    Agent says "Please execute BoilWater."
+  > eval appraise();
+[Accept(user,Propose.Should(agent,BoilWater(user)))]
+My appraisal works!
+    # Returned 'test appraisal'
+  > execute BoilWater
+    User execute BoilWater.
+    Agent says "Please execute BoilEgg on egg."
+  > eval appraise();
+[Accept(user,Propose.Should(agent,BoilEgg(user,egg)))]
+My appraisal works!
+    # Returned 'test appraisal'
+  > execute BoilEgg
+    User execute BoilEgg on egg producing boiled egg.
+    Agent says "Please execute SliceEgg on boiled egg."
+  > eval appraise();
+[Accept(user,Propose.Should(agent,SliceEgg(user,boiled egg)))]
+My appraisal works!
+    # Returned 'test appraisal'
+  > execute SliceEgg
+    User execute SliceEgg on boiled egg producing boiled sliced egg.
+    Agent says "Please execute Add on bread and boiled sliced egg."
+  > eval appraise();
+[Accept(user,Propose.Should(agent,Add(user,bread,boiled sliced egg)))]
+My appraisal works!
+    # Returned 'test appraisal'
+  > execute Add
+    User execute Add on bread and boiled sliced egg producing bread.
+    Agent says "Please execute Add on bread and salt."
+  > eval appraise();
+[Accept(user,Propose.Should(agent,Add(user,bread,salt)))]
+My appraisal works!
+    # Returned 'test appraisal'
+  > execute Add
+    User execute Add on bread and salt producing bread.
+    Agent execute Add on bread and pickle producing bread.
+    Agent says "Please execute Press on bread and bread."
+  > eval appraise();
+[Accept(user,Propose.Should(agent,Press(user,bread,bread)))]
+My appraisal works!
+    # Returned 'test appraisal'
+  > execute Press
+    User execute Press on bread and bread producing sandwich.
+    Agent says "Please execute CutSandwich on sandwich."
+  > eval appraise();
+[Accept(user,Propose.Should(agent,CutSandwich(user,sandwich)))]
+My appraisal works!
+    # Returned 'test appraisal'
+  > execute CutSandwich
+    User execute CutSandwich on sandwich producing cut sandwich.
+    Agent says "Please execute BagSandwich on cut sandwich and bag."
+  > eval appraise();
+[Accept(user,Propose.Should(agent,BagSandwich(user,cut sandwich,bag)))]
+My appraisal works!
+    # Returned 'test appraisal'
+  > execute BagSandwich
+    User execute BagSandwich on cut sandwich and bag producing bag.
+    Agent says "Ok."
+  > eval appraise();
+[BagSandwich(user,cut sandwich,bag)]
+My appraisal works!
+    # Returned 'test appraisal'
+  >   >   >   >   >   >   >   >   >   >   >   >   >   >   >   >   >   >   >   >   >   >   >   >   >   >   >   >   >   >   >   >   >   >   >   >   > 

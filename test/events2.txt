@@ -1,0 +1,36 @@
+verbose
+next false
+task A
+eval process()
+task B
+eval process()
+execute e / false
+eval process()
+task F
+eval process()
+execute k / false
+eval process()
+task C
+eval process()
+execute g / false
+eval process()
+execute h / false
+eval process()
+task D
+eval process()
+eval $disco.isLastShift()
+task I
+eval process()
+execute l / false
+eval process()
+execute m / false
+eval process()
+task J
+eval process()
+eval $disco.isLastShift()
+execute n / false
+eval process()
+execute o / false
+eval process()
+execute p / false
+eval process()

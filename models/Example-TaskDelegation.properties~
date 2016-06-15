@@ -1,0 +1,10 @@
+# Task difficulty levels: NORMAL, DIFFICULT, MOST_DIFFICULT
+
+InstallSolarPanel@difficulty = MOST_DIFFICULT
+CheckHardware@difficulty = NORMAL
+CheckPanelAttachment@difficulty = DIFFICULT
+CheckWirings@difficulty = NORMAL
+CallSupervisor@difficulty = MOST_DIFFICULT
+CheckPanelAttachmentPrimitive@difficulty = DIFFICULT
+
+CheckPanelAttachment@retry = true
