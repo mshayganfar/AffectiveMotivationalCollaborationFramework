@@ -1,5 +1,3 @@
-import java.awt.Toolkit;
-
 import javax.swing.JFrame;
 
 public class AMCFrame extends JFrame {

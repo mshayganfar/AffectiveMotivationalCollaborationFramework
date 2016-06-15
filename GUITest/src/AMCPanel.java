@@ -2,7 +2,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -12,18 +11,14 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-
-import org.omg.PortableInterceptor.USER_EXCEPTION;
 
 public class AMCPanel extends JPanel {
 	
@@ -64,7 +59,7 @@ public class AMCPanel extends JPanel {
 		robotImageHolder 		= new JLabel(robotImage);
 		separator 			    = new JSeparator();
 		humanDoneButton 		= new JButton("Done");
-		humanEmotionLabel 	    = new JLabel("You feel:");
+		humanEmotionLabel 	    = new JLabel("I feel:");
 		humanPositiveEmotion    = new JRadioButton("Positive");
 		humanNeutralEmotion     = new JRadioButton("Neutral");
 		humanNegativeEmotion    = new JRadioButton("Negative");
@@ -100,6 +95,7 @@ public class AMCPanel extends JPanel {
 		humanEmotionGroup.add(humanNeutralEmotion);
 		humanEmotionGroup.add(humanNegativeEmotion);
 		humanDoneButton.setFont(new Font("Verdana", Font.BOLD, 22));
+		humanDoneButton.setEnabled(false);
 		turnHolder.setFont(new Font("Verdana", Font.BOLD, 32));
 		turnHolder.setForeground(new Color(255, 0, 0));
 		turnHolder.setBorder(BorderFactory.createLineBorder(Color.black, 3));
@@ -132,8 +128,8 @@ public class AMCPanel extends JPanel {
 //		this.add(humanUttrancesComboBox);
 //		this.add(humanUtteranceLabel);
 		
-		currentLayout.putConstraint(SpringLayout.VERTICAL_CENTER, humanDoneButton, 200, SpringLayout.VERTICAL_CENTER, this);
-		currentLayout.putConstraint(SpringLayout.EAST, humanDoneButton, 600, SpringLayout.EAST, separator);
+		currentLayout.putConstraint(SpringLayout.SOUTH, humanDoneButton, 0, SpringLayout.SOUTH, humanNegativeEmotion);
+		currentLayout.putConstraint(SpringLayout.EAST, humanDoneButton, 550, SpringLayout.EAST, separator);
 		
 		currentLayout.putConstraint(SpringLayout.WEST, robotEmotionTextField, 40, SpringLayout.WEST, this);
 		currentLayout.putConstraint(SpringLayout.NORTH, robotEmotionTextField, 10, SpringLayout.SOUTH, robotEmotionLabel);
@@ -149,15 +145,15 @@ public class AMCPanel extends JPanel {
 		currentLayout.putConstraint(SpringLayout.EAST, robotUtteranceTextArea, -40, SpringLayout.WEST, separator);
 		
 		currentLayout.putConstraint(SpringLayout.NORTH, humanEmotionLabel, 500, SpringLayout.NORTH, this);
-		currentLayout.putConstraint(SpringLayout.WEST, humanEmotionLabel, 40, SpringLayout.WEST, separator);
+		currentLayout.putConstraint(SpringLayout.WEST, humanEmotionLabel, 60, SpringLayout.WEST, separator);
 		
 		currentLayout.putConstraint(SpringLayout.NORTH, humanPositiveEmotion, 20, SpringLayout.SOUTH, humanEmotionLabel);
 		currentLayout.putConstraint(SpringLayout.NORTH, humanNeutralEmotion, 5, SpringLayout.SOUTH, humanPositiveEmotion);
 		currentLayout.putConstraint(SpringLayout.NORTH, humanNegativeEmotion, 5, SpringLayout.SOUTH, humanNeutralEmotion);
 		
-		currentLayout.putConstraint(SpringLayout.WEST, humanNegativeEmotion, 40, SpringLayout.WEST, separator);
-		currentLayout.putConstraint(SpringLayout.WEST, humanNeutralEmotion, 40, SpringLayout.WEST, separator);
-		currentLayout.putConstraint(SpringLayout.WEST, humanPositiveEmotion, 40, SpringLayout.WEST, separator);
+		currentLayout.putConstraint(SpringLayout.WEST, humanNegativeEmotion, 60, SpringLayout.WEST, separator);
+		currentLayout.putConstraint(SpringLayout.WEST, humanNeutralEmotion, 60, SpringLayout.WEST, separator);
+		currentLayout.putConstraint(SpringLayout.WEST, humanPositiveEmotion, 60, SpringLayout.WEST, separator);
 		
 		currentLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, separator, 0, SpringLayout.HORIZONTAL_CENTER, this);
 		currentLayout.putConstraint(SpringLayout.NORTH, separator, 150, SpringLayout.NORTH, this);
@@ -200,13 +196,9 @@ public class AMCPanel extends JPanel {
 					setRobotEmotionText("NEGATIVE");
 				}
 				
-				EMOTION emotion;
-				if ((emotion = getHumanEmotion()) == null)
-					JOptionPane.showMessageDialog(null, "Please select one of the feeling options!");
-				else {
-					// Write a code here that updates human's perceived emotion in the framework.
-					// setRobotEmotionText(emotion.toString());
-				}
+				EMOTION emotion = getHumanEmotion();
+				// Write a code here that updates human's perceived emotion in the framework.
+				// setRobotEmotionText(emotion.toString());
 				
 //				int humanSelectedUtteranceIndex;
 //				if ((humanSelectedUtteranceIndex = getHumanSelectedUtterance()) == 0)
@@ -217,6 +209,27 @@ public class AMCPanel extends JPanel {
 //				}
 			}
 		});
+		
+		humanPositiveEmotion.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	        	humanDoneButton.setEnabled(true);
+	        }
+	    });
+		
+		humanNeutralEmotion.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	        	humanDoneButton.setEnabled(true);
+	        }
+	    });
+		
+		humanNegativeEmotion.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	        	humanDoneButton.setEnabled(true);
+	        }
+	    });
 	}
 	
 	public void disableRobotComponents() {
