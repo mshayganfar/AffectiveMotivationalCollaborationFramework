@@ -256,7 +256,7 @@ bool MoveKuka::checkOutputCurrent(std_srvs::Empty::Request &req,
 
 bool MoveKuka::movePrepareControlSwitch() {
 
-	double move[] = {1.4, 1.5, -0.8, 2.2, 2.9};
+	double move[] = {2.18, 1.6, -1.3, 2.6, 2.9};
   std::vector<double> vecMove (move, move + sizeof(move) / sizeof(double) );
 
 	MoveArm(vecMove);
@@ -264,7 +264,7 @@ bool MoveKuka::movePrepareControlSwitch() {
 
 bool MoveKuka::moveRemoveLeftCover() {
 
-	double move[] = {1.4, 1.5, -0.8, 2.2, 2.9};
+	double move[] = {1.43, 1.2, -1.0, 2.7, 2.9};
   std::vector<double> vecMove (move, move + sizeof(move) / sizeof(double) );
 
 	MoveArm(vecMove);
@@ -272,7 +272,7 @@ bool MoveKuka::moveRemoveLeftCover() {
 
 bool MoveKuka::moveRemoveRightCover() {
 
-	double move[] = {1.4, 1.5, -0.8, 2.2, 2.9};
+	double move[] = {2.03, 1.6, -1.5, 2.5, 2.9};
   std::vector<double> vecMove (move, move + sizeof(move) / sizeof(double) );
 
 	MoveArm(vecMove);
@@ -280,7 +280,7 @@ bool MoveKuka::moveRemoveRightCover() {
 
 bool MoveKuka::moveConnectAdaptor() {
 
-	double move[] = {1.4, 1.5, -0.8, 2.2, 2.9};
+	double move[] = {1.88, 1.2, -0.8, 2.2, 2.9};
   std::vector<double> vecMove (move, move + sizeof(move) / sizeof(double) );
 
 	MoveArm(vecMove);
@@ -288,7 +288,7 @@ bool MoveKuka::moveConnectAdaptor() {
 
 bool MoveKuka::moveUnrollCable() {
 
-	double move[] = {1.4, 1.5, -0.8, 2.2, 2.9};
+	double move[] = {1.72, 1.6, -1.2, 2.2, 2.9};
   std::vector<double> vecMove (move, move + sizeof(move) / sizeof(double) );
 
 	MoveArm(vecMove);
@@ -296,7 +296,7 @@ bool MoveKuka::moveUnrollCable() {
 
 bool MoveKuka::movePlaceCable() {
 
-	double move[] = {1.4, 1.5, -0.8, 2.2, 2.9};
+	double move[] = {1.58, 1.4, -0.8, 2.2, 2.9};
   std::vector<double> vecMove (move, move + sizeof(move) / sizeof(double) );
 
 	MoveArm(vecMove);
@@ -304,7 +304,7 @@ bool MoveKuka::movePlaceCable() {
 
 bool MoveKuka::movePlacePanel() {
 
-	double move[] = {1.4, 1.5, -0.8, 2.2, 2.9};
+	double move[] = {1.4, 1.2, -0.8, 2.1, 2.9};
   std::vector<double> vecMove (move, move + sizeof(move) / sizeof(double) );
 
 	MoveArm(vecMove);
@@ -312,7 +312,7 @@ bool MoveKuka::movePlacePanel() {
 
 bool MoveKuka::moveCheckPanelAttachment() {
 
-	double move[] = {1.4, 1.5, -0.8, 2.2, 2.9};
+	double move[] = {1.25, 1.2, -0.8, 2.2, 2.9};
   std::vector<double> vecMove (move, move + sizeof(move) / sizeof(double) );
 
 	MoveArm(vecMove);
@@ -320,7 +320,7 @@ bool MoveKuka::moveCheckPanelAttachment() {
 
 bool MoveKuka::moveCheckControlSwitch() {
 
-	double move[] = {1.4, 1.5, -0.8, 2.2, 2.9};
+	double move[] = {0.99, 1.2, -1.0, 2.5, 2.9};
   std::vector<double> vecMove (move, move + sizeof(move) / sizeof(double) );
 
 	MoveArm(vecMove);
@@ -328,7 +328,7 @@ bool MoveKuka::moveCheckControlSwitch() {
 
 bool MoveKuka::moveCheckOutputCurrent() {
 
-	double move[] = {1.4, 1.5, -0.8, 2.2, 2.9};
+	double move[] = {0.76, 1.2, -0.8, 2.2, 2.9};
   std::vector<double> vecMove (move, move + sizeof(move) / sizeof(double) );
 
 	MoveArm(vecMove);
@@ -361,7 +361,7 @@ bool MoveKuka::pickupRemoveLeftCover() {
 	double down[] = {3.6, 2.0, -0.7, 1.65, 2.9};
   std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
 
-	double up[] = {3.6, 1.2, -0.7, 2.4, 2.9};
+	double up[] = {3.6, 1.2, -1.0, 2.7, 2.9};
   std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
 
 	OpenGripper();
@@ -513,7 +513,7 @@ bool MoveKuka::pickupCheckOutputCurrent() {
 	double down[] = {3.63, 2.7, -2.25, 2.4, 2.9};
   std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
 
-	double up[] = {3.48, 1.6, -1.6, 2.8, 2.9};
+	double up[] = {3.63, 1.6, -1.6, 2.8, 2.9};
   std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
 
 	OpenGripper();
@@ -526,10 +526,10 @@ bool MoveKuka::pickupCheckOutputCurrent() {
 
 bool MoveKuka::putDownPrepareControlSwitch() {
 
-	double down[] = {1.4, 1.9, -0.8, 1.9, 2.9};
+	double down[] = {2.18, 2.12, -1.15, 2.0, 2.9};
   std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
 
-	double up[] = {1.4, 1.7, -0.8, 2.1, 2.9};
+	double up[] = {2.18, 1.2, -1.3, 2.6, 2.9};
   std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
 
 	MoveArm(vecDown);
@@ -540,10 +540,10 @@ bool MoveKuka::putDownPrepareControlSwitch() {
 
 bool MoveKuka::putDownRemoveLeftCover() {
 
-	double down[] = {1.4, 1.9, -0.8, 1.9, 2.9};
+	double down[] = {1.43, 2.1, -1.1, 2.0, 2.9};
   std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
 
-	double up[] = {1.4, 1.7, -0.8, 2.1, 2.9};
+	double up[] = {1.43, 1.2, -1.0, 2.7, 2.9};
   std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
 
 	MoveArm(vecDown);
@@ -554,10 +554,10 @@ bool MoveKuka::putDownRemoveLeftCover() {
 
 bool MoveKuka::putDownRemoveRightCover() {
 
-	double down[] = {1.4, 1.9, -0.8, 1.9, 2.9};
+	double down[] = {2.03, 2.52, -1.97, 2.37, 2.9};
   std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
 
-	double up[] = {1.4, 1.7, -0.8, 2.1, 2.9};
+	double up[] = {2.03, 1.2, -1.5, 2.5, 2.9};
   std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
 
 	MoveArm(vecDown);
@@ -568,10 +568,10 @@ bool MoveKuka::putDownRemoveRightCover() {
 
 bool MoveKuka::putDownConnectAdaptor() {
 
-	double down[] = {1.4, 1.9, -0.8, 1.9, 2.9};
+	double down[] = {1.88, 2.23, -1.125, 1.7, 2.9};
   std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
 
-	double up[] = {1.4, 1.7, -0.8, 2.1, 2.9};
+	double up[] = {1.88, 1.2, -0.8, 2.2, 2.9};
   std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
 
 	MoveArm(vecDown);
@@ -582,10 +582,10 @@ bool MoveKuka::putDownConnectAdaptor() {
 
 bool MoveKuka::putDownUnrollCable() {
 
-	double down[] = {1.4, 1.9, -0.8, 1.9, 2.9};
+	double down[] = {1.74, 2.545, -1.875, 2.0, 2.9};
   std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
 
-	double up[] = {1.4, 1.7, -0.8, 2.1, 2.9};
+	double up[] = {1.72, 1.2, -1.2, 2.2, 2.9};
   std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
 
 	MoveArm(vecDown);
@@ -596,24 +596,24 @@ bool MoveKuka::putDownUnrollCable() {
 
 bool MoveKuka::putDownPlaceCable() {
 
-	double down[] = {1.4, 1.9, -0.8, 1.9, 2.9};
+	double down[] = {1.58, 2.545, -1.85, 2.05, 2.9};
   std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
 
-	double up[] = {1.4, 1.7, -0.8, 2.1, 2.9};
+	double up[] = {1.58, 1.2, -0.8, 2.1, 2.9};
   std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
 
 	MoveArm(vecDown);
 	OpenGripper();
 	MoveArm(vecUp);
-  return true;	
+  return true;
 }
 
 bool MoveKuka::putDownPlacePanel() {
 
-	double down[] = {1.4, 1.9, -0.8, 1.9, 2.9};
+	double down[] = {1.4, 2.5, -1.74, 2.0, 2.9};
   std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
 
-	double up[] = {1.4, 1.7, -0.8, 2.1, 2.9};
+	double up[] = {1.4, 1.2, -0.8, 2.1, 2.9};
   std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
 
 	MoveArm(vecDown);
@@ -624,10 +624,10 @@ bool MoveKuka::putDownPlacePanel() {
 
 bool MoveKuka::putDownCheckPanelAttachment() {
 
-	double down[] = {1.4, 1.9, -0.8, 1.9, 2.9};
+	double down[] = {1.25, 2.35, -1.55, 2.0, 2.9};
   std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
 
-	double up[] = {1.4, 1.7, -0.8, 2.1, 2.9};
+	double up[] = {1.25, 1.2, -0.8, 2.2, 2.9};
   std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
 
 	MoveArm(vecDown);
@@ -638,10 +638,10 @@ bool MoveKuka::putDownCheckPanelAttachment() {
 
 bool MoveKuka::putDownCheckControlSwitch() {
 
-	double down[] = {1.4, 1.9, -0.8, 1.9, 2.9};
+	double down[] = {0.99, 2.15, -0.88, 1.45, 2.9};
   std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
 
-	double up[] = {1.4, 1.7, -0.8, 2.1, 2.9};
+	double up[] = {0.99, 1.2, -1.0, 2.5, 2.9};
   std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
 
 	MoveArm(vecDown);
@@ -652,10 +652,10 @@ bool MoveKuka::putDownCheckControlSwitch() {
 
 bool MoveKuka::putDownCheckOutputCurrent() {
 
-	double down[] = {1.4, 1.9, -0.8, 1.9, 2.9};
+	double down[] = {0.76, 2.05, -0.68, 1.5, 2.9};
   std::vector<double> vecDown (down, down + sizeof(down) / sizeof(double) );
 
-	double up[] = {1.4, 1.7, -0.8, 2.1, 2.9};
+	double up[] = {0.76, 1.2, -0.8, 2.2, 2.9};
   std::vector<double> vecUp (up, up + sizeof(up) / sizeof(double) );
 
 	MoveArm(vecDown);
