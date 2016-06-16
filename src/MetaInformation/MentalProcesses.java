@@ -27,9 +27,9 @@ public class MentalProcesses {
 	private Desirability desirability;
 	private Expectedness expectedness;
 	
-	public MentalProcesses(String[] args) {
+	public MentalProcesses(String[] args, boolean AMCrun) {
 		
-		this.collaboration = new Collaboration(args);
+		this.collaboration = new Collaboration(args, AMCrun);
 		this.appraisal	   = new Appraisal();
 		this.perception    = new Perception();
 		this.motivation    = new Motivation();
@@ -48,8 +48,14 @@ public class MentalProcesses {
 		this.tom.prepareAppraisalsOfToM(this);
 		this.coping.prepareCopingMechanism(this);
 		this.action.prepareActionMechanism(this);
-		this.collaboration.getAMCAgent().prepareAgent(this);
-		this.collaboration.getAMCUser().prepareUser(this);
+		if (AMCrun) {
+			this.collaboration.getAMCAgent().prepareAgent(this);
+			this.collaboration.getAMCUser().prepareUser(this);
+		}
+		else {
+			this.collaboration.getDiscoAgent().prepareAgent(this);
+			this.collaboration.getDiscoUser().prepareUser(this);
+		}
 		this.appraisal.prepareAppraisal(this);
 	}
 	

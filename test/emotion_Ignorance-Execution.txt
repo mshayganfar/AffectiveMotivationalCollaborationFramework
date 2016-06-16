@@ -1,0 +1,22 @@
+next false
+new InstallSolarPanel
+execute edu.wpi.disco.lang.Propose$Should / $new / false
+new PreparePanel
+execute edu.wpi.disco.lang.Propose$Should / $new / false
+next
+execute RemoveLeftCoverPrimitive / true / false
+next
+execute RemoveLeftCoverPrimitive / true / true
+next
+execute TakeOutCable / true / false
+next
+execute TakeOutCable / true / true
+next
+execute WeldPanel / true / true
+execute CheckPanelAttachmentPrimitive / false / false
+next
+next
+execute CheckWirings / true / true
+next
+execute CheckCascadingCells / true / true
+next

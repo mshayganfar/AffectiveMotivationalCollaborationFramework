@@ -55,11 +55,13 @@
 
     <subtasks id="removeLeftCoverRecipe3">
       <step name="call_supervisor" task ="CallSupervisor"/>
+			<step name="remove_left_prim" task="RemoveLeftCoverPrimitive"/>
 
 			<applicable>(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.POSITIVE) ||
 									(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.NEUTRAL)</applicable>
 
-      <binding slot="$call_supervisor.external" value="false"/>
+			<binding slot="$call_supervisor.external" value="false"/>
+			<binding slot="$remove_left_prim.external" value="true"/>
     </subtasks>
   </task>
 
@@ -106,12 +108,13 @@
     </subtasks>
 
     <subtasks id="checkPanelAttachmentRecipe2">
-      <step name="call_supervisor" task ="CallSupervisor"/>
+      <step name="call_supervisor" task ="disco:Say.Agent"/>
 
 			<applicable>(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.POSITIVE) ||
 									(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.NEUTRAL)</applicable>
 
       <binding slot="$call_supervisor.external" value="false"/>
+			<binding slot="$call_supervisor.text" value="'I will ask my friend to do this for me!'"/>
     </subtasks>
 	</task>
 

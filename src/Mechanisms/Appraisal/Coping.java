@@ -121,8 +121,9 @@ public class Coping {
 			if (collaboration.getGoalStatus(plan).equals(GOAL_STATUS.FAILED))
 				if (collaboration.getResponsibleAgent(plan).equals(AGENT.SELF))
 					if (!plan.getRetry().isDone())
-//					if (getDelegationSuccessor(plan) != null)
-						return true;
+						if (collaboration.getWorld().getUserValence().equals(USER_VALENCE.NEGATIVE))
+//							if (getDelegationSuccessor(plan) != null)
+							return true;
 		}
 		return false;
 	}

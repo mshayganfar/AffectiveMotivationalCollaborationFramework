@@ -37,7 +37,6 @@ public class GoalTree {
 			nodeCounter--;
 			return;
 		}
-		
 		preorderTree.add(node);
 		
 		for (int i = 0 ; i < node.getNodeGoalPlan().getChildren().size() ; i++) {

@@ -2,6 +2,8 @@
            xmlns="http://www.cs.wpi.edu/~rich/cetask/cea-2018-ext"
            xmlns:disco="urn:disco.wpi.edu:Disco">
 
+  <!-- CR: SEE ADDED PROPERTIES IN .PROPERTIES FILE -->
+  
   <task id="InstallSolarPanel">
 		<precondition>true</precondition>
     <subtasks id="installSolarPanelRecipe" ordered="false">
@@ -54,14 +56,16 @@
     </subtasks>
 
     <subtasks id="removeLeftCoverRecipe3">
-      <step name="call_supervisor" task ="CallSupervisor"/>
-			<step name="remove_left_prim" task="RemoveLeftCoverPrimitive"/>
-
+      <!-- CR: CALLSUPERVISOR REPLACED BY SAY.AGENT, BECAUSE IT IS AN UTTERANCE; SEE TEXT BINDING BELOW -->
+      <step name="call_supervisor" task ="disco:Say.Agent"/>
+      <!-- CR: ADDED STEP AND BINDING BELOW -->
+      <step name="remove_left_prim" task="RemoveLeftCoverPrimitive"/>
 			<applicable>(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.POSITIVE) ||
 									(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.NEUTRAL)</applicable>
 
-			<binding slot="$call_supervisor.external" value="false"/>
-			<binding slot="$remove_left_prim.external" value="true"/>
+                        <binding slot="$call_supervisor.text" value="'I will ask my friend to bring you a new peg!'"/>
+                        <binding slot="$remove_left_prim.external" value="true"/>
+                                                                        
     </subtasks>
   </task>
 
@@ -108,12 +112,13 @@
     </subtasks>
 
     <subtasks id="checkPanelAttachmentRecipe2">
-      <step name="call_supervisor" task ="CallSupervisor"/>
+      <!-- CR: SIMILARLY REPLACING CALLSUPERVISOR WITH UTTERANCE HERE -->
+      <step name="call_supervisor" task ="disco:Say.Agent"/>
 
 			<applicable>(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.POSITIVE) ||
 									(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.NEUTRAL)</applicable>
 
-      <binding slot="$call_supervisor.external" value="false"/>
+      <binding slot="$call_supervisor.text" value="'I will ask my friend to do this for me!'"/>
     </subtasks>
 	</task>
 
@@ -147,10 +152,6 @@
   </task>
 
   <task id="HandOffRemoveLeftCover">
-		<precondition>true</precondition>
-  </task>
-
-  <task id="CallSupervisor">
 		<precondition>true</precondition>
   </task>
 

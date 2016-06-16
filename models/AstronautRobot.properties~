@@ -29,3 +29,8 @@ CheckOutputCurrent@difficulty = DIFFICULT
 TakeOutCable@retry = true
 CheckPanelAttachmentPrimitive@retry = true
 
+removeLeftCoverRecipe1@authorized = true
+checkPanelAttachmentRecipe1@authorized = true
+
+Propose.Should(InstallSolarPanel)@format = let's start installing a solar panel together
+Propose.Should(PreparePanel)@format = the first step is to prepare the panel

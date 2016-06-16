@@ -55,13 +55,11 @@
 
     <subtasks id="removeLeftCoverRecipe3">
       <step name="call_supervisor" task ="CallSupervisor"/>
-			<step name="remove_left_prim" task="RemoveLeftCoverPrimitive"/>
 
 			<applicable>(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.POSITIVE) ||
 									(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.NEUTRAL)</applicable>
 
-			<binding slot="$call_supervisor.external" value="false"/>
-			<binding slot="$remove_left_prim.external" value="true"/>
+      <binding slot="$call_supervisor.external" value="false"/>
     </subtasks>
   </task>
 

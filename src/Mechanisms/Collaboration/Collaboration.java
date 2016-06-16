@@ -22,6 +22,7 @@ import MetaInformation.AMCAgent;
 import MetaInformation.AMCUser;
 import MetaInformation.AppraisalVector;
 import MetaInformation.AppraisalVector.APPRAISAL_TYPE;
+import MetaInformation.DiscoAgent;
 import edu.wpi.cetask.DecompositionClass;
 import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.TaskModel;
@@ -67,44 +68,82 @@ public class Collaboration extends Mechanisms{
 	private World world;
 	
 	private AMCAgent amc_agent;
-	private AMCUser amc_user;
+	private DiscoAgent disco_agent;
 	private Agent agent;
+	private AMCUser amc_user, disco_user;
 	private User user;
 	private Plan actualFocus;
 	
-	public Collaboration(String[] args) {
+	public Collaboration(String[] args, boolean AMCrun) {
 		
-		agent     = new Agent("agent");
-		amc_agent = new AMCAgent("amc_agent", agent);
-//		amc_agent.setMax(1);
-		amc_agent.init();
-		
-		user = new User("astronaut");
-		user.setEval(true); // Guarantees that grounding script will be evaluated.
-		amc_user = new AMCUser("amc_astronaut", user);
-		amc_user.setEval(true);
-		amc_user.init();
-		
-		interaction = new Interaction(amc_agent, user,
-				  args.length > 0 && args[0].length() > 0 ? args[0] : null);
-		interaction.getExternal().setEval(true);
-//		interaction.setOk(false); //This is to prevent saying OK before "Your turn."
-//		interaction.start(false);
-		disco = interaction.getDisco();
-		
-		disco.load("models/Events.xml");
-		// To load the whole scenario:
-		taskModel = disco.load("models/AstronautRobot.xml");
-		// To load three different examples separately, uncomment one at a time:
-//		taskModel = disco.load("models/Example-Postponement.xml");
-//		taskModel = disco.load("models/Example-GoalManagement.xml");
-//		taskModel = disco.load("models/Example-TaskDelegation.xml");
-		
-		prevFocus = disco.getFocus();
-		
-		childrenResponsibinity = new ArrayList<AGENT>();
-		
-		this.collaboration = this;
+		if (AMCrun) {
+			agent     = new Agent("agent");
+			amc_agent = new AMCAgent("amc_agent", agent);
+//			amc_agent.setMax(1);
+			amc_agent.init();
+			
+			user = new User("astronaut");
+			user.setEval(true); // Guarantees that grounding script will be evaluated.
+			amc_user = new AMCUser("amc_astronaut", user);
+			amc_user.setEval(true);
+			amc_user.init();
+			
+			interaction = new Interaction(amc_agent, user,
+					  args.length > 0 && args[0].length() > 0 ? args[0] : null);
+			interaction.getExternal().setEval(true);
+//			interaction.setOk(false); //This is to prevent saying OK before "Your turn."
+//			interaction.start(false);
+			disco = interaction.getDisco();
+			
+			disco.load("models/Events.xml");
+			
+			// To load the whole scenario:
+			taskModel = disco.load("models/AstronautRobot.xml");
+			// To load three different examples separately, uncomment one at a time:
+//			taskModel = disco.load("models/Example-Postponement.xml");
+//			taskModel = disco.load("models/Example-GoalManagement.xml");
+//			taskModel = disco.load("models/Example-TaskDelegation.xml");
+			
+			prevFocus = disco.getFocus();
+			
+			childrenResponsibinity = new ArrayList<AGENT>();
+			
+			this.collaboration = this;
+		}
+		else {
+			agent       = new Agent("agent");
+			disco_agent = new DiscoAgent("disco_agent", agent);
+//			amc_agent.setMax(1);
+			disco_agent.init();
+			
+			user = new User("astronaut");
+			user.setEval(true); // Guarantees that grounding script will be evaluated.
+			disco_user = new AMCUser("disco_astronaut", user);
+			disco_user.setEval(true);
+			disco_user.init();
+			
+			interaction = new Interaction(disco_agent, user,
+					  args.length > 0 && args[0].length() > 0 ? args[0] : null);
+			interaction.getExternal().setEval(true);
+//			interaction.setOk(false); //This is to prevent saying OK before "Your turn."
+//			interaction.start(false);
+			disco = interaction.getDisco();
+			
+			disco.load("models/Events.xml");
+			
+			// To load the whole scenario:
+			taskModel = disco.load("models/AstronautRobot.xml");
+			// To load three different examples separately, uncomment one at a time:
+//			taskModel = disco.load("models/Example-Postponement.xml");
+//			taskModel = disco.load("models/Example-GoalManagement.xml");
+//			taskModel = disco.load("models/Example-TaskDelegation.xml");
+			
+			prevFocus = disco.getFocus();
+			
+			childrenResponsibinity = new ArrayList<AGENT>();
+			
+			this.collaboration = this;
+		}
 	}
 	
 	public void setCollaborationWorld(World world) {
@@ -117,6 +156,14 @@ public class Collaboration extends Mechanisms{
 	
 	public AMCUser getAMCUser() {
 		return this.amc_user;
+	}
+	
+	public DiscoAgent getDiscoAgent() {
+		return this.disco_agent;
+	}
+	
+	public AMCUser getDiscoUser() {
+		return this.disco_user;
 	}
 	
 	public void prepareCollaborationMechanism(MentalProcesses mentalProcesses) {
@@ -710,7 +757,6 @@ public class Collaboration extends Mechanisms{
 		DiscoActionsWrapper discoWrapper = new DiscoActionsWrapper(mentalProcesses);
 		
 		if (recognizedGoal.getPlan().isPrimitive()) {
-			discoWrapper.executeTask(recognizedGoal, true, postconditionStatus);
 			if (postconditionStatus == null) {
 				world.setUserValence(0.0);
 				mentalProcesses.getPerceptionMechanism().setEmotionValence(0.0);
@@ -723,6 +769,9 @@ public class Collaboration extends Mechanisms{
 				world.setUserValence(-0.4);
 				mentalProcesses.getPerceptionMechanism().setEmotionValence(-0.4);
 			}
+			
+			discoWrapper.executeTask(recognizedGoal, true, postconditionStatus);
+			
 			if (!postconditionStatus) {
 				if (eventPlan.getRetryOf() != null)
 					recognizedGoal = new Goal(mentalProcesses, eventPlan.getRetryOf());
@@ -774,6 +823,7 @@ public class Collaboration extends Mechanisms{
 		return WHOSE_TURN.AUTO;
 	}
 	
+	@SuppressWarnings("unused")
 	public void processAgent(Plan eventPlan, double valenceValue) {
 		
 		Turns turn = Turns.getInstance();
@@ -801,10 +851,24 @@ public class Collaboration extends Mechanisms{
 		mentalProcesses.getCopingMechanism().formIntentions(recognizedGoal);
 		
 		//Run Action
-		boolean postconditionStatus = true;
+		Boolean postconditionStatus = true;
 		// To fail the robot's task in example 3 uncomment the next two lines.
 		if ((recognizedGoal.getPlan().getGoal().getType().toString().equals("CheckPanelAttachmentPrimitive")) && (recognizedGoal.getPlan().getRetryOf() == null))
 			postconditionStatus = false;
+		
+		if (postconditionStatus == null) {
+			world.setUserValence(0.0);
+			mentalProcesses.getPerceptionMechanism().setEmotionValence(0.0);
+		}
+		else if (postconditionStatus) {
+			world.setUserValence(0.4);
+			mentalProcesses.getPerceptionMechanism().setEmotionValence(0.4);
+		}
+		else {
+			world.setUserValence(-0.4);
+			mentalProcesses.getPerceptionMechanism().setEmotionValence(-0.4);
+		}
+		
 		mentalProcesses.getActionMechanism().act(recognizedGoal, postconditionStatus);
 		
 		tom.doReverseAppraisal(recognizedGoal);
@@ -886,7 +950,7 @@ public class Collaboration extends Mechanisms{
 		
 		for (Plan plan : livePlans) {
 			for (Input input : plan.getType().getDeclaredInputs()) {
-				if (!plan.getGoal().getType().toString().equals("Accept")) {
+				if ((!plan.getGoal().getType().toString().equals("Accept")) && (!plan.getGoal().getType().toString().equals("Say.Agent"))) {
 					System.out.println(plan.getGoal().getType() + input.getName() + " , " + inputValues.get(plan.getGoal().getType() + input.getName()));
 					setInputValue(getInputKeyValue(plan, input.getName()), inputValues.get(plan.getGoal().getType() + input.getName()));
 //					setInputValue(getInputKeyValue(plan, input.getName()), inputValues.get(input.getName()));

@@ -11,7 +11,7 @@ public class AppraisalVector {
 	
 //	public enum WHOSE_APPRAISAL{SELF, HUMAN, UNKNOWN};
 	public enum APPRAISAL_TYPE{APPRAISAL, REVERSE_APPRAISAL, REAPPRAISAL};
-	public enum EMOTION_INSTANCE{POSITIVE_SURPRISE, JOY, GRATITUDE, NEUTRAL, ANGER, WORRY, FRUSTRATION, NEGATIVE_SURPRISE, GUILT, SADNESS};
+	public enum EMOTION_INSTANCE{POSITIVE_SURPRISE, JOY, GRATITUDE, NEUTRAL, ANGER, WORRY, FRUSTRATION, NEGATIVE_SURPRISE, GUILT, SADNESS, UNKNOWN};
 	
 	private MentalProcesses mentalProcesses;
 //	private WHOSE_APPRAISAL whoseAppraisal;
@@ -419,6 +419,6 @@ public class AppraisalVector {
 		else if (isEmotionNeutral(goal, appraisalType))
 			return EMOTION_INSTANCE.NEUTRAL;
 		else
-			throw new IllegalStateException("No matching emotion!");
+			return EMOTION_INSTANCE.UNKNOWN;
 	}
 }

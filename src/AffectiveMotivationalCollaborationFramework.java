@@ -150,15 +150,25 @@ public class AffectiveMotivationalCollaborationFramework {
 		}
 	}
 	
+	private static boolean isSecondTry(Item agentEventItem) {
+		
+		if (agentEventItem != null)
+			if (agentEventItem.contributes.getGoal().getType().toString().equals("CheckPanelAttachmentPrimitive"))
+				if (agentEventItem.contributes.getRetryOf() != null)
+					return true;
+		return false;
+	}
+	
 	public static void main(String[] args) {
 		
-		mentalProcesses = new MentalProcesses(args);
+		mentalProcesses = new MentalProcesses(args, true);
 		world = new World(mentalProcesses);
-		mentalProcesses.getCollaborationMechanism().setCollaborationWorld(world);
-		
-		mentalProcesses.getCollaborationMechanism().getInteraction().start(true);
-		
 		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
+		
+		collaboration.setCollaborationWorld(world);
+		
+		collaboration.getInteraction().start(true);
+		
 		Task topTask = collaboration.getDisco().getTaskClass("InstallSolarPanel").newInstance();
 		topPlan = new Plan(topTask);
 		topPlan.getGoal().setShould(true);
