@@ -200,5 +200,9 @@
 				return true;
 			return false;
 		}
+
+		function start() {
+			eval "new InstallSolarPanel";
+		}
 	</script>
 </taskModel>

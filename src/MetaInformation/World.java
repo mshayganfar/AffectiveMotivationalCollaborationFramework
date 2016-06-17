@@ -1,5 +1,10 @@
 package MetaInformation;
 
+import Mechanisms.Action.DiscoActionsWrapper;
+import Mechanisms.Collaboration.Collaboration;
+import edu.wpi.cetask.Plan;
+import edu.wpi.cetask.Task;
+
 public class World {
 	
 	public static enum WeldingTool { MY_WELDING_TOOL }
@@ -41,5 +46,18 @@ public class World {
 			userValence = USER_VALENCE.POSITIVE;
 		else if (valenceValue < 0)
 			userValence = USER_VALENCE.NEGATIVE;
+	}
+	
+	public static void start() {
+		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
+		DiscoActionsWrapper daw = new DiscoActionsWrapper(mentalProcesses);
+		
+		Task topTask = collaboration.getDisco().getTaskClass("InstallSolarPanel").newInstance();
+		Plan topPlan = new Plan(topTask);
+		topPlan.getGoal().setShould(true);
+		collaboration.getDisco().push(topPlan);
+		
+		daw.proposeTaskShould(topPlan, false);
+		daw.proposeTaskShould(topPlan.getChildren().get(0), false);
 	}
 }

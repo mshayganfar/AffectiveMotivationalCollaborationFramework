@@ -108,13 +108,12 @@
     </subtasks>
 
     <subtasks id="checkPanelAttachmentRecipe2">
-      <step name="call_supervisor" task ="disco:Say.Agent"/>
+      <step name="call_supervisor" task ="CallSupervisor"/>
 
 			<applicable>(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.POSITIVE) ||
 									(Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.NEUTRAL)</applicable>
 
       <binding slot="$call_supervisor.external" value="false"/>
-			<binding slot="$call_supervisor.text" value="'I will ask my friend to do this for me!'"/>
     </subtasks>
 	</task>
 
@@ -200,6 +199,10 @@
 			if (Packages.MetaInformation.World.userValence == Packages.MetaInformation.World.USER_VALENCE.NEGATIVE)
 				return true;
 			return false;
+		}
+
+		function start() {
+			Packages.MetaInformation.World.start();
 		}
 	</script>
 </taskModel>

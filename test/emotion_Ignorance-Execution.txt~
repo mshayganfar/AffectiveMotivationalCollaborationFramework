@@ -1,3 +1,4 @@
+next false
 new InstallSolarPanel
 execute edu.wpi.disco.lang.Propose$Should / $new / false
 new PreparePanel
