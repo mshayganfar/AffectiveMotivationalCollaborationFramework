@@ -34,6 +34,7 @@ public class AffectiveMotivationalCollaborationFramework {
 	private static TaskModel taskModel;
 	private static Goal goal = null;
 	private static World world;
+	private static AMCFrame frame;
 	
 	private static MentalProcesses mentalProcesses;
 	private static GoalManagement goalManagement;
@@ -88,7 +89,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		if (userEventItem != null) {
 			if (userEventItem.contributes.getGoal() instanceof Accept) {
-				discoWrapper = new DiscoActionsWrapper(mentalProcesses);
+				discoWrapper = new DiscoActionsWrapper(mentalProcesses, frame);
 				discoWrapper.acceptProposedTask(userEventItem.contributes, true);
 				userEventItem = user.generateBest(interaction);
 			}
@@ -101,7 +102,7 @@ public class AffectiveMotivationalCollaborationFramework {
 			userEventItem  = user.generateBest(interaction);
 			if (userEventItem != null) {
 				if (userEventItem.contributes.getGoal() instanceof Accept) {
-					discoWrapper = new DiscoActionsWrapper(mentalProcesses);
+					discoWrapper = new DiscoActionsWrapper(mentalProcesses, frame);
 					discoWrapper.acceptProposedTask(userEventItem.contributes, true);
 					userEventItem = user.generateBest(interaction);
 				}
@@ -162,12 +163,12 @@ public class AffectiveMotivationalCollaborationFramework {
 	
 	public static void main(String[] args) {
 		
-		AMCFrame frame = new AMCFrame("Affective Motivational Collaboration Framework");
+		frame = new AMCFrame("Affective Motivational Collaboration Framework");
 		frame.pack();
 		frame.setVisible(true);
 		
 		mentalProcesses = new MentalProcesses(args, frame, true);
-		world = new World(mentalProcesses);
+		world = new World(mentalProcesses, frame);
 		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
 		
 		collaboration.setCollaborationWorld(world);

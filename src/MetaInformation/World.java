@@ -1,5 +1,6 @@
 package MetaInformation;
 
+import GUI.AMCFrame;
 import Mechanisms.Action.DiscoActionsWrapper;
 import Mechanisms.Collaboration.Collaboration;
 import edu.wpi.cetask.Plan;
@@ -14,6 +15,7 @@ public class World {
 	public static USER_VALENCE userValence;
 	
 	private static MentalProcesses mentalProcesses;
+	private static AMCFrame frame;
 	
 	public static final boolean post_PrepareControlSwitch = true;
 	public static final boolean post_RemoveCover = true;
@@ -26,8 +28,9 @@ public class World {
 	public static final boolean post_CheckCascadingCells = true;
 	public static final boolean post_CheckOutputCurrent = true;
 	
-	public World(MentalProcesses mentalProcesses) {
+	public World(MentalProcesses mentalProcesses, AMCFrame frame) {
 		this.mentalProcesses = mentalProcesses;
+		this.frame = frame;
 	}
 	
 	public static boolean getExecutionOutcome() {
@@ -50,7 +53,7 @@ public class World {
 	
 	public static void start() {
 		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
-		DiscoActionsWrapper daw = new DiscoActionsWrapper(mentalProcesses);
+		DiscoActionsWrapper daw = new DiscoActionsWrapper(mentalProcesses, frame);
 		
 //		collaboration.getDisco().getInteraction().getConsole().setRespond(false);
 		

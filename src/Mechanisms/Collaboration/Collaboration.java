@@ -89,7 +89,7 @@ public class Collaboration extends Mechanisms{
 		
 		if (AMCrun) {
 			agent     = new Agent("agent");
-			amc_agent = new AMCAgent("amc_agent", agent);
+			amc_agent = new AMCAgent("amc_agent", agent, frame);
 //			amc_agent.setMax(1);
 			amc_agent.init();
 			
@@ -765,7 +765,7 @@ public class Collaboration extends Mechanisms{
 		ToM tom = mentalProcesses.getToMMechanism();
 		Goal recognizedGoal = new Goal(mentalProcesses, eventPlan);
 		
-		DiscoActionsWrapper discoWrapper = new DiscoActionsWrapper(mentalProcesses);
+		DiscoActionsWrapper discoWrapper = new DiscoActionsWrapper(mentalProcesses, frame);
 		
 		if (recognizedGoal.getPlan().isPrimitive()) {
 			if (postconditionStatus == null) {
@@ -800,6 +800,8 @@ public class Collaboration extends Mechanisms{
 		mentalProcesses.getCollaborationMechanism().updatePreconditionApplicability();
 		
 		AppraisalVector appraisalVector = mentalProcesses.getAppraisalProcess().doAppraisal(turn, recognizedGoal, APPRAISAL_TYPE.APPRAISAL);
+		
+		setGUIemotionFields(appraisalVector);
 		
 		tom.doReverseAppraisal(recognizedGoal);
 		System.out.println("Human's Emotion (before coping): " + tom.getAnticipatedHumanEmotion(tom.getReverseAppraisalValues(recognizedGoal)));
@@ -898,23 +900,30 @@ public class Collaboration extends Mechanisms{
 	private void setGUIemotionFields(AppraisalVector appraisalVector) {
 		
 		EMOTION_INSTANCE robotEmotion = appraisalVector.getEmotionInstance();
-		((JTextField)frame.getPanel().getComponent("robotEmotionTextField")).setText(robotEmotion.toString());
 		
 		if (robotEmotion.equals(EMOTION_INSTANCE.JOY) || 
-			robotEmotion.equals(EMOTION_INSTANCE.GRATITUDE) ||
-			robotEmotion.equals(EMOTION_INSTANCE.POSITIVE_SURPRISE))
+				robotEmotion.equals(EMOTION_INSTANCE.GRATITUDE) ||
+				robotEmotion.equals(EMOTION_INSTANCE.POSITIVE_SURPRISE)) {
 			frame.getPanel().getRobotEmotionImageHolder().setIcon(new ImageIcon(new ImageIcon("images/happy.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT)));
+			((JTextField)frame.getPanel().getComponent("robotEmotionTextField")).setText("POSITIVE");
+		}
 		else if (robotEmotion.equals(EMOTION_INSTANCE.SADNESS) ||
-				 robotEmotion.equals(EMOTION_INSTANCE.FRUSTRATION) ||
-				 robotEmotion.equals(EMOTION_INSTANCE.NEGATIVE_SURPRISE) ||
-				 robotEmotion.equals(EMOTION_INSTANCE.ANGER) ||
-				 robotEmotion.equals(EMOTION_INSTANCE.WORRY) ||
-				 robotEmotion.equals(EMOTION_INSTANCE.GUILT))
+				 	robotEmotion.equals(EMOTION_INSTANCE.FRUSTRATION) ||
+				 	robotEmotion.equals(EMOTION_INSTANCE.NEGATIVE_SURPRISE) ||
+				 	robotEmotion.equals(EMOTION_INSTANCE.ANGER) ||
+				 	robotEmotion.equals(EMOTION_INSTANCE.WORRY) ||
+				 	robotEmotion.equals(EMOTION_INSTANCE.GUILT)) {
 			frame.getPanel().getRobotEmotionImageHolder().setIcon(new ImageIcon(new ImageIcon("images/sad.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT)));
-		else if (robotEmotion.equals(EMOTION_INSTANCE.NEUTRAL))
+			((JTextField)frame.getPanel().getComponent("robotEmotionTextField")).setText("NEGATIVE");
+		}
+		else if (robotEmotion.equals(EMOTION_INSTANCE.NEUTRAL)) {
 			frame.getPanel().getRobotEmotionImageHolder().setIcon(new ImageIcon(new ImageIcon("images/neutral.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT)));
-		else
+			((JTextField)frame.getPanel().getComponent("robotEmotionTextField")).setText("NEUTRAL");
+		}
+		else {
 			frame.getPanel().getRobotEmotionImageHolder().setIcon(new ImageIcon(new ImageIcon("images/neutral.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT)));
+			((JTextField)frame.getPanel().getComponent("robotEmotionTextField")).setText("UNKNOWN");
+		}
 	}
 	
 	public Plan getActualFocus() {

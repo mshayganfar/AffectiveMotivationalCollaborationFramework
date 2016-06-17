@@ -36,7 +36,7 @@ public class MentalProcesses {
 		this.motivation    = new Motivation();
 		this.tom           = new ToM();
 		this.coping		   = new Coping(frame);
-		this.action        = new Action(new DiscoActionsWrapper(this));
+		this.action        = new Action(new DiscoActionsWrapper(this, frame));
 		
 		this.relevance       = new Relevance(this);
 		this.controllability = new Controllability(this);

@@ -3,6 +3,8 @@ package Mechanisms.Appraisal;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JTextArea;
+
 import GUI.AMCFrame;
 import Mechanisms.Mechanisms.AGENT;
 import Mechanisms.Action.Action;
@@ -69,7 +71,7 @@ public class Coping {
 		this.desirability    = mentalProcesses.getDesirabilityProcess();
 		this.expectedness    = mentalProcesses.getExpectednessProcess();
 		
-		discoActionsWrapper  = new DiscoActionsWrapper(mentalProcesses);
+		discoActionsWrapper  = new DiscoActionsWrapper(mentalProcesses, frame);
 	}
 	
 	public void formIntentions(Goal eventGoal) {

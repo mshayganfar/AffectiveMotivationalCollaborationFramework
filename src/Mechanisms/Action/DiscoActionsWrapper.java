@@ -1,5 +1,8 @@
 package Mechanisms.Action;
 
+import javax.swing.JTextArea;
+
+import GUI.AMCFrame;
 import Mechanisms.Collaboration.Collaboration;
 import MentalState.Goal;
 import MetaInformation.MentalProcesses;
@@ -21,9 +24,11 @@ import edu.wpi.disco.lang.Utterance;
 public class DiscoActionsWrapper {
 	
 	private Collaboration collaboration;
+	private AMCFrame frame;
 	
-	public DiscoActionsWrapper(MentalProcesses mentalProcesses) {
+	public DiscoActionsWrapper(MentalProcesses mentalProcesses, AMCFrame frame) {
 		this.collaboration = mentalProcesses.getCollaborationMechanism();
+		this.frame = frame;
 	}
 	
 	public void proposeTaskWho(Goal goal, boolean speaker) {
@@ -66,6 +71,9 @@ public class DiscoActionsWrapper {
 		
 		Utterance taskToPropose = Propose.Should.newInstance(collaboration.getDisco(), speaker, plan.getGoal());
 		collaboration.getDisco().getInteraction().occurred(speaker, taskToPropose, plan);
+
+		String robotUtterance = taskToPropose.format().substring(taskToPropose.format().indexOf("\"")+1, taskToPropose.format().length()-1);
+		((JTextArea)frame.getPanel().getComponent("robotUtteranceTextArea")).setText(robotUtterance);
 	}
 
 	public void proposeTaskShould(Plan plan, boolean speaker) {
@@ -175,8 +183,9 @@ public class DiscoActionsWrapper {
 			plan.getGoal().setSuccess(postconditionStatus);
 			collaboration.getDisco().getInteraction().occurred(actor, plan.getGoal(), plan);
 		} 
-		else
+		else {
 			proposeTaskShould(goal, false);
+		}
 	}
 	
 	public void executeTask(Plan plan, boolean actor, boolean postconditionStatus) {

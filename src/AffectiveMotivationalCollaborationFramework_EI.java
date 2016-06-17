@@ -16,7 +16,7 @@ public class AffectiveMotivationalCollaborationFramework_EI {
 		frame.setVisible(true);
 		
 		mentalProcesses = new MentalProcesses(args, frame, false);
-		world = new World(mentalProcesses);
+		world = new World(mentalProcesses, frame);
 		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
 		Disco disco = collaboration.getDisco();
 		
