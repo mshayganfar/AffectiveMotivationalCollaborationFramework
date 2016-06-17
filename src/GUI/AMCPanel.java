@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -82,12 +83,15 @@ public class AMCPanel extends JPanel {
 		robotUtteranceTextArea.setWrapStyleWord (true);
 		robotUtteranceTextArea.setFont(new Font("Verdana", Font.BOLD, 22));
 		robotUtteranceTextArea.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+		robotUtteranceTextArea.setName("robotUtteranceTextArea");
 		robotEmotionTextField.setFont(new Font("Verdana", Font.BOLD, 22));
 		robotEmotionTextField.setColumns(20);
 		robotEmotionTextField.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+		robotEmotionTextField.setName("robotEmotionTextField");
 		robotUtteranceLabel.setFont(new Font("Verdana", Font.BOLD, 32));
 		robotEmotionLabel.setFont(new Font("Verdana", Font.BOLD, 32));
 		robotImageHolder.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+		robotEmotionImageHolder.setName("robotEmotionImageHolder");
 		separator.setOrientation(SwingConstants.VERTICAL);
 		humanEmotionLabel.setFont(new Font("Verdana", Font.BOLD, 32));
 		humanPositiveEmotion.setFont(new Font("Verdana", Font.BOLD, 22));
@@ -186,6 +190,8 @@ public class AMCPanel extends JPanel {
 		{
 			public void actionPerformed(ActionEvent e)
 			{
+				robotUtteranceTextArea.setText("");
+				
 				if (turn) {
 					disableRobotComponents();
 					enableHumanComponents();
@@ -299,6 +305,10 @@ public class AMCPanel extends JPanel {
 		}
 	}
 	
+	public JLabel getRobotEmotionImageHolder() {
+		return this.robotEmotionImageHolder;
+	}
+	
 	public void setRobotUtterance(String robotUtterance) {
 		robotUtteranceTextArea.setText(robotUtterance);
 	}
@@ -323,6 +333,15 @@ public class AMCPanel extends JPanel {
 		}
 		else
 			return null;
+	}
+	
+	public Component getComponent(String componentName) {
+		
+		for (Component component: this.getComponents()) {
+			if (component.getName() == componentName)
+				return component;
+		}
+		return null;
 	}
 	
 //	public int getHumanSelectedUtterance() {

@@ -1,3 +1,4 @@
+import GUI.AMCFrame;
 import Mechanisms.Collaboration.Collaboration;
 import MetaInformation.MentalProcesses;
 import MetaInformation.World;
@@ -10,7 +11,11 @@ public class AffectiveMotivationalCollaborationFramework_EI {
 	
 	public static void main(String[] args) {
 		
-		mentalProcesses = new MentalProcesses(args, false);
+		AMCFrame frame = new AMCFrame("Affective Motivational Collaboration Framework");
+		frame.pack();
+		frame.setVisible(true);
+		
+		mentalProcesses = new MentalProcesses(args, frame, false);
 		world = new World(mentalProcesses);
 		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
 		Disco disco = collaboration.getDisco();

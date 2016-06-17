@@ -143,7 +143,7 @@ public class Controllability extends Mechanisms{
 			return ((double)countSelfResponsible/((collaboration.getDescendentResponsibility().size() == 0) ? 1.0 : collaboration.getDescendentResponsibility().size()));
 		}
 	}
-	
+
 	private Double getSucceededPredecessorsRatio(Plan eventPlan) {
 		
 		checkSucceededPredecessors(eventPlan);

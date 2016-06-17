@@ -166,7 +166,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		frame.pack();
 		frame.setVisible(true);
 		
-		mentalProcesses = new MentalProcesses(args, true);
+		mentalProcesses = new MentalProcesses(args, frame, true);
 		world = new World(mentalProcesses);
 		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
 		

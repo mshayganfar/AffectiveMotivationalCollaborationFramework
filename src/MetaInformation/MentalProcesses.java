@@ -1,5 +1,6 @@
 package MetaInformation;
 
+import GUI.AMCFrame;
 import Mechanisms.Action.Action;
 import Mechanisms.Action.DiscoActionsWrapper;
 import Mechanisms.Appraisal.Appraisal;
@@ -27,14 +28,14 @@ public class MentalProcesses {
 	private Desirability desirability;
 	private Expectedness expectedness;
 	
-	public MentalProcesses(String[] args, boolean AMCrun) {
+	public MentalProcesses(String[] args, AMCFrame frame, boolean AMCrun) {
 		
-		this.collaboration = new Collaboration(args, AMCrun);
+		this.collaboration = new Collaboration(args, AMCrun, frame);
 		this.appraisal	   = new Appraisal();
 		this.perception    = new Perception();
 		this.motivation    = new Motivation();
 		this.tom           = new ToM();
-		this.coping		   = new Coping();
+		this.coping		   = new Coping(frame);
 		this.action        = new Action(new DiscoActionsWrapper(this));
 		
 		this.relevance       = new Relevance(this);

@@ -3,6 +3,7 @@ package Mechanisms.Appraisal;
 import java.util.HashMap;
 import java.util.Map;
 
+import GUI.AMCFrame;
 import Mechanisms.Mechanisms.AGENT;
 import Mechanisms.Action.Action;
 import Mechanisms.Action.DiscoActionsWrapper;
@@ -34,6 +35,7 @@ import edu.wpi.disco.lang.Say;
 public class Coping {
 	
 	private MentalProcesses mentalProcesses;
+	private AMCFrame frame;
 	
 	private Perception perception;
 	private Collaboration collaboration;
@@ -47,6 +49,10 @@ public class Coping {
 	private Expectedness expectedness;
 	
 	private DiscoActionsWrapper discoActionsWrapper;
+	
+	public Coping(AMCFrame frame) {
+		this.frame = frame;
+	}
 	
 	public void prepareCopingMechanism(MentalProcesses mentalProcesses) {
 		

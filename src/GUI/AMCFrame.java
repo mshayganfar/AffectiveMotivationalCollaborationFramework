@@ -24,4 +24,8 @@ public class AMCFrame extends JFrame {
 		frame.pack();
 		frame.setVisible(true);
 	}
+	
+	public AMCPanel getPanel() {
+		return this.currentPanel;
+	}
 }

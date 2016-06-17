@@ -1,11 +1,18 @@
 package Mechanisms.Collaboration;
 
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+import GUI.AMCFrame;
 import Mechanisms.Mechanisms;
 import Mechanisms.Action.DiscoActionsWrapper;
 import Mechanisms.ToM.ToM;
@@ -22,6 +29,7 @@ import MetaInformation.AMCAgent;
 import MetaInformation.AMCUser;
 import MetaInformation.AppraisalVector;
 import MetaInformation.AppraisalVector.APPRAISAL_TYPE;
+import MetaInformation.AppraisalVector.EMOTION_INSTANCE;
 import MetaInformation.DiscoAgent;
 import edu.wpi.cetask.DecompositionClass;
 import edu.wpi.cetask.Plan;
@@ -45,6 +53,7 @@ public class Collaboration extends Mechanisms{
 	public enum GOAL_STATUS{ACHIEVED, FAILED, PENDING, BLOCKED, INPROGRESS, INAPPLICABLE, DONE, UNKNOWN};
 	public enum FOCUS_TYPE{PRIMITIVE, NONPRIMITIVE};
 	
+	private AMCFrame frame;
 	private Disco disco;
 	private TaskModel taskModel;
 	private Plan prevFocus;
@@ -74,7 +83,9 @@ public class Collaboration extends Mechanisms{
 	private User user;
 	private Plan actualFocus;
 	
-	public Collaboration(String[] args, boolean AMCrun) {
+	public Collaboration(String[] args, boolean AMCrun, AMCFrame frame) {
+		
+		this.frame = frame;
 		
 		if (AMCrun) {
 			agent     = new Agent("agent");
@@ -112,7 +123,7 @@ public class Collaboration extends Mechanisms{
 		}
 		else {
 			agent       = new Agent("agent");
-			disco_agent = new DiscoAgent("disco_agent", agent);
+			disco_agent = new DiscoAgent("disco_agent", agent, frame);
 //			amc_agent.setMax(1);
 			disco_agent.init();
 			
@@ -876,10 +887,34 @@ public class Collaboration extends Mechanisms{
 		
 		appraisalVector = mentalProcesses.getAppraisalProcess().doAppraisal(turn, recognizedGoal, APPRAISAL_TYPE.REAPPRAISAL);
 		
+		setGUIemotionFields(appraisalVector);
+		
 		recognizedGoal.setGoalStatus(mentalProcesses.getCollaborationMechanism().getGoalStatus(recognizedGoal.getPlan()));
 		
 		// This needs to be done after running all the mechanisms.
 		turn.updateTurn();
+	}
+	
+	private void setGUIemotionFields(AppraisalVector appraisalVector) {
+		
+		EMOTION_INSTANCE robotEmotion = appraisalVector.getEmotionInstance();
+		((JTextField)frame.getPanel().getComponent("robotEmotionTextField")).setText(robotEmotion.toString());
+		
+		if (robotEmotion.equals(EMOTION_INSTANCE.JOY) || 
+			robotEmotion.equals(EMOTION_INSTANCE.GRATITUDE) ||
+			robotEmotion.equals(EMOTION_INSTANCE.POSITIVE_SURPRISE))
+			frame.getPanel().getRobotEmotionImageHolder().setIcon(new ImageIcon(new ImageIcon("images/happy.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT)));
+		else if (robotEmotion.equals(EMOTION_INSTANCE.SADNESS) ||
+				 robotEmotion.equals(EMOTION_INSTANCE.FRUSTRATION) ||
+				 robotEmotion.equals(EMOTION_INSTANCE.NEGATIVE_SURPRISE) ||
+				 robotEmotion.equals(EMOTION_INSTANCE.ANGER) ||
+				 robotEmotion.equals(EMOTION_INSTANCE.WORRY) ||
+				 robotEmotion.equals(EMOTION_INSTANCE.GUILT))
+			frame.getPanel().getRobotEmotionImageHolder().setIcon(new ImageIcon(new ImageIcon("images/sad.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT)));
+		else if (robotEmotion.equals(EMOTION_INSTANCE.NEUTRAL))
+			frame.getPanel().getRobotEmotionImageHolder().setIcon(new ImageIcon(new ImageIcon("images/neutral.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT)));
+		else
+			frame.getPanel().getRobotEmotionImageHolder().setIcon(new ImageIcon(new ImageIcon("images/neutral.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT)));
 	}
 	
 	public Plan getActualFocus() {
