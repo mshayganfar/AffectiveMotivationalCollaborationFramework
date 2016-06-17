@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 
+import GUI.AMCFrame;
 import Mechanisms.Mechanisms.AGENT;
 import Mechanisms.Action.DiscoActionsWrapper;
 import Mechanisms.Collaboration.Collaboration;
@@ -160,6 +161,10 @@ public class AffectiveMotivationalCollaborationFramework {
 	}
 	
 	public static void main(String[] args) {
+		
+		AMCFrame frame = new AMCFrame("Affective Motivational Collaboration Framework");
+		frame.pack();
+		frame.setVisible(true);
 		
 		mentalProcesses = new MentalProcesses(args, true);
 		world = new World(mentalProcesses);

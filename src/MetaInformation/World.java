@@ -52,6 +52,8 @@ public class World {
 		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
 		DiscoActionsWrapper daw = new DiscoActionsWrapper(mentalProcesses);
 		
+//		collaboration.getDisco().getInteraction().getConsole().setRespond(false);
+		
 		Task topTask = collaboration.getDisco().getTaskClass("InstallSolarPanel").newInstance();
 		Plan topPlan = new Plan(topTask);
 		topPlan.getGoal().setShould(true);
