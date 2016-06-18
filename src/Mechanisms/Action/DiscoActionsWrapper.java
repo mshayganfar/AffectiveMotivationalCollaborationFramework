@@ -12,6 +12,7 @@ import edu.wpi.cetask.Task;
 import edu.wpi.cetask.TaskClass.Input;
 import edu.wpi.disco.Agenda.Plugin;
 import edu.wpi.disco.Agenda.Plugin.Item;
+import edu.wpi.disco.Agent;
 import edu.wpi.disco.Interaction;
 import edu.wpi.disco.lang.Accept;
 import edu.wpi.disco.lang.Ask;
@@ -60,6 +61,9 @@ public class DiscoActionsWrapper {
 		if (plan.isPrimitive()) {
 			Utterance taskToPropose = new Propose.Who(collaboration.getDisco(), speaker, plan.getGoal(), listener);
 			collaboration.getDisco().getInteraction().occurred(speaker, taskToPropose, contributes);
+			
+			String robotUtterance = taskToPropose.format().substring(taskToPropose.format().indexOf("\"")+1, taskToPropose.format().length()-1);
+			((JTextArea)frame.getPanel().getComponent("robotUtteranceTextArea")).setText(robotUtterance);
 		}
 		else
 			throw new IllegalArgumentException("Both of the collaborators are responsible for non-primitives!");
@@ -200,7 +204,10 @@ public class DiscoActionsWrapper {
 		if (plan.isPrimitive()) {
 			plan.getGoal().setSuccess(postconditionStatus);
 			collaboration.getDisco().getInteraction().occurred(actor, plan.getGoal(), plan);
-		} 
+			
+			if (plan.getGoal() instanceof Utterance)
+				((Agent)collaboration.getDisco().getInteraction().getSystem()).say(collaboration.getDisco().getInteraction(), (Utterance)plan.getGoal());
+		}
 		else {
 			proposeTaskShould(goal, false);
 		}

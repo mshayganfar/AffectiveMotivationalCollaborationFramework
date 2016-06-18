@@ -3,6 +3,7 @@ import Mechanisms.Collaboration.Collaboration;
 import MetaInformation.MentalProcesses;
 import MetaInformation.World;
 import edu.wpi.disco.Disco;
+import javax.swing.JTextField;
 
 public class AffectiveMotivationalCollaborationFramework_EI {
 
@@ -14,6 +15,7 @@ public class AffectiveMotivationalCollaborationFramework_EI {
 		AMCFrame frame = new AMCFrame("Affective Motivational Collaboration Framework");
 		frame.pack();
 		frame.setVisible(true);
+		((JTextField)frame.getPanel().getComponent("robotEmotionTextField")).setText("NEUTRAL");
 		
 		mentalProcesses = new MentalProcesses(args, frame, false);
 		world = new World(mentalProcesses, frame);

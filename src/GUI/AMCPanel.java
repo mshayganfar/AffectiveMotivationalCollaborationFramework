@@ -84,10 +84,13 @@ public class AMCPanel extends JPanel {
 		robotUtteranceTextArea.setFont(new Font("Verdana", Font.BOLD, 22));
 		robotUtteranceTextArea.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 		robotUtteranceTextArea.setName("robotUtteranceTextArea");
+		robotUtteranceTextArea.setEditable(false);
 		robotEmotionTextField.setFont(new Font("Verdana", Font.BOLD, 22));
 		robotEmotionTextField.setColumns(20);
 		robotEmotionTextField.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 		robotEmotionTextField.setName("robotEmotionTextField");
+		robotEmotionTextField.setEditable(false);
+		robotEmotionTextField.setBackground(Color.WHITE);
 		robotUtteranceLabel.setFont(new Font("Verdana", Font.BOLD, 32));
 		robotEmotionLabel.setFont(new Font("Verdana", Font.BOLD, 32));
 		robotImageHolder.setBorder(BorderFactory.createLineBorder(Color.black, 1));

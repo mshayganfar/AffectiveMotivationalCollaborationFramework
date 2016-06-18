@@ -64,6 +64,8 @@ public class AffectiveMotivationalCollaborationFramework {
 	
 	public static void goUser(String valenceValue, String postconditionStatus) {
 		
+		DiscoActionsWrapper discoWrapper = new DiscoActionsWrapper(mentalProcesses, frame);
+		
 		if (userEventItem != null) {
 			Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
 			collaboration.setActualFocus(userEventItem.contributes);
@@ -71,6 +73,7 @@ public class AffectiveMotivationalCollaborationFramework {
 				if (collaboration.processUser(userEventItem.contributes, Double.parseDouble(valenceValue), Boolean.parseBoolean(postconditionStatus)).equals(WHOSE_TURN.USER)) {
 					collaboration.initializeAllInputs(userEventItem.contributes, inputValues);
 					userEventItem = user.generateBest(interaction);
+//					discoWrapper.proposeTaskShould(userEventItem.contributes, true);
 					System.out.println("Waiting for you: ");
 					return;
 				}
@@ -82,14 +85,13 @@ public class AffectiveMotivationalCollaborationFramework {
 	private static void goAgent() {
 		
 		Item agentEventItem;
-		DiscoActionsWrapper discoWrapper;
+		DiscoActionsWrapper discoWrapper = new DiscoActionsWrapper(mentalProcesses, frame);
 		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
 		
 		userEventItem = user.generateBest(interaction);
 		
 		if (userEventItem != null) {
 			if (userEventItem.contributes.getGoal() instanceof Accept) {
-				discoWrapper = new DiscoActionsWrapper(mentalProcesses, frame);
 				discoWrapper.acceptProposedTask(userEventItem.contributes, true);
 				userEventItem = user.generateBest(interaction);
 			}
@@ -102,7 +104,6 @@ public class AffectiveMotivationalCollaborationFramework {
 			userEventItem  = user.generateBest(interaction);
 			if (userEventItem != null) {
 				if (userEventItem.contributes.getGoal() instanceof Accept) {
-					discoWrapper = new DiscoActionsWrapper(mentalProcesses, frame);
 					discoWrapper.acceptProposedTask(userEventItem.contributes, true);
 					userEventItem = user.generateBest(interaction);
 				}
@@ -120,6 +121,7 @@ public class AffectiveMotivationalCollaborationFramework {
 								}
 								else {
 									collaboration.initializeAllInputs(plan, inputValues);
+									discoWrapper.proposeTaskShould(userEventItem.contributes, false);
 									System.out.println("Waiting for you: ");
 									return;
 								}
@@ -136,12 +138,14 @@ public class AffectiveMotivationalCollaborationFramework {
 						}
 					}
 				}
+				discoWrapper.proposeTaskShould(userEventItem.contributes, false);
 				System.out.println("Waiting for you: ");
 				return;
 			}
 			collaboration.initializeAllInputs(agentEventItem.contributes, inputValues);
 			for (Plan plan : collaboration.getPathToTop(agentEventItem.contributes)) {
 				if (collaboration.isUsersTurn(userEventItem, plan)) {
+					discoWrapper.proposeTaskShould(userEventItem.contributes, false);
 					System.out.println("Waiting for you: ");
 					return;
 				}
