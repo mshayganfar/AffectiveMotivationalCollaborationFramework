@@ -5,7 +5,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
@@ -23,10 +22,13 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
+import MetaInformation.MentalProcesses;
+
 public class AMCPanel extends JPanel {
 	
 	private enum EMOTION {POSITIVE, NEGATIVE, NEUTRAL};
-	private boolean turn = false;
+	
+	private MentalProcesses mentalProcesses;
 	
 	private JTextField robotEmotionTextField;
 	private JTextArea robotUtteranceTextArea;
@@ -75,6 +77,10 @@ public class AMCPanel extends JPanel {
 //		humanUttrancesComboBox  = new JComboBox<String>();
 		
 		setupPanel();
+	}
+	
+	public void setMentalProcesses(MentalProcesses mentalProcesses) {
+		this.mentalProcesses = mentalProcesses;
 	}
 	
 	private void setupPanel() {
@@ -195,22 +201,16 @@ public class AMCPanel extends JPanel {
 			{
 				robotUtteranceTextArea.setText("");
 				
-				if (turn) {
-					disableRobotComponents();
-					enableHumanComponents();
-					turn = false;
-					setRobotEmotionText("POSITIVE");
-				}
+				Double emotionValence = getHumanEmotion();
+				
+				if (emotionValence == null)
+					throw new IllegalArgumentException("Wrong emotion valence value!");
 				else {
-					disableHumanComponents();
-					enableRobotComponents();
-					turn = true;
-					setRobotEmotionText("NEGATIVE");
+					mentalProcesses.getCollaborationMechanism().getWorld().setUserValence(emotionValence);
+					mentalProcesses.getPerceptionMechanism().setEmotionValence(emotionValence);
 				}
 				
-				EMOTION emotion = getHumanEmotion();
-				// Write a code here that updates human's perceived emotion in the framework.
-				// setRobotEmotionText(emotion.toString());
+				giveTurnToRobot();
 				
 //				int humanSelectedUtteranceIndex;
 //				if ((humanSelectedUtteranceIndex = getHumanSelectedUtterance()) == 0)
@@ -244,10 +244,23 @@ public class AMCPanel extends JPanel {
 	    });
 	}
 	
+	public void giveTurnToRobot() {
+		disableHumanComponents();
+		enableRobotComponents();
+		System.out.println("Okay Robot, it is your turn!");
+	}
+	
+	public void giveTurnToHuman() {
+		disableRobotComponents();
+		enableHumanComponents();
+		System.out.println("Astronaut, it is your turn now!");
+	}
+	
 	public void disableRobotComponents() {
 		robotEmotionTextField.setEnabled(false);
 		robotEmotionTextField.setBackground(new Color(220, 220, 220));
-		robotUtteranceTextArea.setEnabled(false);
+//		robotUtteranceTextArea.setEnabled(false);
+		robotUtteranceTextArea.setForeground(Color.BLACK);
 		robotUtteranceTextArea.setBackground(new Color(220, 220, 220));
 		robotUtteranceLabel.setEnabled(false);
 		robotEmotionLabel.setEnabled(false);
@@ -277,9 +290,9 @@ public class AMCPanel extends JPanel {
 		humanImageHolder.setEnabled(false);
 		turnHolder.setText("Robot's Turn");
 		turnHolder.setForeground(new Color(255, 0, 0));
+		humanDoneButton.setEnabled(false);
 //		humanUtteranceLabel.setEnabled(false);
 //		humanUttrancesComboBox.setEnabled(false);
-//		humanDoneButton.setEnabled(false);
 	}
 	
 	public void enableHumanComponents() {
@@ -320,19 +333,19 @@ public class AMCPanel extends JPanel {
 		robotEmotionTextField.setText(robotEmotionTest);
 	}
 	
-	public EMOTION getHumanEmotion() {
+	public Double getHumanEmotion() {
 		
 		if (humanNegativeEmotion.isSelected()) {
 			humanEmotionGroup.clearSelection();
-			return EMOTION.NEGATIVE;
+			return -0.4;
 		}
 		else if (humanPositiveEmotion.isSelected()) {
 			humanEmotionGroup.clearSelection();
-			return EMOTION.POSITIVE;
+			return 0.4;
 		}
 		else if (humanNeutralEmotion.isSelected()) {
 			humanEmotionGroup.clearSelection();
-			return EMOTION.NEUTRAL;
+			return 0.0;
 		}
 		else
 			return null;

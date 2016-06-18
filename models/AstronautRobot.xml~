@@ -202,7 +202,15 @@
 		}
 
 		function start() {
-			eval "new InstallSolarPanel";
+			Packages.MetaInformation.World.start();
+		}
+
+		function giveTurnToRobot() {
+			Packages.MetaInformation.World.start();
+		}
+
+		function giveTurnToUser() {
+			Packages.MetaInformation.World.start();
 		}
 	</script>
 </taskModel>

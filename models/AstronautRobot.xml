@@ -204,5 +204,13 @@
 		function start() {
 			Packages.MetaInformation.World.start();
 		}
+
+		function giveTurnToRobot() {
+			Packages.MetaInformation.World.giveTurnToRobot();
+		}
+
+		function giveTurnToUser() {
+			Packages.MetaInformation.World.giveTurnToUser();
+		}
 	</script>
 </taskModel>

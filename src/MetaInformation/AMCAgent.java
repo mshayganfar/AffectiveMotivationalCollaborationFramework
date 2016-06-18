@@ -1,7 +1,5 @@
 package MetaInformation;
 
-import javax.swing.JTextArea;
-
 import GUI.AMCFrame;
 import edu.wpi.disco.Actor;
 import edu.wpi.disco.Agenda;
@@ -13,7 +11,7 @@ import edu.wpi.disco.plugin.ProposeShouldOtherPlugin;
 
 public class AMCAgent extends Agent{
 
-	MentalProcesses mentalProcesses;
+	private MentalProcesses mentalProcesses;
 	private AMCFrame frame;
 	
 	public AMCAgent(String name, Actor who, AMCFrame frame) {

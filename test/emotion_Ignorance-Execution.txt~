@@ -3,20 +3,44 @@ new InstallSolarPanel
 execute edu.wpi.disco.lang.Propose$Should / $new / false
 new PreparePanel
 execute edu.wpi.disco.lang.Propose$Should / $new / false
+
+
+
 next
+eval giveTurnToUser()
+
 execute RemoveLeftCoverPrimitive / true / false
+
 next
+eval giveTurnToUser()
+
 execute RemoveLeftCoverPrimitive / true / true
+
 next
+eval giveTurnToUser()
+
 execute TakeOutCable / true / false
+
 next
+eval giveTurnToUser()
+
 execute TakeOutCable / true / true
+
 next
+eval giveTurnToUser()
+
 execute WeldPanel / true / true
+
 execute CheckPanelAttachmentPrimitive / false / false
+
 next
-next
+eval giveTurnToUser()
+
 execute CheckWirings / true / true
+
 next
+eval giveTurnToUser()
+
 execute CheckCascadingCells / true / true
+
 next

@@ -15,9 +15,13 @@ public class AffectiveMotivationalCollaborationFramework_EI {
 		AMCFrame frame = new AMCFrame("Affective Motivational Collaboration Framework");
 		frame.pack();
 		frame.setVisible(true);
+		frame.getPanel().giveTurnToRobot();
 		((JTextField)frame.getPanel().getComponent("robotEmotionTextField")).setText("NEUTRAL");
 		
 		mentalProcesses = new MentalProcesses(args, frame, false);
+		
+		frame.getPanel().setMentalProcesses(mentalProcesses);
+		
 		world = new World(mentalProcesses, frame);
 		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
 		Disco disco = collaboration.getDisco();

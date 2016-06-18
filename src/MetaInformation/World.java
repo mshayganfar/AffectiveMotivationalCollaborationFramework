@@ -65,4 +65,12 @@ public class World {
 		daw.proposeTaskShould(topPlan, false);
 		daw.proposeTaskShould(topPlan.getChildren().get(0), false);
 	}
+	
+	public static void giveTurnToRobot() {
+		frame.getPanel().giveTurnToRobot();
+	}
+	
+	public static void giveTurnToUser() {
+		frame.getPanel().giveTurnToHuman();
+	}
 }

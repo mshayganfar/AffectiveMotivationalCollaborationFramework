@@ -1,6 +1,8 @@
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JTextField;
+
 import GUI.AMCFrame;
 import Mechanisms.Mechanisms.AGENT;
 import Mechanisms.Action.DiscoActionsWrapper;
@@ -73,6 +75,7 @@ public class AffectiveMotivationalCollaborationFramework {
 				if (collaboration.processUser(userEventItem.contributes, Double.parseDouble(valenceValue), Boolean.parseBoolean(postconditionStatus)).equals(WHOSE_TURN.USER)) {
 					collaboration.initializeAllInputs(userEventItem.contributes, inputValues);
 					userEventItem = user.generateBest(interaction);
+					frame.getPanel().giveTurnToHuman();
 //					discoWrapper.proposeTaskShould(userEventItem.contributes, true);
 					System.out.println("Waiting for you: ");
 					return;
@@ -114,17 +117,18 @@ public class AffectiveMotivationalCollaborationFramework {
 				if ((agentEventItem != null) && (collaboration.getActualFocus() != null)) {
 					while (collaboration.hasLiveChild(collaboration.getActualFocus().getParent())) {
 						for (Plan plan : collaboration.getPathToTop(collaboration.getLiveChild(collaboration.getActualFocus().getParent()))) {
-								collaboration.setActualFocus(plan);
-								if (collaboration.getResponsibleAgent(plan).equals(AGENT.SELF)) {
-									collaboration.processAgent(plan, 0.0);
-									collaboration.initializeAllInputs(plan, inputValues);
-								}
-								else {
-									collaboration.initializeAllInputs(plan, inputValues);
-									discoWrapper.proposeTaskShould(userEventItem.contributes, false);
-									System.out.println("Waiting for you: ");
-									return;
-								}
+							collaboration.setActualFocus(plan);
+							if (collaboration.getResponsibleAgent(plan).equals(AGENT.SELF)) {
+								collaboration.processAgent(plan, 0.0);
+								collaboration.initializeAllInputs(plan, inputValues);
+							}
+							else {
+								collaboration.initializeAllInputs(plan, inputValues);
+								discoWrapper.proposeTaskShould(userEventItem.contributes, false);
+								frame.getPanel().giveTurnToHuman();
+								System.out.println("Waiting for you: ");
+								return;
+							}
 						}
 					}
 				}
@@ -139,6 +143,7 @@ public class AffectiveMotivationalCollaborationFramework {
 					}
 				}
 				discoWrapper.proposeTaskShould(userEventItem.contributes, false);
+				frame.getPanel().giveTurnToHuman();
 				System.out.println("Waiting for you: ");
 				return;
 			}
@@ -146,6 +151,7 @@ public class AffectiveMotivationalCollaborationFramework {
 			for (Plan plan : collaboration.getPathToTop(agentEventItem.contributes)) {
 				if (collaboration.isUsersTurn(userEventItem, plan)) {
 					discoWrapper.proposeTaskShould(userEventItem.contributes, false);
+					frame.getPanel().giveTurnToHuman();
 					System.out.println("Waiting for you: ");
 					return;
 				}
@@ -170,8 +176,13 @@ public class AffectiveMotivationalCollaborationFramework {
 		frame = new AMCFrame("Affective Motivational Collaboration Framework");
 		frame.pack();
 		frame.setVisible(true);
+		frame.getPanel().giveTurnToRobot();
+		((JTextField)frame.getPanel().getComponent("robotEmotionTextField")).setText("NEUTRAL");
 		
 		mentalProcesses = new MentalProcesses(args, frame, true);
+		
+		frame.getPanel().setMentalProcesses(mentalProcesses);
+		
 		world = new World(mentalProcesses, frame);
 		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
 		

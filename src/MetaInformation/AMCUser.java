@@ -8,7 +8,7 @@ import edu.wpi.disco.plugin.AuthorizedPlugin;
 
 public class AMCUser extends Actor{
 
-	MentalProcesses mentalProcesses;
+	private MentalProcesses mentalProcesses;
 	
 	public AMCUser(String name, Actor who) {
 		super(name, new Agenda(who));

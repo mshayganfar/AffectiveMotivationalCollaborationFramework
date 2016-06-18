@@ -883,7 +883,7 @@ public class Collaboration extends Mechanisms{
 		}
 		
 		mentalProcesses.getActionMechanism().act(recognizedGoal, postconditionStatus);
-		
+		// exchange these two lines?!!!
 		tom.doReverseAppraisal(recognizedGoal);
 		System.out.println("Human's Emotion (after coping): " + tom.getAnticipatedHumanEmotion(tom.getReverseAppraisalValues(recognizedGoal)));
 		
