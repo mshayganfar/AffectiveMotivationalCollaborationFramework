@@ -65,6 +65,18 @@ public class DiscoActionsWrapper {
 			throw new IllegalArgumentException("Both of the collaborators are responsible for non-primitives!");
 	}
 	
+	// This method is only used to append a new string to the already existing output string.
+	public void proposeTaskShould(Goal goal) {
+		
+		Plan plan = goal.getPlan();
+		
+		Utterance taskToPropose = Propose.Should.newInstance(collaboration.getDisco(), false, plan.getGoal());
+		collaboration.getDisco().getInteraction().occurred(false, taskToPropose, plan);
+
+		String robotUtterance = taskToPropose.format().substring(taskToPropose.format().indexOf("\"")+1, taskToPropose.format().length()-1);
+		((JTextArea)frame.getPanel().getComponent("robotUtteranceTextArea")).append(robotUtterance);
+	}
+
 	public void proposeTaskShould(Goal goal, boolean speaker) {
 		
 		Plan plan = goal.getPlan();
@@ -80,6 +92,9 @@ public class DiscoActionsWrapper {
 		
 		Utterance taskToPropose = Propose.Should.newInstance(collaboration.getDisco(), speaker, plan.getGoal());
 		collaboration.getDisco().getInteraction().occurred(speaker, taskToPropose, plan);
+		
+		String robotUtterance = taskToPropose.format().substring(taskToPropose.format().indexOf("\"")+1,taskToPropose.format().length()-1);
+		((JTextArea)frame.getPanel().getComponent("robotUtteranceTextArea")).setText(robotUtterance);
 	}
 	
 	public void proposeTaskWhat(Goal goal, boolean speaker, String slot, Object value) {
@@ -133,6 +148,9 @@ public class DiscoActionsWrapper {
 		
 		Utterance utteranceTask = new Say.Agent(collaboration.getDisco(), utterance);
 		collaboration.getDisco().getInteraction().occurred(speaker, utteranceTask, null);
+		
+		String robotUtterance = utteranceTask.format().substring(utteranceTask.format().indexOf("\"")+1,utteranceTask.format().length()-1);
+		((JTextArea)frame.getPanel().getComponent("robotUtteranceTextArea")).setText(robotUtterance);
 	}
 
 	public void askAboutTaskWho(Goal goal, boolean speaker) {

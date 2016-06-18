@@ -22,6 +22,7 @@ import MentalState.Intention;
 import MetaInformation.CopingActivation;
 import MetaInformation.MentalProcesses;
 import MetaInformation.Turns;
+import MetaInformation.AppraisalVector.APPRAISAL_TYPE;
 import MetaInformation.CopingActivation.COPING_STRATEGY;
 import MetaInformation.World.USER_VALENCE;
 import edu.wpi.cetask.DecompositionClass;
@@ -109,7 +110,7 @@ public class Coping {
 			action.acknowledgeEmotion(goal);
 		}
 		
-		action.expressEmotion(goal);
+//		action.expressEmotion(goal);
 		
 		if (didHumanAsk(goal))
 			respondToHuman(goal);
@@ -400,8 +401,10 @@ public class Coping {
 		Goal minCostGoal = getMinCostGoal(goal);
 		
 		if (minCostGoal != null) {
-			discoActionsWrapper.proposeTaskShould(minCostGoal, false);
+			discoActionsWrapper.saySomethingAboutTask(false, "To manage the time, let's switch to another task. We can come back and finish this, later.");
+			discoActionsWrapper.proposeTaskShould(minCostGoal);
 			discoActionsWrapper.executeTask(minCostGoal, false, postconditionStatus);
+			collaboration.setGUIemotionFields(mentalProcesses.getAppraisalProcess().doAppraisal(Turns.getInstance(), minCostGoal, APPRAISAL_TYPE.APPRAISAL));
 			collaboration.setDisengagedPlan(goal.getPlan().getRetry());
 			Plan parentPlan = minCostGoal.getPlan().getParent();
 			while (isAnotherGoal(parentPlan)) {

@@ -887,9 +887,14 @@ public class Collaboration extends Mechanisms{
 		tom.doReverseAppraisal(recognizedGoal);
 		System.out.println("Human's Emotion (after coping): " + tom.getAnticipatedHumanEmotion(tom.getReverseAppraisalValues(recognizedGoal)));
 		
-		appraisalVector = mentalProcesses.getAppraisalProcess().doAppraisal(turn, recognizedGoal, APPRAISAL_TYPE.REAPPRAISAL);
+		if (recognizedGoal.getPlan().getRetryOf() != null) {
+			recognizedGoal = new Goal(mentalProcesses, eventPlan.getRetryOf());
+			System.out.println(eventPlan.getRetryOf());
+		}
 		
-		setGUIemotionFields(appraisalVector);
+		AppraisalVector reappraisalVector = mentalProcesses.getAppraisalProcess().doAppraisal(turn, recognizedGoal, APPRAISAL_TYPE.REAPPRAISAL);
+		
+		setGUIemotionFields(reappraisalVector);
 		
 		recognizedGoal.setGoalStatus(mentalProcesses.getCollaborationMechanism().getGoalStatus(recognizedGoal.getPlan()));
 		
@@ -897,7 +902,7 @@ public class Collaboration extends Mechanisms{
 		turn.updateTurn();
 	}
 	
-	private void setGUIemotionFields(AppraisalVector appraisalVector) {
+	public void setGUIemotionFields(AppraisalVector appraisalVector) {
 		
 		EMOTION_INSTANCE robotEmotion = appraisalVector.getEmotionInstance();
 		

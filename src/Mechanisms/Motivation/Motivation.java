@@ -238,23 +238,24 @@ public class Motivation extends Mechanisms {
 //		}
 	}
 	
+	// Uncomment the commented code to see the intensity of different motives.
 	public MOTIVE_TYPE createMotives(Goal goal) {
 		
 		Motive externalMotive     = createExternalMotive(goal);
 		Motive satisfactionMotive = createSatisfactionMotive(goal);
 		Motive achievementMotive  = createAchievementMotive(goal);
 		
-		System.out.println("SATISFACTION MOTIVE: (" + satisfactionMotive.getLabel() + "," + satisfactionMotive.getMotiveIntensity() + ")");
-		
-		if (achievementMotive != null)
-			System.out.println("ACHIEVEMENT MOTIVE: (" + achievementMotive.getLabel() + "," + achievementMotive.getMotiveIntensity() + ")");
-		else
-			System.out.println("NO ACHIEVEMENT MOTIVE!");
-		
-		if (externalMotive != null)
-			System.out.println("EXTERNAL MOTIVE: (" + externalMotive.getLabel() + "," + externalMotive.getMotiveIntensity() + ")");
-		else
-			System.out.println("NO EXTERNAL MOTIVE!");
+//		System.out.println("SATISFACTION MOTIVE: (" + satisfactionMotive.getLabel() + "," + satisfactionMotive.getMotiveIntensity() + ")");
+//		
+//		if (achievementMotive != null)
+//			System.out.println("ACHIEVEMENT MOTIVE: (" + achievementMotive.getLabel() + "," + achievementMotive.getMotiveIntensity() + ")");
+//		else
+//			System.out.println("NO ACHIEVEMENT MOTIVE!");
+//		
+//		if (externalMotive != null)
+//			System.out.println("EXTERNAL MOTIVE: (" + externalMotive.getLabel() + "," + externalMotive.getMotiveIntensity() + ")");
+//		else
+//			System.out.println("NO EXTERNAL MOTIVE!");
 		
 		MOTIVE_TYPE winnerMotive = arbitrateMotives(goal, externalMotive, satisfactionMotive, achievementMotive);
 		
