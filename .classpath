@@ -7,5 +7,8 @@
 			<attribute name="javadoc_location" value="jar:file:/home/mohammad/workspace/AffectiveMotivationalCollaborationFramework/lib/disco-api.zip!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/home/mohammad/workspace/AffectiveMotivationalCollaborationFramework/lib/marytts-lang-en-5.2-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="/home/mohammad/workspace/AffectiveMotivationalCollaborationFramework/lib/marytts-runtime-5.2-SNAPSHOT-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="/home/mohammad/workspace/AffectiveMotivationalCollaborationFramework/lib/voice-cmu-rms-hsmm-5.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

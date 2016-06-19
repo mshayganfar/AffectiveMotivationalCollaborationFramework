@@ -63,7 +63,8 @@ public class DiscoActionsWrapper {
 			collaboration.getDisco().getInteraction().occurred(speaker, taskToPropose, contributes);
 			
 			String robotUtterance = taskToPropose.format().substring(taskToPropose.format().indexOf("\"")+1, taskToPropose.format().length()-1);
-			((JTextArea)frame.getPanel().getComponent("robotUtteranceTextArea")).setText(robotUtterance);
+			frame.getPanel().say(robotUtterance);
+//			((JTextArea)frame.getPanel().getComponent("robotUtteranceTextArea")).setText(robotUtterance);
 		}
 		else
 			throw new IllegalArgumentException("Both of the collaborators are responsible for non-primitives!");
@@ -78,7 +79,8 @@ public class DiscoActionsWrapper {
 		collaboration.getDisco().getInteraction().occurred(false, taskToPropose, plan);
 
 		String robotUtterance = taskToPropose.format().substring(taskToPropose.format().indexOf("\"")+1, taskToPropose.format().length()-1);
-		((JTextArea)frame.getPanel().getComponent("robotUtteranceTextArea")).append(robotUtterance);
+		frame.getPanel().say(robotUtterance);
+//		((JTextArea)frame.getPanel().getComponent("robotUtteranceTextArea")).append(robotUtterance);
 	}
 
 	public void proposeTaskShould(Goal goal, boolean speaker) {
@@ -89,7 +91,8 @@ public class DiscoActionsWrapper {
 		collaboration.getDisco().getInteraction().occurred(speaker, taskToPropose, plan);
 
 		String robotUtterance = taskToPropose.format().substring(taskToPropose.format().indexOf("\"")+1, taskToPropose.format().length()-1);
-		((JTextArea)frame.getPanel().getComponent("robotUtteranceTextArea")).setText(robotUtterance);
+		frame.getPanel().say(robotUtterance);
+//		((JTextArea)frame.getPanel().getComponent("robotUtteranceTextArea")).setText(robotUtterance);
 	}
 
 	public void proposeTaskShould(Plan plan, boolean speaker) {
@@ -98,7 +101,8 @@ public class DiscoActionsWrapper {
 		collaboration.getDisco().getInteraction().occurred(speaker, taskToPropose, plan);
 		
 		String robotUtterance = taskToPropose.format().substring(taskToPropose.format().indexOf("\"")+1,taskToPropose.format().length()-1);
-		((JTextArea)frame.getPanel().getComponent("robotUtteranceTextArea")).setText(robotUtterance);
+		frame.getPanel().say(robotUtterance);
+//		((JTextArea)frame.getPanel().getComponent("robotUtteranceTextArea")).setText(robotUtterance);
 	}
 	
 	public void proposeTaskWhat(Goal goal, boolean speaker, String slot, Object value) {
@@ -154,7 +158,8 @@ public class DiscoActionsWrapper {
 		collaboration.getDisco().getInteraction().occurred(speaker, utteranceTask, null);
 		
 		String robotUtterance = utteranceTask.format().substring(utteranceTask.format().indexOf("\"")+1,utteranceTask.format().length()-1);
-		((JTextArea)frame.getPanel().getComponent("robotUtteranceTextArea")).setText(robotUtterance);
+		frame.getPanel().say(robotUtterance);
+//		((JTextArea)frame.getPanel().getComponent("robotUtteranceTextArea")).setText(robotUtterance);
 	}
 
 	public void askAboutTaskWho(Goal goal, boolean speaker) {

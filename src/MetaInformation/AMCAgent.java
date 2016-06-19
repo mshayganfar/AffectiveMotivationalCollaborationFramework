@@ -38,5 +38,7 @@ public class AMCAgent extends Agent{
 	public void say (Interaction interaction, Utterance utterance) {
 		
 		// This method was not called at all in the whole run!
+		String robotUtterance = utterance.format().substring(utterance.format().indexOf("\"")+1, utterance.format().length()-1);
+		frame.getPanel().say(robotUtterance);
 	}
 }

@@ -1,7 +1,11 @@
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JTextField;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import GUI.AMCFrame;
 import Mechanisms.Mechanisms.AGENT;
@@ -14,6 +18,7 @@ import MetaInformation.AMCUser;
 import MetaInformation.MentalProcesses;
 import MetaInformation.World;
 import MetaInformation.Turns.WHOSE_TURN;
+import MetaInformation.Voice;
 import MetaInformation.World.RemovingCoverTool;
 import MetaInformation.World.WeldingTool;
 import edu.wpi.cetask.Plan;
@@ -37,6 +42,7 @@ public class AffectiveMotivationalCollaborationFramework {
 	private static Goal goal = null;
 	private static World world;
 	private static AMCFrame frame;
+	private static Voice voice;
 	
 	private static MentalProcesses mentalProcesses;
 	private static GoalManagement goalManagement;
@@ -171,7 +177,9 @@ public class AffectiveMotivationalCollaborationFramework {
 		return false;
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException{
+		
+		voice = new Voice ("cmu-rms-hsmm");
 		
 		frame = new AMCFrame("Affective Motivational Collaboration Framework");
 		frame.pack();
@@ -186,6 +194,7 @@ public class AffectiveMotivationalCollaborationFramework {
 		world = new World(mentalProcesses, frame);
 		Collaboration collaboration = mentalProcesses.getCollaborationMechanism();
 		
+		collaboration.setCollaborationVoice(voice);
 		collaboration.setCollaborationWorld(world);
 		
 		collaboration.getInteraction().start(true);
@@ -208,6 +217,9 @@ public class AffectiveMotivationalCollaborationFramework {
 		inputValues.put("RemoveLeftCoverPrimitivetool", RemovingCoverTool.USER_TOOL);
 		inputValues.put("HandOffTooltool", RemovingCoverTool.AGENT_TOOL);
 		mentalProcesses.getCollaborationMechanism().initializeAllInputs(topPlan, inputValues);
+		
+//		voice.say("Please give me the tool, okay!");
+//		voice.say("What is your name?");
 		
 		goAgent();
 		

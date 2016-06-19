@@ -44,6 +44,6 @@ public class DiscoAgent extends Agent{
 	public void say (Interaction interaction, Utterance utterance) {
 		
 		String robotUtterance = utterance.format().substring(utterance.format().indexOf("\"")+1, utterance.format().length()-1);
-		((JTextArea)frame.getPanel().getComponent("robotUtteranceTextArea")).setText(robotUtterance);
+		frame.getPanel().say(robotUtterance);
 	}
 }

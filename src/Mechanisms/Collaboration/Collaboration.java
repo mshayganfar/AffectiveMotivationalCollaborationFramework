@@ -24,6 +24,7 @@ import MetaInformation.MentalProcesses;
 import MetaInformation.Node;
 import MetaInformation.Turns;
 import MetaInformation.Turns.WHOSE_TURN;
+import MetaInformation.Voice;
 import MetaInformation.World;
 import MetaInformation.AMCAgent;
 import MetaInformation.AMCUser;
@@ -75,6 +76,7 @@ public class Collaboration extends Mechanisms{
 	
 	private Interaction interaction;
 	private World world;
+	private Voice voice;
 	
 	private AMCAgent amc_agent;
 	private DiscoAgent disco_agent;
@@ -155,6 +157,14 @@ public class Collaboration extends Mechanisms{
 			
 			this.collaboration = this;
 		}
+	}
+	
+	public void setCollaborationVoice(Voice voice) {
+		this.voice = voice;
+	}
+	
+	public Voice getCollaborationVoice() {
+		return this.voice;
 	}
 	
 	public void setCollaborationWorld(World world) {

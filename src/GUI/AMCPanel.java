@@ -321,8 +321,18 @@ public class AMCPanel extends JPanel {
 		}
 	}
 	
+	public void say(String robotUtterance) {
+		
+		this.robotUtteranceTextArea.setText(robotUtterance);
+		mentalProcesses.getCollaborationMechanism().getCollaborationVoice().say(robotUtterance);
+	}
+	
 	public JLabel getRobotEmotionImageHolder() {
 		return this.robotEmotionImageHolder;
+	}
+	
+	public JTextArea getRobotUtteranceTextArea() {
+		return this.robotUtteranceTextArea;
 	}
 	
 	public void setRobotUtterance(String robotUtterance) {
