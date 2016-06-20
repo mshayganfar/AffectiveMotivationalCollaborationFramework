@@ -78,7 +78,7 @@ public class World {
 		mentalProcesses.getActionMechanism().say("I will ask my supervisor to come and help us with this!");
 		// Wait (50 seconds) for the supervisor to come and help.
 		try {
-			Thread.sleep(50000);
+			Thread.sleep(15000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -86,7 +86,7 @@ public class World {
 	
 	public static void goHome() {
 		try {
-			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/GoHome");
+			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/go_home");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -94,7 +94,7 @@ public class World {
 	
 	public static void openGripper() {
 		try {
-			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/OpenGripper");
+			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/open_gripper");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -102,7 +102,7 @@ public class World {
 	
 	public static void closeGripper() {
 		try {
-			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/CloseGripper");
+			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/close_gripper");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -110,7 +110,7 @@ public class World {
 	
 	public static void prepareControlSwitch() {
 		try {
-			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/prepareControlSwitch");
+			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/prepare_control_switch");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -118,15 +118,16 @@ public class World {
 	
 	public static void removeLeftCover() {
 		try {
-			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/removeLeftCover");
+			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/remove_left_cover");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		mentalProcesses.getActionMechanism().say("Here. I can help you. Use this to remove the left cover.");
 	}
 	
 	public static void removeRightCover() {
 		try {
-			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/removeRightCover");
+			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/remove_right_cover");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -134,7 +135,7 @@ public class World {
 	
 	public static void connectAdaptor() {
 		try {
-			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/connectAdaptor");
+			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/connect_adaptor");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -142,7 +143,7 @@ public class World {
 	
 	public static void unrollCable() {
 		try {
-			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/unrollCable");
+			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/unroll_cable");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -150,7 +151,7 @@ public class World {
 	
 	public static void placeCable() {
 		try {
-			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/placeCable");
+			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/place_cable");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -158,23 +159,24 @@ public class World {
 	
 	public static void placePanel() {
 		try {
-			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/placePanel");
+			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/place_panel");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public static void checkPanelAttachment() {
-		try {
-			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/checkPanelAttachment");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		System.out.println("CHECK THISSSSSSSSSSSSSSSSSSSSSSSSSSS OUT!");
+//		try {
+//			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/check_panel_attachment");
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 	}
 	
 	public static void checkControlSwitch() {
 		try {
-			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/checkControlSwitch");
+			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/check_control_switch");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -182,7 +184,7 @@ public class World {
 	
 	public static void checkOutputCurrent() {
 		try {
-			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/checkOutputCurrent");
+			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/check_output_current");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

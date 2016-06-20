@@ -130,7 +130,7 @@ public class Action extends Mechanisms{
 	}
 	
 	public void say(String utterance) {
-		discoActionsWrapper.saySomethingAboutTask(false, utterance);
+//		discoActionsWrapper.saySomethingAboutTask(false, utterance);
 		discoActionsWrapper.getFrame().getPanel().say(utterance);
 	}
 	

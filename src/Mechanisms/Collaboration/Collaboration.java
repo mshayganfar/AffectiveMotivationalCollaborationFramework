@@ -788,18 +788,18 @@ public class Collaboration extends Mechanisms{
 		DiscoActionsWrapper discoWrapper = new DiscoActionsWrapper(mentalProcesses, frame);
 		
 		if (recognizedGoal.getPlan().isPrimitive()) {
-			if (postconditionStatus == null) {
-				world.setUserValence(0.0);
-				mentalProcesses.getPerceptionMechanism().setEmotionValence(0.0);
-			}
-			else if (postconditionStatus) {
-				world.setUserValence(0.4);
-				mentalProcesses.getPerceptionMechanism().setEmotionValence(0.4);
-			}
-			else {
-				world.setUserValence(-0.4);
-				mentalProcesses.getPerceptionMechanism().setEmotionValence(-0.4);
-			}
+//			if (postconditionStatus == null) {
+//				world.setUserValence(0.0);
+//				mentalProcesses.getPerceptionMechanism().setEmotionValence(0.0);
+//			}
+//			else if (postconditionStatus) {
+//				world.setUserValence(0.4);
+//				mentalProcesses.getPerceptionMechanism().setEmotionValence(0.4);
+//			}
+//			else {
+//				world.setUserValence(-0.4);
+//				mentalProcesses.getPerceptionMechanism().setEmotionValence(-0.4);
+//			}
 			
 			discoWrapper.executeTask(recognizedGoal, true, postconditionStatus);
 			
