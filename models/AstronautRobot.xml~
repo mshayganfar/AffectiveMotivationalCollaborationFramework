@@ -132,17 +132,17 @@
 
   <task id="PrepareControlSwitch">
 		<precondition>true</precondition>
-    <script> Packages.MetaInformation.World.prepareControlSwitch(); </script>
+    <!-- <script> Packages.MetaInformation.World.prepareControlSwitch(); </script> -->
 	</task>
 
   <task id="RemoveRightCover">
 		<precondition>true</precondition>
-    <script> Packages.MetaInformation.World.removeRightCover(); </script>
+    <!-- <script> Packages.MetaInformation.World.removeRightCover(); </script> -->
 	</task>
 
   <task id="ConnectAdaptor">
 		<precondition>true</precondition>
-    <script> Packages.MetaInformation.World.connectAdaptor(); </script>
+    <!-- <script> Packages.MetaInformation.World.connectAdaptor(); </script> -->
 	</task>
 
   <task id="RemoveLeftCoverPrimitive">
@@ -152,12 +152,12 @@
 
   <task id="HandOffRemoveLeftCover">
 		<precondition>true</precondition>
-    <script> Packages.MetaInformation.World.removeLeftCover(); </script>
+    <!-- <script> Packages.MetaInformation.World.removeLeftCover(); </script> -->
   </task>
 
   <task id="CallSupervisor">
 		<precondition>true</precondition>
-    <script> Packages.MetaInformation.World.callSupervisor(); </script>
+    <script> Packages.MetaInformation.World.callSupervisor(); </script> -->
   </task>
 
   <task id="TakeOutCable">
@@ -167,17 +167,17 @@
 
   <task id="UnrollCable">
 		<precondition>true</precondition>
-    <script> Packages.MetaInformation.World.unrollCable(); </script>
+    <!-- <script> Packages.MetaInformation.World.unrollCable(); </script> -->
 	</task>
 
   <task id="PlaceCable">
 		<precondition>true</precondition>
-    <script> Packages.MetaInformation.World.placeCable(); </script>
+    <!-- <script> Packages.MetaInformation.World.placeCable(); </script> -->
 	</task>
 
   <task id="PlacePanel">
 		<precondition>true</precondition>
-    <script> Packages.MetaInformation.World.placePanel(); </script>
+    <!-- <script> Packages.MetaInformation.World.placePanel(); </script> -->
 	</task>
 
   <task id="WeldPanel">
@@ -187,7 +187,7 @@
 
   <task id="CheckPanelAttachmentPrimitive">
 		<precondition>true</precondition>
-    <script> if () { Packages.MetaInformation.World.checkPanelAttachment(); } </script>
+    <script> if (!$this.external) { Packages.MetaInformation.World.checkPanelAttachment(); } </script>
 	</task>
 
   <task id="CheckWirings">
@@ -227,6 +227,10 @@
 
 		function giveTurnToUser() {
 			Packages.MetaInformation.World.giveTurnToUser();
+		}
+
+		function goHome() {
+			Packages.MetaInformation.World.goHome();
 		}
 	</script>
 </taskModel>

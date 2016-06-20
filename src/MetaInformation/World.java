@@ -168,11 +168,11 @@ public class World {
 	
 	public static void checkPanelAttachment() {
 		System.out.println("CHECK THISSSSSSSSSSSSSSSSSSSSSSSSSSS OUT!");
-//		try {
-//			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/check_panel_attachment");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		try {
+			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/check_panel_attachment");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void checkControlSwitch() {
