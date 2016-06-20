@@ -16,6 +16,7 @@ import MentalState.Goal;
 import MetaInformation.AMCAgent;
 import MetaInformation.AMCUser;
 import MetaInformation.MentalProcesses;
+import MetaInformation.ROSbridge;
 import MetaInformation.World;
 import MetaInformation.Turns.WHOSE_TURN;
 import MetaInformation.Voice;
@@ -43,6 +44,7 @@ public class AffectiveMotivationalCollaborationFramework {
 	private static World world;
 	private static AMCFrame frame;
 	private static Voice voice;
+	private static ROSbridge rosBridge;
 	
 	private static MentalProcesses mentalProcesses;
 	private static GoalManagement goalManagement;
@@ -180,6 +182,7 @@ public class AffectiveMotivationalCollaborationFramework {
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException{
 		
 		voice = new Voice ("cmu-rms-hsmm");
+		rosBridge = new ROSbridge("130.215.28.106");
 		
 		frame = new AMCFrame("Affective Motivational Collaboration Framework");
 		frame.pack();
@@ -196,6 +199,13 @@ public class AffectiveMotivationalCollaborationFramework {
 		
 		collaboration.setCollaborationVoice(voice);
 		collaboration.setCollaborationWorld(world);
+		collaboration.setCollaborationROSbridge(rosBridge);
+		
+		try {
+			rosBridge.rosConnect();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		collaboration.getInteraction().start(true);
 		

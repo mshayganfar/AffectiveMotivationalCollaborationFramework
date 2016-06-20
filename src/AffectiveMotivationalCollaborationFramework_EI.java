@@ -1,6 +1,7 @@
 import GUI.AMCFrame;
 import Mechanisms.Collaboration.Collaboration;
 import MetaInformation.MentalProcesses;
+import MetaInformation.ROSbridge;
 import MetaInformation.Voice;
 import MetaInformation.World;
 import edu.wpi.disco.Disco;
@@ -17,10 +18,12 @@ public class AffectiveMotivationalCollaborationFramework_EI {
 	private static MentalProcesses mentalProcesses;
 	private static World world;
 	private static Voice voice;
+	private static ROSbridge rosBridge;
 	
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException{
 		
 		voice = new Voice ("cmu-rms-hsmm");
+		rosBridge = new ROSbridge("130.215.28.106");
 		
 		AMCFrame frame = new AMCFrame("Affective Motivational Collaboration Framework");
 		frame.pack();
@@ -38,7 +41,14 @@ public class AffectiveMotivationalCollaborationFramework_EI {
 		
 		collaboration.setCollaborationVoice(voice);
 		collaboration.setCollaborationWorld(world);
+		collaboration.setCollaborationROSbridge(rosBridge);
 		collaboration.getWorld().setUserValence(0.0);
+		
+		try {
+			rosBridge.rosConnect();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		disco.getInteraction().setOk(false);
 		

@@ -8,7 +8,6 @@ import MentalState.Intention;
 import MetaInformation.MentalProcesses;
 import MetaInformation.Turns;
 import MetaInformation.Turns.WHOSE_TURN;
-import MetaInformation.AppraisalVector.APPRAISAL_TYPE;
 import MetaInformation.CopingActivation.COPING_STRATEGY;
 
 public class Action extends Mechanisms{
@@ -131,7 +130,8 @@ public class Action extends Mechanisms{
 	}
 	
 	public void say(String utterance) {
-		System.out.println(utterance);
+		discoActionsWrapper.saySomethingAboutTask(false, utterance);
+		discoActionsWrapper.getFrame().getPanel().say(utterance);
 	}
 	
 	public void ask(String utterance) {

@@ -22,6 +22,7 @@ import MentalState.Motive;
 import MetaInformation.GoalTree;
 import MetaInformation.MentalProcesses;
 import MetaInformation.Node;
+import MetaInformation.ROSbridge;
 import MetaInformation.Turns;
 import MetaInformation.Turns.WHOSE_TURN;
 import MetaInformation.Voice;
@@ -77,6 +78,7 @@ public class Collaboration extends Mechanisms{
 	private Interaction interaction;
 	private World world;
 	private Voice voice;
+	private ROSbridge rosBridge;
 	
 	private AMCAgent amc_agent;
 	private DiscoAgent disco_agent;
@@ -157,6 +159,14 @@ public class Collaboration extends Mechanisms{
 			
 			this.collaboration = this;
 		}
+	}
+	
+	public void setCollaborationROSbridge(ROSbridge rosBridge) {
+		this.rosBridge = rosBridge;
+	}
+	
+	public ROSbridge getCollaborationROSbridge() {
+		return this.rosBridge;
 	}
 	
 	public void setCollaborationVoice(Voice voice) {

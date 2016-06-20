@@ -1,7 +1,5 @@
 package Mechanisms.Action;
 
-import javax.swing.JTextArea;
-
 import GUI.AMCFrame;
 import Mechanisms.Collaboration.Collaboration;
 import MentalState.Goal;
@@ -11,7 +9,6 @@ import edu.wpi.cetask.Plan;
 import edu.wpi.cetask.Task;
 import edu.wpi.cetask.TaskClass.Input;
 import edu.wpi.disco.Agenda.Plugin;
-import edu.wpi.disco.Agenda.Plugin.Item;
 import edu.wpi.disco.Agent;
 import edu.wpi.disco.Interaction;
 import edu.wpi.disco.lang.Accept;
@@ -30,6 +27,10 @@ public class DiscoActionsWrapper {
 	public DiscoActionsWrapper(MentalProcesses mentalProcesses, AMCFrame frame) {
 		this.collaboration = mentalProcesses.getCollaborationMechanism();
 		this.frame = frame;
+	}
+	
+	public AMCFrame getFrame() {
+		return this.frame;
 	}
 	
 	public void proposeTaskWho(Goal goal, boolean speaker) {
