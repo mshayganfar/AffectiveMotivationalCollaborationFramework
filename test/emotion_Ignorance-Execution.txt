@@ -24,11 +24,13 @@ eval giveTurnToUser()
 execute TakeOutCable / true / false
 
 next
+
 eval giveTurnToUser()
 
 execute TakeOutCable / true / true
 
 next
+
 eval giveTurnToUser()
 
 execute WeldPanel / true / true
@@ -36,11 +38,13 @@ execute WeldPanel / true / true
 execute CheckPanelAttachmentPrimitive / false / false
 
 next
+
 eval giveTurnToUser()
 
 execute CheckWirings / true / true
 
 next
+
 eval giveTurnToUser()
 
 execute CheckCascadingCells / true / true

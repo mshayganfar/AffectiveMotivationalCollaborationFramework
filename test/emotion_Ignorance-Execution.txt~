@@ -5,7 +5,6 @@ new PreparePanel
 execute edu.wpi.disco.lang.Propose$Should / $new / false
 
 
-
 next
 
 eval giveTurnToUser()
@@ -25,11 +24,13 @@ eval giveTurnToUser()
 execute TakeOutCable / true / false
 
 next
+
 eval giveTurnToUser()
 
 execute TakeOutCable / true / true
 
 next
+
 eval giveTurnToUser()
 
 execute WeldPanel / true / true
