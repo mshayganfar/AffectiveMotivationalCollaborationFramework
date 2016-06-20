@@ -1,6 +1,8 @@
 package MetaInformation;
 
 import Mechanisms.Appraisal.Controllability.CONTROLLABILITY;
+import Mechanisms.Collaboration.Collaboration;
+import Mechanisms.Collaboration.Collaboration.GOAL_STATUS;
 import MentalState.Goal;
 import MentalState.Motive;
 import MentalState.Motive.MOTIVE_INTENSITY;
@@ -188,8 +190,12 @@ public class CopingActivation {
 				else
 					return false;
 			case MENTAL_DISENGAGEMENT:
-				if (controllability.equals(CONTROLLABILITY.UNCONTROLLABLE))
-					return true;
+				if (mentalProcesses.getCollaborationMechanism().getGoalStatus(goal.getPlan()).equals(GOAL_STATUS.FAILED)) {
+					if (controllability.equals(CONTROLLABILITY.UNCONTROLLABLE))
+						return true;
+					else
+						return false;
+				}
 				else
 					return false;
 			case SHIFTING_RESPONSIBILITY:

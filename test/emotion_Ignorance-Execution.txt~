@@ -7,16 +7,19 @@ execute edu.wpi.disco.lang.Propose$Should / $new / false
 
 
 next
+
 eval giveTurnToUser()
 
 execute RemoveLeftCoverPrimitive / true / false
 
 next
+
 eval giveTurnToUser()
 
 execute RemoveLeftCoverPrimitive / true / true
 
 next
+
 eval giveTurnToUser()
 
 execute TakeOutCable / true / false

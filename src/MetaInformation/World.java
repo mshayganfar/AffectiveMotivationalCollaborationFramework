@@ -76,7 +76,7 @@ public class World {
 	
 	public static void callSupervisor() {
 		mentalProcesses.getActionMechanism().say("I will ask my supervisor to come and help us with this!");
-		// Wait (50 seconds) for the supervisor to come and help.
+		// Wait (15 seconds) for the supervisor to come and help.
 		try {
 			Thread.sleep(15000);
 		} catch (InterruptedException e) {
@@ -117,12 +117,13 @@ public class World {
 	}
 	
 	public static void removeLeftCover() {
-		try {
-			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/remove_left_cover");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		mentalProcesses.getActionMechanism().say("Here. I can help you. Use this to remove the left cover.");
+		mentalProcesses.getActionMechanism().say("I can help you with this.");
+//		try {
+//			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/remove_left_cover");
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+		mentalProcesses.getActionMechanism().say("Use this instead of yours.");
 	}
 	
 	public static void removeRightCover() {

@@ -25,7 +25,7 @@ public class AffectiveMotivationalCollaborationFramework_EI {
 		voice = new Voice ("cmu-rms-hsmm");
 		rosBridge = new ROSbridge("130.215.28.106");
 		
-		AMCFrame frame = new AMCFrame("Affective Motivational Collaboration Framework");
+		AMCFrame frame = new AMCFrame("Affective Motivational Collaboration Framework", false);
 		frame.pack();
 		frame.setVisible(true);
 		frame.getPanel().giveTurnToRobot();

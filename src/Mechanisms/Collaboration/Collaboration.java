@@ -98,7 +98,7 @@ public class Collaboration extends Mechanisms{
 			amc_agent.init();
 			
 			user = new User("astronaut");
-			user.setEval(true); // Guarantees that grounding script will be evaluated.
+//			user.setEval(true); // Guarantees that grounding script will be evaluated. Side effect: grounding script will be run for the astronaut too.
 			amc_user = new AMCUser("amc_astronaut", user);
 			amc_user.setEval(true);
 			amc_user.init();

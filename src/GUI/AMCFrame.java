@@ -6,9 +6,9 @@ public class AMCFrame extends JFrame {
 	
 	private AMCPanel currentPanel;
 	
-	public AMCFrame(String caption) {
+	public AMCFrame(String caption, boolean AMCrun) {
 		super(caption);
-		currentPanel = new AMCPanel();
+		currentPanel = new AMCPanel(AMCrun);
 		setupFrame();
 	}
 
@@ -18,12 +18,12 @@ public class AMCFrame extends JFrame {
 		this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 	}
 	
-	public static void main(String[] args) {
-		
-		AMCFrame frame = new AMCFrame("Affective Motivational Collaboration Framework");
-		frame.pack();
-		frame.setVisible(true);
-	}
+//	public static void main(String[] args) {
+//		
+//		AMCFrame frame = new AMCFrame("Affective Motivational Collaboration Framework");
+//		frame.pack();
+//		frame.setVisible(true);
+//	}
 	
 	public AMCPanel getPanel() {
 		return this.currentPanel;

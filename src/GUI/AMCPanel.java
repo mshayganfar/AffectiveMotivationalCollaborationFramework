@@ -52,7 +52,7 @@ public class AMCPanel extends JPanel {
 //	private JComboBox<String> humanUttrancesComboBox;
 //	private JLabel humanUtteranceLabel;
 	
-	public AMCPanel() {
+	public AMCPanel(boolean AMCrun) {
 		
 		robotEmotionTextField   = new JTextField();
 		robotUtteranceTextArea  = new JTextArea(5, 37);
@@ -76,14 +76,14 @@ public class AMCPanel extends JPanel {
 //		humanUtteranceLabel     = new JLabel("You Say:");
 //		humanUttrancesComboBox  = new JComboBox<String>();
 		
-		setupPanel();
+		setupPanel(AMCrun);
 	}
 	
 	public void setMentalProcesses(MentalProcesses mentalProcesses) {
 		this.mentalProcesses = mentalProcesses;
 	}
 	
-	private void setupPanel() {
+	private void setupPanel(final boolean AMCrun) {
 		
 		robotUtteranceTextArea.setLineWrap (true);
 		robotUtteranceTextArea.setWrapStyleWord (true);
@@ -201,11 +201,20 @@ public class AMCPanel extends JPanel {
 			{
 				robotUtteranceTextArea.setText("");
 				
-				Double emotionValence = getHumanEmotion();
-				
-				if (emotionValence == null)
-					throw new IllegalArgumentException("Wrong emotion valence value!");
+				if (AMCrun) {
+					Double emotionValence = getHumanEmotion();
+					
+					if (emotionValence == null)
+						throw new IllegalArgumentException("Wrong emotion valence value!");
+					else {
+						mentalProcesses.getCollaborationMechanism().getWorld().setUserValence(emotionValence);
+						mentalProcesses.getPerceptionMechanism().setEmotionValence(emotionValence);
+					}
+				}
 				else {
+					Double emotionValence = 0.0;
+					humanEmotionGroup.clearSelection();
+					
 					mentalProcesses.getCollaborationMechanism().getWorld().setUserValence(emotionValence);
 					mentalProcesses.getPerceptionMechanism().setEmotionValence(emotionValence);
 				}

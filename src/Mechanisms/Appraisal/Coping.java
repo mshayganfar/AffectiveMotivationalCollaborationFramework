@@ -3,8 +3,6 @@ package Mechanisms.Appraisal;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.JTextArea;
-
 import GUI.AMCFrame;
 import Mechanisms.Mechanisms.AGENT;
 import Mechanisms.Action.Action;
@@ -32,7 +30,6 @@ import edu.wpi.cetask.TaskClass.Input;
 import edu.wpi.disco.Disco;
 import edu.wpi.disco.Interaction;
 import edu.wpi.disco.lang.Ask;
-import edu.wpi.disco.lang.Propose.Success;
 import edu.wpi.disco.lang.Say;
 
 public class Coping {
