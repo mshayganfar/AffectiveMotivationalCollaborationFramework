@@ -132,17 +132,17 @@
 
   <task id="PrepareControlSwitch">
 		<precondition>true</precondition>
-    <!-- <script> Packages.MetaInformation.World.prepareControlSwitch(); </script> -->
+    <script> Packages.MetaInformation.World.prepareControlSwitch(); </script>
 	</task>
 
   <task id="RemoveRightCover">
 		<precondition>true</precondition>
-    <!-- <script> Packages.MetaInformation.World.removeRightCover(); </script> -->
+    <script> Packages.MetaInformation.World.removeRightCover(); </script>
 	</task>
 
   <task id="ConnectAdaptor">
 		<precondition>true</precondition>
-    <!-- <script> Packages.MetaInformation.World.connectAdaptor(); </script> -->
+    <script> Packages.MetaInformation.World.connectAdaptor(); </script>
 	</task>
 
   <task id="RemoveLeftCoverPrimitive">
@@ -157,7 +157,7 @@
 
   <task id="CallSupervisor">
 		<precondition>true</precondition>
-    <script> Packages.MetaInformation.World.callSupervisor(); </script> -->
+    <script> Packages.MetaInformation.World.callSupervisor(); </script>
   </task>
 
   <task id="TakeOutCable">

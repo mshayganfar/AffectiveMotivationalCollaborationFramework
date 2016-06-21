@@ -118,11 +118,11 @@ public class World {
 	
 	public static void removeLeftCover() {
 		mentalProcesses.getActionMechanism().say("I can help you with this.");
-//		try {
-//			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/remove_left_cover");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		try {
+			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/remove_left_cover");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		mentalProcesses.getActionMechanism().say("Use this instead of yours.");
 	}
 	
@@ -167,7 +167,6 @@ public class World {
 	}
 	
 	public static void checkPanelAttachment() {
-		System.out.println("CHECK THISSSSSSSSSSSSSSSSSSSSSSSSSSS OUT!");
 		try {
 			mentalProcesses.getCollaborationMechanism().getCollaborationROSbridge().callService("/check_panel_attachment");
 		} catch (Exception e) {
